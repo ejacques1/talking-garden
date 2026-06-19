@@ -109,8 +109,14 @@
   .bigbtns{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;}
   .bigbtn{border:none; border-radius:14px; padding:16px 12px; font-size:17px; font-weight:600; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px; min-height:64px; font-family:var(--sans);}
   .bigbtn:active{transform:scale(.96);} .bigbtn .e{font-size:24px;}
-  .answer{margin-top:16px; background:var(--sage-l); border-radius:14px; padding:18px; min-height:80px; display:flex; align-items:center; gap:14px; font-size:17px; line-height:1.4; color:var(--sage-d); font-weight:500;}
-  .answer .big{font-size:40px;}
+  .answer{margin-top:16px; background:var(--sage-l); border-radius:14px; padding:18px; min-height:80px; display:flex; align-items:center; gap:14px; font-size:17px; line-height:1.4; color:var(--sage-d); font-weight:500; transition:background .2s;}
+  .answer .big{font-size:40px; display:inline-block;}
+  .pop{animation:pop .45s ease;}
+  @keyframes pop{0%{transform:scale(.92); background:#D8E6CF;} 55%{transform:scale(1.03);} 100%{transform:scale(1);}}
+  .bump{animation:bump .35s ease;}
+  @keyframes bump{0%{transform:scale(1);} 40%{transform:scale(1.25) rotate(-6deg);} 100%{transform:scale(1);}}
+  .bigbtn.flash{animation:flash .4s ease;}
+  @keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,255,255,.9) inset;} 50%{box-shadow:0 0 0 4px rgba(255,255,255,.6) inset;} 100%{box-shadow:none;}}
   .items{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px; min-height:60px;}
   .item{background:#fff; border:2px solid var(--line-d); border-radius:14px; padding:10px; font-size:34px; cursor:pointer; line-height:1;}
   .bins{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
@@ -316,10 +322,10 @@ function render(which){
   if(which==='parts'){
     return '<p class="kh">Meet Sunny 🌻</p><p class="ksub">Tap one of my parts!</p>'+
       '<div class="bigbtns">'+
-      '<button class="bigbtn" style="background:#C98A2E" onclick="part(\'root\')"><span class="e">🟫</span>Roots</button>'+
-      '<button class="bigbtn" style="background:#5C7357" onclick="part(\'stem\')"><span class="e">🌿</span>Stem</button>'+
-      '<button class="bigbtn" style="background:#8AA983" onclick="part(\'leaf\')"><span class="e">🍃</span>Leaves</button>'+
-      '<button class="bigbtn" style="background:#B0603A" onclick="part(\'flower\')"><span class="e">🌸</span>Flower</button>'+
+      '<button class="bigbtn" style="background:#C98A2E" onclick="tapPart(\'root\',this)"><span class="e">🟫</span>Roots</button>'+
+      '<button class="bigbtn" style="background:#5C7357" onclick="tapPart(\'stem\',this)"><span class="e">🌿</span>Stem</button>'+
+      '<button class="bigbtn" style="background:#8AA983" onclick="tapPart(\'leaf\',this)"><span class="e">🍃</span>Leaves</button>'+
+      '<button class="bigbtn" style="background:#B0603A" onclick="tapPart(\'flower\',this)"><span class="e">🌸</span>Flower</button>'+
       '</div><div class="answer" id="partAns"><span class="big">🌻</span><span>Hi friend! Tap a part to learn my secret.</span></div>';
   }
   if(which==='worm'){
@@ -348,7 +354,14 @@ function render(which){
 }
 
 /* station 1 */
-function part(k){var p=PARTS[k];document.getElementById('partAns').innerHTML='<span class="big">'+p.e+'</span><span>'+p.t+'</span>';}
+function tapPart(k,btn){
+  var p=PARTS[k];
+  var a=document.getElementById('partAns');
+  a.innerHTML='<span class="big bump">'+p.e+'</span><span>'+p.t+'</span>';
+  a.classList.remove('pop'); void a.offsetWidth; a.classList.add('pop');
+  if(btn){ btn.classList.remove('flash'); void btn.offsetWidth; btn.classList.add('flash'); }
+  a.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 
 /* station 2 */
 function buildWorm(){
