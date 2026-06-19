@@ -19,8 +19,8 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0; font-family:var(--sans); color:var(--ink); background:var(--cream); line-height:1.65; font-size:17px; -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:860px; margin:0 auto; padding:0 24px;}
+  body{margin:0; font-family:var(--sans); color:var(--ink); background:var(--cream); line-height:1.6; font-size:17px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 24px;}
   h1,h2,h3,h4{font-family:var(--serif); font-weight:500; letter-spacing:-.01em; line-height:1.15; color:var(--ink);}
   a{color:var(--sage-d);}
   .eyebrow{font-family:var(--sans); font-size:12.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--terra);}
@@ -32,58 +32,93 @@
   nav .spacer{flex:1;}
   nav a.back{font-size:13.5px; font-weight:600; color:var(--sage-d); text-decoration:none;}
 
-  header.hero{padding:50px 0 38px; border-bottom:1px solid var(--line); text-align:center;}
-  header.hero .eyebrow{display:block; margin-bottom:14px;}
-  header.hero h1{font-size:clamp(32px,5.4vw,52px); margin:0 0 14px;}
-  header.hero .deck{font-size:clamp(17px,2.4vw,20px); color:var(--soil); max-width:580px; margin:0 auto; font-family:var(--serif); font-weight:400;}
-  header.hero .note{margin-top:18px; font-size:14px; color:var(--muted);}
+  header.hero{padding:44px 0 30px; text-align:center;}
+  header.hero .eyebrow{display:block; margin-bottom:12px;}
+  header.hero h1{font-size:clamp(32px,5.4vw,52px); margin:0 0 12px;}
+  header.hero .deck{font-size:clamp(16px,2.3vw,19px); color:var(--soil); max-width:560px; margin:0 auto; font-family:var(--serif);}
 
-  .how{background:var(--paper2); border:1px solid var(--line); border-radius:16px; padding:20px 24px; margin:30px 0 10px; display:flex; gap:18px; align-items:flex-start;}
-  .how .n{font-family:var(--serif); font-size:34px; color:var(--terra); line-height:1; flex:0 0 auto;}
-  .how p{margin:0; font-size:15.5px; color:var(--soil);}
-  .how b{color:var(--sage-d);}
+  /* BADGE SHELF */
+  .shelf{background:var(--paper); border:1px solid var(--line-d); border-radius:18px; padding:20px 24px; margin:14px 0 8px;}
+  .shelf .top{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;}
+  .shelf .top h3{font-size:18px; margin:0;}
+  .shelf .count{font-size:14px; color:var(--muted);}
+  .shelf .count b{color:var(--sage-d); font-size:16px;}
+  .bar{height:10px; background:var(--sage-l); border-radius:999px; margin:14px 0 16px; overflow:hidden;}
+  .bar > i{display:block; height:100%; width:0%; background:var(--sage); border-radius:999px; transition:width .5s ease;}
+  .badges{display:flex; flex-wrap:wrap; gap:10px;}
+  .badges .b{width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; background:var(--paper2); border:2px dashed var(--line-d); filter:grayscale(1); opacity:.45; transition:all .3s;}
+  .badges .b.earned{filter:none; opacity:1; border:2px solid var(--amber); background:var(--amber-l);}
+  .shelf .reset{font-size:12px; color:var(--faint); background:none; border:none; cursor:pointer; text-decoration:underline; padding:0; margin-top:12px;}
 
-  .track{padding:40px 0 10px; border-bottom:1px solid var(--line);}
-  .track .thead{display:flex; align-items:center; gap:14px; margin-bottom:6px;}
-  .track .emoji{font-size:30px;}
-  .track h2{font-size:clamp(24px,3.6vw,30px); margin:0;}
-  .track .based{font-size:13px; color:var(--faint); margin:2px 0 22px;}
+  /* FILTER BAR */
+  .filters{display:flex; flex-wrap:wrap; gap:8px; margin:24px 0 6px;}
+  .filters button{background:var(--paper); border:1px solid var(--line-d); border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500; color:var(--soil); cursor:pointer; font-family:var(--sans);}
+  .filters button.on{background:var(--sage-d); color:#fff; border-color:var(--sage-d);}
 
-  details.mod{background:var(--paper); border:1px solid var(--line-d); border-radius:14px; margin-bottom:14px; overflow:hidden;}
-  details.mod[open]{border-color:var(--sage);}
-  summary.modsum{list-style:none; cursor:pointer; padding:20px 22px; display:flex; align-items:center; gap:16px;}
-  summary.modsum::-webkit-details-marker{display:none;}
-  summary.modsum .ico{width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:26px; flex:0 0 auto;}
-  summary.modsum .t{flex:1;}
-  summary.modsum .t .flag{font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--terra); display:block; margin-bottom:2px;}
-  summary.modsum .t h3{font-size:19px; margin:0;}
-  summary.modsum .t p{margin:3px 0 0; font-size:14px; color:var(--muted);}
-  summary.modsum .chev{color:var(--faint); font-size:14px; transition:transform .2s; flex:0 0 auto;}
-  details[open] summary.modsum .chev{transform:rotate(90deg);}
+  /* TRACK + CARDS */
+  .track{padding:26px 0 6px;}
+  .track .thead{display:flex; align-items:center; gap:12px; margin-bottom:2px;}
+  .track .emoji{font-size:26px;}
+  .track h2{font-size:clamp(22px,3.4vw,28px); margin:0;}
+  .track .based{font-size:12.5px; color:var(--faint); margin:2px 0 16px;}
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px;}
+  .card{background:var(--paper); border:1px solid var(--line-d); border-radius:16px; padding:20px; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; position:relative; display:flex; flex-direction:column;}
+  .card:hover{transform:translateY(-3px); box-shadow:0 12px 28px rgba(63,82,57,.14);}
+  .card .ico{width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:12px;}
+  .card .flag{font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--terra); margin-bottom:4px;}
+  .card h3{font-size:19px; margin:0 0 6px;}
+  .card p{margin:0 0 14px; font-size:14px; color:var(--muted); flex:1;}
+  .meta{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+  .meta .pill{font-size:12px; color:var(--soil); background:var(--paper2); border:1px solid var(--line); border-radius:7px; padding:4px 9px; display:inline-flex; align-items:center; gap:5px;}
+  .card .go{align-self:flex-start; background:var(--sage-d); color:#fff; border:none; border-radius:9px; padding:10px 16px; font-size:14px; font-weight:600; cursor:pointer; font-family:var(--sans);}
+  .card .tick{position:absolute; top:14px; right:14px; width:28px; height:28px; border-radius:50%; background:var(--sage); color:#fff; display:none; align-items:center; justify-content:center; font-size:15px; font-weight:700;}
+  .card.done{border-color:var(--sage);}
+  .card.done .tick{display:flex;}
+  .card.soon{cursor:default; opacity:.85;}
+  .card.soon:hover{transform:none; box-shadow:none;}
+  .card.soon .go{background:var(--paper2); color:var(--faint); border:1px solid var(--line); cursor:default;}
 
-  .modbody{padding:0 22px 24px; border-top:1px solid var(--line);}
-  .modbody h4{font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--sage-d); margin:22px 0 10px;}
-  .sci{background:var(--sage-l); border-radius:12px; padding:16px 18px; font-size:15.5px; color:var(--sage-d); margin-top:20px;}
-  .sci b{color:var(--soil);}
-  .mats{display:flex; flex-wrap:wrap; gap:8px;}
-  .mats span{background:var(--paper2); border:1px solid var(--line); border-radius:999px; padding:7px 14px; font-size:14px; color:var(--soil);}
-  ol.steps{margin:0; padding-left:0; counter-reset:s; list-style:none;}
-  ol.steps li{position:relative; padding:0 0 14px 40px; font-size:15.5px; color:var(--ink);}
-  ol.steps li::before{counter-increment:s; content:counter(s); position:absolute; left:0; top:-1px; width:26px; height:26px; background:var(--sage-d); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; font-family:var(--sans);}
-  ol.steps li:last-child{padding-bottom:0;}
-  .grown{display:inline-block; background:var(--terra-l); color:var(--terra); font-size:12px; font-weight:600; padding:3px 10px; border-radius:6px; margin-left:8px;}
-  .learn{font-size:14px; color:var(--muted); font-style:italic; margin-top:18px;}
-
-  .more{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px; margin-top:18px;}
-  .more .m{background:var(--paper2); border:1px dashed var(--line-d); border-radius:12px; padding:14px 16px;}
-  .more .m .ev{font-size:12px; color:var(--terra); font-weight:600; margin-bottom:3px;}
-  .more .m h4{font-family:var(--serif); font-size:16px; font-weight:500; margin:0 0 4px; text-transform:none; letter-spacing:0; color:var(--ink);}
-  .more .m p{margin:0; font-size:13.5px; color:var(--muted);}
-
-  .closing{background:var(--sage-d); color:#F4F0E6; border-radius:20px; padding:42px 36px; text-align:center; margin:48px 0;}
-  .closing h2{color:#fff; font-size:clamp(24px,4vw,32px); margin:0 0 12px;}
+  .closing{background:var(--sage-d); color:#F4F0E6; border-radius:20px; padding:40px 34px; text-align:center; margin:40px 0;}
+  .closing h2{color:#fff; font-size:clamp(23px,4vw,31px); margin:0 0 10px;}
   .closing p{color:#D9E2D2; max-width:500px; margin:0 auto; font-size:16px;}
-  footer{text-align:center; padding:28px 0 56px; color:var(--faint); font-size:13px;}
+  footer{text-align:center; padding:26px 0 56px; color:var(--faint); font-size:13px;}
+
+  /* ===== BUILD MODE ===== */
+  .overlay{position:fixed; inset:0; background:rgba(30,28,22,.6); display:none; align-items:center; justify-content:center; z-index:60; padding:18px;}
+  .overlay.on{display:flex;}
+  .build{background:var(--cream); border-radius:22px; max-width:540px; width:100%; max-height:94vh; overflow:auto; box-shadow:0 30px 80px rgba(0,0,0,.35); display:flex; flex-direction:column;}
+  .bhead{display:flex; align-items:center; gap:12px; padding:18px 20px 12px; position:sticky; top:0; background:var(--cream); z-index:2;}
+  .bhead .bico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;}
+  .bhead .btitle{flex:1; font-family:var(--serif); font-size:18px; color:var(--ink); line-height:1.2;}
+  .bhead .bx{background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);line-height:1;padding:4px 6px;}
+  .dots{display:flex; gap:6px; padding:0 22px 4px; flex-wrap:wrap;}
+  .dots i{height:6px; flex:1; min-width:14px; background:var(--line-d); border-radius:999px; transition:background .3s;}
+  .dots i.active{background:var(--sage);}
+  .dots i.cur{background:var(--terra);}
+  .stepwrap{padding:14px 24px 8px; min-height:230px;}
+  .stepnum{font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--terra); margin-bottom:8px;}
+  .stepwrap h3{font-size:22px; margin:0 0 12px;}
+  .stepwrap p{font-size:16.5px; color:var(--ink); margin:0 0 10px; line-height:1.55;}
+  .stepwrap .big{font-size:54px; text-align:center; margin:6px 0 14px;}
+  .matlist{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
+  .matlist span{background:var(--paper); border:1px solid var(--line-d); border-radius:999px; padding:8px 14px; font-size:15px; color:var(--soil);}
+  .metabig{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px;}
+  .metabig .pill{font-size:13px; color:var(--soil); background:var(--paper); border:1px solid var(--line-d); border-radius:8px; padding:7px 12px; display:inline-flex; gap:6px; align-items:center;}
+  .scibox{background:var(--sage-l); border-radius:12px; padding:15px 17px; font-size:15.5px; color:var(--sage-d); margin-top:6px;}
+  .scibox b{color:var(--soil);}
+  .grownup{display:inline-block; background:var(--terra-l); color:var(--terra); font-size:12px; font-weight:600; padding:3px 10px; border-radius:6px; margin-top:10px;}
+  .bfoot{display:flex; gap:10px; padding:12px 22px 22px; position:sticky; bottom:0; background:var(--cream); border-top:1px solid var(--line);}
+  .bfoot button{flex:1; border-radius:11px; padding:14px; font-size:16px; font-weight:600; cursor:pointer; font-family:var(--sans); border:1px solid var(--line-d);}
+  .bfoot .prev{background:var(--paper); color:var(--soil);}
+  .bfoot .next{background:var(--sage-d); color:#fff; border-color:var(--sage-d); flex:2;}
+  .bfoot .finish{background:var(--amber); color:#3F3214; border-color:var(--amber); flex:2;}
+  .bfoot button:disabled{opacity:.4; cursor:default;}
+  .donescreen{text-align:center; padding:10px 0;}
+  .donescreen .seal{font-size:64px;}
+  .donescreen h3{font-size:24px; margin:8px 0 6px;}
+  .donescreen p{color:var(--muted);}
+  .confetti{position:fixed; pointer-events:none; font-size:22px; z-index:70; animation:fall 1.6s ease-in forwards;}
+  @keyframes fall{0%{transform:translateY(-10vh) rotate(0); opacity:1;} 100%{transform:translateY(90vh) rotate(360deg); opacity:0;}}
 </style>
 </head>
 <body>
@@ -107,175 +142,29 @@
   <header class="hero">
     <span class="eyebrow">Keep the learning growing at home</span>
     <h1>The Garden Learning Library</h1>
-    <p class="deck">Came to one of our garden days? Here's how to dig deeper — every project picks up right where our events left off.</p>
-    <p class="note">Built for ages 8–12 · Designed to do together, parent and child</p>
+    <p class="deck">Came to one of our garden days? Pick a project, hit Build Mode, and earn your garden badges — one step at a time.</p>
   </header>
 
-  <div class="how">
-    <span class="n">↳</span>
-    <p><b>How it works:</b> Your child says “Mom, I want to build this!” You open the project together, check the simple materials list, and click through the steps. Each one starts from something they already did at a Dew of Heaven event — and adds the science behind it.</p>
+  <div class="shelf">
+    <div class="top">
+      <h3>🏅 Your garden badges</h3>
+      <span class="count"><b id="cDone">0</b> of <b id="cTotal">5</b> projects built</span>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="badges" id="badgeShelf"></div>
+    <button class="reset" id="resetBtn">Reset my progress</button>
   </div>
 
-  <!-- TRACK 1: GARDEN TO KITCHEN -->
-  <section class="track">
-    <div class="thead"><span class="emoji">🍓</span><h2>Garden to Kitchen</h2></div>
-    <p class="based">Continues: Strawberry Full Circle · Berry Sweet Jam Fest · Freeze-Ahead Fries · Juice Shop · Nutty Pie Bake-Off · Gobble Good Lunch</p>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">All projects</button>
+    <button data-f="kitchen">🍓 Kitchen</button>
+    <button data-f="worm">🪱 Worms</button>
+    <button data-f="grow">🌱 Grow</button>
+    <button data-f="explore">🦋 Explore</button>
+    <button data-f="tech">💻 Tech</button>
+  </div>
 
-    <details class="mod">
-      <summary class="modsum">
-        <span class="ico" style="background:var(--berry-l)">🍓</span>
-        <span class="t"><span class="flag">Flagship project</span><h3>The Strawberry Jam Lab</h3><p>Turn fruit into jam — and discover why heat makes it set.</p></span>
-        <span class="chev">▶</span>
-      </summary>
-      <div class="modbody">
-        <div class="sci"><b>The science:</b> Water boils at 212°F. But jam isn't done until 220°F — eight degrees hotter! The sugar raises the boiling point, and tiny fibers in the fruit called <b>pectin</b> link together to trap the juice into a soft gel. That's why jam jiggles instead of pouring.</div>
-        <h4>What you'll need</h4>
-        <div class="mats"><span>2 cups strawberries</span><span>1 cup sugar</span><span>1 Tbsp lemon juice</span><span>Pot</span><span>Cooking thermometer</span><span>Clean jar</span><span>Spoon</span></div>
-        <h4>Build it together <span class="grown">Grown-up at the stove</span></h4>
-        <ol class="steps">
-          <li>Wash and mash the strawberries in the pot. Notice how much juice comes out!</li>
-          <li>Stir in the sugar and lemon juice. (The lemon adds acid that helps it set and keeps it safe.)</li>
-          <li>Heat slowly, stirring, until it bubbles. Clip on the thermometer.</li>
-          <li>Watch the number climb. When it reaches <b>220°F</b>, the jam is at its “gel point.”</li>
-          <li>Let it cool, spoon into a clean jar, and keep it in the fridge.</li>
-        </ol>
-        <p class="learn">Concepts: boiling point, measurement, food safety & acidity, states of matter.</p>
-      </div>
-    </details>
-
-    <div class="more">
-      <div class="m"><div class="ev">From: Freeze-Ahead Fries</div><h4>Why freezing keeps food fresh</h4><p>The cold-storage experiment — what happens to a potato in the freezer vs. the counter.</p></div>
-      <div class="m"><div class="ev">From: Juice Shop</div><h4>Build a juice stand</h4><p>Measure, mix, and price your own juice — kitchen math meets a mini business.</p></div>
-      <div class="m"><div class="ev">From: Gobble Good Lunch</div><h4>Bake bread from scratch</h4><p>Watch yeast make dough rise — a living science experiment you can eat.</p></div>
-    </div>
-  </section>
-
-  <!-- TRACK 2: WORM WORLD -->
-  <section class="track">
-    <div class="thead"><span class="emoji">🪱</span><h2>Worm World</h2></div>
-    <p class="based">Continues: Worm Farm Kickoff · Worm Exploration · Wiggle Worm Cast Harvest</p>
-
-    <details class="mod">
-      <summary class="modsum">
-        <span class="ico" style="background:var(--soil); background:#EDE3D6">🪱</span>
-        <span class="t"><span class="flag">Flagship project · the one you asked for</span><h3>Worm-in-a-Cup Observatory</h3><p>Take the worm farm home — a see-through worm habitat kids can watch all week.</p></span>
-        <span class="chev">▶</span>
-      </summary>
-      <div class="modbody">
-        <div class="sci"><b>The science:</b> Worms are nature's recyclers. They eat food scraps and turn them into <b>castings</b> — the richest plant food there is. Their tunnels also let air and water reach plant roots. In a clear cup, kids can actually <b>see</b> the tunnels appear day by day.</div>
-        <h4>What you'll need</h4>
-        <div class="mats"><span>Clear plastic cup or jar</span><span>Soil</span><span>Sand</span><span>2–3 red wiggler worms</span><span>Small food scraps</span><span>Dark paper</span><span>Spray bottle of water</span></div>
-        <h4>Build it together</h4>
-        <ol class="steps">
-          <li>Layer soil, then a thin line of sand, then more soil. The sand lines let you spot the tunnels.</li>
-          <li>Add 2–3 red wigglers on top and a few tiny food scraps (fruit or veggie peels).</li>
-          <li>Lightly mist with water so it's damp like a wrung-out sponge — never soaking.</li>
-          <li>Wrap the cup in dark paper. Worms like the dark; they'll tunnel along the glass where you can peek.</li>
-          <li>Each day, unwrap and look: new tunnels? Scraps shrinking? Draw what you see.</li>
-          <li>After about a week, gently return the worms to a garden or compost bin. Thank them!</li>
-        </ol>
-        <p class="learn">Concepts: decomposition, ecosystems, soil health, observation & journaling.</p>
-      </div>
-    </details>
-
-    <div class="more">
-      <div class="m"><div class="ev">From: Wiggle Worm Cast Harvest</div><h4>Make worm-casting “plant tea”</h4><p>Brew castings into liquid fertilizer and test it on two plants.</p></div>
-      <div class="m"><div class="ev">From: Worm Farm Kickoff</div><h4>Start a real worm bin</h4><p>Scale up from the cup to a full bin for your kitchen scraps.</p></div>
-    </div>
-  </section>
-
-  <!-- TRACK 3: GROW IT -->
-  <section class="track">
-    <div class="thead"><span class="emoji">🌱</span><h2>Grow It</h2></div>
-    <p class="based">Continues: Fun Fall Planting · Fall Garden Care · MLK Garden Day · Filling the Beds · Fall Harvest</p>
-
-    <details class="mod">
-      <summary class="modsum">
-        <span class="ico" style="background:var(--sage-l)">🥬</span>
-        <span class="t"><span class="flag">Flagship project</span><h3>Grow a Plant from a Kitchen Scrap</h3><p>No garden needed — regrow a green onion or lettuce on the windowsill.</p></span>
-        <span class="chev">▶</span>
-      </summary>
-      <div class="modbody">
-        <div class="sci"><b>The science:</b> Many plants store energy in their base and can grow all over again. Put the root end in water and it “wakes up” — sending out new roots and leaves. It's the same regrowing power that fills a whole garden bed.</div>
-        <h4>What you'll need</h4>
-        <div class="mats"><span>Green onion, lettuce, or celery base</span><span>Small glass or jar</span><span>Water</span><span>A sunny windowsill</span><span>Ruler</span></div>
-        <h4>Build it together</h4>
-        <ol class="steps">
-          <li>Save the root end (about 2 inches) when a grown-up trims the vegetable.</li>
-          <li>Stand it root-down in a glass with just enough water to cover the roots.</li>
-          <li>Put it on a sunny windowsill. Change the water every other day so it stays fresh.</li>
-          <li>Measure the new growth with a ruler each day and write it down.</li>
-          <li>In about a week, plant it in soil — or snip the new green onion right into dinner!</li>
-        </ol>
-        <p class="learn">Concepts: plant life cycle, roots & regrowth, what plants need, measuring change over time.</p>
-      </div>
-    </details>
-
-    <div class="more">
-      <div class="m"><div class="ev">From: Fall Garden Care</div><h4>The watering test</h4><p>Two seedlings, two amounts of water — which thrives? A simple controlled experiment.</p></div>
-      <div class="m"><div class="ev">From: MLK Garden Day</div><h4>Get a bed ready</h4><p>How to prep soil for planting — and why worms and compost make it richer.</p></div>
-    </div>
-  </section>
-
-  <!-- TRACK 4: GARDEN EXPLORERS -->
-  <section class="track">
-    <div class="thead"><span class="emoji">🦋</span><h2>Garden Explorers</h2></div>
-    <p class="based">Continues: Cockrell Butterfly Center · Farm Visit · Garden Center Finds · Masterful Garden Visit</p>
-
-    <details class="mod">
-      <summary class="modsum">
-        <span class="ico" style="background:var(--amber-l)">🐝</span>
-        <span class="t"><span class="flag">Flagship project · the bee house you wanted</span><h3>Build a Bee &amp; Butterfly House</h3><p>Make a cozy home that brings real pollinators to your yard.</p></span>
-        <span class="chev">▶</span>
-      </summary>
-      <div class="modbody">
-        <div class="sci"><b>The science:</b> Not all bees live in big hives — most are gentle <b>solitary bees</b> that nest alone in little tubes. Bees and butterflies are <b>pollinators</b>: they move pollen from flower to flower so plants can make fruit and seeds. No pollinators, no strawberries! A bee house gives them a safe place to rest and nest.</div>
-        <h4>What you'll need</h4>
-        <div class="mats"><span>Clean tin can or small box</span><span>Paper straws or hollow bamboo</span><span>Scissors</span><span>String</span><span>A few flowers nearby</span></div>
-        <h4>Build it together <span class="grown">Grown-up cuts</span></h4>
-        <ol class="steps">
-          <li>Cut the straws or bamboo so they fit the depth of the can — these are the bee “rooms.”</li>
-          <li>Pack them in tightly, open ends facing out, until the can is full.</li>
-          <li>Tie a string around the can to make a hanger.</li>
-          <li>Hang it on a sunny fence or tree, near flowers, about chest height.</li>
-          <li>Watch quietly over the weeks — see who moves in! Keep a pollinator journal.</li>
-        </ol>
-        <p class="learn">Concepts: pollination, solitary bees vs. hives, habitats, observing wildlife.</p>
-      </div>
-    </details>
-
-    <div class="more">
-      <div class="m"><div class="ev">From: Cockrell Butterfly Center</div><h4>Butterfly life-cycle wheel</h4><p>Make a spinner showing egg → caterpillar → chrysalis → butterfly.</p></div>
-      <div class="m"><div class="ev">From: Garden Center Finds</div><h4>Plant scavenger hunt</h4><p>A printable checklist for your next trip to a garden center or park.</p></div>
-    </div>
-  </section>
-
-  <!-- BONUS -->
-  <section class="track">
-    <div class="thead"><span class="emoji">💻</span><h2>Beyond the Garden</h2></div>
-    <p class="based">A little something for the future builders</p>
-    <details class="mod">
-      <summary class="modsum">
-        <span class="ico" style="background:var(--sky-l)">🌐</span>
-        <span class="t"><span class="flag">Bonus project</span><h3>Build Your First Web Page</h3><p>Make a one-page website about your garden — real code, kid-sized.</p></span>
-        <span class="chev">▶</span>
-      </summary>
-      <div class="modbody">
-        <div class="sci"><b>The idea:</b> A website is just a text file the computer knows how to draw. With a few simple tags, your child can publish a page about what they grew — and see their own words become a real web page.</div>
-        <h4>What you'll need</h4>
-        <div class="mats"><span>Any computer</span><span>A free account on a site like Neocities or Glitch</span><span>A grown-up to help sign up</span></div>
-        <h4>Build it together</h4>
-        <ol class="steps">
-          <li>Make a free account and start a new page.</li>
-          <li>Type a big title with <code>&lt;h1&gt;My Garden&lt;/h1&gt;</code>.</li>
-          <li>Add a sentence about your favorite plant inside <code>&lt;p&gt; &lt;/p&gt;</code>.</li>
-          <li>Add a photo of your garden with an image tag.</li>
-          <li>Click publish — you made a real website! Share the link with family.</li>
-        </ol>
-        <p class="learn">Concepts: how websites work, sequencing & structure, digital creativity.</p>
-      </div>
-    </details>
-  </section>
+  <div id="tracks"></div>
 
   <div class="closing">
     <span class="eyebrow" style="color:#D8A24A;">More is always coming</span>
@@ -287,5 +176,258 @@
 
 <footer>The Garden Learning Library · Dew of Heaven Children's Garden · Spring, TX · “We grow curious, confident children.”</footer>
 
+<!-- BUILD MODE OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="build">
+    <div class="bhead">
+      <span class="bico" id="bIco"></span>
+      <span class="btitle" id="bTitle"></span>
+      <button class="bx" id="bClose" aria-label="Close">×</button>
+    </div>
+    <div class="dots" id="bDots"></div>
+    <div class="stepwrap" id="bStep"></div>
+    <div class="bfoot" id="bFoot"></div>
+  </div>
+</div>
+
+<script>
+var TRACKS=[
+  {key:'kitchen', emoji:'🍓', name:'Garden to Kitchen', based:'Continues: Strawberry Full Circle · Berry Sweet Jam Fest · Freeze-Ahead Fries · Juice Shop · Nutty Pie Bake-Off · Gobble Good Lunch'},
+  {key:'worm', emoji:'🪱', name:'Worm World', based:'Continues: Worm Farm Kickoff · Worm Exploration · Wiggle Worm Cast Harvest'},
+  {key:'grow', emoji:'🌱', name:'Grow It', based:'Continues: Fun Fall Planting · Fall Garden Care · MLK Garden Day · Filling the Beds · Fall Harvest'},
+  {key:'explore', emoji:'🦋', name:'Garden Explorers', based:'Continues: Cockrell Butterfly Center · Farm Visit · Garden Center Finds · Masterful Garden Visit'},
+  {key:'tech', emoji:'💻', name:'Beyond the Garden', based:'A little something for the future builders'}
+];
+
+var PROJECTS=[
+  { id:'jam', track:'kitchen', emoji:'🍓', color:'var(--berry-l)', flag:'Flagship project',
+    title:'The Strawberry Jam Lab', blurb:'Turn fruit into jam — and discover why heat makes it set.',
+    meta:{time:'45 min', diff:'Medium', mess:'Messy', help:'Grown-up at the stove'},
+    materials:['2 cups strawberries','1 cup sugar','1 Tbsp lemon juice','Pot','Cooking thermometer','Clean jar','Spoon'],
+    grownup:'A grown-up handles the hot stove and thermometer.',
+    steps:[
+      ['Mash the berries','Wash and mash the strawberries right in the pot. Notice how much juice comes out!'],
+      ['Add sugar & lemon','Stir in the sugar and lemon juice. The lemon adds acid that helps it set and keeps it safe.'],
+      ['Heat it up','Heat slowly, stirring, until it bubbles. Clip the thermometer to the side of the pot.'],
+      ['Reach the gel point','Watch the number climb. When it hits 220°F, the jam is done — that’s the "gel point."'],
+      ['Jar it','Let it cool, spoon into a clean jar, and keep it in the fridge. Spread on toast and enjoy!']
+    ],
+    science:'Water boils at 212°F — but jam isn’t done until 220°F! The sugar raises the boiling point, and tiny fruit fibers called <b>pectin</b> link up to trap the juice into a soft gel. That’s why jam jiggles instead of pouring.',
+    learn:'boiling point · measurement · food safety & acidity · states of matter' },
+
+  { id:'worm', track:'worm', emoji:'🪱', color:'#EDE3D6', flag:'The one you asked for',
+    title:'Worm-in-a-Cup Observatory', blurb:'Take the worm farm home — a see-through habitat to watch all week.',
+    meta:{time:'20 min', diff:'Easy', mess:'A little messy', help:'Kid-led'},
+    materials:['Clear cup or jar','Soil','Sand','2–3 red wiggler worms','Small food scraps','Dark paper','Spray bottle'],
+    grownup:'Kids can lead this one — grown-ups just help find worms.',
+    steps:[
+      ['Layer the home','Layer soil, a thin line of sand, then more soil. The sand lines help you spot the tunnels later.'],
+      ['Add your worms','Gently place 2–3 red wigglers on top with a few tiny fruit or veggie peels.'],
+      ['Give a drink','Lightly mist with water until it’s damp like a wrung-out sponge — never soaking wet.'],
+      ['Wrap it up','Wrap the cup in dark paper. Worms love the dark, so they’ll tunnel along the glass where you can peek.'],
+      ['Watch every day','Each day, unwrap and look. New tunnels? Scraps shrinking? Draw what you see in a journal.'],
+      ['Say thank you','After about a week, return the worms to a garden or compost bin. They did important work!']
+    ],
+    science:'Worms are nature’s recyclers. They eat scraps and turn them into <b>castings</b> — the richest plant food there is. Their tunnels also let air and water reach plant roots. In a clear cup, you can actually <b>see</b> it happen.',
+    learn:'decomposition · ecosystems · soil health · observation & journaling' },
+
+  { id:'scrap', track:'grow', emoji:'🥬', color:'var(--sage-l)', flag:'Flagship project',
+    title:'Grow a Plant from a Scrap', blurb:'No garden needed — regrow a green onion on the windowsill.',
+    meta:{time:'10 min', diff:'Easy', mess:'Tidy', help:'Kid-led'},
+    materials:['Green onion, lettuce, or celery base','Small glass','Water','A sunny windowsill','Ruler'],
+    grownup:'Kids can do almost all of this themselves.',
+    steps:[
+      ['Save the root','Keep the root end (about 2 inches) when a grown-up trims the vegetable.'],
+      ['Stand it in water','Put it root-down in a glass with just enough water to cover the roots.'],
+      ['Find the sun','Set it on a sunny windowsill. Change the water every other day so it stays fresh.'],
+      ['Measure each day','Use a ruler to measure the new growth every day and write it down.'],
+      ['Plant or eat','In about a week, plant it in soil — or snip the new green onion right into dinner!']
+    ],
+    science:'Many plants store energy in their base and can grow all over again. Put the root end in water and it "wakes up," sending out new roots and leaves — the same regrowing power that fills a whole garden bed.',
+    learn:'plant life cycle · roots & regrowth · what plants need · measuring change' },
+
+  { id:'bee', track:'explore', emoji:'🐝', color:'var(--amber-l)', flag:'The bee house you wanted',
+    title:'Build a Bee & Butterfly House', blurb:'Make a cozy home that brings real pollinators to your yard.',
+    meta:{time:'30 min', diff:'Easy', mess:'Tidy', help:'Grown-up cuts'},
+    materials:['Clean tin can or small box','Paper straws or hollow bamboo','Scissors','String','Flowers nearby'],
+    grownup:'A grown-up does the cutting.',
+    steps:[
+      ['Cut the rooms','Cut the straws or bamboo to fit the depth of the can — these are the bee "rooms."'],
+      ['Pack them in','Pack the tubes in tightly, open ends facing out, until the can is full.'],
+      ['Make a hanger','Tie a string around the can so you can hang it up.'],
+      ['Hang it well','Hang it on a sunny fence or tree, near flowers, about chest height.'],
+      ['Watch who visits','Watch quietly over the weeks to see who moves in. Keep a pollinator journal!']
+    ],
+    science:'Most bees aren’t in big hives — they’re gentle <b>solitary bees</b> that nest alone in little tubes. Bees and butterflies are <b>pollinators</b>: they move pollen so plants can make fruit and seeds. No pollinators, no strawberries!',
+    learn:'pollination · solitary bees vs. hives · habitats · observing wildlife' },
+
+  { id:'web', track:'tech', emoji:'🌐', color:'var(--sky-l)', flag:'Bonus project',
+    title:'Build Your First Web Page', blurb:'Make a one-page website about your garden — real code, kid-sized.',
+    meta:{time:'30 min', diff:'Medium', mess:'No mess', help:'Grown-up signs up'},
+    materials:['Any computer','A free account (Neocities or Glitch)','A grown-up to help sign up'],
+    grownup:'A grown-up helps make the free account.',
+    steps:[
+      ['Make an account','With a grown-up, make a free account on a site like Neocities and start a new page.'],
+      ['Add a big title','Type a title: <code>&lt;h1&gt;My Garden&lt;/h1&gt;</code>'],
+      ['Write a sentence','Add a sentence about your favorite plant inside <code>&lt;p&gt; &lt;/p&gt;</code> tags.'],
+      ['Add a photo','Add a photo of your garden with an image tag.'],
+      ['Publish it!','Click publish — you made a real website. Share the link with your family!']
+    ],
+    science:'A website is just a text file the computer knows how to draw. With a few simple tags, your own words become a real web page anyone can visit.',
+    learn:'how websites work · sequencing & structure · digital creativity' },
+];
+
+var SOON=[
+  {track:'kitchen', ev:'From: Freeze-Ahead Fries', title:'Why freezing keeps food fresh'},
+  {track:'kitchen', ev:'From: Gobble Good Lunch', title:'Bake bread from scratch'},
+  {track:'worm', ev:'From: Wiggle Worm Cast Harvest', title:'Make worm-casting plant tea'},
+  {track:'grow', ev:'From: Fall Garden Care', title:'The watering experiment'},
+  {track:'explore', ev:'From: Cockrell Butterfly Center', title:'Butterfly life-cycle wheel'}
+];
+
+var KEY='dhcg_badges_v1';
+function getDone(){ try{ return JSON.parse(localStorage.getItem(KEY))||[]; }catch(e){ return []; } }
+function setDone(a){ try{ localStorage.setItem(KEY, JSON.stringify(a)); }catch(e){} }
+function isDone(id){ return getDone().indexOf(id)>-1; }
+
+function render(filter){
+  filter=filter||'all';
+  var host=document.getElementById('tracks'); host.innerHTML='';
+  TRACKS.forEach(function(tr){
+    var projs=PROJECTS.filter(function(p){return p.track===tr.key;});
+    var soons=SOON.filter(function(s){return s.track===tr.key;});
+    if(filter!=='all' && filter!==tr.key) return;
+    var sec=document.createElement('section'); sec.className='track';
+    var html='<div class="thead"><span class="emoji">'+tr.emoji+'</span><h2>'+tr.name+'</h2></div>'+
+             '<p class="based">'+tr.based+'</p><div class="cards">';
+    projs.forEach(function(p){
+      var done=isDone(p.id)?' done':'';
+      html+='<div class="card'+done+'" data-open="'+p.id+'">'+
+        '<div class="tick">✓</div>'+
+        '<div class="ico" style="background:'+p.color+'">'+p.emoji+'</div>'+
+        '<div class="flag">'+p.flag+'</div><h3>'+p.title+'</h3><p>'+p.blurb+'</p>'+
+        '<div class="meta">'+
+          '<span class="pill">⏱ '+p.meta.time+'</span>'+
+          '<span class="pill">🎚 '+p.meta.diff+'</span>'+
+          '<span class="pill">🧽 '+p.meta.mess+'</span>'+
+        '</div>'+
+        '<button class="go" data-open="'+p.id+'">'+(isDone(p.id)?'Build again →':'Start Build Mode →')+'</button>'+
+      '</div>';
+    });
+    soons.forEach(function(s){
+      html+='<div class="card soon"><div class="ico" style="background:var(--paper2)">⏳</div>'+
+        '<div class="flag">'+s.ev+'</div><h3>'+s.title+'</h3><p>A new build-it project — coming after the next event.</p>'+
+        '<button class="go">Coming soon</button></div>';
+    });
+    html+='</div>';
+    sec.innerHTML=html;
+    host.appendChild(sec);
+  });
+  document.querySelectorAll('[data-open]').forEach(function(el){
+    el.addEventListener('click', function(e){ e.stopPropagation(); openBuild(el.getAttribute('data-open')); });
+  });
+  updateShelf();
+}
+
+function updateShelf(){
+  var done=getDone();
+  document.getElementById('cDone').textContent=done.length;
+  document.getElementById('cTotal').textContent=PROJECTS.length;
+  document.getElementById('barFill').style.width=Math.round(done.length/PROJECTS.length*100)+'%';
+  var shelf=document.getElementById('badgeShelf'); shelf.innerHTML='';
+  PROJECTS.forEach(function(p){
+    var b=document.createElement('div'); b.className='b'+(isDone(p.id)?' earned':''); b.textContent=p.emoji;
+    b.title=p.title; shelf.appendChild(b);
+  });
+}
+
+/* ---- BUILD MODE ---- */
+var cur=null, idx=0;
+function openBuild(id){
+  cur=PROJECTS.filter(function(p){return p.id===id;})[0]; if(!cur) return;
+  idx=0;
+  document.getElementById('bIco').textContent=cur.emoji;
+  document.getElementById('bIco').style.background=cur.color;
+  document.getElementById('bTitle').textContent=cur.title;
+  document.getElementById('overlay').classList.add('on');
+  document.body.style.overflow='hidden';
+  paint();
+}
+function closeBuild(){ document.getElementById('overlay').classList.remove('on'); document.body.style.overflow=''; cur=null; }
+
+function totalScreens(){ return cur.steps.length + 2; } /* intro + steps + done */
+
+function paint(){
+  var n=totalScreens();
+  // dots
+  var dots=''; for(var i=0;i<n;i++){ dots+='<i class="'+(i<idx?'active':'')+(i===idx?' cur':'')+'"></i>'; }
+  document.getElementById('bDots').innerHTML=dots;
+
+  var s=document.getElementById('bStep'); var f=document.getElementById('bFoot');
+  if(idx===0){
+    var meta='<div class="metabig">'+
+      '<span class="pill">⏱ '+cur.meta.time+'</span>'+
+      '<span class="pill">🎚 '+cur.meta.diff+'</span>'+
+      '<span class="pill">🧽 '+cur.meta.mess+'</span>'+
+      '<span class="pill">👩 '+cur.meta.help+'</span></div>';
+    var mats=cur.materials.map(function(m){return '<span>'+m+'</span>';}).join('');
+    s.innerHTML='<div class="big">'+cur.emoji+'</div>'+meta+
+      '<div class="stepnum">What you’ll need</div><div class="matlist">'+mats+'</div>'+
+      '<div class="grownup">👩 '+cur.grownup+'</div>';
+    f.innerHTML='<button class="next" id="bNext">Let’s build it →</button>';
+  } else if(idx<=cur.steps.length){
+    var st=cur.steps[idx-1];
+    s.innerHTML='<div class="stepnum">Step '+idx+' of '+cur.steps.length+'</div>'+
+      '<h3>'+st[0]+'</h3><p>'+st[1]+'</p>';
+    f.innerHTML='<button class="prev" id="bPrev">← Back</button>'+
+      (idx===cur.steps.length
+        ? '<button class="finish" id="bFinish">🏅 I built it!</button>'
+        : '<button class="next" id="bNext">Next step →</button>');
+  } else {
+    var already=isDone(cur.id);
+    if(!already){ var d=getDone(); d.push(cur.id); setDone(d); celebrate(); }
+    s.innerHTML='<div class="donescreen"><div class="seal">🏅</div>'+
+      '<h3>Badge earned!</h3><p>You built the '+cur.title+'.</p>'+
+      '<div class="scibox" style="text-align:left;margin-top:14px;"><b>The science:</b> '+cur.science+'</div>'+
+      '<p style="margin-top:14px;font-style:italic;font-size:14px;">You learned: '+cur.learn+'</p></div>';
+    f.innerHTML='<button class="prev" id="bPrev">← See steps</button><button class="next" id="bDoneClose">Back to library →</button>';
+    updateShelf();
+  }
+  wireFoot();
+}
+function wireFoot(){
+  var nx=document.getElementById('bNext'); if(nx) nx.onclick=function(){ idx++; paint(); };
+  var pv=document.getElementById('bPrev'); if(pv) pv.onclick=function(){ idx--; paint(); };
+  var fi=document.getElementById('bFinish'); if(fi) fi.onclick=function(){ idx++; paint(); };
+  var dc=document.getElementById('bDoneClose'); if(dc) dc.onclick=function(){ closeBuild(); render(curFilter); };
+}
+
+function celebrate(){
+  var em=['🌱','🌻','🪱','🍓','🐝','🥕','✨'];
+  for(var i=0;i<22;i++){
+    (function(k){
+      var c=document.createElement('div'); c.className='confetti'; c.textContent=em[k%em.length];
+      c.style.left=(5+ (k*4.3)%90)+'vw'; c.style.top='-5vh';
+      c.style.animationDelay=( (k%6)*0.12 )+'s';
+      document.body.appendChild(c);
+      setTimeout(function(){ c.remove(); }, 2200);
+    })(i);
+  }
+}
+
+/* filters */
+var curFilter='all';
+document.getElementById('filters').addEventListener('click', function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#filters button').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); curFilter=b.getAttribute('data-f'); render(curFilter);
+});
+document.getElementById('bClose').onclick=closeBuild;
+document.getElementById('overlay').addEventListener('click', function(e){ if(e.target===this) closeBuild(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeBuild(); });
+document.getElementById('resetBtn').onclick=function(){ setDone([]); render(curFilter); };
+
+render('all');
+</script>
 </body>
 </html>
