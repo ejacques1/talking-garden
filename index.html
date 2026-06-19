@@ -90,6 +90,12 @@
   .close .who{font-size:14px; color:#B9C7B2; margin-top:24px;}
   .ghost{background:transparent; border:1px solid #8AA083; color:#F4F0E6; border-radius:10px; padding:13px 26px; font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; display:inline-block;}
 
+  .photos{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:28px;}
+  .photos img{width:100%; height:150px; object-fit:cover; border-radius:12px; border:1px solid var(--line); display:block;}
+  @media(max-width:680px){ .photos{grid-template-columns:1fr 1fr;} }
+  .herophoto{width:100%; max-width:760px; height:300px; object-fit:cover; border-radius:18px; margin:30px auto 0; display:block; border:1px solid var(--line);}
+  .bandphoto{width:100%; height:240px; object-fit:cover; border-radius:18px; display:block; border:1px solid var(--line); margin-top:6px;}
+  .credit{text-align:center; font-size:12px; color:var(--faint); margin-top:10px; font-style:italic;}
   footer{text-align:center; padding:30px 0 60px; color:var(--faint); font-size:13px;}
 
   /* ===== DEMO MODAL ===== */
@@ -169,6 +175,7 @@
       <span class="chip">Aligned to <b>JMG</b> plant-part curriculum</span>
       <span class="chip">Take-home <b>keepsake</b></span>
     </div>
+    <img class="herophoto" src="img/wide1.jpg" alt="Children learning in the Dew of Heaven garden" />
   </header>
 
   <section id="overview">
@@ -180,6 +187,13 @@
       <div class="o"><div class="ic">Food literacy</div><p>Children connect everyday foods to the plant parts they come from.</p></div>
       <div class="o"><div class="ic">Confidence</div><p>Every child participates, succeeds, and takes home proof of their learning.</p></div>
     </div>
+    <div class="photos">
+      <img src="img/kids1.jpg" alt="Child in the garden" />
+      <img src="img/kids2.jpg" alt="Child gardening" />
+      <img src="img/kids3.jpg" alt="Hands-on garden learning" />
+      <img src="img/kids4.jpg" alt="Children at Dew of Heaven" />
+    </div>
+    <p class="credit">Photos courtesy of Dew of Heaven Children's Garden</p>
   </section>
 
   <section id="stations">
@@ -272,7 +286,7 @@
     <h2>Let’s grow this together</h2>
     <p>The Talking Garden is built to run with a single facilitator and a tablet — no special equipment, no setup, nothing to maintain afterward. It’s ready to bring to your students.</p>
     <a class="ghost" href="#stations">Preview the stations again</a>
-    <div class="who">Facilitated by Dr. Erin Jacques · Early Scholars</div>
+    <div class="who">Designed &amp; built by Dr. Erin Jacques — professor and AI strategist.<br/>The interactive technology is mine; the garden expertise is yours. Let's bring them together.</div>
   </div>
 
 </div>
