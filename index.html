@@ -2,407 +2,413 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>The Talking Garden — A Dew of Heaven Learning Experience</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Talking Garden — A Garden-Based STEAM Experience · Dew of Heaven Children's Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --green-700:#3B6D11; --green-600:#639922; --green-400:#97C459; --green-100:#EAF3DE;
-    --amber-600:#BA7517; --amber-500:#EF9F27; --amber-300:#FAC775; --amber-100:#FAEEDA;
-    --coral-500:#D85A30; --coral-100:#FAECE7;
-    --soil:#5F4B32; --cream:#FBF7EC; --ink:#2C2C2A; --muted:#6b6a63;
-    --radius:18px; --shadow:0 6px 22px rgba(59,109,17,.10);
+    --cream:#F7F3EA; --paper:#FFFFFF; --paper2:#FCFAF3;
+    --ink:#2A2925; --muted:#6E695C; --faint:#9A9483;
+    --sage:#5C7357; --sage-d:#3F5239; --sage-l:#EAF0E5;
+    --soil:#6B5640; --terra:#B0603A; --terra-l:#F4E7DF;
+    --line:#E6DFCE; --line-d:#D8CFB9;
+    --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0; padding:0;}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--cream); color:var(--ink);
-    background-image:radial-gradient(circle at 12% 8%, #fff6df 0, transparent 38%),
-                     radial-gradient(circle at 88% 0%, #eef6e0 0, transparent 42%);
-    min-height:100vh;
-  }
-  .wrap{max-width:1040px; margin:0 auto; padding:20px 18px 60px;}
-  .topbar{display:flex; align-items:center; gap:12px; margin-bottom:8px;}
-  .brandmark{width:46px; height:46px; flex:0 0 auto;}
-  .brandname{font-size:15px; font-weight:700; color:var(--green-700); letter-spacing:.2px; line-height:1.2;}
-  .brandname small{display:block; font-weight:500; color:var(--muted); font-size:12px;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; font-family:var(--sans); color:var(--ink); background:var(--cream); line-height:1.65; font-size:17px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 26px;}
+  h1,h2,h3{font-family:var(--serif); font-weight:500; letter-spacing:-.01em; line-height:1.12; color:var(--ink);}
+  a{color:var(--sage-d);}
+  .eyebrow{font-family:var(--sans); font-size:12.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--terra);}
+
+  /* NAV */
+  nav{display:flex; align-items:center; gap:12px; padding:20px 0; border-bottom:1px solid var(--line);}
+  nav .mk{width:38px;height:38px;}
+  nav .nm{font-family:var(--serif); font-size:16px; color:var(--sage-d); line-height:1.15;}
+  nav .nm small{display:block; font-family:var(--sans); font-size:11px; letter-spacing:.04em; color:var(--faint); font-weight:500;}
+  nav .spacer{flex:1;}
+  nav .navcta{font-size:13.5px; font-weight:600; color:var(--paper); background:var(--sage-d); padding:9px 16px; border-radius:8px; text-decoration:none;}
 
   /* HERO */
-  .hero{
-    background:linear-gradient(180deg,#ffffff 0%, #fbfaf1 100%);
-    border:1px solid #ece6d4; border-radius:26px; box-shadow:var(--shadow);
-    padding:34px 30px 30px; text-align:center; position:relative; overflow:hidden; margin-bottom:26px;
-  }
-  .hero h1{font-size:clamp(30px,5vw,48px); margin:14px 0 6px; color:var(--green-700); line-height:1.05; letter-spacing:-.5px;}
-  .hero .sub{font-size:clamp(15px,2.4vw,19px); color:var(--soil); font-weight:600; margin:0 0 4px;}
-  .hero .tag{font-size:14px; color:var(--muted); font-style:italic; margin:8px 0 0;}
-  .pill{display:inline-block; background:var(--green-100); color:var(--green-700); font-weight:700;
-        font-size:12px; letter-spacing:.5px; text-transform:uppercase; padding:6px 14px; border-radius:999px;}
+  header.hero{padding:64px 0 50px; border-bottom:1px solid var(--line); text-align:center;}
+  header.hero .eyebrow{margin-bottom:18px; display:block;}
+  header.hero h1{font-size:clamp(38px,6.2vw,62px); margin:0 0 18px;}
+  header.hero .deck{font-size:clamp(18px,2.6vw,22px); color:var(--soil); max-width:600px; margin:0 auto; font-family:var(--serif); font-weight:400;}
+  header.hero .quote{margin-top:24px; font-size:15px; color:var(--muted); font-style:italic;}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:30px;}
+  .chip{background:var(--paper); border:1px solid var(--line-d); border-radius:999px; padding:8px 16px; font-size:13.5px; font-weight:500; color:var(--soil);}
+  .chip b{color:var(--sage-d);}
 
-  /* STATION TILES */
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
-  .tile{
-    background:#fff; border:1px solid #ece6d4; border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:22px; cursor:pointer; text-align:left; transition:transform .12s ease, box-shadow .12s ease;
-    display:flex; flex-direction:column; gap:8px; min-height:172px;
-  }
-  .tile:hover{transform:translateY(-3px); box-shadow:0 12px 30px rgba(59,109,17,.16);}
-  .tile:active{transform:translateY(0);}
-  .tile .ico{width:54px; height:54px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:30px;}
-  .tile h3{margin:6px 0 0; font-size:21px; color:var(--ink);}
-  .tile p{margin:0; font-size:14px; color:var(--muted); line-height:1.5;}
-  .tile .num{font-size:12px; font-weight:700; color:var(--green-600); letter-spacing:.5px;}
+  section{padding:52px 0; border-bottom:1px solid var(--line);}
+  section h2{font-size:clamp(26px,4vw,34px); margin:0 0 6px;}
+  section .lede{color:var(--muted); font-size:18px; max-width:640px; margin:0 0 30px;}
+  .seclabel{display:flex; align-items:baseline; gap:14px; margin-bottom:26px;}
+  .seclabel .n{font-family:var(--serif); font-size:15px; color:var(--terra);}
 
-  .section-label{margin:30px 0 14px; font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted);}
+  /* OUTCOMES */
+  .out{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+  .out .o{background:var(--paper2); padding:24px;}
+  .out .o .ic{color:var(--sage); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px;}
+  .out .o p{margin:0; font-size:15.5px; color:var(--ink);}
 
-  /* ACTIVITY SHELL */
-  .screen{display:none;}
-  .screen.active{display:block; animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
-  .back{display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #e6e0cf;
-        border-radius:999px; padding:10px 18px; font-size:15px; font-weight:600; color:var(--green-700);
-        cursor:pointer; margin-bottom:18px;}
-  .panel{background:#fff; border:1px solid #ece6d4; border-radius:24px; box-shadow:var(--shadow); padding:26px;}
-  .panel h2{margin:0 0 4px; font-size:26px; color:var(--green-700);}
-  .panel .lead{margin:0 0 20px; color:var(--muted); font-size:15px;}
-  .teach{background:var(--amber-100); border:1px dashed var(--amber-300); border-radius:14px;
-         padding:10px 14px; font-size:13px; color:var(--amber-600); margin-bottom:18px;}
-  .teach b{color:var(--soil);}
+  /* STATION CARDS */
+  .stations{display:flex; flex-direction:column; gap:16px;}
+  .st{background:var(--paper); border:1px solid var(--line-d); border-radius:16px; padding:26px 28px; display:grid; grid-template-columns:64px 1fr auto; gap:22px; align-items:start;}
+  .st .badge{width:64px; height:64px; border-radius:14px; background:var(--sage-l); display:flex; align-items:center; justify-content:center; font-size:30px;}
+  .st .body .lab{font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); margin-bottom:4px;}
+  .st .body h3{font-size:22px; margin:0 0 8px;}
+  .st .body p{margin:0 0 14px; color:var(--muted); font-size:15.5px;}
+  .st .meta{display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13px;}
+  .st .meta div{color:var(--soil);} .st .meta b{color:var(--sage-d); font-weight:600;}
+  .st .act{align-self:center;}
+  .demo{white-space:nowrap; background:var(--sage-d); color:#fff; border:none; border-radius:9px; padding:11px 18px; font-size:14px; font-weight:600; cursor:pointer; font-family:var(--sans);}
+  .demo:hover{background:#33442d;}
+  @media(max-width:680px){ .st{grid-template-columns:52px 1fr; } .st .act{grid-column:1/-1;} .st .badge{width:52px;height:52px;font-size:26px;} }
 
-  .bigbtns{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;}
-  .bigbtn{border:none; border-radius:16px; padding:18px 14px; font-size:18px; font-weight:700; color:#fff;
-          cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; min-height:74px;
-          transition:transform .1s ease;}
-  .bigbtn:active{transform:scale(.96);}
-  .bigbtn .e{font-size:26px;}
+  /* RUN OF SHOW */
+  .timeline{border-left:2px solid var(--line-d); margin-left:8px; padding-left:0;}
+  .tl{position:relative; padding:0 0 26px 28px;}
+  .tl:last-child{padding-bottom:0;}
+  .tl::before{content:''; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--terra); border:2px solid var(--cream);}
+  .tl .when{font-family:var(--serif); font-size:15px; color:var(--terra); font-weight:500;}
+  .tl h4{margin:2px 0 3px; font-size:17px; font-family:var(--sans); font-weight:600;}
+  .tl p{margin:0; color:var(--muted); font-size:15px;}
 
-  .answer{margin-top:20px; background:var(--green-100); border-radius:16px; padding:20px 22px; min-height:90px;
-          display:flex; align-items:center; gap:16px; font-size:20px; line-height:1.45; color:var(--soil); font-weight:600;}
-  .answer .big{font-size:46px; line-height:1;}
+  /* STANDARDS */
+  .std{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;}
+  .std .s{background:var(--paper2); border:1px solid var(--line); border-radius:12px; padding:20px;}
+  .std .s h4{margin:0 0 6px; font-family:var(--sans); font-size:15px; font-weight:600; color:var(--sage-d);}
+  .std .s p{margin:0; font-size:14px; color:var(--muted);}
 
-  /* SEED GROW */
-  .stage{display:flex; flex-direction:column; align-items:center; gap:8px; margin:6px 0 18px;}
-  .pot{font-size:90px; line-height:1; transition:transform .3s ease;}
-  .meter{display:flex; gap:18px; justify-content:center; margin-bottom:8px;}
-  .meter .chip{background:#fff; border:1px solid #e6e0cf; border-radius:999px; padding:6px 14px; font-size:14px; font-weight:600; color:var(--soil);}
-  .stagename{font-size:22px; font-weight:700; color:var(--green-700);}
+  /* CLOSING */
+  .close{background:var(--sage-d); color:#F4F0E6; border-radius:20px; padding:48px 40px; text-align:center; margin:52px 0;}
+  .close h2{color:#fff; font-size:clamp(26px,4vw,36px); margin:0 0 12px;}
+  .close p{color:#D9E2D2; max-width:520px; margin:0 auto 26px; font-size:17px;}
+  .close .who{font-size:14px; color:#B9C7B2; margin-top:24px;}
+  .ghost{background:transparent; border:1px solid #8AA083; color:#F4F0E6; border-radius:10px; padding:13px 26px; font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; display:inline-block;}
 
-  /* SORT GAME */
-  .items{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:18px; min-height:70px;}
-  .item{background:#fff; border:2px solid #ece6d4; border-radius:16px; padding:12px; font-size:40px; cursor:grab; line-height:1; user-select:none;}
-  .item.dragging{opacity:.4;}
-  .bins{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-  .bin{border-radius:18px; padding:18px; text-align:center; min-height:130px; border:3px dashed; transition:background .15s;}
-  .bin.yes{border-color:var(--green-400); background:var(--green-100);}
-  .bin.no{border-color:var(--coral-500); background:var(--coral-100);}
-  .bin.over{background:#fff8e6;}
-  .bin .title{font-size:18px; font-weight:700; margin-bottom:8px;}
-  .bin.yes .title{color:var(--green-700);} .bin.no .title{color:var(--coral-500);}
-  .bin .drop{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; font-size:34px;}
+  footer{text-align:center; padding:30px 0 60px; color:var(--faint); font-size:13px;}
 
-  /* MATCH GAME */
-  .matchrow{display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center;}
-  .foodcard{background:#fff; border:2px solid #ece6d4; border-radius:16px; padding:14px 16px; text-align:center; cursor:pointer; min-width:104px;}
-  .foodcard .e{font-size:42px; line-height:1;}
-  .foodcard .nm{font-size:14px; font-weight:600; color:var(--soil); margin-top:6px;}
-  .foodcard.done{border-color:var(--green-400); background:var(--green-100);}
-  .partbtns{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:16px;}
+  /* ===== DEMO MODAL ===== */
+  .overlay{position:fixed; inset:0; background:rgba(30,28,22,.55); display:none; align-items:center; justify-content:center; z-index:50; padding:20px;}
+  .overlay.on{display:flex;}
+  .modal{background:var(--cream); border-radius:22px; max-width:560px; width:100%; max-height:92vh; overflow:auto; box-shadow:0 30px 80px rgba(0,0,0,.3);}
+  .mhead{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--cream); z-index:2;}
+  .mhead .tag{font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--terra);}
+  .mhead .x{background:none; border:none; font-size:24px; cursor:pointer; color:var(--muted); line-height:1; padding:4px 8px;}
+  .tablet{margin:18px; background:#fff; border:8px solid #2A2925; border-radius:26px; padding:20px; box-shadow:inset 0 0 0 2px #444;}
+  .tcap{text-align:center; font-size:12.5px; color:var(--faint); margin:0 18px 18px; }
+  .tcap b{color:var(--sage-d);}
 
-  .progress{margin-top:18px; font-size:15px; font-weight:700; color:var(--green-700); text-align:center;}
-  .cheer{text-align:center; font-size:20px; font-weight:700; color:var(--coral-500); margin-top:10px; min-height:26px;}
-
-  /* CERTIFICATE */
-  .cert{background:#fff; border:6px double var(--green-600); border-radius:18px; padding:30px; text-align:center; max-width:560px; margin:18px auto 0;}
-  .cert h2{font-size:26px; color:var(--green-700); margin:0 0 6px;}
-  .cert .name{font-size:34px; font-weight:800; color:var(--coral-500); margin:14px 0; border-bottom:2px solid #eee; display:inline-block; padding:0 20px 6px; min-width:260px;}
-  .cert input{font-size:24px; text-align:center; border:none; border-bottom:2px dashed var(--amber-300); outline:none; background:transparent; font-weight:700; color:var(--coral-500); width:280px;}
-  .cert .seal{font-size:60px;}
-  .row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:18px;}
-  .gbtn{background:var(--green-600); color:#fff; border:none; border-radius:999px; padding:12px 22px; font-size:15px; font-weight:700; cursor:pointer;}
-  .gbtn.alt{background:#fff; color:var(--green-700); border:1px solid #d8d2c1;}
-
-  .foot{text-align:center; margin-top:34px; font-size:12px; color:#b3ab98;}
-  @media print{ .noprint{display:none!important;} body{background:#fff;} .cert{box-shadow:none;} }
+  /* kid-facing widgets (inside tablet) */
+  .kh{font-family:var(--serif); font-size:22px; color:var(--sage-d); margin:0 0 4px; text-align:center;}
+  .ksub{text-align:center; color:var(--muted); font-size:14px; margin:0 0 18px;}
+  .bigbtns{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;}
+  .bigbtn{border:none; border-radius:14px; padding:16px 12px; font-size:17px; font-weight:600; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px; min-height:64px; font-family:var(--sans);}
+  .bigbtn:active{transform:scale(.96);} .bigbtn .e{font-size:24px;}
+  .answer{margin-top:16px; background:var(--sage-l); border-radius:14px; padding:18px; min-height:80px; display:flex; align-items:center; gap:14px; font-size:17px; line-height:1.4; color:var(--sage-d); font-weight:500;}
+  .answer .big{font-size:40px;}
+  .items{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px; min-height:60px;}
+  .item{background:#fff; border:2px solid var(--line-d); border-radius:14px; padding:10px; font-size:34px; cursor:pointer; line-height:1;}
+  .bins{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .bin{border-radius:16px; padding:14px; text-align:center; min-height:110px; border:2px dashed;}
+  .bin.yes{border-color:var(--sage); background:var(--sage-l);} .bin.no{border-color:var(--terra); background:var(--terra-l);}
+  .bin .title{font-size:15px; font-weight:600; margin-bottom:8px;}
+  .bin.yes .title{color:var(--sage-d);} .bin.no .title{color:var(--terra);}
+  .bin .drop{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; font-size:30px;}
+  .meter{display:flex; gap:14px; justify-content:center; margin-bottom:10px;}
+  .meter .c{background:#fff; border:1px solid var(--line-d); border-radius:999px; padding:6px 13px; font-size:13px; font-weight:600; color:var(--soil);}
+  .pot{font-size:80px; text-align:center; transition:transform .25s;}
+  .stagename{text-align:center; font-size:18px; font-weight:600; color:var(--sage-d); margin:4px 0 14px; font-family:var(--serif);}
+  .matchrow{display:flex; flex-wrap:wrap; gap:10px; justify-content:center;}
+  .foodcard{background:#fff; border:2px solid var(--line-d); border-radius:14px; padding:12px 14px; text-align:center; cursor:pointer; min-width:92px;}
+  .foodcard .e{font-size:38px;} .foodcard .nm{font-size:13px; font-weight:600; color:var(--soil); margin-top:5px;}
+  .foodcard.done{border-color:var(--sage); background:var(--sage-l);}
+  .partbtns{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-top:14px;}
+  .progress{margin-top:14px; font-size:14px; font-weight:600; color:var(--sage-d); text-align:center;}
+  .cheer{text-align:center; font-size:16px; font-weight:600; color:var(--terra); margin-top:8px; min-height:22px;}
+  .minirow{display:flex; gap:10px; justify-content:center; margin-top:6px;}
+  .minibtn{background:#fff; border:1px solid var(--line-d); border-radius:999px; padding:8px 16px; font-size:13px; font-weight:600; color:var(--sage-d); cursor:pointer;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="topbar noprint">
-    <svg class="brandmark" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="48" fill="#EAF3DE"/>
-      <path d="M50 78 V44" stroke="#639922" stroke-width="6" stroke-linecap="round"/>
-      <path d="M50 56 Q26 52 22 32 Q46 34 50 56Z" fill="#97C459"/>
-      <path d="M50 50 Q74 46 78 26 Q54 28 50 50Z" fill="#639922"/>
-      <circle cx="50" cy="34" r="11" fill="#FAC775"/>
+  <nav>
+    <svg class="mk" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="#EAF0E5"/>
+      <path d="M50 78 V44" stroke="#5C7357" stroke-width="6" stroke-linecap="round"/>
+      <path d="M50 56 Q26 52 22 32 Q46 34 50 56Z" fill="#8AA983"/>
+      <path d="M50 50 Q74 46 78 26 Q54 28 50 50Z" fill="#5C7357"/>
+      <circle cx="50" cy="34" r="11" fill="#D8A24A"/>
     </svg>
-    <div class="brandname">Dew of Heaven Children's Garden
-      <small>Growing young minds through science, nature & discovery</small>
+    <div class="nm">Dew of Heaven Children's Garden
+      <small>Spring, Texas · Est. STEAM in the garden</small>
     </div>
-  </div>
+    <div class="spacer"></div>
+    <a class="navcta" href="#stations">View the curriculum</a>
+  </nav>
 
-  <!-- HOME -->
-  <div id="home" class="screen active">
-    <div class="hero">
-      <span class="pill">A Dew of Heaven Learning Experience</span>
-      <h1>The Talking Garden</h1>
-      <p class="sub">Where every bed is a lab and every plant a lesson.</p>
-      <p class="tag">Four hands-on garden stations for our youngest scientists — built for Pre-K through 3rd grade.</p>
+  <header class="hero">
+    <span class="eyebrow">A garden-based STEAM experience · Pre-K – 3rd grade</span>
+    <h1>The Talking Garden</h1>
+    <p class="deck">A one-hour, hands-on workshop where every bed is a lab and every plant a lesson.</p>
+    <p class="quote">Designed to grow curious, confident children — through science, nature, and discovery.</p>
+    <div class="chips">
+      <span class="chip"><b>4</b> garden stations</span>
+      <span class="chip"><b>60</b>-minute workshop</span>
+      <span class="chip">Aligned to <b>JMG</b> plant-part curriculum</span>
+      <span class="chip">Take-home <b>keepsake</b></span>
     </div>
+  </header>
 
-    <div class="section-label">Tap a station to explore</div>
-    <div class="grid">
-      <button class="tile" onclick="go('parts')">
-        <div class="ico" style="background:var(--green-100)">🌻</div>
-        <span class="num">STATION 1</span>
-        <h3>Meet Sunny the Sprout</h3>
-        <p>Tap each plant part — roots, stem, leaves, flower — and discover its garden secret.</p>
-      </button>
-      <button class="tile" onclick="go('worm')">
-        <div class="ico" style="background:var(--coral-100)">🪱</div>
-        <span class="num">STATION 2</span>
-        <h3>The Worm Café</h3>
-        <p>Sort the scraps! Decide what feeds our worms and what does not.</p>
-      </button>
-      <button class="tile" onclick="go('seed')">
-        <div class="ico" style="background:var(--amber-100)">🌱</div>
-        <span class="num">STATION 3</span>
-        <h3>Seed to Sprout</h3>
-        <p>Give a seed sun and water and watch it grow, step by step.</p>
-      </button>
-      <button class="tile" onclick="go('eat')">
-        <div class="ico" style="background:var(--green-100)">🥕</div>
-        <span class="num">STATION 4</span>
-        <h3>Which Part Do We Eat?</h3>
-        <p>Match real foods to the plant part they come from.</p>
-      </button>
+  <section id="overview">
+    <div class="seclabel"><span class="n">01</span><h2>The experience</h2></div>
+    <p class="lede">The Talking Garden turns a single visit into four guided discovery stations. Children rotate through tactile, screen-and-soil activities — naming plant parts, feeding the worm farm, growing a seed, and tracing food back to the garden — then leave with a certificate they earned themselves.</p>
+    <div class="out">
+      <div class="o"><div class="ic">Science</div><p>Children name the four plant parts and describe what each one does.</p></div>
+      <div class="o"><div class="ic">Stewardship</div><p>Children learn what composts and how worms turn scraps into healthy soil.</p></div>
+      <div class="o"><div class="ic">Food literacy</div><p>Children connect everyday foods to the plant parts they come from.</p></div>
+      <div class="o"><div class="ic">Confidence</div><p>Every child participates, succeeds, and takes home proof of their learning.</p></div>
     </div>
+  </section>
 
-    <div class="section-label">When the workshop ends</div>
-    <div class="grid">
-      <button class="tile" onclick="go('cert')" style="min-height:auto">
-        <div class="ico" style="background:var(--amber-100)">🏅</div>
-        <span class="num">KEEPSAKE</span>
-        <h3>Junior Garden Scientist badge</h3>
-        <p>Type each child's name and print a certificate to take home.</p>
-      </button>
-    </div>
+  <section id="stations">
+    <div class="seclabel"><span class="n">02</span><h2>The four stations</h2></div>
+    <p class="lede">Each station pairs a tablet-guided prompt with a real garden activity. Tap “See it live” to preview exactly what a child experiences on screen.</p>
+    <div class="stations">
 
-    <div class="foot">Built for Dew of Heaven Children's Garden · Spring, TX · We grow curious, confident children.</div>
-  </div>
-
-  <!-- STATION 1: PLANT PARTS -->
-  <div id="parts" class="screen">
-    <button class="back" onclick="go('home')">← All stations</button>
-    <div class="panel">
-      <h2>Meet Sunny the Sprout 🌻</h2>
-      <p class="lead">Tap a plant part to learn its secret. (Facilitator: read each one aloud with the kids!)</p>
-      <div class="teach"><b>Goal:</b> children can name the 4 plant parts and what each one does — from the JMG plant-part curriculum.</div>
-      <div class="bigbtns">
-        <button class="bigbtn" style="background:var(--amber-500)" onclick="part('root')"><span class="e">🟫</span>Roots</button>
-        <button class="bigbtn" style="background:var(--green-600)" onclick="part('stem')"><span class="e">🌿</span>Stem</button>
-        <button class="bigbtn" style="background:var(--green-400)" onclick="part('leaf')"><span class="e">🍃</span>Leaves</button>
-        <button class="bigbtn" style="background:var(--coral-500)" onclick="part('flower')"><span class="e">🌸</span>Flower</button>
-      </div>
-      <div class="answer" id="partAns"><span class="big">🌻</span><span>Hi friend! I'm a little plant. Tap one of my parts!</span></div>
-    </div>
-  </div>
-
-  <!-- STATION 2: WORM CAFÉ -->
-  <div id="worm" class="screen">
-    <button class="back" onclick="go('home')">← All stations</button>
-    <div class="panel">
-      <h2>The Worm Café 🪱</h2>
-      <p class="lead">Drag each scrap into a bin. Do our worms want to eat it — yes or no?</p>
-      <div class="teach"><b>Goal:</b> children learn what composts (food scraps) vs. what doesn't (plastic, metal) — straight from the Worm Farm program.</div>
-      <div class="items" id="wormItems"></div>
-      <div class="bins">
-        <div class="bin yes" data-bin="yes" ondragover="allow(event)" ondrop="dropItem(event,'yes')">
-          <div class="title">😋 Feed the worms</div>
-          <div class="drop" id="binYes"></div>
+      <div class="st">
+        <div class="badge">🌻</div>
+        <div class="body">
+          <div class="lab">Station 1 · Botany</div>
+          <h3>Meet Sunny the Sprout</h3>
+          <p>Children tap each part of a plant and uncover its “garden secret,” then find the same parts on real plants in the beds.</p>
+          <div class="meta">
+            <div><b>Objective:</b> name & explain roots, stem, leaves, flower</div>
+            <div><b>Materials:</b> tablet · sample plants</div>
+          </div>
         </div>
-        <div class="bin no" data-bin="no" ondragover="allow(event)" ondrop="dropItem(event,'no')">
-          <div class="title">🚫 No thanks!</div>
-          <div class="drop" id="binNo"></div>
+        <div class="act"><button class="demo" onclick="openDemo('parts')">See it live →</button></div>
+      </div>
+
+      <div class="st">
+        <div class="badge">🪱</div>
+        <div class="body">
+          <div class="lab">Station 2 · Composting</div>
+          <h3>The Worm Café</h3>
+          <p>Children sort food scraps and trash into “feed the worms” or “no thanks,” connecting directly to the garden’s worm-farm program.</p>
+          <div class="meta">
+            <div><b>Objective:</b> distinguish compostable vs. non-compostable</div>
+            <div><b>Materials:</b> tablet · real scraps · worm bin</div>
+          </div>
         </div>
+        <div class="act"><button class="demo" onclick="openDemo('worm')">See it live →</button></div>
       </div>
-      <div class="progress" id="wormProg"></div>
-      <div class="cheer" id="wormCheer"></div>
-    </div>
-  </div>
 
-  <!-- STATION 3: SEED TO SPROUT -->
-  <div id="seed" class="screen">
-    <button class="back" onclick="go('home')">← All stations</button>
-    <div class="panel" style="text-align:center">
-      <h2>Seed to Sprout 🌱</h2>
-      <p class="lead">Tap <b>Sun</b> and <b>Water</b> to help the seed grow. What do plants need?</p>
-      <div class="teach" style="text-align:left"><b>Goal:</b> children learn plants need sun + water, and the lifecycle order: seed → sprout → leaves → flower.</div>
-      <div class="meter">
-        <span class="chip">☀️ Sun: <b id="sunC">0</b></span>
-        <span class="chip">💧 Water: <b id="watC">0</b></span>
+      <div class="st">
+        <div class="badge">🌱</div>
+        <div class="body">
+          <div class="lab">Station 3 · Life cycles</div>
+          <h3>Seed to Sprout</h3>
+          <p>Children give a seed sun and water and watch it advance through each growth stage, learning what plants need to thrive.</p>
+          <div class="meta">
+            <div><b>Objective:</b> sequence the plant life cycle</div>
+            <div><b>Materials:</b> tablet · seeds · cups & soil</div>
+          </div>
+        </div>
+        <div class="act"><button class="demo" onclick="openDemo('seed')">See it live →</button></div>
       </div>
-      <div class="stage">
-        <div class="pot" id="pot">🟤</div>
-        <div class="stagename" id="stageName">A tiny seed</div>
-      </div>
-      <div class="bigbtns" style="max-width:420px; margin:0 auto;">
-        <button class="bigbtn" style="background:var(--amber-500)" onclick="grow('sun')"><span class="e">☀️</span>Add Sun</button>
-        <button class="bigbtn" style="background:#378ADD" onclick="grow('water')"><span class="e">💧</span>Add Water</button>
-      </div>
-      <div class="cheer" id="seedCheer"></div>
-      <div class="row noprint"><button class="gbtn alt" onclick="resetSeed()">↺ Plant a new seed</button></div>
-    </div>
-  </div>
 
-  <!-- STATION 4: WHICH PART DO WE EAT -->
-  <div id="eat" class="screen">
-    <button class="back" onclick="go('home')">← All stations</button>
-    <div class="panel">
-      <h2>Which Part Do We Eat? 🥕</h2>
-      <p class="lead">Tap a food, then tap the plant part it comes from.</p>
-      <div class="teach"><b>Goal:</b> connect food to plant parts (food literacy) — carrots are roots, broccoli is a flower!</div>
-      <div class="matchrow" id="foodRow"></div>
-      <div class="partbtns" id="partRow"></div>
-      <div class="progress" id="eatProg"></div>
-      <div class="cheer" id="eatCheer"></div>
-    </div>
-  </div>
+      <div class="st">
+        <div class="badge">🥕</div>
+        <div class="body">
+          <div class="lab">Station 4 · Food literacy</div>
+          <h3>Which Part Do We Eat?</h3>
+          <p>Children match familiar foods to the plant part they come from — carrots are roots, broccoli is a flower — tying nutrition back to the garden.</p>
+          <div class="meta">
+            <div><b>Objective:</b> link foods to plant parts</div>
+            <div><b>Materials:</b> tablet · sample produce</div>
+          </div>
+        </div>
+        <div class="act"><button class="demo" onclick="openDemo('eat')">See it live →</button></div>
+      </div>
 
-  <!-- CERTIFICATE -->
-  <div id="cert" class="screen">
-    <button class="back noprint" onclick="go('home')">← All stations</button>
-    <div class="cert">
-      <div class="seal">🏅</div>
-      <h2>Junior Garden Scientist</h2>
-      <p style="color:var(--muted); margin:0">This certifies that</p>
-      <div class="name"><input id="kidName" placeholder="Type a name" /></div>
-      <p style="color:var(--soil); font-size:15px; max-width:380px; margin:10px auto;">explored The Talking Garden and learned how plants grow — at Dew of Heaven Children's Garden.</p>
-      <div style="font-size:13px; color:var(--muted)">🌱 We grow curious, confident children 🌱</div>
     </div>
-    <div class="row noprint">
-      <button class="gbtn" onclick="window.print()">🖨️ Print this badge</button>
-      <button class="gbtn alt" onclick="document.getElementById('kidName').value='';document.getElementById('kidName').focus()">Clear name</button>
+  </section>
+
+  <section id="schedule">
+    <div class="seclabel"><span class="n">03</span><h2>The hour, minute by minute</h2></div>
+    <p class="lede">A simple rotation any facilitator can run. Children move in small groups; the tablet guides each station while hands stay in the soil.</p>
+    <div class="timeline">
+      <div class="tl"><div class="when">0 – 10 min</div><h4>Welcome to the garden</h4><p>Meet Sunny and set the question: what is a plant made of, and how does it grow?</p></div>
+      <div class="tl"><div class="when">10 – 40 min</div><h4>Station rotations</h4><p>Small groups cycle through the four stations — tablet prompt, then the matching hands-on garden task.</p></div>
+      <div class="tl"><div class="when">40 – 52 min</div><h4>Garden walk</h4><p>Children find the real roots, leaves, flowers, and compost they just explored on screen.</p></div>
+      <div class="tl"><div class="when">52 – 60 min</div><h4>Junior Garden Scientist badge</h4><p>Each child is named, celebrated, and sent home with a printed certificate.</p></div>
     </div>
+  </section>
+
+  <section id="standards">
+    <div class="seclabel"><span class="n">04</span><h2>Grounded in real curriculum</h2></div>
+    <p class="lede">The content isn’t improvised — it maps to established early-childhood garden education, so the learning is credible and age-appropriate.</p>
+    <div class="std">
+      <div class="s"><h4>JMG plant-part themes</h4><p>Built on the Junior Master Gardener / Texas A&M AgriLife early-childhood framework of roots, stems, leaves, and flowers.</p></div>
+      <div class="s"><h4>STEAM through agriculture</h4><p>Science, observation, and food systems delivered the way Dew of Heaven already teaches — in the garden, by doing.</p></div>
+      <div class="s"><h4>Food & soil literacy</h4><p>Composting and farm-to-plate concepts that extend the garden’s existing worm-farm and self-sufficiency programs.</p></div>
+    </div>
+  </section>
+
+  <div class="close">
+    <span class="eyebrow" style="color:#D8A24A;">Ready when you are</span>
+    <h2>Let’s grow this together</h2>
+    <p>The Talking Garden is built to run with a single facilitator and a tablet — no special equipment, no setup, nothing to maintain afterward. It’s ready to bring to your students.</p>
+    <a class="ghost" href="#stations">Preview the stations again</a>
+    <div class="who">Facilitated by Dr. Erin Jacques · Early Scholars</div>
   </div>
 
 </div>
 
+<footer>Prepared for Dew of Heaven Children's Garden · Spring, TX · “We grow curious, confident children.”</footer>
+
+<!-- ============ DEMO MODAL ============ -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeDemo()">
+  <div class="modal">
+    <div class="mhead">
+      <span class="tag" id="mtag">Live preview</span>
+      <button class="x" onclick="closeDemo()" aria-label="Close">×</button>
+    </div>
+    <p class="tcap">This is exactly what a child sees on the tablet. <b>Built for little hands — big buttons, no reading required.</b></p>
+    <div class="tablet" id="tablet"></div>
+  </div>
+</div>
+
 <script>
-function go(id){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* STATION 1 */
+/* ---------- content ---------- */
 var PARTS={
-  root:{e:'🟫',t:"My roots are like little straws underground! They drink water and hold me down so the wind can't blow me over."},
-  stem:{e:'🌿',t:"My stem is a tiny elevator! Water rides all the way up it to feed my leaves."},
-  leaf:{e:'🍃',t:"My leaves catch the sunshine and turn it into food. That's my superpower — yum!"},
-  flower:{e:'🌸',t:"My flower says hello to the bees! They help me make seeds for brand-new baby plants."}
+  root:{e:'🟫',t:"My roots are like little straws underground! They drink water and hold me down."},
+  stem:{e:'🌿',t:"My stem is a tiny elevator! Water rides up it to feed my leaves."},
+  leaf:{e:'🍃',t:"My leaves catch sunshine and turn it into food. That's my superpower!"},
+  flower:{e:'🌸',t:"My flower says hello to the bees, who help me make seeds for new plants."}
 };
-function part(k){
-  var p=PARTS[k];
-  document.getElementById('partAns').innerHTML='<span class="big">'+p.e+'</span><span>'+p.t+'</span>';
+var SCRAPS=[{e:'🍌',y:1},{e:'🍎',y:1},{e:'🥬',y:1},{e:'🥕',y:1},{e:'☕',y:1},{e:'🍕',y:0},{e:'🧴',y:0},{e:'🔋',y:0}];
+var STAGES=[{e:'🟤',n:'A tiny seed'},{e:'🌱',n:'A little sprout!'},{e:'🌿',n:'Growing leaves!'},{e:'🪴',n:'A strong plant!'},{e:'🌻',n:'A beautiful flower!'}];
+var FOODS=[{e:'🥕',nm:'Carrot',p:'Root'},{e:'🥦',nm:'Broccoli',p:'Flower'},{e:'🥬',nm:'Lettuce',p:'Leaf'},{e:'🌽',nm:'Corn',p:'Seed'}];
+var PARTOPTS=['Root','Leaf','Flower','Seed'];
+var TAGS={parts:'Station 1 · Meet Sunny the Sprout',worm:'Station 2 · The Worm Café',seed:'Station 3 · Seed to Sprout',eat:'Station 4 · Which Part Do We Eat?'};
+
+var sun=0,wat=0,picked=null,eatDone=0,wormPlaced=0;
+
+function openDemo(which){
+  document.getElementById('mtag').textContent=TAGS[which];
+  document.getElementById('tablet').innerHTML=render(which);
+  if(which==='worm') buildWorm();
+  if(which==='eat') buildEat();
+  if(which==='seed') resetSeed();
+  document.getElementById('overlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeDemo(){ document.getElementById('overlay').classList.remove('on'); document.body.style.overflow=''; }
+
+function render(which){
+  if(which==='parts'){
+    return '<p class="kh">Meet Sunny 🌻</p><p class="ksub">Tap one of my parts!</p>'+
+      '<div class="bigbtns">'+
+      '<button class="bigbtn" style="background:#C98A2E" onclick="part(\'root\')"><span class="e">🟫</span>Roots</button>'+
+      '<button class="bigbtn" style="background:#5C7357" onclick="part(\'stem\')"><span class="e">🌿</span>Stem</button>'+
+      '<button class="bigbtn" style="background:#8AA983" onclick="part(\'leaf\')"><span class="e">🍃</span>Leaves</button>'+
+      '<button class="bigbtn" style="background:#B0603A" onclick="part(\'flower\')"><span class="e">🌸</span>Flower</button>'+
+      '</div><div class="answer" id="partAns"><span class="big">🌻</span><span>Hi friend! Tap a part to learn my secret.</span></div>';
+  }
+  if(which==='worm'){
+    return '<p class="kh">The Worm Café 🪱</p><p class="ksub">Tap a scrap to sort it.</p>'+
+      '<div class="items" id="wormItems"></div>'+
+      '<div class="bins">'+
+      '<div class="bin yes"><div class="title">😋 Feed the worms</div><div class="drop" id="binYes"></div></div>'+
+      '<div class="bin no"><div class="title">🚫 No thanks</div><div class="drop" id="binNo"></div></div>'+
+      '</div><div class="progress" id="wormProg"></div><div class="cheer" id="wormCheer"></div>';
+  }
+  if(which==='seed'){
+    return '<p class="kh">Seed to Sprout 🌱</p><p class="ksub">Tap sun and water to help it grow!</p>'+
+      '<div class="meter"><span class="c">☀️ Sun: <b id="sunC">0</b></span><span class="c">💧 Water: <b id="watC">0</b></span></div>'+
+      '<div class="pot" id="pot">🟤</div><div class="stagename" id="stageName">A tiny seed</div>'+
+      '<div class="bigbtns">'+
+      '<button class="bigbtn" style="background:#C98A2E" onclick="grow(\'sun\')"><span class="e">☀️</span>Sun</button>'+
+      '<button class="bigbtn" style="background:#3E7CA8" onclick="grow(\'water\')"><span class="e">💧</span>Water</button>'+
+      '</div><div class="cheer" id="seedCheer"></div>'+
+      '<div class="minirow"><button class="minibtn" onclick="resetSeed()">↺ New seed</button></div>';
+  }
+  if(which==='eat'){
+    return '<p class="kh">Which Part Do We Eat? 🥕</p><p class="ksub">Tap a food, then tap its plant part.</p>'+
+      '<div class="matchrow" id="foodRow"></div><div class="partbtns" id="partRow"></div>'+
+      '<div class="progress" id="eatProg"></div><div class="cheer" id="eatCheer"></div>';
+  }
 }
 
-/* STATION 2: WORM CAFÉ */
-var SCRAPS=[
-  {e:'🍌',yes:true},{e:'🍎',yes:true},{e:'🥬',yes:true},{e:'🥕',yes:true},{e:'☕',yes:true},
-  {e:'🍕',yes:false},{e:'🧴',yes:false},{e:'🔋',yes:false},{e:'🥫',yes:false}
-];
-var wormPlaced=0;
+/* station 1 */
+function part(k){var p=PARTS[k];document.getElementById('partAns').innerHTML='<span class="big">'+p.e+'</span><span>'+p.t+'</span>';}
+
+/* station 2 */
 function buildWorm(){
-  var box=document.getElementById('wormItems'); box.innerHTML='';
-  wormPlaced=0; document.getElementById('binYes').innerHTML=''; document.getElementById('binNo').innerHTML='';
-  document.getElementById('wormCheer').textContent='';
+  var box=document.getElementById('wormItems'); box.innerHTML=''; wormPlaced=0;
+  document.getElementById('binYes').innerHTML=''; document.getElementById('binNo').innerHTML=''; document.getElementById('wormCheer').textContent='';
   SCRAPS.forEach(function(s,i){
-    var d=document.createElement('div'); d.className='item'; d.textContent=s.e; d.draggable=true; d.dataset.i=i;
-    d.addEventListener('dragstart',function(e){e.dataTransfer.setData('i',i); d.classList.add('dragging');});
-    d.addEventListener('dragend',function(){d.classList.remove('dragging');});
-    d.addEventListener('click',function(){tapPlace(i,s.yes?'yes':'no');}); /* tap fallback for tablets */
+    var d=document.createElement('div'); d.className='item'; d.textContent=s.e; d.dataset.i=i;
+    d.onclick=function(){placeWorm(i);};
     box.appendChild(d);
   });
-  updWorm();
+  upW();
 }
-function allow(e){e.preventDefault(); e.currentTarget.classList.add('over');}
-function dropItem(e,bin){
-  e.preventDefault(); e.currentTarget.classList.remove('over');
-  var i=e.dataTransfer.getData('i'); place(parseInt(i),bin);
+function placeWorm(i){
+  var s=SCRAPS[i]; var el=document.querySelector('#wormItems .item[data-i="'+i+'"]'); if(!el)return;
+  el.remove(); document.getElementById(s.y?'binYes':'binNo').innerHTML+=s.e+' '; wormPlaced++; upW();
+  document.getElementById('wormCheer').textContent = wormPlaced===SCRAPS.length ? '🎉 Great composting!' : '';
 }
-function tapPlace(i,correctBin){ place(i,correctBin); } /* tap = auto-correct, keeps young kids moving */
-function place(i,bin){
-  var s=SCRAPS[i]; var el=document.querySelector('.item[data-i="'+i+'"]'); if(!el) return;
-  var correct=(bin==='yes')===s.yes;
-  if(!correct){ document.getElementById('wormCheer').textContent='Hmm, try the other bin! 🤔'; return; }
-  el.remove();
-  document.getElementById(bin==='yes'?'binYes':'binNo').innerHTML+=s.e+' ';
-  wormPlaced++; updWorm();
-  if(wormPlaced===SCRAPS.length){ document.getElementById('wormCheer').textContent='🎉 You filled the Worm Café! Great composting!'; }
-  else { document.getElementById('wormCheer').textContent=''; }
-}
-function updWorm(){ document.getElementById('wormProg').textContent='Sorted '+wormPlaced+' of '+SCRAPS.length; }
+function upW(){var p=document.getElementById('wormProg'); if(p)p.textContent='Sorted '+wormPlaced+' of '+SCRAPS.length;}
 
-/* STATION 3: SEED */
-var sun=0,wat=0;
-var STAGES=[
-  {e:'🟤',n:'A tiny seed'},{e:'🌱',n:'A little sprout!'},{e:'🌿',n:'Growing leaves!'},{e:'🪴',n:'A strong plant!'},{e:'🌻',n:'A beautiful flower!'}
-];
-function grow(which){
-  if(which==='sun') sun++; else wat++;
-  document.getElementById('sunC').textContent=sun;
-  document.getElementById('watC').textContent=wat;
-  var step=Math.min(Math.floor((sun+wat)/2),STAGES.length-1);
-  var st=STAGES[step];
+/* station 3 */
+function grow(w){
+  if(w==='sun')sun++; else wat++;
+  document.getElementById('sunC').textContent=sun; document.getElementById('watC').textContent=wat;
+  var step=Math.min(Math.floor((sun+wat)/2),STAGES.length-1); var st=STAGES[step];
   var pot=document.getElementById('pot'); pot.textContent=st.e; pot.style.transform='scale(1.15)';
-  setTimeout(function(){pot.style.transform='scale(1)';},200);
+  setTimeout(function(){pot.style.transform='scale(1)';},180);
   document.getElementById('stageName').textContent=st.n;
-  document.getElementById('seedCheer').textContent = step===STAGES.length-1 ? '🌻 You grew a flower! Plants need sun AND water.' : '';
+  document.getElementById('seedCheer').textContent = step===STAGES.length-1 ? '🌻 Plants need sun AND water!' : '';
 }
-function resetSeed(){ sun=0;wat=0; document.getElementById('sunC').textContent=0; document.getElementById('watC').textContent=0;
-  document.getElementById('pot').textContent='🟤'; document.getElementById('stageName').textContent='A tiny seed'; document.getElementById('seedCheer').textContent=''; }
+function resetSeed(){sun=0;wat=0;
+  var a=document.getElementById('sunC'); if(a)a.textContent=0; var b=document.getElementById('watC'); if(b)b.textContent=0;
+  var p=document.getElementById('pot'); if(p)p.textContent='🟤'; var n=document.getElementById('stageName'); if(n)n.textContent='A tiny seed';
+  var c=document.getElementById('seedCheer'); if(c)c.textContent='';}
 
-/* STATION 4: EAT */
-var FOODS=[
-  {e:'🥕',nm:'Carrot',part:'Root'},
-  {e:'🥦',nm:'Broccoli',part:'Flower'},
-  {e:'🥬',nm:'Lettuce',part:'Leaf'},
-  {e:'🌽',nm:'Corn',part:'Seed'}
-];
-var PARTOPTS=['Root','Leaf','Flower','Seed'];
-var picked=null, eatDone=0;
+/* station 4 */
 function buildEat(){
-  var fr=document.getElementById('foodRow'); fr.innerHTML=''; eatDone=0; picked=null;
-  document.getElementById('eatCheer').textContent='';
+  var fr=document.getElementById('foodRow'); fr.innerHTML=''; eatDone=0; picked=null; document.getElementById('eatCheer').textContent='';
   FOODS.forEach(function(f,i){
     var c=document.createElement('div'); c.className='foodcard'; c.dataset.i=i;
     c.innerHTML='<div class="e">'+f.e+'</div><div class="nm">'+f.nm+'</div>';
-    c.onclick=function(){ if(c.classList.contains('done'))return; document.querySelectorAll('.foodcard').forEach(function(x){x.style.outline='';}); c.style.outline='3px solid var(--amber-500)'; picked=i; };
+    c.onclick=function(){ if(c.classList.contains('done'))return; document.querySelectorAll('.foodcard').forEach(function(x){x.style.outline='';}); c.style.outline='3px solid #C98A2E'; picked=i; };
     fr.appendChild(c);
   });
   var pr=document.getElementById('partRow'); pr.innerHTML='';
   PARTOPTS.forEach(function(p){
-    var b=document.createElement('button'); b.className='bigbtn'; b.style.background='var(--green-600)'; b.style.minHeight='58px'; b.style.flex='1'; b.style.minWidth='120px';
-    b.textContent=p; b.onclick=function(){ checkEat(p); };
-    pr.appendChild(b);
+    var b=document.createElement('button'); b.className='bigbtn'; b.style.background='#5C7357'; b.style.minHeight='52px'; b.style.flex='1'; b.style.minWidth='104px';
+    b.textContent=p; b.onclick=function(){checkEat(p);}; pr.appendChild(b);
   });
-  updEat();
+  upE();
 }
 function checkEat(p){
-  if(picked===null){ document.getElementById('eatCheer').textContent='Pick a food first! 👆'; return; }
+  if(picked===null){document.getElementById('eatCheer').textContent='Pick a food first! 👆'; return;}
   var f=FOODS[picked];
-  if(f.part===p){
-    var c=document.querySelector('.foodcard[data-i="'+picked+'"]'); c.classList.add('done'); c.style.outline='';
-    eatDone++; picked=null; updEat();
-    document.getElementById('eatCheer').textContent = eatDone===FOODS.length ? '🎉 You matched them all! You know your plant parts!' : '✅ Yes! Great match!';
-  } else {
-    document.getElementById('eatCheer').textContent='Not quite — try another part! 🤔';
-  }
+  if(f.p===p){ var c=document.querySelector('.foodcard[data-i="'+picked+'"]'); c.classList.add('done'); c.style.outline=''; eatDone++; picked=null; upE();
+    document.getElementById('eatCheer').textContent = eatDone===FOODS.length ? '🎉 You matched them all!' : '✅ Great match!';
+  } else { document.getElementById('eatCheer').textContent='Try another part! 🤔'; }
 }
-function updEat(){ document.getElementById('eatProg').textContent='Matched '+eatDone+' of '+FOODS.length; }
+function upE(){var p=document.getElementById('eatProg'); if(p)p.textContent='Matched '+eatDone+' of '+FOODS.length;}
 
-buildWorm(); buildEat();
+document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeDemo(); });
 </script>
 </body>
 </html>
