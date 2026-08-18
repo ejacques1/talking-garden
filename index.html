@@ -1,442 +1,571 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>The Talking Garden — A Garden-Based STEAM Experience · Dew of Heaven Children's Garden</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Talking Garden — Dew of Heaven Children's Garden</title>
+<meta name="description" content="A garden learning platform for families. Live sessions, hands-on projects, and playful activities that grow curious, confident children.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --cream:#F7F3EA; --paper:#FFFFFF; --paper2:#FCFAF3;
-    --ink:#2A2925; --muted:#6E695C; --faint:#9A9483;
-    --sage:#5C7357; --sage-d:#3F5239; --sage-l:#EAF0E5;
-    --soil:#6B5640; --terra:#B0603A; --terra-l:#F4E7DF;
-    --line:#E6DFCE; --line-d:#D8CFB9;
-    --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{margin:0; font-family:var(--sans); color:var(--ink); background:var(--cream); line-height:1.65; font-size:17px; -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:920px; margin:0 auto; padding:0 26px;}
-  h1,h2,h3{font-family:var(--serif); font-weight:500; letter-spacing:-.01em; line-height:1.12; color:var(--ink);}
-  a{color:var(--sage-d);}
-  .eyebrow{font-family:var(--sans); font-size:12.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--terra);}
+:root{
+  --cream:#F7F3EA; --paper:#FFFFFF; --paper2:#FCFAF3;
+  --ink:#1F2320; --body:#55584F; --muted:#7B7D72; --faint:#A8A99C;
+  --sage:#4F7C4A; --sage-d:#33512F; --sage-l:#E7F0E4;
+  --soil:#6B5640; --terra:#C25A36; --terra-l:#FBE8E0;
+  --sun:#F2B233; --sun-l:#FDF1D6;
+  --sky:#3E90CC; --sky-l:#E2F0FA;
+  --grape:#7A5BC4; --grape-l:#EEE8FB;
+  --teal:#1F9B8E; --teal-l:#DEF3F1;
+  --line:#E8E1D2; --line-d:#D6CDB8;
+  --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --r:18px; --rl:28px;
+  --shadow:0 2px 4px rgba(31,35,32,.04), 0 10px 28px rgba(31,35,32,.07);
+  --shadow-lg:0 4px 8px rgba(31,35,32,.05), 0 22px 50px rgba(31,35,32,.11);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--body);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.08;letter-spacing:-.02em;font-weight:700}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+.eyebrow{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sage);margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 26px;border-radius:999px;border:2px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .15s ease, box-shadow .15s ease, background .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--sage);color:#fff;box-shadow:0 4px 0 var(--sage-d)}
+.btn-primary:hover{background:var(--sage-d);box-shadow:0 6px 0 var(--sage-d)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-d)}
+.btn-ghost:hover{border-color:var(--ink);background:var(--paper2)}
 
-  /* NAV */
-  nav{display:flex; align-items:center; gap:12px; padding:20px 0; border-bottom:1px solid var(--line);}
-  nav .mk{width:38px;height:38px;}
-  nav .nm{font-family:var(--serif); font-size:16px; color:var(--sage-d); line-height:1.15;}
-  nav .nm small{display:block; font-family:var(--sans); font-size:11px; letter-spacing:.04em; color:var(--faint); font-weight:500;}
-  nav .spacer{flex:1;}
-  nav .navcta{font-size:13.5px; font-weight:600; color:var(--paper); background:var(--sage-d); padding:9px 16px; border-radius:8px; text-decoration:none;}
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1140px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.brand-mark{width:38px;height:38px;border-radius:11px;background:var(--sage);display:grid;place-items:center;font-size:20px;flex:none}
+.brand-txt{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--ink);line-height:1.15}
+.brand-txt span{display:block;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.nav-links{display:flex;gap:26px}
+.nav-links a{font-size:15px;font-weight:500;color:var(--body);text-decoration:none}
+.nav-links a:hover{color:var(--sage)}
+.nav .btn{padding:11px 22px;font-size:14px}
+@media(max-width:860px){.nav-links{display:none}}
 
-  /* HERO */
-  header.hero{padding:64px 0 50px; border-bottom:1px solid var(--line); text-align:center;}
-  header.hero .eyebrow{margin-bottom:18px; display:block;}
-  header.hero h1{font-size:clamp(38px,6.2vw,62px); margin:0 0 18px;}
-  header.hero .deck{font-size:clamp(18px,2.6vw,22px); color:var(--soil); max-width:600px; margin:0 auto; font-family:var(--serif); font-weight:400;}
-  header.hero .quote{margin-top:24px; font-size:15px; color:var(--muted); font-style:italic;}
-  .chips{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:30px;}
-  .chip{background:var(--paper); border:1px solid var(--line-d); border-radius:999px; padding:8px 16px; font-size:13.5px; font-weight:500; color:var(--soil);}
-  .chip b{color:var(--sage-d);}
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--cream);overflow:hidden;padding:76px 0 84px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative;z-index:2}
+.hero h1{font-size:clamp(40px,5.6vw,68px);font-weight:900;margin-bottom:22px}
+.hero h1 em{font-style:normal;color:var(--sage);position:relative;white-space:nowrap}
+.hero h1 em::after{content:'';position:absolute;left:0;right:0;bottom:.06em;height:.13em;background:var(--sun);border-radius:99px;z-index:-1}
+.hero-sub{font-size:19px;max-width:30em;margin-bottom:30px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.hero-note{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.blob{position:absolute;border-radius:50%;z-index:1}
+.blob-sun{width:440px;height:440px;background:var(--sun);right:-110px;top:-70px;opacity:.9}
+.blob-ring{width:520px;height:520px;border:2px solid var(--soil);right:-40px;top:20px;opacity:.35;background:none}
+.hero-art{position:relative;z-index:3}
+.art-stack{position:relative;height:540px}
+.card-float{position:absolute;background:#fff;border-radius:var(--rl);box-shadow:var(--shadow-lg);padding:18px;border:1px solid var(--line)}
+.cf1{width:230px;left:0;top:0;transform:rotate(-3deg)}
+.cf2{width:200px;right:0;top:28px;transform:rotate(3.5deg)}
+.cf3{width:244px;left:56px;bottom:0;transform:rotate(2deg)}
+.cf-img{border-radius:16px;overflow:hidden;aspect-ratio:16/10;background:var(--sage-l)}
+.cf-img img{width:100%;height:100%;object-fit:cover}
+.cf-label{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:16px;margin-top:12px}
+.cf-meta{font-size:12.5px;color:var(--muted);margin-top:3px}
+.cf-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:99px;background:var(--teal-l);color:var(--teal);margin-top:10px}
+@media(max-width:940px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .art-stack{height:520px;max-width:470px;margin:0 auto}
+  .blob-sun{width:300px;height:300px;right:-80px}
+  .blob-ring{display:none}
+}
+@media(max-width:560px){
+  .art-stack{height:auto;display:grid;gap:14px}
+  .card-float{position:static;width:auto;transform:none}
+}
 
-  section{padding:52px 0; border-bottom:1px solid var(--line);}
-  section h2{font-size:clamp(26px,4vw,34px); margin:0 0 6px;}
-  section .lede{color:var(--muted); font-size:18px; max-width:640px; margin:0 0 30px;}
-  .seclabel{display:flex; align-items:baseline; gap:14px; margin-bottom:26px;}
-  .seclabel .n{font-family:var(--serif); font-size:15px; color:var(--terra);}
+/* ---------- strip ---------- */
+.strip{background:var(--sage-d);color:#fff;padding:20px 0}
+.strip-in{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 40px;align-items:center}
+.strip-item{display:flex;align-items:center;gap:9px;font-size:14.5px;font-weight:500;color:rgba(255,255,255,.92)}
+.strip-item b{font-family:var(--serif);font-size:19px;font-weight:700;color:#fff}
 
-  /* OUTCOMES */
-  .out{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;}
-  .out .o{background:var(--paper2); padding:24px;}
-  .out .o .ic{color:var(--sage); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px;}
-  .out .o p{margin:0; font-size:15.5px; color:var(--ink);}
+/* ---------- sections ---------- */
+section{padding:88px 0}
+.sec-head{max-width:660px;margin-bottom:44px}
+.sec-head h2{font-size:clamp(30px,3.9vw,44px);margin-bottom:16px}
+.sec-head p{font-size:18px}
+.center{margin-left:auto;margin-right:auto;text-align:center}
 
-  /* STATION CARDS */
-  .stations{display:flex; flex-direction:column; gap:16px;}
-  .st{background:var(--paper); border:1px solid var(--line-d); border-radius:16px; padding:26px 28px; display:grid; grid-template-columns:64px 1fr auto; gap:22px; align-items:start;}
-  .st .badge{width:64px; height:64px; border-radius:14px; background:var(--sage-l); display:flex; align-items:center; justify-content:center; font-size:30px;}
-  .st .body .lab{font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); margin-bottom:4px;}
-  .st .body h3{font-size:22px; margin:0 0 8px;}
-  .st .body p{margin:0 0 14px; color:var(--muted); font-size:15.5px;}
-  .st .meta{display:flex; flex-wrap:wrap; gap:8px 22px; font-size:13px;}
-  .st .meta div{color:var(--soil);} .st .meta b{color:var(--sage-d); font-weight:600;}
-  .st .act{align-self:center;}
-  .demo{white-space:nowrap; background:var(--sage-d); color:#fff; border:none; border-radius:9px; padding:11px 18px; font-size:14px; font-weight:600; cursor:pointer; font-family:var(--sans);}
-  .demo:hover{background:#33442d;}
-  @media(max-width:680px){ .st{grid-template-columns:52px 1fr; } .st .act{grid-column:1/-1;} .st .badge{width:52px;height:52px;font-size:26px;} }
+/* ---------- topic grid ---------- */
+.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:900px){.topics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.topics{grid-template-columns:1fr}}
+.topic{position:relative;border-radius:var(--rl);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;display:flex;flex-direction:column;transition:transform .18s ease, box-shadow .18s ease}
+.topic:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.topic-art{height:150px;display:grid;place-items:center;font-size:62px;position:relative}
+.topic-art::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.5),transparent 60%)}
+.t-plant .topic-art{background:var(--sage-l)}
+.t-butterfly .topic-art{background:var(--grape-l)}
+.t-frog .topic-art{background:var(--teal-l)}
+.t-worm .topic-art{background:var(--sun-l)}
+.t-pollinator .topic-art{background:var(--terra-l)}
+.t-soil .topic-art{background:var(--sky-l)}
+.topic-body{padding:20px 22px 24px;flex:1;display:flex;flex-direction:column}
+.topic-body h3{font-size:21px;margin-bottom:7px}
+.topic-body p{font-size:14.5px;color:var(--muted);margin-bottom:16px;flex:1}
+.topic-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stages{display:flex;gap:4px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line-d)}
+.dot.on{background:var(--sage)}
+.tag{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:99px}
+.tag-open{background:var(--sage-l);color:var(--sage-d)}
+.tag-lock{background:#F1EFE8;color:var(--muted)}
+.tag-soon{background:var(--sun-l);color:#8A6410}
+.topic.locked .topic-art{filter:saturate(.72)}
+.lockbadge{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.94);display:grid;place-items:center;font-size:15px;box-shadow:var(--shadow);z-index:2}
 
-  /* RUN OF SHOW */
-  .timeline{border-left:2px solid var(--line-d); margin-left:8px; padding-left:0;}
-  .tl{position:relative; padding:0 0 26px 28px;}
-  .tl:last-child{padding-bottom:0;}
-  .tl::before{content:''; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--terra); border:2px solid var(--cream);}
-  .tl .when{font-family:var(--serif); font-size:15px; color:var(--terra); font-weight:500;}
-  .tl h4{margin:2px 0 3px; font-size:17px; font-family:var(--sans); font-weight:600;}
-  .tl p{margin:0; color:var(--muted); font-size:15px;}
+/* ---------- inside a topic ---------- */
+.inside{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stage-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+.stab{font-family:var(--sans);font-size:14px;font-weight:600;padding:12px 20px;border-radius:999px;border:2px solid var(--line-d);background:#fff;color:var(--body);cursor:pointer;transition:all .15s ease;display:flex;align-items:center;gap:8px}
+.stab:hover{border-color:var(--sage)}
+.stab.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.stab .n{width:21px;height:21px;border-radius:50%;background:var(--sage-l);color:var(--sage-d);font-size:11.5px;font-weight:700;display:grid;place-items:center;font-family:var(--sans)}
+.stab.on .n{background:rgba(255,255,255,.25);color:#fff}
+.stage-panel{background:#fff;border:1px solid var(--line);border-radius:var(--rl);box-shadow:var(--shadow);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:330px}
+@media(max-width:860px){.stage-panel{grid-template-columns:1fr}}
+.sp-copy{padding:38px}
+.sp-copy h3{font-size:27px;margin-bottom:14px}
+.sp-copy .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);margin-bottom:12px}
+.sp-copy p{font-size:16px;margin-bottom:18px}
+.sp-list{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+.sp-list li{font-size:14.5px;display:flex;gap:10px;align-items:flex-start;color:var(--body)}
+.sp-list li::before{content:'✓';color:var(--sage);font-weight:700;flex:none}
+.sp-vis{background:var(--sage-l);display:grid;place-items:center;padding:34px;position:relative}
+.device{width:100%;max-width:310px;background:#fff;border-radius:22px;box-shadow:var(--shadow-lg);padding:20px;border:1px solid var(--line)}
+.device-top{display:flex;align-items:center;gap:7px;margin-bottom:15px}
+.device-top i{width:9px;height:9px;border-radius:50%;background:var(--line-d);display:block}
+.dv-title{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:17px;margin-bottom:4px}
+.dv-sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+.dv-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dv-chip{border:2px solid var(--line);border-radius:13px;padding:13px 9px;text-align:center;font-size:13px;font-weight:600;color:var(--ink);background:var(--paper2)}
+.dv-chip .e{font-size:23px;display:block;margin-bottom:4px}
+.dv-chip.hit{border-color:var(--sage);background:var(--sage-l)}
+.dv-bar{height:9px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:15px}
+.dv-bar i{display:block;height:100%;width:62%;background:var(--sage);border-radius:99px}
+.dv-video{aspect-ratio:16/10;border-radius:13px;background:var(--ink);display:grid;place-items:center;color:#fff;font-size:31px;margin-bottom:13px;position:relative;overflow:hidden}
+.dv-video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.dv-video span{position:relative;z-index:2}
+.live{position:absolute;top:10px;left:10px;z-index:2;background:var(--terra);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:99px;display:flex;align-items:center;gap:5px}
+.live i{width:6px;height:6px;border-radius:50%;background:#fff;display:block;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  /* STANDARDS */
-  .std{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;}
-  .std .s{background:var(--paper2); border:1px solid var(--line); border-radius:12px; padding:20px;}
-  .std .s h4{margin:0 0 6px; font-family:var(--sans); font-size:15px; font-weight:600; color:var(--sage-d);}
-  .std .s p{margin:0; font-size:14px; color:var(--muted);}
+/* ---------- journey ---------- */
+.journey{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;counter-reset:j}
+@media(max-width:980px){.journey{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){.journey{grid-template-columns:repeat(2,1fr)}}
+.jstep{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 18px;position:relative;box-shadow:var(--shadow)}
+.jstep .jn{width:32px;height:32px;border-radius:50%;background:var(--sage);color:#fff;font-family:var(--serif);font-weight:700;font-size:15px;display:grid;place-items:center;margin-bottom:13px}
+.jstep h4{font-size:16px;margin-bottom:7px}
+.jstep p{font-size:13.5px;color:var(--muted);line-height:1.5}
+.jstep.key{background:var(--sun-l);border-color:#EBD9A8}
+.jstep.key .jn{background:var(--terra)}
 
-  /* CLOSING */
-  .close{background:var(--sage-d); color:#F4F0E6; border-radius:20px; padding:48px 40px; text-align:center; margin:52px 0;}
-  .close h2{color:#fff; font-size:clamp(26px,4vw,36px); margin:0 0 12px;}
-  .close p{color:#D9E2D2; max-width:520px; margin:0 auto 26px; font-size:17px;}
-  .close .who{font-size:14px; color:#B9C7B2; margin-top:24px;}
-  .ghost{background:transparent; border:1px solid #8AA083; color:#F4F0E6; border-radius:10px; padding:13px 26px; font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; display:inline-block;}
+/* ---------- grown-ups ---------- */
+.grown{background:var(--ink);color:rgba(255,255,255,.78)}
+.grown h2,.grown h3,.grown h4{color:#fff}
+.grown .eyebrow{color:var(--sun)}
+.grown-grid h2{margin-bottom:18px}
+.grown-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
+@media(max-width:900px){.grown-grid{grid-template-columns:1fr;gap:36px}}
+.report{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:var(--rl);padding:28px}
+.report-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.13)}
+.report-head h4{font-size:18px}
+.report-head span{font-size:12.5px;color:rgba(255,255,255,.5)}
+.metric{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.metric-bar{flex:1;height:34px;border-radius:9px;background:rgba(255,255,255,.09);overflow:hidden;position:relative}
+.metric-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:9px;display:block}
+.metric-lab{width:74px;font-size:13px;font-weight:600;color:rgba(255,255,255,.72);flex:none}
+.metric-val{width:46px;text-align:right;font-family:var(--serif);font-weight:700;font-size:19px;color:#fff;flex:none}
+.gain{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.13);display:flex;align-items:center;justify-content:space-between}
+.gain b{font-family:var(--serif);font-size:31px;color:var(--sun)}
+.gain span{font-size:13.5px;color:rgba(255,255,255,.6);max-width:15em;text-align:right}
+.gfeat{display:grid;gap:20px;margin-top:28px}
+.gfeat div{padding-left:17px;border-left:3px solid var(--sage)}
+.gfeat h4{font-size:16.5px;margin-bottom:5px}
+.gfeat p{font-size:14.5px;color:rgba(255,255,255,.65)}
 
-  .photos{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:28px;}
-  .photos img{width:100%; height:150px; object-fit:cover; border-radius:12px; border:1px solid var(--line); display:block;}
-  @media(max-width:680px){ .photos{grid-template-columns:1fr 1fr;} }
-  .herophoto{width:100%; max-width:760px; height:300px; object-fit:cover; border-radius:18px; margin:30px auto 0; display:block; border:1px solid var(--line);}
-  .bandphoto{width:100%; height:240px; object-fit:cover; border-radius:18px; display:block; border:1px solid var(--line); margin-top:6px;}
-  .credit{text-align:center; font-size:12px; color:var(--faint); margin-top:10px; font-style:italic;}
-  footer{text-align:center; padding:30px 0 60px; color:var(--faint); font-size:13px;}
+/* ---------- cta ---------- */
+.cta{background:var(--sage);color:rgba(255,255,255,.88);text-align:center;position:relative;overflow:hidden}
+.cta h2{color:#fff;font-size:clamp(30px,4.2vw,46px);margin-bottom:18px}
+.cta p{font-size:18px;max-width:34em;margin:0 auto 30px}
+.cta .btn-primary{background:#fff;color:var(--sage-d);box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.cta .btn-ghost{color:#fff;border-color:rgba(255,255,255,.45)}
+.cta .btn-ghost:hover{background:rgba(255,255,255,.12);border-color:#fff}
+.cta .blob-sun{opacity:.16;right:-140px;top:-140px}
 
-  /* ===== DEMO MODAL ===== */
-  .overlay{position:fixed; inset:0; background:rgba(30,28,22,.55); display:none; align-items:center; justify-content:center; z-index:50; padding:20px;}
-  .overlay.on{display:flex;}
-  .modal{background:var(--cream); border-radius:22px; max-width:560px; width:100%; max-height:92vh; overflow:auto; box-shadow:0 30px 80px rgba(0,0,0,.3);}
-  .mhead{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--cream); z-index:2;}
-  .mhead .tag{font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--terra);}
-  .mhead .x{background:none; border:none; font-size:24px; cursor:pointer; color:var(--muted); line-height:1; padding:4px 8px;}
-  .tablet{margin:18px; background:#fff; border:8px solid #2A2925; border-radius:26px; padding:20px; box-shadow:inset 0 0 0 2px #444;}
-  .tcap{text-align:center; font-size:12.5px; color:var(--faint); margin:0 18px 18px; }
-  .tcap b{color:var(--sage-d);}
-
-  /* kid-facing widgets (inside tablet) */
-  .kh{font-family:var(--serif); font-size:22px; color:var(--sage-d); margin:0 0 4px; text-align:center;}
-  .ksub{text-align:center; color:var(--muted); font-size:14px; margin:0 0 18px;}
-  .bigbtns{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;}
-  .bigbtn{border:none; border-radius:14px; padding:16px 12px; font-size:17px; font-weight:600; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px; min-height:64px; font-family:var(--sans);}
-  .bigbtn:active{transform:scale(.96);} .bigbtn .e{font-size:24px;}
-  .answer{margin-top:16px; background:var(--sage-l); border-radius:14px; padding:18px; min-height:80px; display:flex; align-items:center; gap:14px; font-size:17px; line-height:1.4; color:var(--sage-d); font-weight:500; transition:background .2s;}
-  .answer .big{font-size:40px; display:inline-block;}
-  .pop{animation:pop .45s ease;}
-  @keyframes pop{0%{transform:scale(.92); background:#D8E6CF;} 55%{transform:scale(1.03);} 100%{transform:scale(1);}}
-  .bump{animation:bump .35s ease;}
-  @keyframes bump{0%{transform:scale(1);} 40%{transform:scale(1.25) rotate(-6deg);} 100%{transform:scale(1);}}
-  .bigbtn.flash{animation:flash .4s ease;}
-  @keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,255,255,.9) inset;} 50%{box-shadow:0 0 0 4px rgba(255,255,255,.6) inset;} 100%{box-shadow:none;}}
-  .items{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px; min-height:60px;}
-  .item{background:#fff; border:2px solid var(--line-d); border-radius:14px; padding:10px; font-size:34px; cursor:pointer; line-height:1;}
-  .bins{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  .bin{border-radius:16px; padding:14px; text-align:center; min-height:110px; border:2px dashed;}
-  .bin.yes{border-color:var(--sage); background:var(--sage-l);} .bin.no{border-color:var(--terra); background:var(--terra-l);}
-  .bin .title{font-size:15px; font-weight:600; margin-bottom:8px;}
-  .bin.yes .title{color:var(--sage-d);} .bin.no .title{color:var(--terra);}
-  .bin .drop{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; font-size:30px;}
-  .meter{display:flex; gap:14px; justify-content:center; margin-bottom:10px;}
-  .meter .c{background:#fff; border:1px solid var(--line-d); border-radius:999px; padding:6px 13px; font-size:13px; font-weight:600; color:var(--soil);}
-  .pot{font-size:80px; text-align:center; transition:transform .25s;}
-  .stagename{text-align:center; font-size:18px; font-weight:600; color:var(--sage-d); margin:4px 0 14px; font-family:var(--serif);}
-  .matchrow{display:flex; flex-wrap:wrap; gap:10px; justify-content:center;}
-  .foodcard{background:#fff; border:2px solid var(--line-d); border-radius:14px; padding:12px 14px; text-align:center; cursor:pointer; min-width:92px;}
-  .foodcard .e{font-size:38px;} .foodcard .nm{font-size:13px; font-weight:600; color:var(--soil); margin-top:5px;}
-  .foodcard.done{border-color:var(--sage); background:var(--sage-l);}
-  .partbtns{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-top:14px;}
-  .progress{margin-top:14px; font-size:14px; font-weight:600; color:var(--sage-d); text-align:center;}
-  .cheer{text-align:center; font-size:16px; font-weight:600; color:var(--terra); margin-top:8px; min-height:22px;}
-  .minirow{display:flex; gap:10px; justify-content:center; margin-top:6px;}
-  .minibtn{background:#fff; border:1px solid var(--line-d); border-radius:999px; padding:8px 16px; font-size:13px; font-weight:600; color:var(--sage-d); cursor:pointer;}
+/* ---------- footer ---------- */
+footer{background:var(--paper2);border-top:1px solid var(--line);padding:44px 0;font-size:14px;color:var(--muted)}
+.foot-in{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center}
+.foot-in a{color:var(--sage);text-decoration:none;font-weight:500}
+.proto{position:fixed;left:16px;bottom:16px;z-index:99;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:99px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
+.proto i{width:7px;height:7px;border-radius:50%;background:var(--sun);display:block}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <nav>
-    <svg class="mk" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="48" fill="#EAF0E5"/>
-      <path d="M50 78 V44" stroke="#5C7357" stroke-width="6" stroke-linecap="round"/>
-      <path d="M50 56 Q26 52 22 32 Q46 34 50 56Z" fill="#8AA983"/>
-      <path d="M50 50 Q74 46 78 26 Q54 28 50 50Z" fill="#5C7357"/>
-      <circle cx="50" cy="34" r="11" fill="#D8A24A"/>
-    </svg>
-    <div class="nm">Dew of Heaven Children's Garden
-      <small>Spring, Texas · Est. STEAM in the garden</small>
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark">🌱</span>
+      <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#topics">Topics</a>
+      <a href="#inside">How a topic works</a>
+      <a href="#journey">The journey</a>
+      <a href="#grownups">For grown-ups</a>
     </div>
-    <div class="spacer"></div>
-    <a class="navcta" href="library.html" style="background:transparent;color:var(--sage-d);border:1px solid var(--line-d);margin-right:8px;">Learning Library</a>
-    <a class="navcta" href="#stations">View the curriculum</a>
-  </nav>
-
-  <header class="hero">
-    <span class="eyebrow">A garden-based STEAM experience · Kindergarten – 6th grade</span>
-    <h1>The Talking Garden</h1>
-    <p class="deck">A one-hour, hands-on workshop where every bed is a lab and every plant a lesson.</p>
-    <p class="quote">Designed to grow curious, confident children — through science, nature, and discovery.</p>
-    <div class="chips">
-      <span class="chip"><b>4</b> garden stations</span>
-      <span class="chip"><b>60</b>-minute workshop</span>
-      <span class="chip">Aligned to <b>JMG</b> plant-part curriculum</span>
-      <span class="chip">Take-home <b>keepsake</b></span>
-    </div>
-    <img class="herophoto" src="img/wide1.jpg" alt="Children learning in the Dew of Heaven garden" />
-  </header>
-
-  <section id="overview">
-    <div class="seclabel"><span class="n">01</span><h2>The experience</h2></div>
-    <p class="lede">The Talking Garden turns a single visit into four guided discovery stations. Children rotate through tactile, screen-and-soil activities — naming plant parts, feeding the worm farm, growing a seed, and tracing food back to the garden — then leave with a certificate they earned themselves.</p>
-    <div class="out">
-      <div class="o"><div class="ic">Science</div><p>Children name the four plant parts and describe what each one does.</p></div>
-      <div class="o"><div class="ic">Stewardship</div><p>Children learn what composts and how worms turn scraps into healthy soil.</p></div>
-      <div class="o"><div class="ic">Food literacy</div><p>Children connect everyday foods to the plant parts they come from.</p></div>
-      <div class="o"><div class="ic">Confidence</div><p>Every child participates, succeeds, and takes home proof of their learning.</p></div>
-    </div>
-    <div class="photos">
-      <img src="img/kids1.jpg" alt="Child in the garden" />
-      <img src="img/kids2.jpg" alt="Child gardening" />
-      <img src="img/kids3.jpg" alt="Hands-on garden learning" />
-      <img src="img/kids4.jpg" alt="Children at Dew of Heaven" />
-    </div>
-    <p class="credit">Photos courtesy of Dew of Heaven Children's Garden</p>
-  </section>
-
-  <section id="stations">
-    <div class="seclabel"><span class="n">02</span><h2>The four stations</h2></div>
-    <p class="lede">Each station pairs a tablet-guided prompt with a real garden activity. Tap “See it live” to preview exactly what a child experiences on screen.</p>
-    <div class="stations">
-
-      <div class="st">
-        <div class="badge">🌻</div>
-        <div class="body">
-          <div class="lab">Station 1 · Botany</div>
-          <h3>Meet Sunny the Sprout</h3>
-          <p>Children tap each part of a plant and uncover its “garden secret,” then find the same parts on real plants in the beds.</p>
-          <div class="meta">
-            <div><b>Objective:</b> name & explain roots, stem, leaves, flower</div>
-            <div><b>Materials:</b> tablet · sample plants</div>
-          </div>
-        </div>
-        <div class="act"><button class="demo" onclick="openDemo('parts')">See it live →</button></div>
-      </div>
-
-      <div class="st">
-        <div class="badge">🪱</div>
-        <div class="body">
-          <div class="lab">Station 2 · Composting</div>
-          <h3>The Worm Café</h3>
-          <p>Children sort food scraps and trash into “feed the worms” or “no thanks,” connecting directly to the garden’s worm-farm program.</p>
-          <div class="meta">
-            <div><b>Objective:</b> distinguish compostable vs. non-compostable</div>
-            <div><b>Materials:</b> tablet · real scraps · worm bin</div>
-          </div>
-        </div>
-        <div class="act"><button class="demo" onclick="openDemo('worm')">See it live →</button></div>
-      </div>
-
-      <div class="st">
-        <div class="badge">🌱</div>
-        <div class="body">
-          <div class="lab">Station 3 · Life cycles</div>
-          <h3>Seed to Sprout</h3>
-          <p>Children give a seed sun and water and watch it advance through each growth stage, learning what plants need to thrive.</p>
-          <div class="meta">
-            <div><b>Objective:</b> sequence the plant life cycle</div>
-            <div><b>Materials:</b> tablet · seeds · cups & soil</div>
-          </div>
-        </div>
-        <div class="act"><button class="demo" onclick="openDemo('seed')">See it live →</button></div>
-      </div>
-
-      <div class="st">
-        <div class="badge">🥕</div>
-        <div class="body">
-          <div class="lab">Station 4 · Food literacy</div>
-          <h3>Which Part Do We Eat?</h3>
-          <p>Children match familiar foods to the plant part they come from — carrots are roots, broccoli is a flower — tying nutrition back to the garden.</p>
-          <div class="meta">
-            <div><b>Objective:</b> link foods to plant parts</div>
-            <div><b>Materials:</b> tablet · sample produce</div>
-          </div>
-        </div>
-        <div class="act"><button class="demo" onclick="openDemo('eat')">See it live →</button></div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="schedule">
-    <div class="seclabel"><span class="n">03</span><h2>The hour, minute by minute</h2></div>
-    <p class="lede">A simple rotation any facilitator can run. Children move in small groups; the tablet guides each station while hands stay in the soil.</p>
-    <div class="timeline">
-      <div class="tl"><div class="when">0 – 10 min</div><h4>Welcome to the garden</h4><p>Meet Sunny and set the question: what is a plant made of, and how does it grow?</p></div>
-      <div class="tl"><div class="when">10 – 40 min</div><h4>Station rotations</h4><p>Small groups cycle through the four stations — tablet prompt, then the matching hands-on garden task.</p></div>
-      <div class="tl"><div class="when">40 – 52 min</div><h4>Garden walk</h4><p>Children find the real roots, leaves, flowers, and compost they just explored on screen.</p></div>
-      <div class="tl"><div class="when">52 – 60 min</div><h4>Junior Garden Scientist badge</h4><p>Each child is named, celebrated, and sent home with a printed certificate.</p></div>
-    </div>
-  </section>
-
-  <section id="standards">
-    <div class="seclabel"><span class="n">04</span><h2>Grounded in real curriculum</h2></div>
-    <p class="lede">The content isn’t improvised — it maps to established early-childhood garden education, so the learning is credible and age-appropriate.</p>
-    <div class="std">
-      <div class="s"><h4>JMG plant-part themes</h4><p>Built on the Junior Master Gardener / Texas A&M AgriLife early-childhood framework of roots, stems, leaves, and flowers.</p></div>
-      <div class="s"><h4>STEAM through agriculture</h4><p>Science, observation, and food systems delivered the way Dew of Heaven already teaches — in the garden, by doing.</p></div>
-      <div class="s"><h4>Food & soil literacy</h4><p>Composting and farm-to-plate concepts that extend the garden’s existing worm-farm and self-sufficiency programs.</p></div>
-    </div>
-  </section>
-
-  <div class="close">
-    <span class="eyebrow" style="color:#D8A24A;">Ready when you are</span>
-    <h2>Let’s grow this together</h2>
-    <p>The Talking Garden is built to run with a single facilitator and a tablet — no special equipment, no setup, nothing to maintain afterward. It’s ready to bring to your students.</p>
-    <a class="ghost" href="library.html" style="background:#D8A24A;border-color:#D8A24A;color:#3F3214;">Explore the Garden Learning Library →</a>
-    <div class="who">Designed &amp; built by Dr. Erin Jacques — professor and AI strategist.<br/>The interactive technology is mine; the garden expertise is yours. Let's bring them together.</div>
+    <a class="btn btn-primary" href="#cta">Log in</a>
   </div>
+</nav>
 
-</div>
-
-<footer>Prepared for Dew of Heaven Children's Garden · Spring, TX · “We grow curious, confident children.”</footer>
-
-<!-- ============ DEMO MODAL ============ -->
-<div class="overlay" id="overlay" onclick="if(event.target===this)closeDemo()">
-  <div class="modal">
-    <div class="mhead">
-      <span class="tag" id="mtag">Live preview</span>
-      <button class="x" onclick="closeDemo()" aria-label="Close">×</button>
+<header class="hero" id="top">
+  <span class="blob blob-sun"></span>
+  <span class="blob blob-ring"></span>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">A garden learning platform · Grades K–6</div>
+      <h1>Every plant has a story. <em>Let's go find it.</em></h1>
+      <p class="hero-sub">Join a live garden session with Dew of Heaven, then keep growing at home — with hands-on builds, playful activities, and projects that stay open all year.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#cta">Create your family account →</a>
+        <a class="btn btn-ghost" href="#inside">See how a topic works</a>
+      </div>
+      <p class="hero-note">🌻 Free for Dew of Heaven families · Spring, Texas</p>
     </div>
-    <p class="tcap">This is exactly what a child sees on the tablet. <b>Built for little hands — big buttons, no reading required.</b></p>
-    <div class="tablet" id="tablet"></div>
+    <div class="hero-art">
+      <div class="art-stack">
+        <div class="card-float cf2">
+          <div class="cf-img"><img src="img/kids2.jpg" alt="Children exploring the garden beds"></div>
+          <div class="cf-label">Butterfly Life Cycle</div>
+          <div class="cf-meta">5 stages · 4 activities</div>
+        </div>
+        <div class="card-float cf1">
+          <div class="cf-img"><img src="img/kids1.jpg" alt="A child planting in the garden"></div>
+          <div class="cf-label">Plant Life Cycle</div>
+          <div class="cf-meta">Live session Saturday</div>
+          <span class="cf-pill">● Live this week</span>
+        </div>
+        <div class="card-float cf3">
+          <div class="cf-img"><img src="img/kids4.jpg" alt="Children at the worm farm"></div>
+          <div class="cf-label">Worm-in-a-Cup Observatory</div>
+          <div class="cf-meta">Build it at home · 20 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="wrap strip-in">
+    <span class="strip-item"><b>6</b> garden topics</span>
+    <span class="strip-item"><b>5</b> stages inside every topic</span>
+    <span class="strip-item"><b>Live</b> sessions with real gardeners</span>
+    <span class="strip-item"><b>K–6</b> homeschool, public &amp; private</span>
   </div>
 </div>
+
+<section id="topics">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Pick a topic</div>
+      <h2>Six ways to dig in</h2>
+      <p>Every topic starts with a live session and opens into a whole world of things to build, sort, match, and grow.</p>
+    </div>
+    <div class="topics">
+
+      <a class="topic t-plant" href="#inside">
+        <div class="topic-art">🌻</div>
+        <div class="topic-body">
+          <h3>Plant Life Cycle</h3>
+          <p>From a seed the size of a freckle to a sunflower taller than you. Follow the whole journey.</p>
+          <div class="topic-foot">
+            <span class="stages"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i></span>
+            <span class="tag tag-open">Open now</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="topic t-butterfly locked" href="#journey">
+        <span class="lockbadge">🔒</span>
+        <div class="topic-art">🦋</div>
+        <div class="topic-body">
+          <h3>Butterfly Life Cycle</h3>
+          <p>Egg, caterpillar, chrysalis, butterfly — and the garden flowers that keep them coming back.</p>
+          <div class="topic-foot">
+            <span class="stages"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></span>
+            <span class="tag tag-lock">Live session Sat</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="topic t-frog locked" href="#journey">
+        <span class="lockbadge">🔒</span>
+        <div class="topic-art">🐸</div>
+        <div class="topic-body">
+          <h3>Frog Life Cycle</h3>
+          <p>Meet the tadpoles in the garden pond and watch them grow legs, lungs, and a very loud voice.</p>
+          <div class="topic-foot">
+            <span class="stages"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></span>
+            <span class="tag tag-lock">Live session Sat</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="topic t-worm locked" href="#journey">
+        <span class="lockbadge">🔒</span>
+        <div class="topic-art">🪱</div>
+        <div class="topic-body">
+          <h3>Worms &amp; Living Soil</h3>
+          <p>Nature's recyclers. Find out how a worm turns yesterday's banana peel into next year's tomatoes.</p>
+          <div class="topic-foot">
+            <span class="stages"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></span>
+            <span class="tag tag-soon">Coming soon</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="topic t-pollinator locked" href="#journey">
+        <span class="lockbadge">🔒</span>
+        <div class="topic-art">🐝</div>
+        <div class="topic-body">
+          <h3>Pollinators at Work</h3>
+          <p>No bees, no strawberries. Discover the tiny workers who make almost every meal possible.</p>
+          <div class="topic-foot">
+            <span class="stages"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></span>
+            <span class="tag tag-soon">Coming soon</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="topic t-soil locked" href="#journey">
+        <span class="lockbadge">🔒</span>
+        <div class="topic-art">🥕</div>
+        <div class="topic-body">
+          <h3>Garden to Kitchen</h3>
+          <p>Which part do we eat? Trace real food back to roots, stems, leaves, and flowers — then cook it.</p>
+          <div class="topic-foot">
+            <span class="stages"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></span>
+            <span class="tag tag-soon">Coming soon</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="inside" id="inside">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Inside a topic</div>
+      <h2>It starts with a live session — and it doesn't stop there</h2>
+      <p>Every topic moves through the same five stages, so children always know what comes next. Click through to see how far one topic goes.</p>
+    </div>
+
+    <div class="stage-tabs" id="tabs">
+      <button class="stab on" data-s="0"><span class="n">1</span> Show what you know</button>
+      <button class="stab" data-s="1"><span class="n">2</span> Meet us live</button>
+      <button class="stab" data-s="2"><span class="n">3</span> Build it at home</button>
+      <button class="stab" data-s="3"><span class="n">4</span> Practice &amp; play</button>
+      <button class="stab" data-s="4"><span class="n">5</span> Show what you grew</button>
+    </div>
+
+    <div class="stage-panel" id="panel"></div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">The journey</div>
+      <h2>How a family moves through it</h2>
+      <p>Each step opens the next. Once something is open, it stays open — forever.</p>
+    </div>
+    <div class="journey">
+      <div class="jstep">
+        <div class="jn">1</div>
+        <h4>Sign up</h4>
+        <p>A grown-up makes one family account and adds each child by first name.</p>
+      </div>
+      <div class="jstep">
+        <div class="jn">2</div>
+        <h4>Before-quiz</h4>
+        <p>A quick, playful check of what they already know. No grades, no wrong answers shown.</p>
+      </div>
+      <div class="jstep key">
+        <div class="jn">3</div>
+        <h4>Join us live</h4>
+        <p>The session opens right here on the platform. Real gardeners, real questions.</p>
+      </div>
+      <div class="jstep key">
+        <div class="jn">4</div>
+        <h4>Garden word</h4>
+        <p>We say a secret word during the session. Type it in to unlock everything.</p>
+      </div>
+      <div class="jstep">
+        <div class="jn">5</div>
+        <h4>Explore &amp; build</h4>
+        <p>Activities, hands-on projects, and the session recording — all yours now.</p>
+      </div>
+      <div class="jstep">
+        <div class="jn">6</div>
+        <h4>After-quiz</h4>
+        <p>The same questions again. Watch how much they grew, then keep it open all year.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grown" id="grownups">
+  <div class="wrap grown-grid">
+    <div>
+      <div class="eyebrow">For grown-ups</div>
+      <h2>Proof the learning happened</h2>
+      <p style="font-size:18px;margin-bottom:8px">Every child takes the same short quiz before the live session and again after they've explored. The difference between those two numbers is the thing funders ask for and almost nobody can produce.</p>
+      <div class="gfeat">
+        <div>
+          <h4>Measured growth, per child</h4>
+          <p>Not attendance headcounts — actual before-and-after learning gain for every child who takes part.</p>
+        </div>
+        <div>
+          <h4>Ready for your grant report</h4>
+          <p>Export a clean spreadsheet by session, by topic, or across the whole year.</p>
+        </div>
+        <div>
+          <h4>You run it yourself</h4>
+          <p>Add a topic, paste your session link, drop in a video. No developer, no ticket, no waiting.</p>
+        </div>
+      </div>
+    </div>
+    <div class="report">
+      <div class="report-head">
+        <h4>Plant Life Cycle</h4>
+        <span>Session of Aug 9 · 24 children</span>
+      </div>
+      <div class="metric">
+        <span class="metric-lab">Before</span>
+        <span class="metric-bar"><i style="width:41%;background:rgba(255,255,255,.28)"></i></span>
+        <span class="metric-val">41%</span>
+      </div>
+      <div class="metric">
+        <span class="metric-lab">After</span>
+        <span class="metric-bar"><i style="width:83%;background:var(--sun)"></i></span>
+        <span class="metric-val">83%</span>
+      </div>
+      <div class="gain">
+        <b>+42 pts</b>
+        <span>average learning gain across 24 children</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <span class="blob blob-sun"></span>
+  <div class="wrap" style="position:relative;z-index:2">
+    <h2>Come grow with us</h2>
+    <p>One free family account opens every live session, every activity, and every project — for as many children as you've got.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-primary" href="#">Create your family account</a>
+      <a class="btn btn-ghost" href="#">I already have one</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>Dew of Heaven Children's Garden · Spring, TX · “We grow curious, confident children.”</span>
+    <span>Built by <a href="#">Dr. Erin Jacques</a></span>
+  </div>
+</footer>
+
+<div class="proto"><i></i> Prototype — visual layout only</div>
 
 <script>
-/* ---------- content ---------- */
-var PARTS={
-  root:{e:'🟫',t:"My roots are like little straws underground! They drink water and hold me down."},
-  stem:{e:'🌿',t:"My stem is a tiny elevator! Water rides up it to feed my leaves."},
-  leaf:{e:'🍃',t:"My leaves catch sunshine and turn it into food. That's my superpower!"},
-  flower:{e:'🌸',t:"My flower says hello to the bees, who help me make seeds for new plants."}
-};
-var SCRAPS=[{e:'🍌',y:1},{e:'🍎',y:1},{e:'🥬',y:1},{e:'🥕',y:1},{e:'☕',y:1},{e:'🍕',y:0},{e:'🧴',y:0},{e:'🔋',y:0}];
-var STAGES=[{e:'🟤',n:'A tiny seed'},{e:'🌱',n:'A little sprout!'},{e:'🌿',n:'Growing leaves!'},{e:'🪴',n:'A strong plant!'},{e:'🌻',n:'A beautiful flower!'}];
-var FOODS=[{e:'🥕',nm:'Carrot',p:'Root'},{e:'🥦',nm:'Broccoli',p:'Flower'},{e:'🥬',nm:'Lettuce',p:'Leaf'},{e:'🌽',nm:'Corn',p:'Seed'}];
-var PARTOPTS=['Root','Leaf','Flower','Seed'];
-var TAGS={parts:'Station 1 · Meet Sunny the Sprout',worm:'Station 2 · The Worm Café',seed:'Station 3 · Seed to Sprout',eat:'Station 4 · Which Part Do We Eat?'};
+var STAGES=[
+ {kicker:'Stage 1 · Before the session',
+  h:'Show what you know',
+  p:'Before the live session, each child plays through a short, picture-based quiz. It takes four minutes, needs almost no reading, and never shows a red X — it is a starting line, not a test.',
+  list:['5–8 questions, all tap-to-answer','No right/wrong shown — nothing to memorise','Sets the baseline we measure against later'],
+  vis:'quiz'},
+ {kicker:'Stage 2 · Saturday morning',
+  h:'Meet us live',
+  p:'The session opens right on the platform. Real gardeners, real beds, real questions from real children — and somewhere in the middle we say the secret garden word.',
+  list:['One button — no links to hunt for','Recording appears here afterwards','The garden word unlocks everything else'],
+  vis:'live'},
+ {kicker:'Stage 3 · Hands in the soil',
+  h:'Build it at home',
+  p:'The projects families keep asking for, written step by step for a grown-up and a child to do together. Worm-in-a-cup, bee houses, strawberry jam, regrowing a green onion on the windowsill.',
+  list:['Materials list you can check before starting','Step-by-step build mode, one card at a time','A "why it works" note for the curious'],
+  vis:'build'},
+ {kicker:'Stage 4 · Any time',
+  h:'Practice &amp; play',
+  p:'Sort the scraps the worms will eat. Put the life cycle in order. Match the food to the part of the plant it came from. Quick, tactile, and endlessly repeatable.',
+  list:['Made for tablets and little hands','Play again as often as they like','Badges for every activity finished'],
+  vis:'play'},
+ {kicker:'Stage 5 · Show your growth',
+  h:'Show what you grew',
+  p:'The same quiz from stage one comes back. This time the child sees the score, the growth, and a certificate with their name on it — and the whole topic stays unlocked for good.',
+  list:['Side-by-side: before and after','A printable Junior Garden Scientist certificate','Everything stays open for revisiting'],
+  vis:'grew'}
+];
 
-var sun=0,wat=0,picked=null,eatDone=0,wormPlaced=0;
-
-function openDemo(which){
-  document.getElementById('mtag').textContent=TAGS[which];
-  document.getElementById('tablet').innerHTML=render(which);
-  if(which==='worm') buildWorm();
-  if(which==='eat') buildEat();
-  if(which==='seed') resetSeed();
-  document.getElementById('overlay').classList.add('on');
-  document.body.style.overflow='hidden';
-}
-function closeDemo(){ document.getElementById('overlay').classList.remove('on'); document.body.style.overflow=''; }
-
-function render(which){
-  if(which==='parts'){
-    return '<p class="kh">Meet Sunny 🌻</p><p class="ksub">Tap one of my parts!</p>'+
-      '<div class="bigbtns">'+
-      '<button class="bigbtn" style="background:#C98A2E" onclick="tapPart(\'root\',this)"><span class="e">🟫</span>Roots</button>'+
-      '<button class="bigbtn" style="background:#5C7357" onclick="tapPart(\'stem\',this)"><span class="e">🌿</span>Stem</button>'+
-      '<button class="bigbtn" style="background:#8AA983" onclick="tapPart(\'leaf\',this)"><span class="e">🍃</span>Leaves</button>'+
-      '<button class="bigbtn" style="background:#B0603A" onclick="tapPart(\'flower\',this)"><span class="e">🌸</span>Flower</button>'+
-      '</div><div class="answer" id="partAns"><span class="big">🌻</span><span>Hi friend! Tap a part to learn my secret.</span></div>';
-  }
-  if(which==='worm'){
-    return '<p class="kh">The Worm Café 🪱</p><p class="ksub">Tap a scrap to sort it.</p>'+
-      '<div class="items" id="wormItems"></div>'+
-      '<div class="bins">'+
-      '<div class="bin yes"><div class="title">😋 Feed the worms</div><div class="drop" id="binYes"></div></div>'+
-      '<div class="bin no"><div class="title">🚫 No thanks</div><div class="drop" id="binNo"></div></div>'+
-      '</div><div class="progress" id="wormProg"></div><div class="cheer" id="wormCheer"></div>';
-  }
-  if(which==='seed'){
-    return '<p class="kh">Seed to Sprout 🌱</p><p class="ksub">Tap sun and water to help it grow!</p>'+
-      '<div class="meter"><span class="c">☀️ Sun: <b id="sunC">0</b></span><span class="c">💧 Water: <b id="watC">0</b></span></div>'+
-      '<div class="pot" id="pot">🟤</div><div class="stagename" id="stageName">A tiny seed</div>'+
-      '<div class="bigbtns">'+
-      '<button class="bigbtn" style="background:#C98A2E" onclick="grow(\'sun\')"><span class="e">☀️</span>Sun</button>'+
-      '<button class="bigbtn" style="background:#3E7CA8" onclick="grow(\'water\')"><span class="e">💧</span>Water</button>'+
-      '</div><div class="cheer" id="seedCheer"></div>'+
-      '<div class="minirow"><button class="minibtn" onclick="resetSeed()">↺ New seed</button></div>';
-  }
-  if(which==='eat'){
-    return '<p class="kh">Which Part Do We Eat? 🥕</p><p class="ksub">Tap a food, then tap its plant part.</p>'+
-      '<div class="matchrow" id="foodRow"></div><div class="partbtns" id="partRow"></div>'+
-      '<div class="progress" id="eatProg"></div><div class="cheer" id="eatCheer"></div>';
-  }
+function vis(kind){
+ if(kind==='quiz') return '<div class="device"><div class="device-top"><i></i><i></i><i></i></div>'+
+   '<div class="dv-title">What comes first? 🌱</div><div class="dv-sub">Question 2 of 6</div>'+
+   '<div class="dv-row"><div class="dv-chip"><span class="e">🌻</span>Flower</div><div class="dv-chip hit"><span class="e">🟤</span>Seed</div>'+
+   '<div class="dv-chip"><span class="e">🌿</span>Stem</div><div class="dv-chip"><span class="e">🍃</span>Leaf</div></div>'+
+   '<div class="dv-bar"><i style="width:33%"></i></div></div>';
+ if(kind==='live') return '<div class="device"><div class="device-top"><i></i><i></i><i></i></div>'+
+   '<div class="dv-video"><span class="live"><i></i>Live now</span><img src="img/wide1.jpg" alt=""><span>▶</span></div>'+
+   '<div class="dv-title">Plant Life Cycle</div><div class="dv-sub">Saturday · 10:00 AM with Ms. Angela</div>'+
+   '<div style="margin-top:13px;background:var(--sage);color:#fff;text-align:center;padding:12px;border-radius:12px;font-weight:600;font-size:14px">Join the garden session</div></div>';
+ if(kind==='build') return '<div class="device"><div class="device-top"><i></i><i></i><i></i></div>'+
+   '<div class="dv-title">Worm-in-a-Cup 🪱</div><div class="dv-sub">Step 2 of 6 · Add your worms</div>'+
+   '<div class="dv-video" style="aspect-ratio:16/11"><img src="img/kids4.jpg" alt=""><span style="font-size:38px">🪱</span></div>'+
+   '<div style="font-size:13.5px;color:var(--body);line-height:1.5">Gently place 2–3 red wigglers on top with a few tiny fruit peels.</div>'+
+   '<div class="dv-bar"><i style="width:33%"></i></div></div>';
+ if(kind==='play') return '<div class="device"><div class="device-top"><i></i><i></i><i></i></div>'+
+   '<div class="dv-title">Feed the worms 😋</div><div class="dv-sub">Tap a scrap to sort it</div>'+
+   '<div class="dv-row"><div class="dv-chip hit"><span class="e">🍌</span>Yes!</div><div class="dv-chip"><span class="e">🔋</span>No thanks</div>'+
+   '<div class="dv-chip hit"><span class="e">🍎</span>Yes!</div><div class="dv-chip"><span class="e">🍕</span>No thanks</div></div>'+
+   '<div style="margin-top:14px;text-align:center;font-size:13px;color:var(--sage);font-weight:600">3 of 8 sorted — keep going!</div></div>';
+ return '<div class="device"><div class="device-top"><i></i><i></i><i></i></div>'+
+   '<div class="dv-title">Look how you grew! 🌟</div><div class="dv-sub">Plant Life Cycle · finished</div>'+
+   '<div style="display:flex;gap:10px;margin-bottom:12px"><div style="flex:1;background:var(--paper2);border-radius:12px;padding:13px;text-align:center"><div style="font-size:12px;color:var(--muted)">Before</div><div style="font-family:var(--serif);font-size:25px;font-weight:700;color:var(--muted)">2/6</div></div>'+
+   '<div style="flex:1;background:var(--sage-l);border-radius:12px;padding:13px;text-align:center"><div style="font-size:12px;color:var(--sage-d)">After</div><div style="font-family:var(--serif);font-size:25px;font-weight:700;color:var(--sage-d)">6/6</div></div></div>'+
+   '<div style="background:var(--sun-l);border-radius:12px;padding:13px;text-align:center;font-size:13.5px;font-weight:600;color:#8A6410">🏅 Junior Garden Scientist</div></div>';
 }
 
-/* station 1 */
-function tapPart(k,btn){
-  var p=PARTS[k];
-  var a=document.getElementById('partAns');
-  a.innerHTML='<span class="big bump">'+p.e+'</span><span>'+p.t+'</span>';
-  a.classList.remove('pop'); void a.offsetWidth; a.classList.add('pop');
-  if(btn){ btn.classList.remove('flash'); void btn.offsetWidth; btn.classList.add('flash'); }
-  a.scrollIntoView({behavior:'smooth',block:'nearest'});
+function draw(i){
+ var s=STAGES[i];
+ document.getElementById('panel').innerHTML=
+  '<div class="sp-copy"><div class="kicker">'+s.kicker+'</div><h3>'+s.h+'</h3><p>'+s.p+'</p>'+
+  '<ul class="sp-list">'+s.list.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>'+
+  '<div class="sp-vis">'+vis(s.vis)+'</div>';
+ var b=document.querySelectorAll('.stab');
+ for(var k=0;k<b.length;k++){ b[k].className='stab'+(k===i?' on':''); }
 }
-
-/* station 2 */
-function buildWorm(){
-  var box=document.getElementById('wormItems'); box.innerHTML=''; wormPlaced=0;
-  document.getElementById('binYes').innerHTML=''; document.getElementById('binNo').innerHTML=''; document.getElementById('wormCheer').textContent='';
-  SCRAPS.forEach(function(s,i){
-    var d=document.createElement('div'); d.className='item'; d.textContent=s.e; d.dataset.i=i;
-    d.onclick=function(){placeWorm(i);};
-    box.appendChild(d);
-  });
-  upW();
-}
-function placeWorm(i){
-  var s=SCRAPS[i]; var el=document.querySelector('#wormItems .item[data-i="'+i+'"]'); if(!el)return;
-  el.remove(); document.getElementById(s.y?'binYes':'binNo').innerHTML+=s.e+' '; wormPlaced++; upW();
-  document.getElementById('wormCheer').textContent = wormPlaced===SCRAPS.length ? '🎉 Great composting!' : '';
-}
-function upW(){var p=document.getElementById('wormProg'); if(p)p.textContent='Sorted '+wormPlaced+' of '+SCRAPS.length;}
-
-/* station 3 */
-function grow(w){
-  if(w==='sun')sun++; else wat++;
-  document.getElementById('sunC').textContent=sun; document.getElementById('watC').textContent=wat;
-  var step=Math.min(Math.floor((sun+wat)/2),STAGES.length-1); var st=STAGES[step];
-  var pot=document.getElementById('pot'); pot.textContent=st.e; pot.style.transform='scale(1.15)';
-  setTimeout(function(){pot.style.transform='scale(1)';},180);
-  document.getElementById('stageName').textContent=st.n;
-  document.getElementById('seedCheer').textContent = step===STAGES.length-1 ? '🌻 Plants need sun AND water!' : '';
-}
-function resetSeed(){sun=0;wat=0;
-  var a=document.getElementById('sunC'); if(a)a.textContent=0; var b=document.getElementById('watC'); if(b)b.textContent=0;
-  var p=document.getElementById('pot'); if(p)p.textContent='🟤'; var n=document.getElementById('stageName'); if(n)n.textContent='A tiny seed';
-  var c=document.getElementById('seedCheer'); if(c)c.textContent='';}
-
-/* station 4 */
-function buildEat(){
-  var fr=document.getElementById('foodRow'); fr.innerHTML=''; eatDone=0; picked=null; document.getElementById('eatCheer').textContent='';
-  FOODS.forEach(function(f,i){
-    var c=document.createElement('div'); c.className='foodcard'; c.dataset.i=i;
-    c.innerHTML='<div class="e">'+f.e+'</div><div class="nm">'+f.nm+'</div>';
-    c.onclick=function(){ if(c.classList.contains('done'))return; document.querySelectorAll('.foodcard').forEach(function(x){x.style.outline='';}); c.style.outline='3px solid #C98A2E'; picked=i; };
-    fr.appendChild(c);
-  });
-  var pr=document.getElementById('partRow'); pr.innerHTML='';
-  PARTOPTS.forEach(function(p){
-    var b=document.createElement('button'); b.className='bigbtn'; b.style.background='#5C7357'; b.style.minHeight='52px'; b.style.flex='1'; b.style.minWidth='104px';
-    b.textContent=p; b.onclick=function(){checkEat(p);}; pr.appendChild(b);
-  });
-  upE();
-}
-function checkEat(p){
-  if(picked===null){document.getElementById('eatCheer').textContent='Pick a food first! 👆'; return;}
-  var f=FOODS[picked];
-  if(f.p===p){ var c=document.querySelector('.foodcard[data-i="'+picked+'"]'); c.classList.add('done'); c.style.outline=''; eatDone++; picked=null; upE();
-    document.getElementById('eatCheer').textContent = eatDone===FOODS.length ? '🎉 You matched them all!' : '✅ Great match!';
-  } else { document.getElementById('eatCheer').textContent='Try another part! 🤔'; }
-}
-function upE(){var p=document.getElementById('eatProg'); if(p)p.textContent='Matched '+eatDone+' of '+FOODS.length;}
-
-document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeDemo(); });
+document.getElementById('tabs').addEventListener('click',function(e){
+ var t=e.target.closest('.stab'); if(t) draw(+t.dataset.s);
+});
+draw(0);
 </script>
 </body>
 </html>
