@@ -301,10 +301,34 @@ img{max-width:100%;display:block}
     </div>
   </section>
 
-  <!-- STAGE 2 -->
-  <section class="stage" id="s2">
+  <!-- STAGE 2 : THE MOVIE -->
+  <section class="stage" id="smovie">
     <div class="stage-hd">
       <div class="snum">2</div>
+      <div>
+        <div class="sk">Watch any time</div>
+        <h2>The garden movie</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>Three minutes in the real garden with Ms. Nia. Watch it before Saturday, watch it again after, watch it at bedtime &mdash; it is always here.</p>
+      <div class="livecard">
+        <div class="shot" id="movieSlot"></div>
+        <div class="livemeta">
+          <div>
+            <b>Plant Life Cycle &mdash; the movie</b>
+            <span id="movieSub">Always available</span>
+          </div>
+          <a class="btn btn-primary" id="movieBtn" href="#" target="_blank" rel="noopener" style="display:none">Watch on YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 3 : LIVE -->
+  <section class="stage" id="s2">
+    <div class="stage-hd">
+      <div class="snum">3</div>
       <div>
         <div class="sk">Saturday · 10:00 AM</div>
         <h2>Meet us live in the garden</h2>
@@ -332,6 +356,8 @@ img{max-width:100%;display:block}
         <summary>&#9881;&#65039; Session setup &mdash; for Ms. Nia</summary>
         <div class="setup-bd">
           <p class="setup-note">This is the only place you ever have to touch. Paste your links, press save, and the family page above updates.</p>
+          <label>Topic movie link <span>(your 3-minute garden film &mdash; YouTube unlisted works well)</span></label>
+          <input id="inMovie" placeholder="https://youtu.be/xxxxxxxxxxx">
           <label>Your Zoom link <span>(your personal meeting room &mdash; same link every time)</span></label>
           <input id="inZoom" placeholder="https://us02web.zoom.us/j/1234567890">
           <label>Recording link <span>(after the session &mdash; a YouTube unlisted link works well)</span></label>
@@ -365,7 +391,7 @@ img{max-width:100%;display:block}
   <section class="stage lock" id="s3">
     <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join us on Saturday and type in the garden word to unlock these.</p></div></div>
     <div class="stage-hd">
-      <div class="snum">3</div>
+      <div class="snum">4</div>
       <div>
         <div class="sk">Hands in the soil</div>
         <h2>Build it at home</h2>
@@ -383,7 +409,7 @@ img{max-width:100%;display:block}
   <section class="stage lock" id="s4">
     <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>These are the tap-and-play activities. They unlock with the garden word.</p></div></div>
     <div class="stage-hd">
-      <div class="snum">4</div>
+      <div class="snum">5</div>
       <div>
         <div class="sk">Any time you like</div>
         <h2>Practice &amp; play</h2>
@@ -421,7 +447,7 @@ img{max-width:100%;display:block}
   <section class="stage lock" id="s5">
     <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Finish the activities first</h4><p>Do a few builds and activities, then come back and show us how much you grew.</p></div></div>
     <div class="stage-hd">
-      <div class="snum">5</div>
+      <div class="snum">6</div>
       <div>
         <div class="sk">Show your growth</div>
         <h2>Show what you grew</h2>
@@ -498,8 +524,12 @@ function setPre(){
 function preWasLate(){ try{ return localStorage.getItem(PREKEY+'_late')==='1'; }catch(e){ return false; } }
 
 var RAIL=[
- {n:1,label:'Before-quiz'},{n:2,label:'Live session'},{n:3,label:'Build at home'},
- {n:4,label:'Practice & play'},{n:5,label:'After-quiz'}
+ {n:1,label:'Before-check', id:'s1'},
+ {n:2,label:'The movie',    id:'smovie'},
+ {n:3,label:'Live session', id:'s2'},
+ {n:4,label:'Build at home',id:'s3'},
+ {n:5,label:'Practice & play', id:'s4'},
+ {n:6,label:'After-check',  id:'s5'}
 ];
 
 function paint(){
@@ -530,11 +560,11 @@ function paint(){
     wb.style.opacity = pre ? '' : '.5';
   }
 
-  var done = unlocked ? 4 : (pre?1:0);
-  var now  = unlocked ? 5 : (pre?2:1);
+  var done = unlocked ? 5 : (pre?1:0);
+  var now  = unlocked ? 6 : (pre?2:1);
   document.getElementById('rail').innerHTML = RAIL.map(function(r){
     var cls = r.n<=done ? 'done' : (r.n===now ? 'now' : '');
-    return '<a class="rpill '+cls+'" href="#s'+r.n+'"><i>'+(r.n<=done?'\u2713':r.n)+'</i>'+r.label+'</a>';
+    return '<a class="rpill '+cls+'" href="#'+r.id+'"><i>'+(r.n<=done?'\u2713':r.n)+'</i>'+r.label+'</a>';
   }).join('');
 }
 
@@ -900,6 +930,30 @@ function embedUrl(u){
   return null;   // Zoom share links can't be iframed; we link out instead
 }
 
+function paintMovie(){
+  var cfg=setup(), slot=document.getElementById('movieSlot');
+  var btn=document.getElementById('movieBtn'), sub=document.getElementById('movieSub');
+  if(!slot) return;
+  var emb=embedUrl(cfg.movie);
+  if(emb){
+    slot.innerHTML='<iframe src="'+emb+'" allowfullscreen title="Topic movie"></iframe>';
+    sub.textContent='Watch it as many times as you like';
+    btn.style.display='none';
+  } else if(cfg.movie){
+    slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#9654;</div>'+
+      '<b>Watch the movie</b><span>Opens in a new tab</span></div>';
+    sub.textContent='Watch it as many times as you like';
+    btn.href=cfg.movie; btn.style.display='inline-flex';
+  } else {
+    /* Deliberately visible and empty, so Ms. Nia can see exactly where
+       her film goes before she has filmed it. */
+    slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#127916;</div>'+
+      '<b>Ms. Nia&rsquo;s movie goes here</b><span>Three minutes in the real garden &mdash; add the link in Session setup</span></div>';
+    sub.textContent='Coming soon';
+    btn.style.display='none';
+  }
+}
+
 function paintVideo(){
   var cfg = setup(), slot = document.getElementById('videoSlot');
   var title = document.getElementById('sessTitle'), when = document.getElementById('sessWhen');
@@ -943,11 +997,12 @@ function paintVideo(){
 
 var ss=document.getElementById('saveSetup');
 if(ss) ss.onclick=function(){
-  var cfg={ zoom:document.getElementById('inZoom').value.trim(),
+  var cfg={ movie:document.getElementById('inMovie').value.trim(),
+            zoom:document.getElementById('inZoom').value.trim(),
             rec: document.getElementById('inRec').value.trim(),
             when:document.getElementById('inWhen').value,
             word:document.getElementById('inWord').value.trim().toLowerCase() };
-  saveSetup(cfg); paintVideo();
+  saveSetup(cfg); paintVideo(); paintMovie();
   document.getElementById('setupMsg').textContent='Saved. The family page above is updated.';
 };
 
@@ -955,6 +1010,7 @@ var df=document.getElementById('demoFill');
 if(df) df.onclick=function(){
   document.getElementById('inRec').value='https://www.youtube.com/watch?v=uxpDa-c-4Mc';
   document.getElementById('inZoom').value='https://us02web.zoom.us/j/1234567890';
+  document.getElementById('inMovie').value='https://www.youtube.com/watch?v=uxpDa-c-4Mc';
   document.getElementById('inWord').value='sunflower';
   document.getElementById('setupMsg').textContent='Sample links filled in — press Save, then tap “After the session”.';
 };
@@ -965,8 +1021,10 @@ if(df) df.onclick=function(){
   if(cfg.rec)  document.getElementById('inRec').value=cfg.rec;
   if(cfg.word) document.getElementById('inWord').value=cfg.word;
   if(cfg.when) document.getElementById('inWhen').value=cfg.when;
+  if(cfg.movie) document.getElementById('inMovie').value=cfg.movie;
 })();
 paintVideo();
+paintMovie();
 
 /* ================= stage 3: builds, inline ================= */
 var curBuild=null, buildStep=0;
