@@ -136,3 +136,19 @@ alter view public.child_progress set (security_invoker = on);
 --   ('nia@example.org',   'Ms. Nia — Garden Director'),
 --   ('kiara@example.org', 'Kiara — Programme Lead')
 -- on conflict (email) do nothing;
+
+-- ===================================================================
+-- Sessions are a history, not a setting
+-- ===================================================================
+-- Each session a topic runs is its own row, so old garden words keep
+-- unlocking and old recordings are never overwritten.
+alter table public.sessions add column if not exists movie_url text;
+
+-- Families need to read the schedule and the recordings; only admins
+-- write. (The read policy from supabase-schema.sql already allows any
+-- signed-in family to select.)
+
+-- Progress must survive changing device, so one row per child per
+-- activity, upserted.
+create unique index if not exists progress_child_activity
+  on public.progress (child_id, activity_key);

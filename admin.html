@@ -135,19 +135,17 @@ tr:last-child td{border-bottom:none}
       <input id="sRec" placeholder="https://youtu.be/xxxxxxxxxxx">
 
       <div class="row">
-        <label class="chk" style="margin:0"><input type="checkbox" id="sRepeat"> Repeats every week at this time</label>
-      </div>
-
-      <div class="row">
-        <button class="btn btn-primary" id="sSave">Save session</button>
-        <button class="btn btn-ghost" id="sNext">Roll forward one week</button>
+        <button class="btn btn-primary" id="sSave">Add this session</button>
+        <button class="btn btn-ghost" id="sNext">Prefill next week</button>
+        <button class="btn btn-ghost" id="sClear">Clear</button>
       </div>
       <div class="msg" id="sMsg"></div>
+      <p class="demo" style="margin-top:14px">Each session is kept. Old garden words carry on working and old recordings are never replaced, so a family can catch up months later.</p>
     </div>
 
     <div class="card">
-      <h3>All sessions</h3>
-      <p class="sub">What every topic is currently showing families.</p>
+      <h3>Session history</h3>
+      <p class="sub">Every session this topic has run. Paste a recording in after the day, and it stays available for good.</p>
       <div class="scroll"><table id="sessTable"></table></div>
     </div>
   </section>
@@ -271,52 +269,104 @@ document.getElementById('csvBtn').onclick=function(){
 };
 
 /* ---------- sessions ---------- */
-function loadSession(){
-  var slug=document.getElementById('sTopic').value, cfg=TGSession.get(slug);
-  document.getElementById('sWhen').value  = cfg.when||'';
-  document.getElementById('sWord').value  = cfg.word||'';
-  document.getElementById('sZoom').value  = cfg.zoom||'';
-  document.getElementById('sMovie').value = cfg.movie||'';
-  document.getElementById('sRec').value   = cfg.rec||'';
-  document.getElementById('sRepeat').checked = !!cfg.repeat;
+var editingId = null;
+
+function pad(n){ return (n<10?'0':'')+n; }
+function toLocalInput(d){
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
 }
-function saveSession(msg){
+
+function clearForm(){
+  editingId=null;
+  document.getElementById('sWhen').value='';
+  document.getElementById('sWord').value='';
+  document.getElementById('sRec').value='';
+  document.getElementById('sSave').textContent='Add this session';
+  document.getElementById('sMsg').textContent='';
+}
+
+/* The Zoom room and the movie rarely change, so carry them across
+   from the last session rather than making her retype them. */
+function prefillFromLast(){
   var slug=document.getElementById('sTopic').value;
-  TGSession.set(slug, {
-    when:  document.getElementById('sWhen').value,
-    word:  document.getElementById('sWord').value.trim().toLowerCase(),
-    zoom:  document.getElementById('sZoom').value.trim(),
-    movie: document.getElementById('sMovie').value.trim(),
-    rec:   document.getElementById('sRec').value.trim(),
-    repeat:document.getElementById('sRepeat').checked
-  });
-  document.getElementById('sMsg').textContent = msg||'Saved. Families see this now.';
-  drawSessions();
+  var rows=TGSession.forTopic(slug), last=rows[rows.length-1];
+  if(last){
+    document.getElementById('sZoom').value  = last.join_url||'';
+    document.getElementById('sMovie').value = last.movie_url||'';
+  }
 }
-document.getElementById('sTopic').onchange=loadSession;
-document.getElementById('sSave').onclick=function(){ saveSession(); };
+
+async function saveSession(){
+  var slug=document.getElementById('sTopic').value;
+  var when=document.getElementById('sWhen').value;
+  if(!when){ document.getElementById('sMsg').textContent='Pick a date and time first.'; return; }
+  var res = await TGSession.save({
+    id: editingId,
+    topic: slug,
+    starts_at: new Date(when).toISOString(),
+    word: document.getElementById('sWord').value,
+    join_url: document.getElementById('sZoom').value.trim(),
+    movie_url: document.getElementById('sMovie').value.trim(),
+    recording_url: document.getElementById('sRec').value.trim(),
+    host_name: 'Ms. Nia'
+  });
+  if(res !== true){ document.getElementById('sMsg').textContent='Could not save: '+res; return; }
+  document.getElementById('sMsg').textContent = editingId ? 'Updated.' : 'Added. Families see it now.';
+  clearForm(); prefillFromLast(); drawSessions();
+}
+
+function editSession(id){
+  var row=TGSession.all().filter(function(x){return String(x.id)===String(id)})[0];
+  if(!row) return;
+  editingId=row.id;
+  document.getElementById('sTopic').value=row.topic;
+  document.getElementById('sWhen').value=toLocalInput(new Date(row.starts_at));
+  document.getElementById('sWord').value=row.word||'';
+  document.getElementById('sZoom').value=row.join_url||'';
+  document.getElementById('sMovie').value=row.movie_url||'';
+  document.getElementById('sRec').value=row.recording_url||'';
+  document.getElementById('sSave').textContent='Save changes';
+  document.getElementById('sMsg').textContent='Editing the session on '+TGSession.long(row)+'.';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('sTopic').onchange=function(){ clearForm(); prefillFromLast(); drawSessions(); };
+document.getElementById('sSave').onclick=saveSession;
+document.getElementById('sClear').onclick=function(){ clearForm(); };
 document.getElementById('sNext').onclick=function(){
-  var w=document.getElementById('sWhen').value;
-  if(!w){ document.getElementById('sMsg').textContent='Set a date first.'; return; }
-  var d=new Date(w); d.setDate(d.getDate()+7);
-  var pad=function(n){return (n<10?'0':'')+n};
-  document.getElementById('sWhen').value =
-    d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
-  saveSession('Moved on a week. Remember to change the garden word.');
+  var slug=document.getElementById('sTopic').value;
+  var rows=TGSession.forTopic(slug), last=rows[rows.length-1];
+  var base = last ? new Date(last.starts_at) : new Date();
+  base.setDate(base.getDate()+7);
+  editingId=null;
+  document.getElementById('sSave').textContent='Add this session';
+  document.getElementById('sWhen').value=toLocalInput(base);
+  document.getElementById('sWord').value='';
+  document.getElementById('sRec').value='';
+  prefillFromLast();
+  document.getElementById('sMsg').textContent='Prefilled a week on. Give it a new garden word, then add it.';
 };
 
 function drawSessions(){
-  document.getElementById('sessTable').innerHTML=
-    '<thead><tr><th>Topic</th><th>Next session</th><th>Word</th><th>Recording</th><th>Repeats</th></tr></thead><tbody>'+
-    TOPICS.map(function(t){
-      var cfg=TGSession.get(t.slug), when=TGSession.long(t.slug);
-      var past=TGSession.passed(t.slug);
-      return '<tr><td class="kid">'+esc(t.name)+'</td>'+
-        '<td>'+(when? esc(when)+(past?' <span class="pill late">ended</span>':'') : '<span style="color:var(--faint)">not scheduled</span>')+'</td>'+
-        '<td>'+(cfg.word?esc(cfg.word):'—')+'</td>'+
-        '<td>'+(cfg.rec?'added':'—')+'</td>'+
-        '<td>'+(cfg.repeat?'weekly':'—')+'</td></tr>';
+  var slug=document.getElementById('sTopic').value;
+  var rows=TGSession.forTopic(slug).slice().reverse();
+  var t=document.getElementById('sessTable');
+  if(!rows.length){
+    t.innerHTML='<tbody><tr><td style="color:var(--faint)">No sessions yet for this topic.</td></tr></tbody>';
+    return;
+  }
+  t.innerHTML='<thead><tr><th>Date</th><th>Garden word</th><th>Recording</th><th></th></tr></thead><tbody>'+
+    rows.map(function(r){
+      var past=TGSession.passed(r);
+      return '<tr><td class="kid">'+esc(TGSession.long(r))+
+        '<small>'+esc(TGSession.time(r))+(past?' · ended':' · upcoming')+'</small></td>'+
+        '<td>'+(r.word?esc(r.word):'<span style="color:var(--faint)">—</span>')+'</td>'+
+        '<td>'+(r.recording_url?'added':(past?'<span class="pill late">missing</span>':'—'))+'</td>'+
+        '<td><button class="btn btn-ghost" style="padding:6px 14px;font-size:13px" data-edit="'+r.id+'">Edit</button></td></tr>';
     }).join('')+'</tbody>';
+  [].forEach.call(t.querySelectorAll('[data-edit]'), function(b){
+    b.onclick=function(){ editSession(b.dataset.edit); };
+  });
 }
 
 /* ---------- boot ---------- */
@@ -328,7 +378,8 @@ function drawSessions(){
   document.getElementById('sTopic').innerHTML=opts;
   document.getElementById('filterTopic').innerHTML='<option value="">All topics</option>'+opts;
 
-  loadSession();
+  await TGSession.loadAll();
+  prefillFromLast();
   drawSessions();
   ROWS = await loadReport();
   drawReport();

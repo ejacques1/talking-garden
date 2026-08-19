@@ -195,43 +195,46 @@ var BADGES=[
 
 /* Session details are set by Ms. Nia in the topic's setup panel.
    Tiles read the real date from there instead of saying "Saturday". */
-function prettyDate(slug){ return window.TGSession ? TGSession.short(slug) : null; }
+function nextFor(slug){ return window.TGSession ? TGSession.next(slug) : null; }
+function lastFor(slug){ var p = window.TGSession ? TGSession.past(slug) : []; return p[0]||null; }
 
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
 
 function drawNext(){
   var host=document.getElementById('nextCard'); if(!host||!window.TGSession) return;
-  var nx=TGSession.next(TOPICS.map(function(t){return t.slug;}));
+  var nx=TGSession.soonest(TOPICS.map(function(t){return t.slug;}));
   if(!nx){
     host.innerHTML='<div class="grow"><div class="lab">Live sessions</div>'+
       '<h3>Nothing scheduled yet</h3><p>Ms. Nia will post the next garden session here.</p></div>';
     return;
   }
-  var t=TOPICS.filter(function(x){return x.slug===nx.slug;})[0]||{name:nx.slug};
-  var c=TGSession.countdown(nx.slug)||{days:0,hrs:0,mins:0};
+  var t=TOPICS.filter(function(x){return x.slug===nx.topic;})[0]||{name:nx.topic};
+  var c=TGSession.countdown(nx)||{days:0,hrs:0,mins:0};
   var pad=function(n){ return (n<10?'0':'')+n; };
   host.innerHTML=
     '<div class="grow"><div class="lab">Your next live session</div>'+
       '<h3>'+esc(t.name)+'</h3>'+
-      '<p>'+esc(TGSession.line(nx.slug,'Ms. Nia'))+'</p></div>'+
+      '<p>'+esc(TGSession.line(nx,'Ms. Nia'))+'</p></div>'+
     '<div class="countdown">'+
       '<div class="cd"><b>'+c.days+'</b><small>days</small></div>'+
       '<div class="cd"><b>'+pad(c.hrs)+'</b><small>hrs</small></div>'+
       '<div class="cd"><b>'+pad(c.mins)+'</b><small>min</small></div>'+
     '</div>'+
-    '<a class="btn btn-white" href="topic.html?t='+encodeURIComponent(nx.slug)+'">Get ready &rarr;</a>';
+    '<a class="btn btn-white" href="topic.html?t='+encodeURIComponent(nx.topic)+'">Get ready &rarr;</a>';
 }
 
 function drawTopics(){
   document.getElementById('topics').innerHTML = TOPICS.map(function(t){
     var unlocked = TG.isUnlocked(t.slug) || t.state==='open';
-    var when = prettyDate(t.slug);
+    var nx = nextFor(t.slug), lt = lastFor(t.slug);
+    var when = nx ? TGSession.short(nx) : (lt ? TGSession.short(lt) : null);
+    var isPast = !nx && !!lt;
     var enterable = unlocked && t.href !== '#';
 
     var note, tagCls, tagTxt;
     if(unlocked){            note = t.note; tagCls='tag-open'; tagTxt='Open'; }
     else if(t.state==='live'){
-      if(when && TGSession.passed(t.slug)){
+      if(isPast){
         /* Do not keep advertising a session that already happened. */
         note = 'Last session \u00b7 '+when;
         tagCls='tag-lock'; tagTxt='Ended';
@@ -242,9 +245,7 @@ function drawTopics(){
     }
     else if(t.state==='soon'){ note = 'Coming soon'; tagCls='tag-soon'; tagTxt='Soon'; }
     else {
-      note = when
-        ? ((TGSession.passed(t.slug) ? 'Last session \u00b7 ' : 'Live session \u00b7 ')+when)
-        : 'Not scheduled yet';
+      note = when ? ((isPast?'Last session \u00b7 ':'Live session \u00b7 ')+when) : 'Not scheduled yet';
       tagCls='tag-lock'; tagTxt='Locked';
     }
 
@@ -308,6 +309,7 @@ function drawBadges(got){
     if(ok) document.getElementById('adminLink').style.display='inline-flex';
   });
 
+  await TGSession.loadAll();
   drawNext();
   drawTopics();
 

@@ -246,6 +246,9 @@ img{max-width:100%;display:block}
 .sndbtn:hover{opacity:1}
 
 .seedart{font-size:72px;line-height:1;transition:transform .22s ease}
+
+.reclink{background:none;border:none;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
+.reclink.on{background:var(--sage);border-color:var(--sage);color:#fff}
 </style>
 </head>
 <body>
@@ -317,7 +320,7 @@ img{max-width:100%;display:block}
       <div class="sessiontabs">
         <button class="stog on" data-mode="movie">The movie</button>
         <button class="stog" data-mode="live">Before &amp; during the session</button>
-        <button class="stog" data-mode="rec">After the session</button>
+        <button class="stog" data-mode="rec">Past sessions</button>
       </div>
 
       <div class="livecard">
@@ -330,28 +333,6 @@ img{max-width:100%;display:block}
           <a class="btn btn-primary" id="joinBtn" href="#" target="_blank" rel="noopener">Join the garden session</a>
         </div>
       </div>
-
-      <details class="setup">
-        <summary>&#9881;&#65039; Session setup &mdash; for Ms. Nia</summary>
-        <div class="setup-bd">
-          <p class="setup-note">Quick edits for this topic. Everything &mdash; every topic, plus student progress and the funder export &mdash; lives in <a href="admin.html" style="color:var(--sage);font-weight:600">Garden admin</a>.</p>
-          <label>Topic movie link <span>(your 3-minute garden film &mdash; YouTube unlisted works well)</span></label>
-          <input id="inMovie" placeholder="https://youtu.be/xxxxxxxxxxx">
-          <label>Your Zoom link <span>(your personal meeting room &mdash; same link every time)</span></label>
-          <input id="inZoom" placeholder="https://us02web.zoom.us/j/1234567890">
-          <label>Recording link <span>(after the session &mdash; a YouTube unlisted link works well)</span></label>
-          <input id="inRec" placeholder="https://youtu.be/xxxxxxxxxxx">
-          <label>Session date &amp; time <span>(so we know whether a before-check was taken in time)</span></label>
-          <input id="inWhen" type="datetime-local">
-          <label>The garden word <span>(say it out loud during the session)</span></label>
-          <input id="inWord" placeholder="sunflower">
-          <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
-            <button class="btn btn-primary" id="saveSetup" style="width:auto">Save</button>
-            <button class="btn btn-ghost" id="demoFill" style="width:auto">Use a sample video</button>
-          </div>
-          <div class="setup-msg" id="setupMsg"></div>
-        </div>
-      </details>
 
       <div class="word">
         <h4>🔑 Heard the garden word?</h4>
@@ -557,7 +538,10 @@ function paint(){
   if(sw) sw.textContent = (window.TGSession && TGSession.long(TOPIC)) || 'Live session';
 
   var wh=document.getElementById('wordHint');
-  if(wh) wh.innerHTML='Prototype hint: the word is <b>'+((setup().word||'sunflower'))+'</b>';
+  if(wh){
+    var nx=TGSession.next(TOPIC)||TGSession.past(TOPIC)[0];
+    wh.innerHTML='Prototype hint: the word is <b>'+((nx&&nx.word)||'sunflower')+'</b>';
+  }
   if(typeof paintVideo==='function' && mode==='movie') paintVideo();
 
   var wi=document.getElementById('wordIn'), wb=document.getElementById('wordBtn');
@@ -593,8 +577,11 @@ async function tryWord(){
     return;
   }
   if(!v){ m.className='wordmsg bad'; m.textContent='Type the word you heard in the session.'; return; }
-  var expected = (setup().word || 'sunflower').trim().toLowerCase();
-  if(v!==expected){ m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.'; return; }
+  if(!TGSession.accepts(TOPIC, v)){
+    m.className='wordmsg bad';
+    m.textContent='That is not quite it — have another listen to the recording.';
+    return;
+  }
   setPre();
   await TG.unlock(TOPIC);
   paint();
@@ -614,6 +601,10 @@ document.getElementById('resetBtn').addEventListener('click',function(){
 (async function(){
   var s = await TG.requireAuth();
   if(!s) return;
+
+  var kid0 = s.profile.children && s.profile.children[0];
+  await TGSession.loadAll();
+  await TGProgress.load(kid0 && kid0.id);
   var p = s.profile, kids = p.children || [];
   var who = kids.length ? kids[0].name + (kids[0].grade ? ', '+kids[0].grade+' grade' : '') : (p.parentName||p.email);
   document.getElementById('whoName').textContent = who;
@@ -703,10 +694,11 @@ function speakPrompt(key, text, choices){
 function speakNews(text){ if(window.TGAudio && text) TGAudio.say(text); }
 var cur=null, st={};
 
-function doneKey(k){ return 'tg_act_'+TOPIC+'_'+k; }
-function isActDone(k){ try{ return localStorage.getItem(doneKey(k))==='1'; }catch(e){ return false; } }
+function doneKey(k){ return TOPIC+'_'+k; }
+function isActDone(k){ return window.TGProgress ? TGProgress.done(doneKey(k)) : false; }
 function markAct(k){
-  try{ localStorage.setItem(doneKey(k),'1'); }catch(e){}
+  var sess=TG.session(), kid=(sess&&sess.profile.children&&sess.profile.children[0]);
+  if(window.TGProgress) TGProgress.mark(kid&&kid.id, TOPIC, doneKey(k));
   paintActs();
   if(typeof paintScores==='function') paintScores();
 }
@@ -1071,11 +1063,9 @@ if(postBtn) postBtn.addEventListener('click',function(){
 paintScores();
 
 /* ================= session video slot ================= */
-var SKEY='tg_session_'+TOPIC, mode='movie';
+var mode='movie', recIdx=0;
 
 
-function setup(){ try{ return JSON.parse(localStorage.getItem(SKEY))||{}; }catch(e){ return {}; } }
-function saveSetup(o){ try{ localStorage.setItem(SKEY, JSON.stringify(o)); }catch(e){} }
 
 /* Turn a YouTube/Vimeo share link into an embeddable one. */
 function embedUrl(u){
@@ -1089,96 +1079,86 @@ function embedUrl(u){
   return null;   // Zoom share links can't be iframed; we link out instead
 }
 
-function paintMovie(){
-  var cfg=setup(), slot=document.getElementById('movieSlot');
-  var btn=document.getElementById('movieBtn'), sub=document.getElementById('movieSub');
-  if(!slot) return;
-  var emb=embedUrl(cfg.movie);
-  if(emb){
-    slot.innerHTML='<iframe src="'+emb+'" allowfullscreen title="Topic movie"></iframe>';
-    sub.textContent='Watch it as many times as you like';
-    btn.style.display='none';
-  } else if(cfg.movie){
-    slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#9654;</div>'+
-      '<b>Watch the movie</b><span>Opens in a new tab</span></div>';
-    sub.textContent='Watch it as many times as you like';
-    btn.href=cfg.movie; btn.style.display='inline-flex';
-  } else {
-    /* Deliberately visible and empty, so Ms. Nia can see exactly where
-       her film goes before she has filmed it. */
-    /* No film pasted in, so play the animated one. It is a real movie,
-       not a placeholder, and Ms. Nia's garden footage can replace or
-       join it whenever she shoots it. */
-    if(window.TGMovie){ TGMovie.mount(slot); }
-    else slot.innerHTML='<img src="img/wide2.jpg" alt="">';
-    sub.textContent='Animated &middot; narrated &middot; about a minute';
-    btn.style.display='none';
-  }
-}
 
 function paintVideo(){
-  var cfg = setup(), slot = document.getElementById('videoSlot');
-  var title0 = document.getElementById('sessTitle'), when0 = document.getElementById('sessWhen');
-  var join0 = document.getElementById('joinBtn');
+  var slot = document.getElementById('videoSlot');
+  var title = document.getElementById('sessTitle'), when = document.getElementById('sessWhen');
+  var join  = document.getElementById('joinBtn');
+  if(!slot) return;
 
+  var upcoming = TGSession.next(TOPIC);
+  var history  = TGSession.past(TOPIC);
+
+  /* ---- the movie ---- */
   if(mode === 'movie'){
-    /* The movie teaches the whole life cycle, so watching it before the
-       before-check would wreck the baseline. It stays shut until the
-       check is done, and then it is the first thing they get. */
+    join.style.display='none';
     if(!preDone()){
       slot.innerHTML = '<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
         (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',62)+'</div>':'<div class="big">&#128274;</div>')+
-        '<b>Finish the before-check first</b>'+
-        '<span>Then Sunny will show you how a plant grows</span></div>';
-      title0.textContent='Plant Life Cycle \u2014 the movie';
-      when0.textContent='Unlocks when you have done the before-check';
-      join0.style.display='none';
+        '<b>Finish the before-check first</b><span>Then Sunny will show you how a plant grows</span></div>';
+      title.textContent='Plant Life Cycle — the movie';
+      when.textContent='Unlocks when you have done the before-check';
       return;
     }
-    var mEmb = embedUrl(cfg.movie);
-    if(mEmb){
-      slot.innerHTML = '<iframe src="'+mEmb+'" allowfullscreen title="Topic movie"></iframe>';
-      when0.textContent='Ms. Nia\u2019s film \u00b7 watch it as often as you like';
-    } else if(window.TGMovie){
-      TGMovie.mount(slot);
-      when0.textContent='Animated \u00b7 narrated \u00b7 about a minute';
-    }
-    title0.textContent='Plant Life Cycle \u2014 the movie';
-    join0.style.display='none';
+    var mv = (upcoming && upcoming.movie_url) || (history[0] && history[0].movie_url);
+    var emb = embedUrl(mv);
+    if(emb){ slot.innerHTML='<iframe src="'+emb+'" allowfullscreen title="Topic movie"></iframe>';
+             when.textContent='Ms. Nia’s film · watch it as often as you like'; }
+    else if(window.TGMovie){ TGMovie.mount(slot);
+             when.textContent='Animated · narrated · about a minute'; }
+    title.textContent='Plant Life Cycle — the movie';
     return;
   }
 
-  var title = document.getElementById('sessTitle'), when = document.getElementById('sessWhen');
-  var join = document.getElementById('joinBtn');
-  if(!slot) return;
-
+  /* ---- past sessions: every recording, never overwritten ---- */
   if(mode === 'rec'){
-    var emb = embedUrl(cfg.rec);
-    if(emb){
-      slot.innerHTML = '<iframe src="'+emb+'" allowfullscreen title="Session recording"></iframe>';
-    } else if(cfg.rec){
-      slot.innerHTML = '<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#9654;</div>'+
-        '<b>Watch the recording</b><span>Opens in a new tab</span></div>';
-    } else {
-      slot.innerHTML = '<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#127909;</div>'+
-        '<b>Your recording appears here</b><span>Paste a link in Session setup below</span></div>';
+    join.style.display='none';
+    title.textContent='Past garden sessions';
+    if(!preDone()){
+      slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#128274;</div>'+
+        '<b>Finish the before-check first</b><span>Then you can watch any session you missed</span></div>';
+      when.textContent='Unlocks when you have done the before-check';
+      return;
     }
-    title.textContent = 'Plant Life Cycle — session recording';
-    when.textContent  = cfg.rec ? 'Watch it again any time' : 'Available after the live session';
-    join.textContent  = 'Watch the recording';
-    join.href         = cfg.rec || '#';
-    join.style.display = cfg.rec ? 'inline-flex' : 'none';
-  } else {
-    slot.innerHTML = '<span class="livebadge"><i></i>Live now</span><img src="img/wide1.jpg" alt="">'+
+    var withRec = history.filter(function(x){ return x.recording_url; });
+    if(!withRec.length){
+      slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#127909;</div>'+
+        '<b>No recordings yet</b><span>They appear here after each live session</span></div>';
+      when.textContent = history.length ? 'Recordings are added after each session' : 'No sessions have run yet';
+      return;
+    }
+    var cur = withRec[recIdx] || withRec[0];
+    var rEmb = embedUrl(cur.recording_url);
+    slot.innerHTML = rEmb
+      ? '<iframe src="'+rEmb+'" allowfullscreen title="Session recording"></iframe>'
+      : '<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#9654;</div><b>Watch the recording</b></div>';
+    when.innerHTML = withRec.map(function(x,i){
+      return '<button class="reclink'+(i===recIdx?' on':'')+'" data-r="'+i+'">'+TGSession.short(x)+'</button>';
+    }).join('');
+    [].forEach.call(document.querySelectorAll('.reclink'), function(b){
+      b.onclick=function(){ recIdx=+b.dataset.r; paintVideo(); };
+    });
+    if(!rEmb){ join.href=cur.recording_url; join.textContent='Watch the recording'; join.style.display='inline-flex'; }
+    return;
+  }
+
+  /* ---- the live session ---- */
+  title.textContent='Plant Life Cycle — live session';
+  if(upcoming){
+    slot.innerHTML='<span class="livebadge"><i></i>Coming up</span><img src="img/wide1.jpg" alt="">'+
       '<div class="slotmsg"><div class="big">&#127793;</div><b>We’re in the garden</b>'+
-      '<span>'+(cfg.zoom ? 'Tap join to come with us' : 'Ms. Nia adds the Zoom link in setup below')+'</span></div>';
-    title.textContent = 'Plant Life Cycle — live session';
-    when.textContent  = (window.TGSession && TGSession.passed(TOPIC))
-      ? ('That session has finished \u00b7 ' + (TGSession.long(TOPIC)||''))
-      : ((window.TGSession && TGSession.line(TOPIC,'Ms. Nia')) || 'Date to be confirmed');
-    join.textContent  = 'Join the garden session';
-    join.href         = cfg.zoom || '#';
-    join.style.display = 'inline-flex';
+      '<span>'+(upcoming.join_url?'Tap join to come with us':'Ms. Nia adds the link in Garden admin')+'</span></div>';
+    when.textContent=TGSession.line(upcoming,'Ms. Nia');
+    join.href=upcoming.join_url||'#';
+    join.textContent='Join the garden session';
+    join.style.display='inline-flex';
+  } else {
+    slot.innerHTML='<img src="img/wide1.jpg" alt=""><div class="slotmsg"><div class="big">&#128197;</div>'+
+      '<b>No session scheduled</b><span>Ms. Nia will post the next one here</span></div>';
+    when.textContent = history.length
+      ? ('Last session · '+TGSession.long(history[0]))
+      : 'Nothing scheduled yet';
+    join.style.display='none';
   }
 }
 
@@ -1188,37 +1168,6 @@ function paintVideo(){
     b.className='stog on'; mode=b.dataset.mode; paintVideo();
   };
 });
-
-var ss=document.getElementById('saveSetup');
-if(ss) ss.onclick=function(){
-  var cfg={ movie:document.getElementById('inMovie').value.trim(),
-            zoom:document.getElementById('inZoom').value.trim(),
-            rec: document.getElementById('inRec').value.trim(),
-            when:document.getElementById('inWhen').value,
-            word:document.getElementById('inWord').value.trim().toLowerCase() };
-  saveSetup(cfg); paintVideo(); paintMovie();
-  document.getElementById('setupMsg').textContent='Saved. The family page above is updated.';
-};
-
-var df=document.getElementById('demoFill');
-if(df) df.onclick=function(){
-  document.getElementById('inRec').value='https://www.youtube.com/watch?v=uxpDa-c-4Mc';
-  document.getElementById('inZoom').value='https://us02web.zoom.us/j/1234567890';
-  document.getElementById('inMovie').value='https://www.youtube.com/watch?v=uxpDa-c-4Mc';
-  document.getElementById('inWord').value='sunflower';
-  document.getElementById('setupMsg').textContent='Sample links filled in — press Save, then tap “After the session”.';
-};
-
-(function(){
-  var cfg=setup();
-  if(cfg.zoom) document.getElementById('inZoom').value=cfg.zoom;
-  if(cfg.rec)  document.getElementById('inRec').value=cfg.rec;
-  if(cfg.word) document.getElementById('inWord').value=cfg.word;
-  if(cfg.when) document.getElementById('inWhen').value=cfg.when;
-  if(cfg.movie) document.getElementById('inMovie').value=cfg.movie;
-})();
-paintVideo();
-paintMovie();
 
 /* ================= stage 3: builds, inline ================= */
 var curBuild=null, buildStep=0;
