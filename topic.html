@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plant Life Cycle — The Talking Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EA; --paper:#FFFFFF; --paper2:#FCFAF3;
+  --ink:#1F2320; --body:#55584F; --muted:#7B7D72; --faint:#A8A99C;
+  --sage:#4F7C4A; --sage-d:#33512F; --sage-l:#E7F0E4;
+  --soil:#6B5640; --terra:#C25A36; --terra-l:#FBE8E0;
+  --sun:#F2B233; --sun-l:#FDF1D6;
+  --sky:#3E90CC; --sky-l:#E2F0FA;
+  --grape:#7A5BC4; --grape-l:#EEE8FB;
+  --teal:#1F9B8E; --teal-l:#DEF3F1;
+  --line:#E8E1D2; --line-d:#D6CDB8;
+  --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --r:18px; --rl:26px;
+  --shadow:0 2px 4px rgba(31,35,32,.04), 0 10px 28px rgba(31,35,32,.07);
+  --shadow-lg:0 4px 8px rgba(31,35,32,.05), 0 22px 50px rgba(31,35,32,.11);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper2);color:var(--body);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.1;letter-spacing:-.02em;font-weight:700}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 26px;border-radius:999px;border:2px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--sage);color:#fff;box-shadow:0 4px 0 var(--sage-d)}
+.btn-primary:hover{background:var(--sage-d);box-shadow:0 6px 0 var(--sage-d)}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-d)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-sun{background:var(--sun);color:#5A4208;box-shadow:0 4px 0 #C98F1C}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1000px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--sage);display:grid;place-items:center;font-size:19px;flex:none}
+.brand-txt{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);line-height:1.15}
+.brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.who{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--body)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-size:15px}
+@media(max-width:520px){.who span{display:none}}
+
+/* topic header */
+.thead{background:var(--sage-l);border-bottom:1px solid #D6E3D1;padding:30px 0 34px;position:relative;overflow:hidden}
+.thead::after{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.42);right:-90px;top:-120px}
+.crumb{font-size:14px;color:var(--sage-d);text-decoration:none;font-weight:600;display:inline-flex;gap:7px;margin-bottom:16px}
+.thead-in{display:flex;gap:22px;align-items:center;position:relative;z-index:2}
+.tbadge{width:92px;height:92px;border-radius:26px;background:#fff;display:grid;place-items:center;font-size:46px;box-shadow:var(--shadow);flex:none}
+.thead h1{font-size:clamp(29px,4.4vw,42px);font-weight:900;margin-bottom:8px}
+.thead p{font-size:17px;color:#456141;max-width:36em}
+@media(max-width:600px){.thead-in{flex-direction:column;align-items:flex-start;gap:16px}.tbadge{width:70px;height:70px;font-size:36px;border-radius:20px}}
+
+/* progress rail */
+.rail{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:63px;z-index:40}
+.rail-in{max-width:1000px;margin:0 auto;padding:12px 24px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.rail-in::-webkit-scrollbar{display:none}
+.rpill{display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:var(--paper2);border:1px solid var(--line);font-size:13.5px;font-weight:600;color:var(--muted);white-space:nowrap;text-decoration:none;flex:none}
+.rpill i{width:20px;height:20px;border-radius:50%;background:var(--line-d);color:#fff;font-size:11px;display:grid;place-items:center;font-style:normal;flex:none}
+.rpill.done{background:var(--sage-l);border-color:#CBDDC6;color:var(--sage-d)}
+.rpill.done i{background:var(--sage)}
+.rpill.now{background:var(--sun-l);border-color:#EBD9A8;color:#7A5A0C}
+.rpill.now i{background:var(--sun);color:#5A4208}
+
+/* stage blocks */
+.stage{background:#fff;border:1px solid var(--line);border-radius:var(--rl);box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden;position:relative}
+.stage-hd{display:flex;gap:16px;align-items:flex-start;padding:26px 28px 0}
+.snum{width:42px;height:42px;border-radius:13px;background:var(--sage);color:#fff;font-family:var(--serif);font-weight:700;font-size:19px;display:grid;place-items:center;flex:none}
+.stage.lock .snum{background:var(--line-d)}
+.stage-hd h2{font-size:24px;margin-bottom:5px}
+.stage-hd .sk{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--terra);margin-bottom:7px}
+.stage.lock .stage-hd .sk{color:var(--faint)}
+.stage-bd{padding:18px 28px 28px 86px}
+@media(max-width:620px){.stage-bd{padding:18px 22px 26px}.stage-hd{padding:22px 22px 0}}
+.stage-bd>p{margin-bottom:18px}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.mini{font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--paper2);border:1px solid var(--line);color:var(--muted)}
+.statusline{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--sage);margin-top:14px}
+
+/* locked veil */
+.veil{position:absolute;inset:0;background:rgba(252,250,243,.93);z-index:5;display:grid;place-items:center;padding:24px}
+.stage:not(.lock) .veil{display:none}
+.veil-in{text-align:center;max-width:23em}
+.veil-in .lk{font-size:30px;margin-bottom:10px}
+.veil-in h4{font-size:18px;margin-bottom:6px}
+.veil-in p{font-size:14.5px;color:var(--muted)}
+
+/* live card */
+.livecard{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--paper2)}
+.livecard .shot{aspect-ratio:16/7;position:relative;background:var(--ink)}
+.livecard .shot img{width:100%;height:100%;object-fit:cover;opacity:.62}
+.livebadge{position:absolute;top:13px;left:13px;background:var(--terra);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:99px;display:flex;align-items:center;gap:6px}
+.livebadge i{width:6px;height:6px;border-radius:50%;background:#fff;display:block;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.livemeta{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.livemeta b{font-family:var(--serif);font-size:17px;color:var(--ink);display:block}
+.livemeta span{font-size:14px;color:var(--muted)}
+
+/* garden word */
+.word{background:var(--sun-l);border:2px dashed #E4C778;border-radius:var(--r);padding:22px;margin-top:18px}
+.word h4{font-size:17px;margin-bottom:5px}
+.word p{font-size:14.5px;color:#7A5A0C;margin-bottom:14px}
+.wordrow{display:flex;gap:10px;flex-wrap:wrap}
+.wordrow input{flex:1;min-width:180px;font-family:var(--sans);font-size:16px;font-weight:600;padding:13px 17px;border-radius:12px;border:2px solid #E4C778;background:#fff;color:var(--ink)}
+.wordrow input:focus{outline:none;border-color:var(--sun)}
+.wordmsg{font-size:14px;font-weight:600;margin-top:11px;display:none}
+.wordmsg.bad{display:block;color:var(--terra)}
+.wordmsg.good{display:block;color:var(--sage)}
+
+/* cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.cards{grid-template-columns:1fr}}
+.mcard{border:1px solid var(--line);border-radius:var(--r);padding:18px;background:var(--paper2);display:flex;gap:14px;align-items:flex-start;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease}
+.mcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.mcard .e{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:23px;flex:none}
+.mcard h4{font-size:16.5px;margin-bottom:3px}
+.mcard p{font-size:13.5px;color:var(--muted);line-height:1.5}
+.mcard .tick{margin-left:auto;font-size:15px;color:var(--sage);flex:none}
+.e-green{background:var(--sage-l)}.e-sun{background:var(--sun-l)}.e-sky{background:var(--sky-l)}.e-grape{background:var(--grape-l)}.e-terra{background:var(--terra-l)}
+
+/* result */
+.result{display:flex;gap:14px;margin-bottom:16px}
+.rbox{flex:1;border-radius:var(--r);padding:18px;text-align:center;border:1px solid var(--line);background:var(--paper2)}
+.rbox.after{background:var(--sage-l);border-color:#CBDDC6}
+.rbox small{font-size:12.5px;font-weight:600;color:var(--muted);display:block;margin-bottom:3px}
+.rbox b{font-family:var(--serif);font-size:31px;font-weight:700;color:var(--muted)}
+.rbox.after small{color:var(--sage-d)}.rbox.after b{color:var(--sage-d)}
+.cert{background:linear-gradient(140deg,var(--sun-l),#FBF6E6);border:2px solid #EBD9A8;border-radius:var(--r);padding:22px;text-align:center}
+.cert .m{font-size:34px;margin-bottom:8px}
+.cert h4{font-size:19px;margin-bottom:4px}
+.cert p{font-size:14px;color:#7A5A0C;margin-bottom:14px}
+
+/* reset bar */
+.resetbar{text-align:center;padding:8px 0 44px}
+.resetbar button{background:none;border:none;font-family:var(--sans);font-size:13px;color:var(--faint);cursor:pointer;text-decoration:underline}
+.proto{position:fixed;left:16px;bottom:16px;z-index:99;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:99px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
+.proto i{width:7px;height:7px;border-radius:50%;background:var(--sun);display:block}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">🌱</span>
+      <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
+    </a>
+    <span class="who"><span class="avatar">🌻</span><span>Maya, 2nd grade</span></span>
+  </div>
+</nav>
+
+<header class="thead">
+  <div class="wrap">
+    <a class="crumb" href="index.html">← All topics</a>
+    <div class="thead-in">
+      <div class="tbadge">🌻</div>
+      <div>
+        <h1>Plant Life Cycle</h1>
+        <p>From a seed the size of a freckle to a sunflower taller than you. Follow the whole journey — then grow one yourself.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="rail">
+  <div class="rail-in" id="rail"></div>
+</div>
+
+<main class="wrap" style="padding-top:26px">
+
+  <!-- STAGE 1 -->
+  <section class="stage" id="s1">
+    <div class="stage-hd">
+      <div class="snum">1</div>
+      <div>
+        <div class="sk">Before the live session</div>
+        <h2>Show what you know</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>A quick picture quiz to see where you're starting from. There are no wrong answers here — we just want to know what you already think. It takes about four minutes.</p>
+      <div class="pillrow">
+        <span class="mini">⏱ 4 minutes</span>
+        <span class="mini">🖼 6 picture questions</span>
+        <span class="mini">📖 Almost no reading</span>
+      </div>
+      <button class="btn btn-primary" id="preBtn">Start the before-quiz →</button>
+      <div class="statusline" id="preDone" style="display:none">✓ Finished — you scored 2 out of 6. See you Saturday!</div>
+    </div>
+  </section>
+
+  <!-- STAGE 2 -->
+  <section class="stage" id="s2">
+    <div class="stage-hd">
+      <div class="snum">2</div>
+      <div>
+        <div class="sk">Saturday · 10:00 AM</div>
+        <h2>Meet us live in the garden</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>Ms. Angela takes you around the beds with a camera. Ask questions, watch a real seed get planted, and listen out — somewhere in the middle we say the <b>secret garden word</b>.</p>
+      <div class="livecard">
+        <div class="shot">
+          <span class="livebadge"><i></i>Live now</span>
+          <img src="img/wide1.jpg" alt="The Dew of Heaven garden beds">
+        </div>
+        <div class="livemeta">
+          <div>
+            <b>Plant Life Cycle — live session</b>
+            <span>Saturday · 10:00 AM CT · with Ms. Angela</span>
+          </div>
+          <a class="btn btn-primary" href="#s2">Join the garden session</a>
+        </div>
+      </div>
+
+      <div class="word">
+        <h4>🔑 Heard the garden word?</h4>
+        <p>Type it in to open up everything else in this topic. It stays open forever after that.</p>
+        <div class="wordrow">
+          <input id="wordIn" placeholder="Type the garden word…" autocomplete="off">
+          <button class="btn btn-sun" id="wordBtn">Unlock the topic</button>
+        </div>
+        <div class="wordmsg" id="wordMsg"></div>
+        <p style="font-size:12.5px;color:#9A8250;margin-top:12px">Prototype hint: the word is <b>sunflower</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 3 -->
+  <section class="stage lock" id="s3">
+    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join us on Saturday and type in the garden word to unlock these.</p></div></div>
+    <div class="stage-hd">
+      <div class="snum">3</div>
+      <div>
+        <div class="sk">Hands in the soil</div>
+        <h2>Build it at home</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>Two projects to do with a grown-up. Each one has a materials list, step-by-step build mode, and a "why it works" note for the curious.</p>
+      <div class="cards">
+        <a class="mcard" href="library.html">
+          <span class="e e-green">🥬</span>
+          <span><h4>Grow a Plant from a Scrap</h4><p>Regrow a green onion on the windowsill. 10 min · kid-led · tidy.</p></span>
+        </a>
+        <a class="mcard" href="library.html">
+          <span class="e e-sun">🌻</span>
+          <span><h4>Plant a Sunflower Cup</h4><p>Seed, soil, sun, water — then measure it every single day. 15 min.</p></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 4 -->
+  <section class="stage lock" id="s4">
+    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>These are the tap-and-play activities. They unlock with the garden word.</p></div></div>
+    <div class="stage-hd">
+      <div class="snum">4</div>
+      <div>
+        <div class="sk">Any time you like</div>
+        <h2>Practice &amp; play</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>Quick, tappy, and endlessly repeatable. Play them as many times as you want — every one you finish earns a badge.</p>
+      <div class="cards">
+        <a class="mcard" href="#s4">
+          <span class="e e-green">🌱</span>
+          <span><h4>Put the cycle in order</h4><p>Seed → sprout → leaves → flower → seed again.</p></span>
+          <span class="tick">✓</span>
+        </a>
+        <a class="mcard" href="#s4">
+          <span class="e e-sky">🌻</span>
+          <span><h4>Meet Sunny the Sprout</h4><p>Tap each part of the plant and learn its garden secret.</p></span>
+          <span class="tick">✓</span>
+        </a>
+        <a class="mcard" href="#s4">
+          <span class="e e-terra">🥕</span>
+          <span><h4>Which part do we eat?</h4><p>Match the food to the part of the plant it came from.</p></span>
+        </a>
+        <a class="mcard" href="#s4">
+          <span class="e e-grape">💧</span>
+          <span><h4>What does a plant need?</h4><p>Sort what helps a plant grow from what doesn't.</p></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 5 -->
+  <section class="stage lock" id="s5">
+    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Finish the activities first</h4><p>Do a few builds and activities, then come back and show us how much you grew.</p></div></div>
+    <div class="stage-hd">
+      <div class="snum">5</div>
+      <div>
+        <div class="sk">Show your growth</div>
+        <h2>Show what you grew</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>The same six questions from before the live session. Now let's see the difference.</p>
+      <div class="result">
+        <div class="rbox"><small>Before</small><b>2/6</b></div>
+        <div class="rbox after"><small>After</small><b>6/6</b></div>
+      </div>
+      <div class="cert">
+        <div class="m">🏅</div>
+        <h4>Junior Garden Scientist</h4>
+        <p>Maya · Plant Life Cycle · completed August 2026</p>
+        <button class="btn btn-ghost" onclick="window.print()">Print my certificate</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
+<div class="proto"><i></i> Prototype — visual layout only</div>
+
+<script>
+var KEY='tg_topic_plant_v1';
+function state(){ try{ return JSON.parse(localStorage.getItem(KEY))||{pre:false,unlocked:false}; }catch(e){ return {pre:false,unlocked:false}; } }
+function save(s){ try{ localStorage.setItem(KEY,JSON.stringify(s)); }catch(e){} }
+
+var RAIL=[
+ {n:1,label:'Before-quiz'},
+ {n:2,label:'Live session'},
+ {n:3,label:'Build at home'},
+ {n:4,label:'Practice & play'},
+ {n:5,label:'After-quiz'}
+];
+
+function paint(){
+  var s=state();
+  // stage 1
+  document.getElementById('preBtn').style.display = s.pre?'none':'inline-flex';
+  document.getElementById('preDone').style.display = s.pre?'flex':'none';
+  // stages 3-5 lock
+  ['s3','s4','s5'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(s.unlocked){ el.classList.remove('lock'); }
+    else { el.classList.add('lock'); }
+  });
+  // rail
+  var done = s.unlocked ? 4 : (s.pre?1:0);
+  var now  = s.unlocked ? 5 : (s.pre?2:1);
+  document.getElementById('rail').innerHTML = RAIL.map(function(r){
+    var cls = r.n<=done ? 'done' : (r.n===now ? 'now' : '');
+    var mark = r.n<=done ? '✓' : r.n;
+    return '<a class="rpill '+cls+'" href="#s'+r.n+'"><i>'+mark+'</i>'+r.label+'</a>';
+  }).join('');
+}
+
+document.getElementById('preBtn').addEventListener('click',function(){
+  var s=state(); s.pre=true; save(s); paint();
+  document.getElementById('s2').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+function tryWord(){
+  var v=document.getElementById('wordIn').value.trim().toLowerCase();
+  var m=document.getElementById('wordMsg');
+  if(v==='sunflower'){
+    var s=state(); s.pre=true; s.unlocked=true; save(s); paint();
+    m.className='wordmsg good'; m.textContent='🎉 Unlocked! Everything below is open — and it stays open.';
+    setTimeout(function(){ document.getElementById('s3').scrollIntoView({behavior:'smooth',block:'start'}); },500);
+  } else if(!v){
+    m.className='wordmsg bad'; m.textContent='Type the word you heard in the session.';
+  } else {
+    m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.';
+  }
+}
+document.getElementById('wordBtn').addEventListener('click',tryWord);
+document.getElementById('wordIn').addEventListener('keydown',function(e){ if(e.key==='Enter') tryWord(); });
+
+document.getElementById('resetBtn').addEventListener('click',function(){
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  document.getElementById('wordIn').value='';
+  document.getElementById('wordMsg').className='wordmsg';
+  paint();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+paint();
+</script>
+</body>
+</html>
