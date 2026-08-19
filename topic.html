@@ -503,11 +503,12 @@ function paintActs(){
       }
     }
   });
-  var t = window.TEKS && TEKS.topics[TOPIC];
   var note = document.getElementById('teksNote');
-  if(t && note){
+  if(window.TEKS && note && TEKS.topics[TOPIC]){
+    var t = TEKS.topicLine(TOPIC);
     note.innerHTML = 'Aligned to <b>Texas Essential Knowledge and Skills</b> — '+
-      t.grade+' science, '+t.section+' ('+t.strand+'): '+t.claim;
+      '<b>'+t.grade+' TEKS '+t.code+'</b> ('+t.section+'): &ldquo;'+t.text+'&rdquo;'+
+      (t.also.length ? '<br><span style="color:var(--faint)">Also touches '+t.also.join(', ')+'</span>' : '');
   }
 }
 

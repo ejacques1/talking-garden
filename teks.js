@@ -3,64 +3,76 @@
    ------------------------------------------------------------------
    Texas Essential Knowledge and Skills for Science.
    Current standards: 2021 adoption, August 2024 update.
-   Section numbering: K §112.2 · 1st §112.3 · 2nd §112.4
-                      3rd §112.5 · 4th §112.6 · 5th §112.7
+   K §112.2 · 1st §112.3 · 2nd §112.4 · 3rd §112.5 · 4th §112.6 · 5th §112.7
 
-   VERIFIED   — grade-level placement confirmed against TEA materials.
-   PENDING    — exact student-expectation codes (e.g. "2.13(B)") still
-                need to be read off the official TEKS PDF and pasted
-                into the `se` field below. Do not guess them: an
-                unverifiable citation is worse than none, especially
-                on a page used for grant reporting.
+   Every code and quotation below was read from TEKS Guide (teksguide.org),
+   the TEA-affiliated standards resource. Verbatim wording is preserved.
 
-   Official source (download in a browser, TEA blocks scripted access):
-   https://tea.texas.gov/about-tea/laws-and-rules/texas-administrative-code/19-tac-chapter-112
+   NOTE: 2.13(D) names butterflies and frogs explicitly. Two of the three
+   launch topics map onto a single named standard.
 ------------------------------------------------------------------- */
 
 window.TEKS = {
 
-  // ---- topic-level placement (VERIFIED) ----
-  topics: {
-    plant: {
-      grade:   'Grade 2',
-      section: '§112.4',
-      strand:  'Organisms and environments',
-      claim:   'Plant life cycles, and how the basic needs of plants are met through their structures.',
-      status:  'verified'
+  // ---- the standards themselves, quoted verbatim ----
+  se: {
+    'K.12(A)': {
+      grade:'Kindergarten', section:'§112.2',
+      ks:'Organisms and environments. The student knows that plants and animals depend on the environment to meet their basic needs for survival.',
+      text:'observe and identify the dependence of plants on air, sunlight, water, nutrients in the soil, and space to grow'
     },
-    butterfly: {
-      grade:   'Grade 1',
-      section: '§112.3',
-      strand:  'Organisms and environments',
-      claim:   'Animal life cycles, and likenesses between parents and young.',
-      status:  'verified'
+    'K.13(C)': {
+      grade:'Kindergarten', section:'§112.2',
+      ks:'Organisms and environments. The student knows that organisms resemble their parents and have structures and undergo processes that help them interact and survive within their environments.',
+      text:'identify and record the changes from seed, seedling, plant, flower, and fruit in a simple plant life cycle'
     },
-    frog: {
-      grade:   'Grade 1',
-      section: '§112.3',
-      strand:  'Organisms and environments',
-      claim:   'Animal life cycles, and likenesses between parents and young.',
-      status:  'verified'
+    'K.13(D)': {
+      grade:'Kindergarten', section:'§112.2',
+      ks:'Organisms and environments. The student knows that organisms resemble their parents and have structures and undergo processes that help them interact and survive within their environments.',
+      text:'identify ways that young plants resemble the parent plant'
+    },
+    '1.13(B)': {
+      grade:'Grade 1', section:'§112.3',
+      ks:'Organisms and environments. The student knows that organisms resemble their parents and have structures and undergo processes that help them interact and survive within their environments.',
+      text:'record observations of and describe basic life cycles of animals, including a bird, a mammal, and a fish'
+    },
+    '2.13(A)': {
+      grade:'Grade 2', section:'§112.4',
+      ks:'Organisms and environments. The student knows that organisms have structures and undergo processes that help them interact and survive within their environments.',
+      text:'identify the roots, stems, leaves, flowers, fruits, and seeds of plants and compare how those structures help different plants meet their basic needs for survival'
+    },
+    '2.13(D)': {
+      grade:'Grade 2', section:'§112.4',
+      ks:'Organisms and environments. The student knows that organisms have structures and undergo processes that help them interact and survive within their environments.',
+      text:'investigate and describe some of the unique life cycles of animals where young animals do not resemble their parents, including butterflies and frogs'
     }
   },
 
-  // ---- activity-level mapping ----
-  // `se` stays empty until the exact code is read off the official PDF.
-  activities: {
-    seq:   { topic:'plant', grade:'Grade 2', section:'§112.4',
-             skill:'Sequence the stages of a plant life cycle', se:'' },
-    parts: { topic:'plant', grade:'Grade 2', section:'§112.4',
-             skill:'Identify plant structures and the function of each', se:'' },
-    eat:   { topic:'plant', grade:'Grade 2', section:'§112.4',
-             skill:'Relate edible foods to the plant structure they come from', se:'' },
-    need:  { topic:'plant', grade:'Grade 2', section:'§112.4',
-             skill:'Identify the basic needs of plants', se:'' }
+  // ---- topic-level alignment ----
+  topics: {
+    plant:     { primary:'K.13(C)',  also:['K.12(A)','2.13(A)','K.13(D)'] },
+    butterfly: { primary:'2.13(D)',  also:['1.13(B)'] },
+    frog:      { primary:'2.13(D)',  also:['1.13(B)'] }
   },
 
-  // Render a short, honest label. Shows the code only once it exists.
+  // ---- activity-level alignment ----
+  activities: {
+    seq:   { se:'K.13(C)', skill:'Sequence the stages of a simple plant life cycle' },
+    parts: { se:'2.13(A)', skill:'Identify plant structures and how each helps the plant survive' },
+    eat:   { se:'2.13(A)', skill:'Relate edible foods to the plant structure they come from' },
+    need:  { se:'K.12(A)', skill:'Identify what plants depend on to grow' }
+  },
+
   label: function (key) {
-    var a = window.TEKS.activities[key];
-    if (!a) return '';
-    return a.se ? (a.grade + ' TEKS ' + a.se) : (a.grade + ' science · ' + a.section);
+    var a = window.TEKS.activities[key]; if (!a) return '';
+    var s = window.TEKS.se[a.se];
+    return s.grade + ' TEKS ' + a.se;
+  },
+
+  topicLine: function (slug) {
+    var t = window.TEKS.topics[slug]; if (!t) return '';
+    var s = window.TEKS.se[t.primary];
+    return { code:t.primary, grade:s.grade, section:s.section, text:s.text,
+             also:t.also.map(function(c){ return c + ' (' + window.TEKS.se[c].grade + ')'; }) };
   }
 };
