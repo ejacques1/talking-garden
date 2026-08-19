@@ -116,6 +116,13 @@ left join public.attendance att
        on att.parent_id = c.parent_id and att.topic_slug = t.slug
 where pre.id is not null or post.id is not null or att.id is not null;
 
+-- A view does NOT inherit row level security from the tables beneath
+-- it. Without this line child_progress runs with its creator's rights
+-- and hands every child's name, grade and scores to anyone who asks,
+-- signed in or not. security_invoker makes it obey the permissions of
+-- whoever is querying, so only an admin sees across families.
+alter view public.child_progress set (security_invoker = on);
+
 -- ===================================================================
 -- Name your admins here.
 --
