@@ -139,13 +139,17 @@
         var items = Q.map(function(q,i){ return {q:q,i:i}; }).filter(function(x){ return x.q.c===c.id; });
         per[c.id] = items.every(function(x){ return st.right[x.i]; });
       });
+      var correct = st.right.filter(Boolean).length;
+      per.__correct = correct; per.__of = Q.length;
       save(st.topic, st.phase, st.child && st.child.name, per);
-      var score = Object.keys(per).filter(function(k){return per[k]}).length;
+      var score = COMPETENCIES[st.topic].filter(function(c){ return per[c.id]; }).length;
       saveRemote(st.topic, st.phase, st.child && st.child.id, score, COMPETENCIES[st.topic].length);
 
       if (st.phase === 'pre'){
         body.innerHTML = '<div class="win"><div class="m">&#127793;</div><h3>All done!</h3>'+
-          '<p>Thanks '+(st.child?st.child.name:'')+' — that’s our starting point. We’ll check again after the live session to see what you’ve gained.</p>'+
+          '<p>Thanks '+(st.child?st.child.name:'')+' — that’s our starting point. '+
+          'You answered <b>'+correct+' of '+Q.length+'</b> questions right today.</p>'+
+          '<p style="font-size:13.5px;color:var(--muted);margin-top:8px">We’ll ask about the same four skills again after the live session.</p>'+
           '<button class="btn btn-primary" id="qDone" style="width:auto">See you Saturday &rarr;</button></div>';
       } else {
         var before = read(st.topic,'pre', st.child && st.child.name) || {};
@@ -160,6 +164,9 @@
         var gained = COMPETENCIES[st.topic].filter(function(c){ return per[c.id] && !before[c.id]; }).length;
         body.innerHTML = '<div class="win"><div class="m">&#127775;</div>'+
           '<h3>'+(gained ? 'You gained '+gained+' new '+(gained===1?'skill':'skills')+'!' : 'Nice work!')+'</h3>'+
+          '<p style="font-size:14px;color:var(--muted);margin-bottom:4px">'+
+            'You answered <b>'+correct+' of '+Q.length+'</b> questions right. '+
+            'A skill counts once you get <b>both</b> of its questions.</p>'+
           '<div class="crows">'+rows+'</div>'+
           '<button class="btn btn-primary" id="qDone" style="width:auto">Get my certificate &rarr;</button></div>';
       }
@@ -213,8 +220,14 @@
     /* "2 of 4 skills" rather than a raw mark */
     result: function(topic, phase, child){
       var per = read(topic, phase, child); if(!per) return null;
-      var total = (COMPETENCIES[topic]||[]).length;
-      return Object.keys(per).filter(function(k){return per[k]}).length + '/' + total;
+      var comps = COMPETENCIES[topic]||[];
+      return comps.filter(function(c){ return per[c.id]; }).length + '/' + comps.length;
+    },
+    /* "6 of 8 questions" — the number a parent expects to see. */
+    raw: function(topic, phase, child){
+      var per = read(topic, phase, child);
+      if(!per || per.__of == null) return null;
+      return per.__correct + '/' + per.__of;
     },
     gained: function(topic, child){
       var a = read(topic,'pre',child), b = read(topic,'post',child);

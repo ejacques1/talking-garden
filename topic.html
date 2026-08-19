@@ -4,6 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Plant Life Cycle — The Talking Garden</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<meta name="theme-color" content="#4F7C4A">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Talking Garden">
+<meta property="og:title" content="Plant Life Cycle — The Talking Garden">
+<meta property="og:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
+<meta property="og:image" content="https://talking-garden.vercel.app/og.svg">
+<meta property="og:url" content="https://talking-garden.vercel.app/topic.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Plant Life Cycle — The Talking Garden">
+<meta name="twitter:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
+<meta name="twitter:image" content="https://talking-garden.vercel.app/og.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -249,6 +262,26 @@ img{max-width:100%;display:block}
 
 .reclink{background:none;border:none;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
 .reclink.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.rawq{display:block;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}
+
+.cert{position:relative;background:radial-gradient(circle at 50% 0%,#FEFAF0,#FBF0D8 70%);border:2px solid #D9BE79;border-radius:22px;padding:34px 26px 26px;text-align:center;overflow:hidden;box-shadow:0 10px 30px rgba(122,82,48,.13)}
+.cert-ring{position:absolute;inset:9px;border:1px dashed #E0C88E;border-radius:16px;pointer-events:none}
+.certseal{position:relative;display:grid;place-items:center;margin-bottom:2px}
+.certkicker{position:relative;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#A08543;margin-bottom:16px}
+.certawarded{position:relative;font-size:13px;color:#96792A;letter-spacing:.04em}
+.certname{position:relative;font-family:var(--serif);font-size:clamp(30px,7vw,42px);font-weight:900;color:var(--ink);line-height:1.05;margin:4px 0 6px}
+.cert h4{position:relative;font-family:var(--serif);font-size:23px;color:#5A4208;margin:2px 0 4px}
+.cert p{position:relative;font-size:13.5px;color:#7A5A0C;margin-top:12px}
+.certscore{position:relative;margin-top:12px;display:inline-block;background:rgba(255,255,255,.8);border:1px solid #E4CF97;border-radius:99px;padding:7px 18px;font-size:13.5px;font-weight:600;color:#6B4E08}
+.certsig{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid #E4CF97;font-size:11.5px;color:#96792A;text-align:left}
+.certsig b{font-family:var(--serif);font-size:14px;color:#5A4208}
+@media print{
+  body{background:#fff}
+  .nav,.rail,.thead,.resetbar,.proto,.ovl,#shareCert,#saveCert,#printCert,.stage-hd,#resultBoxes,#postBtn,.teksnote,#s1,#s2,#s3,#s4{display:none !important}
+  #s5{border:none;box-shadow:none;margin:0;padding:0}
+  #s5 .stage-bd>p{display:none}
+  .cert{page-break-inside:avoid;box-shadow:none}
+}
 </style>
 </head>
 <body>
@@ -432,20 +465,28 @@ img{max-width:100%;display:block}
       <button class="btn btn-primary" id="postBtn" style="margin-bottom:18px">Take the after-check →</button>
       <div id="certWrap" style="display:none">
         <div class="cert" id="certCard">
+          <div class="cert-ring"></div>
           <div class="certseal" id="certSeal"></div>
-          <div class="certkicker">Dew of Heaven Children's Garden</div>
-          <h4>Junior Garden Scientist</h4>
+          <div class="certkicker">Dew of Heaven Children&rsquo;s Garden &middot; Spring, Texas</div>
+          <div class="certawarded">This certifies that</div>
           <div class="certname" id="certName">&mdash;</div>
-          <p id="certLine">Plant Life Cycle</p>
+          <div class="certawarded">is a</div>
+          <h4>Junior Garden Scientist</h4>
           <div class="certscore" id="certScore"></div>
+          <p id="certLine">Plant Life Cycle</p>
           <div class="certsig">
-            <span>Ms. Nia &middot; Garden Director</span>
+            <span><b>Ms. Nia</b><br>Garden Director</span>
             <span id="certDate"></span>
           </div>
         </div>
         <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-primary" id="printCert" style="width:auto">Print the certificate</button>
+          <button class="btn btn-primary" id="shareCert" style="width:auto">Share it</button>
+          <button class="btn btn-ghost" id="saveCert" style="width:auto">Save as picture</button>
+          <button class="btn btn-ghost" id="printCert" style="width:auto">Print</button>
         </div>
+        <p class="teksnote" style="margin-top:14px;border-left-color:var(--sun);font-size:13px">
+          Proud of them? Share it &mdash; every certificate that goes out brings another family to the garden.
+        </p>
       </div>
     </div>
   </section>
@@ -1023,6 +1064,10 @@ function paintScores(){
   var b=document.getElementById('rBefore'), a=document.getElementById('rAfter');
   if(b) b.textContent = pre  || '\u2014';
   if(a) a.textContent = post || '\u2014';
+  var br=document.getElementById('rBeforeRaw'), ar=document.getElementById('rAfterRaw');
+  var brw=TGQuiz.raw(TOPIC,'pre',k&&k.name), arw=TGQuiz.raw(TOPIC,'post',k&&k.name);
+  if(br) br.textContent = brw ? (brw+' questions') : '';
+  if(ar) ar.textContent = arw ? (arw+' questions') : '';
   var pb=document.getElementById('postBtn'), gate=document.getElementById('postGate');
   if(pb){
     var ok=afterUnlocked();
@@ -1053,8 +1098,7 @@ function paintScores(){
     if(dt) dt.textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   }
 }
-var pc=document.getElementById('printCert');
-if(pc) pc.addEventListener('click',function(){ window.print(); });
+
 var postBtn=document.getElementById('postBtn');
 if(postBtn) postBtn.addEventListener('click',function(){
   var sess=TG.session(), kids=(sess&&sess.profile.children)||[];
@@ -1095,7 +1139,8 @@ function paintVideo(){
     if(!preDone()){
       slot.innerHTML = '<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
         (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',62)+'</div>':'<div class="big">&#128274;</div>')+
-        '<b>Finish the before-check first</b><span>Then Sunny will show you how a plant grows</span></div>';
+        '<b>Finish the before-check first</b>'+
+        '<span>Then Sunny will show you how a plant grows. We ask first so we can see what you learn.</span></div>';
       title.textContent='Plant Life Cycle — the movie';
       when.textContent='Unlocks when you have done the before-check';
       return;
@@ -1116,15 +1161,30 @@ function paintVideo(){
     title.textContent='Past garden sessions';
     if(!preDone()){
       slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#128274;</div>'+
-        '<b>Finish the before-check first</b><span>Then you can watch any session you missed</span></div>';
+        '<b>Finish the before-check first</b>'+
+        '<span>Then you can watch any session you missed, any time</span></div>';
       when.textContent='Unlocks when you have done the before-check';
       return;
     }
     var withRec = history.filter(function(x){ return x.recording_url; });
     if(!withRec.length){
-      slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#127909;</div>'+
-        '<b>No recordings yet</b><span>They appear here after each live session</span></div>';
-      when.textContent = history.length ? 'Recordings are added after each session' : 'No sessions have run yet';
+      /* Empty for a good reason, so say which reason — an unexplained
+         empty tab looks broken, and Ms. Nia will be asked about it. */
+      var why, sub;
+      if(upcoming){
+        why  = 'The first recording lands after '+TGSession.long(upcoming);
+        sub  = 'Recordings are added once a session has run';
+      } else if(history.length){
+        why  = 'Ms. Nia hasn&rsquo;t added the recording yet';
+        sub  = 'Last session was '+TGSession.long(history[0]);
+      } else {
+        why  = 'No sessions have run yet';
+        sub  = 'Recordings appear here after the first one';
+      }
+      slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
+        (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',60)+'</div>':'<div class="big">&#127909;</div>')+
+        '<b>'+why+'</b><span>Every session stays here once it&rsquo;s added, so you can always catch up</span></div>';
+      when.textContent = sub;
       return;
     }
     var cur = withRec[recIdx] || withRec[0];
@@ -1153,10 +1213,14 @@ function paintVideo(){
     join.textContent='Join the garden session';
     join.style.display='inline-flex';
   } else {
-    slot.innerHTML='<img src="img/wide1.jpg" alt=""><div class="slotmsg"><div class="big">&#128197;</div>'+
-      '<b>No session scheduled</b><span>Ms. Nia will post the next one here</span></div>';
+    slot.innerHTML='<img src="img/wide1.jpg" alt=""><div class="slotmsg">'+
+      (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('wave',60)+'</div>':'<div class="big">&#128197;</div>')+
+      '<b>'+(history.length?'That session has finished':'No session scheduled yet')+'</b>'+
+      '<span>'+(history.length
+        ? 'Watch it under Past sessions &mdash; Ms. Nia will post the next date here'
+        : 'Ms. Nia will post the next garden session here')+'</span></div>';
     when.textContent = history.length
-      ? ('Last session · '+TGSession.long(history[0]))
+      ? ('Last session &middot; '+TGSession.long(history[0]))
       : 'Nothing scheduled yet';
     join.style.display='none';
   }
@@ -1250,6 +1314,98 @@ paintBuilds();
   var x=document.getElementById('playX');
   if(x) x.addEventListener('click', function(){ if(window.TGAudio) TGAudio.stop(); });
 })();
+
+/* ---------- certificate: save and share ----------
+   Rendered to a canvas so a family gets a real picture they can put
+   on Instagram, rather than a screenshot of a web page. Uses the Web
+   Share API where the device has it (phones), and falls back to a
+   download everywhere else. */
+function certToCanvas(){
+  var card=document.getElementById('certCard');
+  var w=card.offsetWidth, h=card.offsetHeight, scale=2;
+  var c=document.createElement('canvas');
+  c.width=w*scale; c.height=h*scale;
+  var x=c.getContext('2d'); x.scale(scale,scale);
+
+  var g=x.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,'#FEFAF0'); g.addColorStop(1,'#FBF0D8');
+  x.fillStyle=g; x.fillRect(0,0,w,h);
+  x.strokeStyle='#D9BE79'; x.lineWidth=3; x.strokeRect(2,2,w-4,h-4);
+  x.strokeStyle='#E0C88E'; x.lineWidth=1; x.setLineDash([5,4]); x.strokeRect(12,12,w-24,h-24); x.setLineDash([]);
+
+  var mid=w/2, y=64;
+  x.textAlign='center';
+  x.font='700 11px Inter, sans-serif'; x.fillStyle='#A08543';
+  x.fillText("DEW OF HEAVEN CHILDREN'S GARDEN  ·  SPRING, TEXAS", mid, y); y+=30;
+  x.font='13px Inter, sans-serif'; x.fillStyle='#96792A';
+  x.fillText('This certifies that', mid, y); y+=42;
+  x.font='900 38px Fraunces, Georgia, serif'; x.fillStyle='#1F2320';
+  x.fillText(document.getElementById('certName').textContent, mid, y); y+=26;
+  x.font='13px Inter, sans-serif'; x.fillStyle='#96792A';
+  x.fillText('is a', mid, y); y+=32;
+  x.font='700 24px Fraunces, Georgia, serif'; x.fillStyle='#5A4208';
+  x.fillText('Junior Garden Scientist', mid, y); y+=32;
+  x.font='600 13px Inter, sans-serif'; x.fillStyle='#6B4E08';
+  var sc=document.getElementById('certScore').textContent;
+  if(sc){ wrapText(x, sc, mid, y, w-90, 18); y+=40; }
+  x.font='13px Inter, sans-serif'; x.fillStyle='#7A5A0C';
+  x.fillText(document.getElementById('certLine').textContent, mid, y);
+
+  x.textAlign='left';
+  x.font='700 14px Fraunces, Georgia, serif'; x.fillStyle='#5A4208';
+  x.fillText('Ms. Nia', 30, h-34);
+  x.font='11px Inter, sans-serif'; x.fillStyle='#96792A';
+  x.fillText('Garden Director', 30, h-19);
+  x.textAlign='right';
+  x.fillText(document.getElementById('certDate').textContent, w-30, h-19);
+  return c;
+}
+function wrapText(x, text, cx, y, maxW, lh){
+  var words=String(text).split(' '), line='', lines=[];
+  words.forEach(function(word){
+    var t=line?line+' '+word:word;
+    if(x.measureText(t).width>maxW && line){ lines.push(line); line=word; } else line=t;
+  });
+  if(line) lines.push(line);
+  lines.forEach(function(l,i){ x.fillText(l, cx, y+i*lh); });
+}
+
+function certFilename(){
+  var n=document.getElementById('certName').textContent.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase();
+  return 'garden-certificate-'+(n||'scientist')+'.png';
+}
+
+var sv=document.getElementById('saveCert');
+if(sv) sv.onclick=function(){
+  certToCanvas().toBlob(function(blob){
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download=certFilename();
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+};
+
+var sh=document.getElementById('shareCert');
+if(sh) sh.onclick=function(){
+  var name=document.getElementById('certName').textContent;
+  var text=name+' just became a Junior Garden Scientist at Dew of Heaven Children’s Garden! 🌻';
+  certToCanvas().toBlob(async function(blob){
+    var file=new File([blob], certFilename(), {type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({ files:[file], text:text, title:'Junior Garden Scientist' }); return; }
+      catch(e){ if(e && e.name==='AbortError') return; }
+    }
+    /* No share sheet: hand them the picture and the words to go with it. */
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download=certFilename();
+    document.body.appendChild(a); a.click(); a.remove();
+    try{ await navigator.clipboard.writeText(text+' '+location.origin); }catch(e){}
+    sh.textContent='Saved — caption copied!';
+    setTimeout(function(){ sh.textContent='Share it'; }, 2600);
+  });
+};
+
+var pc2=document.getElementById('printCert');
+if(pc2) pc2.onclick=function(){ window.print(); };
 
 </script>
 </body>
