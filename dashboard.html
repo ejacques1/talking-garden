@@ -123,6 +123,7 @@ section{padding:44px 0 0}
       <span class="brand-mark">🌱</span>
       <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
     </a>
+    <a class="btn btn-primary" id="adminLink" href="admin.html" style="display:none;padding:9px 18px;font-size:13.5px">Garden admin</a>
     <span class="acct"><span class="avatar" id="avatar">🌻</span><span class="nm" id="acctName">—</span></span>
     <button class="out" id="outBtn">Log out</button>
   </div>
@@ -300,6 +301,12 @@ function drawBadges(got){
 
   var hs=document.getElementById('helloSunny');
   if(hs && window.Sunny) hs.innerHTML=Sunny.html('wave',86);
+
+  /* Only Ms. Nia and Kiara should ever see this; everyone else never
+     learns the page exists. */
+  TG.isAdmin().then(function(ok){
+    if(ok) document.getElementById('adminLink').style.display='inline-flex';
+  });
 
   drawNext();
   drawTopics();
