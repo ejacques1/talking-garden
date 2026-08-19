@@ -229,11 +229,23 @@ function drawTopics(){
 
     var note, tagCls, tagTxt;
     if(unlocked){            note = t.note; tagCls='tag-open'; tagTxt='Open'; }
-    else if(t.state==='live'){ note = when ? 'Live session \u00b7 '+when : 'Live session date coming';
-                               tagCls='tag-soon'; tagTxt = when || 'Scheduled'; }
+    else if(t.state==='live'){
+      if(when && TGSession.passed(t.slug)){
+        /* Do not keep advertising a session that already happened. */
+        note = 'Last session \u00b7 '+when;
+        tagCls='tag-lock'; tagTxt='Ended';
+      } else {
+        note = when ? 'Live session \u00b7 '+when : 'Live session date coming';
+        tagCls='tag-soon'; tagTxt = when || 'Scheduled';
+      }
+    }
     else if(t.state==='soon'){ note = 'Coming soon'; tagCls='tag-soon'; tagTxt='Soon'; }
-    else {                     note = when ? 'Live session \u00b7 '+when : 'Not scheduled yet';
-                               tagCls='tag-lock'; tagTxt='Locked'; }
+    else {
+      note = when
+        ? ((TGSession.passed(t.slug) ? 'Last session \u00b7 ' : 'Live session \u00b7 ')+when)
+        : 'Not scheduled yet';
+      tagCls='tag-lock'; tagTxt='Locked';
+    }
 
     var inner =
       (enterable?'':'<span class="lockbadge">\ud83d\udd12</span>')+

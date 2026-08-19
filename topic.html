@@ -1173,7 +1173,9 @@ function paintVideo(){
       '<div class="slotmsg"><div class="big">&#127793;</div><b>We’re in the garden</b>'+
       '<span>'+(cfg.zoom ? 'Tap join to come with us' : 'Ms. Nia adds the Zoom link in setup below')+'</span></div>';
     title.textContent = 'Plant Life Cycle — live session';
-    when.textContent  = (window.TGSession && TGSession.line(TOPIC,'Ms. Nia')) || 'Date to be confirmed';
+    when.textContent  = (window.TGSession && TGSession.passed(TOPIC))
+      ? ('That session has finished \u00b7 ' + (TGSession.long(TOPIC)||''))
+      : ((window.TGSession && TGSession.line(TOPIC,'Ms. Nia')) || 'Date to be confirmed');
     join.textContent  = 'Join the garden session';
     join.href         = cfg.zoom || '#';
     join.style.display = 'inline-flex';

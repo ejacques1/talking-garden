@@ -191,6 +191,28 @@
       return !!(s && s.profile && s.profile.unlocked.indexOf(topic) > -1);
     },
 
+    /* Is this account an admin? Demo mode grants it so the panel can be
+       walked through before the Supabase role is set up. */
+    async isAdmin() {
+      if (demo()) return true;
+      var sess = TG.session() || await TG.sessionAsync();
+      if (!sess) return false;
+      if (global.__tg_admin != null) return global.__tg_admin;
+      try {
+        var s = await sb();
+        var r = await s.from('admins').select('user_id').eq('user_id', sess.user.id).maybeSingle();
+        global.__tg_admin = !!(r.data);
+      } catch (e) { global.__tg_admin = false; }
+      return global.__tg_admin;
+    },
+
+    async requireAdmin() {
+      var sess = await TG.requireAuth();
+      if (!sess) return null;
+      if (!(await TG.isAdmin())) { location.replace('dashboard.html'); return null; }
+      return sess;
+    },
+
     async requireAuth() {
       var s = demo() ? TG.session() : await TG.sessionAsync();
       if (!s) {

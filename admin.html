@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Garden admin — The Talking Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EA;--paper:#FFF;--paper2:#FCFAF3;
+  --ink:#1F2320;--body:#55584F;--muted:#7B7D72;--faint:#A8A99C;
+  --sage:#4F7C4A;--sage-d:#33512F;--sage-l:#E7F0E4;
+  --sun:#F2B233;--sun-l:#FDF1D6;--terra:#C25A36;--terra-l:#FBE8E0;
+  --sky:#3E90CC;--sky-l:#E2F0FA;
+  --line:#E8E1D2;--line-d:#D6CDB8;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --r:16px;--shadow:0 2px 4px rgba(31,35,32,.04),0 10px 28px rgba(31,35,32,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper2);color:var(--body);font-family:var(--sans);font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.15;letter-spacing:-.02em;font-weight:700}
+p{margin:0}a{color:var(--sage)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:14.5px;font-weight:600;padding:11px 20px;border-radius:999px;border:2px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--sage);color:#fff}
+.btn-primary:hover{background:var(--sage-d)}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-d)}
+.nav{background:var(--ink);color:#fff;position:sticky;top:0;z-index:40}
+.nav-in{max-width:1080px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;gap:16px}
+.nav-in b{font-family:var(--serif);font-size:17px;color:#fff;margin-right:auto}
+.nav-in b span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.nav-in a{color:rgba(255,255,255,.85);font-size:14px;font-weight:600;text-decoration:none}
+.tabs{display:flex;gap:7px;padding:20px 0 0;flex-wrap:wrap}
+.tab{font-family:var(--sans);font-size:14.5px;font-weight:600;padding:10px 18px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.tab.on{background:var(--sage);border-color:var(--sage);color:#fff}
+section{padding:22px 0 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px;margin-bottom:16px}
+.card h3{font-size:18px;margin-bottom:4px}
+.card .sub{font-size:13.5px;color:var(--muted);margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:12px 0 5px}
+label span{font-weight:400;color:var(--faint)}
+input,select{width:100%;font-family:var(--sans);font-size:14.5px;padding:10px 13px;border-radius:11px;border:2px solid var(--line);background:var(--paper2);color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--body)}
+.chk input{width:auto}
+.msg{font-size:13.5px;font-weight:600;color:var(--sage);min-height:20px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 10px 9px;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.kid{font-weight:600;color:var(--ink)}
+.kid small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px}
+.up{background:var(--sage-l);color:var(--sage-d)}
+.flat{background:#F1EFE8;color:var(--muted)}
+.late{background:var(--terra-l);color:#8E3D1F}
+.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+@media(max-width:720px){.stat{grid-template-columns:repeat(2,1fr)}}
+.stat div{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px 16px}
+.stat b{display:block;font-family:var(--serif);font-size:27px;color:var(--ink);line-height:1.1}
+.stat small{font-size:12px;color:var(--muted);letter-spacing:.03em}
+.scroll{overflow-x:auto}
+.empty{text-align:center;padding:34px 20px;color:var(--muted);font-size:14.5px}
+.hide{display:none}
+.demo{background:var(--sun-l);border:1px solid #EBD9A8;border-radius:12px;padding:11px 15px;font-size:13.5px;color:#7A5A0C;margin:18px 0 0}
+.boot{display:grid;place-items:center;min-height:60vh;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<div id="boot" class="boot">Checking your access…</div>
+
+<div id="app" style="display:none">
+<nav class="nav">
+  <div class="nav-in">
+    <b>Garden admin<span>Dew of Heaven Children's Garden</span></b>
+    <a href="dashboard.html">Family view</a>
+    <a href="#" id="outBtn">Log out</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on" data-p="report">Student progress</button>
+    <button class="tab" data-p="sessions">Sessions</button>
+  </div>
+
+  <!-- ============ REPORT ============ -->
+  <section id="p-report">
+    <div class="stat" id="stats"></div>
+    <div class="card">
+      <h3>Student progress</h3>
+      <p class="sub">Every child, what they knew before, what they knew after, and when. This is the table that goes to a funder.</p>
+      <div class="row" style="margin-top:0;margin-bottom:14px">
+        <select id="filterTopic" style="max-width:260px"></select>
+        <button class="btn btn-ghost" id="csvBtn">Download as spreadsheet</button>
+      </div>
+      <div class="scroll"><table id="reportTable"></table></div>
+      <div class="empty hide" id="reportEmpty">No results yet. They appear as children take the before and after checks.</div>
+      <p class="demo" id="reportDemo"></p>
+    </div>
+  </section>
+
+  <!-- ============ SESSIONS ============ -->
+  <section id="p-sessions" class="hide">
+    <div class="card">
+      <h3>Run your sessions</h3>
+      <p class="sub">Set the date, the link and the garden word for each topic. Families see these straight away.</p>
+      <label for="sTopic">Topic</label>
+      <select id="sTopic"></select>
+
+      <div class="grid2">
+        <div>
+          <label for="sWhen">Date &amp; time <span>(shown everywhere families see it)</span></label>
+          <input id="sWhen" type="datetime-local">
+        </div>
+        <div>
+          <label for="sWord">Garden word <span>(say it out loud during the session)</span></label>
+          <input id="sWord" placeholder="sunflower">
+        </div>
+      </div>
+
+      <label for="sZoom">Zoom link <span>(your personal meeting room — the same one every week)</span></label>
+      <input id="sZoom" placeholder="https://us02web.zoom.us/j/1234567890">
+
+      <label for="sMovie">Topic movie <span>(leave blank to use Sunny's animated film)</span></label>
+      <input id="sMovie" placeholder="https://youtu.be/xxxxxxxxxxx">
+
+      <label for="sRec">Recording <span>(paste after the session — a YouTube unlisted link works well)</span></label>
+      <input id="sRec" placeholder="https://youtu.be/xxxxxxxxxxx">
+
+      <div class="row">
+        <label class="chk" style="margin:0"><input type="checkbox" id="sRepeat"> Repeats every week at this time</label>
+      </div>
+
+      <div class="row">
+        <button class="btn btn-primary" id="sSave">Save session</button>
+        <button class="btn btn-ghost" id="sNext">Roll forward one week</button>
+      </div>
+      <div class="msg" id="sMsg"></div>
+    </div>
+
+    <div class="card">
+      <h3>All sessions</h3>
+      <p class="sub">What every topic is currently showing families.</p>
+      <div class="scroll"><table id="sessTable"></table></div>
+    </div>
+  </section>
+</div>
+</div>
+
+<script src="session.js"></script>
+<script src="quiz.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script>
+var TOPICS=[
+  {slug:'plant',      name:'Plant Life Cycle'},
+  {slug:'butterfly',  name:'Butterfly Life Cycle'},
+  {slug:'frog',       name:'Frog Life Cycle'},
+  {slug:'worm',       name:'Worms & Living Soil'},
+  {slug:'pollinator', name:'Pollinators at Work'},
+  {slug:'kitchen',    name:'Garden to Kitchen'}
+];
+function esc(v){ return String(v==null?'':v).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+function nameOf(slug){ var t=TOPICS.filter(function(x){return x.slug===slug})[0]; return t?t.name:slug; }
+function fmt(d){ return d ? new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—'; }
+
+/* ---------- tabs ---------- */
+[].forEach.call(document.querySelectorAll('.tab'), function(b){
+  b.onclick=function(){
+    [].forEach.call(document.querySelectorAll('.tab'),function(x){x.className='tab'});
+    b.className='tab on';
+    document.getElementById('p-report').classList.toggle('hide', b.dataset.p!=='report');
+    document.getElementById('p-sessions').classList.toggle('hide', b.dataset.p!=='sessions');
+  };
+});
+
+/* ---------- report data ----------
+   Demo mode reads what this browser recorded so the panel can be
+   demonstrated without a database. Connected, it reads child_progress
+   across every family, which row level security allows only for admins. */
+async function loadReport(){
+  if (window.TG_DEMO) return demoRows();
+  try{
+    var mod=await import('https://esm.sh/@supabase/supabase-js@2');
+    var c=mod.createClient(TG_CONFIG.SUPABASE_URL, TG_CONFIG.SUPABASE_ANON_KEY);
+    var r=await c.from('child_progress').select('*').order('child_name');
+    if(r.error) throw r.error;
+    return (r.data||[]).map(function(x){
+      return { child:x.child_name, grade:x.grade, topic:x.topic||nameOf(x.topic_slug), slug:x.topic_slug,
+               before:x.before_score, beforeOf:x.before_out_of, beforeAt:x.before_date,
+               after:x.after_score,  afterOf:x.after_out_of,  afterAt:x.after_date };
+    });
+  }catch(e){ return []; }
+}
+
+function demoRows(){
+  var out=[], sess=TG.session();
+  var kids=(sess&&sess.profile.children)||[];
+  TOPICS.forEach(function(t){
+    kids.forEach(function(k){
+      var pre=TGQuiz.result(t.slug,'pre',k.name), post=TGQuiz.result(t.slug,'post',k.name);
+      if(!pre && !post) return;
+      var pAt=null, qAt=null;
+      try{ pAt=localStorage.getItem('tg_pre_'+t.slug+'_at'); }catch(e){}
+      out.push({ child:k.name, grade:k.grade, topic:t.name, slug:t.slug,
+                 before:pre?+pre.split('/')[0]:null, beforeOf:pre?+pre.split('/')[1]:null, beforeAt:pAt,
+                 after:post?+post.split('/')[0]:null, afterOf:post?+post.split('/')[1]:null, afterAt:qAt,
+                 late:(function(){ try{ return localStorage.getItem('tg_pre_'+t.slug+'_late')==='1'; }catch(e){ return false; } })() });
+    });
+  });
+  return out;
+}
+
+var ROWS=[];
+function drawReport(){
+  var filter=document.getElementById('filterTopic').value;
+  var rows=ROWS.filter(function(r){ return !filter || r.slug===filter; });
+
+  var withBoth=rows.filter(function(r){ return r.before!=null && r.after!=null; });
+  var gain=withBoth.length
+    ? Math.round(withBoth.reduce(function(a,r){ return a+(r.after-r.before); },0)/withBoth.length*10)/10
+    : 0;
+  document.getElementById('stats').innerHTML=
+    '<div><b>'+new Set(rows.map(function(r){return r.child})).size+'</b><small>Children</small></div>'+
+    '<div><b>'+rows.filter(function(r){return r.before!=null}).length+'</b><small>Before-checks</small></div>'+
+    '<div><b>'+withBoth.length+'</b><small>Completed both</small></div>'+
+    '<div><b>'+(gain>0?'+':'')+gain+'</b><small>Avg skills gained</small></div>';
+
+  var t=document.getElementById('reportTable');
+  document.getElementById('reportEmpty').classList.toggle('hide', rows.length>0);
+  if(!rows.length){ t.innerHTML=''; return; }
+
+  t.innerHTML='<thead><tr><th>Child</th><th>Topic</th><th>Before</th><th>Date</th>'+
+    '<th>After</th><th>Date</th><th>Gained</th></tr></thead><tbody>'+
+    rows.map(function(r){
+      var g=(r.before!=null&&r.after!=null)?(r.after-r.before):null;
+      return '<tr><td class="kid">'+esc(r.child)+'<small>'+esc(r.grade||'')+'</small></td>'+
+        '<td>'+esc(r.topic)+'</td>'+
+        '<td>'+(r.before!=null?r.before+'/'+r.beforeOf:'—')+
+          (r.late?' <span class="pill late">late</span>':'')+'</td>'+
+        '<td>'+fmt(r.beforeAt)+'</td>'+
+        '<td>'+(r.after!=null?r.after+'/'+r.afterOf:'—')+'</td>'+
+        '<td>'+fmt(r.afterAt)+'</td>'+
+        '<td>'+(g==null?'—':'<span class="pill '+(g>0?'up':'flat')+'">'+(g>0?'+':'')+g+'</span>')+'</td></tr>';
+    }).join('')+'</tbody>';
+}
+
+document.getElementById('csvBtn').onclick=function(){
+  var filter=document.getElementById('filterTopic').value;
+  var rows=ROWS.filter(function(r){ return !filter || r.slug===filter; });
+  var head=['Child','Grade','Topic','Skills before','Before date','Skills after','After date','Skills gained'];
+  var lines=[head.join(',')].concat(rows.map(function(r){
+    var g=(r.before!=null&&r.after!=null)?(r.after-r.before):'';
+    return [r.child,r.grade||'',r.topic,
+            r.before!=null?r.before+'/'+r.beforeOf:'', r.beforeAt?new Date(r.beforeAt).toISOString().slice(0,10):'',
+            r.after!=null?r.after+'/'+r.afterOf:'',   r.afterAt?new Date(r.afterAt).toISOString().slice(0,10):'',
+            g].map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
+  }));
+  var blob=new Blob([lines.join('\n')],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='garden-progress-'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+};
+
+/* ---------- sessions ---------- */
+function loadSession(){
+  var slug=document.getElementById('sTopic').value, cfg=TGSession.get(slug);
+  document.getElementById('sWhen').value  = cfg.when||'';
+  document.getElementById('sWord').value  = cfg.word||'';
+  document.getElementById('sZoom').value  = cfg.zoom||'';
+  document.getElementById('sMovie').value = cfg.movie||'';
+  document.getElementById('sRec').value   = cfg.rec||'';
+  document.getElementById('sRepeat').checked = !!cfg.repeat;
+}
+function saveSession(msg){
+  var slug=document.getElementById('sTopic').value;
+  TGSession.set(slug, {
+    when:  document.getElementById('sWhen').value,
+    word:  document.getElementById('sWord').value.trim().toLowerCase(),
+    zoom:  document.getElementById('sZoom').value.trim(),
+    movie: document.getElementById('sMovie').value.trim(),
+    rec:   document.getElementById('sRec').value.trim(),
+    repeat:document.getElementById('sRepeat').checked
+  });
+  document.getElementById('sMsg').textContent = msg||'Saved. Families see this now.';
+  drawSessions();
+}
+document.getElementById('sTopic').onchange=loadSession;
+document.getElementById('sSave').onclick=function(){ saveSession(); };
+document.getElementById('sNext').onclick=function(){
+  var w=document.getElementById('sWhen').value;
+  if(!w){ document.getElementById('sMsg').textContent='Set a date first.'; return; }
+  var d=new Date(w); d.setDate(d.getDate()+7);
+  var pad=function(n){return (n<10?'0':'')+n};
+  document.getElementById('sWhen').value =
+    d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+  saveSession('Moved on a week. Remember to change the garden word.');
+};
+
+function drawSessions(){
+  document.getElementById('sessTable').innerHTML=
+    '<thead><tr><th>Topic</th><th>Next session</th><th>Word</th><th>Recording</th><th>Repeats</th></tr></thead><tbody>'+
+    TOPICS.map(function(t){
+      var cfg=TGSession.get(t.slug), when=TGSession.long(t.slug);
+      var past=TGSession.passed(t.slug);
+      return '<tr><td class="kid">'+esc(t.name)+'</td>'+
+        '<td>'+(when? esc(when)+(past?' <span class="pill late">ended</span>':'') : '<span style="color:var(--faint)">not scheduled</span>')+'</td>'+
+        '<td>'+(cfg.word?esc(cfg.word):'—')+'</td>'+
+        '<td>'+(cfg.rec?'added':'—')+'</td>'+
+        '<td>'+(cfg.repeat?'weekly':'—')+'</td></tr>';
+    }).join('')+'</tbody>';
+}
+
+/* ---------- boot ---------- */
+(async function(){
+  var sess = await TG.requireAdmin();
+  if(!sess) return;
+
+  var opts=TOPICS.map(function(t){ return '<option value="'+t.slug+'">'+esc(t.name)+'</option>'; }).join('');
+  document.getElementById('sTopic').innerHTML=opts;
+  document.getElementById('filterTopic').innerHTML='<option value="">All topics</option>'+opts;
+
+  loadSession();
+  drawSessions();
+  ROWS = await loadReport();
+  drawReport();
+  document.getElementById('filterTopic').onchange=drawReport;
+
+  document.getElementById('reportDemo').textContent = window.TG_DEMO
+    ? 'Demo mode — showing what this browser recorded. Connected to Supabase this reads every family.'
+    : '';
+  document.getElementById('reportDemo').style.display = window.TG_DEMO ? 'block' : 'none';
+
+  document.getElementById('outBtn').onclick=async function(e){
+    e.preventDefault(); await TG.signOut(); location.href='index.html';
+  };
+
+  document.getElementById('boot').style.display='none';
+  document.getElementById('app').style.display='block';
+})();
+</script>
+</body>
+</html>
