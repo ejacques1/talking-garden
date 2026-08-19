@@ -232,6 +232,15 @@ img{max-width:100%;display:block}
 .crow .ci{font-size:17px;flex:none;line-height:1.3}
 .crow .cl{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35}
 .crow .cl em{display:block;font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}
+
+.bmeta{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+.blist{background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.blist b{font-family:var(--serif);font-size:15px;color:var(--ink);display:block;margin-bottom:7px}
+.blist ul{margin:0;padding-left:18px;font-size:14px;line-height:1.75}
+.brow{display:flex;gap:9px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.bprog{display:flex;gap:4px;margin-bottom:14px}
+.bprog i{flex:1;height:6px;border-radius:99px;background:var(--line);display:block}
+.bprog i.on{background:var(--sage)}
 </style>
 </head>
 <body>
@@ -359,27 +368,8 @@ img{max-width:100%;display:block}
     </div>
     <div class="stage-bd">
       <p>Hands-on builds that carry the same skills off the screen and into the soil. Each has a materials list, step-by-step build mode, and a "why it works" note.</p>
-      <div class="cards">
-        <a class="mcard" href="library.html?p=sunflower">
-          <span class="e e-sun">&#127803;</span>
-          <span><h4>The Sunflower Cup</h4><p>Plant one seed and watch every stage happen on your windowsill.</p>
-          <span class="telabel">K.13(C) &middot; the whole life cycle, for real</span></span>
-        </a>
-        <a class="mcard" href="library.html?p=scrap">
-          <span class="e e-green">&#129386;</span>
-          <span><h4>Grow a Plant from a Scrap</h4><p>Regrow a green onion on the windowsill. 10 min &middot; kid-led.</p>
-          <span class="telabel">2.13(A) &middot; roots, and what they do</span></span>
-        </a>
-        <a class="mcard" href="library.html?p=bee">
-          <span class="e e-terra">&#128029;</span>
-          <span><h4>Build a Bee &amp; Butterfly House</h4><p>Bring the pollinators that turn flowers into seeds.</p>
-          <span class="telabel">2.13(A) &middot; how flowers make seeds</span></span>
-        </a>
-        <a class="mcard" href="library.html?p=worm">
-          <span class="e e-sky">&#129712;</span>
-          <span><h4>Worm-in-a-Cup Observatory</h4><p>See how worms make the nutrients in the soil.</p>
-          <span class="telabel">K.12(A) &middot; nutrients in the soil</span></span>
-        </a>
+      <div class="cards" id="buildCards"></div>
+      <p class="teksnote" style="margin-top:14px;margin-bottom:0;border-left-color:var(--line-d)">Looking for something else? <a href="library.html" style="color:var(--sage);font-weight:600">Browse the whole Garden Library &rarr;</a></p>
       </div>
     </div>
   </section>
@@ -473,12 +463,18 @@ img{max-width:100%;display:block}
 <div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
 <div class="proto"><i></i> Prototype — sample content</div>
 
+<script src="projects.js"></script>
 <script src="teks.js"></script>
 <script src="quiz.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
-var TOPIC='plant', PREKEY='tg_pre_'+TOPIC;
+var TOPIC=(new URLSearchParams(location.search).get('t')||'plant');
+/* Only Plant Life Cycle is built out. Sending a family to a half-built
+   topic would show plant content under another name, so bounce instead. */
+var BUILT=['plant'];
+if(BUILT.indexOf(TOPIC)<0){ location.replace('dashboard.html?soon='+encodeURIComponent(TOPIC)); }
+var PREKEY='tg_pre_'+TOPIC;
 
 function preDone(){ try{ return localStorage.getItem(PREKEY)==='1'; }catch(e){ return false; } }
 function setPre(){ try{ localStorage.setItem(PREKEY,'1'); }catch(e){} }
@@ -512,6 +508,13 @@ function paint(){
     document.getElementById(id).classList.toggle('lock', !unlocked);
   });
 
+  var wi=document.getElementById('wordIn'), wb=document.getElementById('wordBtn');
+  if(wi && wb){
+    wi.disabled = !pre;
+    wi.placeholder = pre ? 'Type the garden word\u2026' : 'Do the before-check first';
+    wb.style.opacity = pre ? '' : '.5';
+  }
+
   var done = unlocked ? 4 : (pre?1:0);
   var now  = unlocked ? 5 : (pre?2:1);
   document.getElementById('rail').innerHTML = RAIL.map(function(r){
@@ -531,6 +534,12 @@ document.getElementById('preBtn').addEventListener('click',function(){
 async function tryWord(){
   var v=document.getElementById('wordIn').value.trim().toLowerCase();
   var m=document.getElementById('wordMsg');
+  if(!preDone()){
+    m.className='wordmsg bad';
+    m.textContent='Please do the before-check first — it only takes a few minutes, and we need it to measure what you learn.';
+    document.getElementById('s1').scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
   if(!v){ m.className='wordmsg bad'; m.textContent='Type the word you heard in the session.'; return; }
   if(v!=='sunflower'){ m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.'; return; }
   setPre();
@@ -869,6 +878,76 @@ if(df) df.onclick=function(){
   if(cfg.word) document.getElementById('inWord').value=cfg.word;
 })();
 paintVideo();
+
+/* ================= stage 3: builds, inline ================= */
+var curBuild=null, buildStep=0;
+
+function paintBuilds(){
+  var host=document.getElementById('buildCards'); if(!host||!window.TOPIC_BUILDS) return;
+  var list=TOPIC_BUILDS[TOPIC]||[];
+  host.innerHTML = list.map(function(b){
+    var p=projectById(b.id); if(!p) return '';
+    var done=isActDone('build_'+b.id);
+    return '<a class="mcard'+(done?' done':'')+'" data-build="'+b.id+'">'+
+      '<span class="e e-green">'+p.emoji+'</span>'+
+      '<span><h4>'+p.title+'</h4><p>'+p.blurb+'</p>'+
+      '<span class="telabel">'+b.teks+' &middot; '+b.why+'</span></span>'+
+      '<span class="tick">&#10003;</span></a>';
+  }).join('');
+}
+
+function openBuildInline(id){
+  curBuild=projectById(id); if(!curBuild) return;
+  buildStep=0;
+  document.getElementById('playTitle').textContent=curBuild.title;
+  document.getElementById('ovl').classList.add('on');
+  document.body.style.overflow='hidden';
+  paintBuild();
+}
+
+function paintBuild(){
+  var p=curBuild, body=document.getElementById('playBd');
+  var total=p.steps.length+2;
+
+  if(buildStep===0){
+    body.innerHTML='<div class="q">'+p.emoji+' '+p.title+'</div>'+
+      '<div class="qs">'+p.blurb+'</div>'+
+      '<div class="bmeta">'+['⏱ '+p.meta.time,'\u{1F39A} '+p.meta.diff,'\u{1F9FD} '+p.meta.mess].map(function(m){
+        return '<span class="mini">'+m+'</span>'; }).join('')+'</div>'+
+      '<div class="blist"><b>What you need</b><ul>'+p.materials.map(function(m){return '<li>'+m+'</li>';}).join('')+'</ul></div>'+
+      '<div class="say">'+p.grownup+'</div>'+
+      '<div class="brow"><button class="btn btn-primary" id="bNext" style="width:auto">Start building &rarr;</button></div>';
+  } else if(buildStep<=p.steps.length){
+    var st=p.steps[buildStep-1];
+    body.innerHTML='<div class="bprog">'+p.steps.map(function(x,i){
+        return '<i class="'+(i<buildStep?'on':'')+'"></i>'; }).join('')+'</div>'+
+      '<div class="qs" style="text-align:left;margin-bottom:4px">Step '+buildStep+' of '+p.steps.length+'</div>'+
+      '<div class="q" style="text-align:left">'+st[0]+'</div>'+
+      '<p style="margin-top:10px;font-size:15px">'+st[1]+'</p>'+
+      '<div class="brow"><button class="btn btn-ghost" id="bBack" style="width:auto">&larr; Back</button>'+
+      '<button class="btn btn-primary" id="bNext" style="width:auto">'+(buildStep===p.steps.length?'Finish':'Next step &rarr;')+'</button></div>';
+  } else {
+    markAct('build_'+p.id); paintBuilds();
+    body.innerHTML='<div class="win"><div class="m">&#127881;</div><h3>You built it!</h3>'+
+      '<div class="blist" style="text-align:left"><b>Why it works</b><p style="font-size:14.5px;margin-top:6px">'+p.science+'</p></div>'+
+      '<p style="font-size:13px;color:var(--muted);margin:12px 0 16px">You practised: '+p.learn+'</p>'+
+      '<button class="btn btn-primary" id="bDone" style="width:auto">Back to the topic</button></div>';
+    document.getElementById('bDone').onclick=function(){
+      TGQuiz.close();
+      document.getElementById('s4').scrollIntoView({behavior:'smooth',block:'start'});
+    };
+    return;
+  }
+  var n=document.getElementById('bNext'), bk=document.getElementById('bBack');
+  if(n) n.onclick=function(){ buildStep++; paintBuild(); };
+  if(bk) bk.onclick=function(){ buildStep--; paintBuild(); };
+}
+
+document.addEventListener('click', function(e){
+  var c=e.target.closest('[data-build]');
+  if(c){ e.preventDefault(); openBuildInline(c.dataset.build); }
+});
+paintBuilds();
 
 </script>
 </body>

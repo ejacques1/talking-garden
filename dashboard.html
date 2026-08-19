@@ -185,9 +185,9 @@ section{padding:44px 0 0}
 <script src="auth.js"></script>
 <script>
 var TOPICS=[
- {slug:'plant',     emoji:'🌻', art:'a-sage',  name:'Plant Life Cycle',     href:'topic.html', pct:100, state:'open',  note:'All 5 stages done'},
- {slug:'butterfly', emoji:'🦋', art:'a-grape', name:'Butterfly Life Cycle', href:'topic.html', pct:20,  state:'live',  note:'Live session Saturday'},
- {slug:'frog',      emoji:'🐸', art:'a-teal',  name:'Frog Life Cycle',      href:'topic.html', pct:0,   state:'lock',  note:'Live session Saturday'},
+ {slug:'plant',     emoji:'🌻', art:'a-sage',  name:'Plant Life Cycle',     href:'topic.html?t=plant', pct:100, state:'open',  note:'All 5 stages done'},
+ {slug:'butterfly', emoji:'🦋', art:'a-grape', name:'Butterfly Life Cycle', href:'topic.html?t=butterfly', pct:20,  state:'live',  note:'Live session Saturday'},
+ {slug:'frog',      emoji:'🐸', art:'a-teal',  name:'Frog Life Cycle',      href:'topic.html?t=frog', pct:0,   state:'lock',  note:'Live session Saturday'},
  {slug:'worm',      emoji:'🪱', art:'a-sun',   name:'Worms & Living Soil',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
  {slug:'pollinator',emoji:'🐝', art:'a-terra', name:'Pollinators at Work',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
  {slug:'kitchen',   emoji:'🥕', art:'a-sky',   name:'Garden to Kitchen',    href:'#',          pct:0,   state:'soon',  note:'Coming soon'}
@@ -254,6 +254,16 @@ function drawBadges(got){
   if(kids.length) document.getElementById('badgeTitle').textContent = kids[0].name+"'s badges";
 
   drawTopics();
+
+  var soon=new URLSearchParams(location.search).get('soon');
+  if(soon){
+    var t=TOPICS.filter(function(x){return x.slug===soon;})[0];
+    var n=document.createElement('div');
+    n.className='demo';
+    n.style.cssText='margin:0 0 20px;background:var(--sun-l);border-color:#EBD9A8';
+    n.innerHTML='<b>'+((t&&t.name)||'That topic')+'</b> isn\'t built yet — Plant Life Cycle is the one that\'s finished end to end. Start there.';
+    var main=document.querySelector('main'); main.insertBefore(n, main.firstChild);
+  }
   drawBadges(TG.isUnlocked('plant')?3:1);
 
   if(!window.TG_DEMO) document.getElementById('demoNote').style.display='none';
