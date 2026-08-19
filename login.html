@@ -81,7 +81,7 @@ input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
 
     <div class="card">
       <div class="card-hd">
-        <div class="m">🌻</div>
+        <div class="m" id="loginSunny"></div>
         <h1 id="hdTitle">Welcome back</h1>
         <p id="hdSub">Sign in to reach your garden topics.</p>
       </div>
@@ -139,9 +139,12 @@ input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
   </div>
 </div>
 
+<script src="sunny.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
+var _ls=document.getElementById('loginSunny');
+if(_ls && window.Sunny) _ls.innerHTML='<div style="display:grid;place-items:center">'+Sunny.html('wave',78)+'</div>';
 var qs=new URLSearchParams(location.search), NEXT=qs.get('next')||'dashboard.html';
 
 if(!window.TG_DEMO){

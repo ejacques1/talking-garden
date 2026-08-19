@@ -56,7 +56,7 @@ img{max-width:100%;display:block}
 .thead::after{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.42);right:-90px;top:-120px}
 .crumb{font-size:14px;color:var(--sage-d);text-decoration:none;font-weight:600;display:inline-flex;gap:7px;margin-bottom:16px}
 .thead-in{display:flex;gap:22px;align-items:center;position:relative;z-index:2}
-.tbadge{width:92px;height:92px;border-radius:26px;background:#fff;display:grid;place-items:center;font-size:46px;box-shadow:var(--shadow);flex:none}
+.tbadge{width:92px;height:110px;border-radius:26px;background:#fff;display:grid;place-items:center;box-shadow:var(--shadow);flex:none;padding:6px}
 .thead h1{font-size:clamp(29px,4.4vw,42px);font-weight:900;margin-bottom:8px}
 .thead p{font-size:17px;color:#456141;max-width:36em}
 @media(max-width:600px){.thead-in{flex-direction:column;align-items:flex-start;gap:16px}.tbadge{width:70px;height:70px;font-size:36px;border-radius:20px}}
@@ -265,7 +265,7 @@ img{max-width:100%;display:block}
   <div class="wrap">
     <a class="crumb" href="index.html">← All topics</a>
     <div class="thead-in">
-      <div class="tbadge">🌻</div>
+      <div class="tbadge" id="tbadge"></div>
       <div>
         <h1>Plant Life Cycle</h1>
         <p>From a seed the size of a freckle to a sunflower taller than you. Follow the whole journey — then grow one yourself.</p>
@@ -462,7 +462,7 @@ img{max-width:100%;display:block}
       <button class="btn btn-primary" id="postBtn" style="margin-bottom:18px">Take the after-quiz →</button>
       <div id="certWrap" style="display:none">
         <div class="cert" id="certCard">
-          <div class="certseal">&#127941;</div>
+          <div class="certseal" id="certSeal"></div>
           <div class="certkicker">Dew of Heaven Children's Garden</div>
           <h4>Junior Garden Scientist</h4>
           <div class="certname" id="certName">&mdash;</div>
@@ -494,6 +494,7 @@ img{max-width:100%;display:block}
 <div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
 <div class="proto"><i></i> Prototype — sample content</div>
 
+<script src="sunny.js"></script>
 <script src="audio.js"></script>
 <script src="projects.js"></script>
 <script src="teks.js"></script>
@@ -614,6 +615,11 @@ document.getElementById('resetBtn').addEventListener('click',function(){
     (kids.length ? kids[0].name+' \u00b7 ' : '') + 'Plant Life Cycle \u00b7 completed August 2026';
   document.getElementById('outBtn').onclick = async function(){ await TG.signOut(); location.href='index.html'; };
   paint();
+  var tb=document.getElementById('tbadge');
+  if(tb && window.Sunny) tb.innerHTML=Sunny.html('wave',74);
+  var cs=document.getElementById('certSeal');
+  if(cs && window.Sunny) cs.innerHTML=Sunny.html('cheer',72);
+
   document.getElementById('boot').style.display='none';
   document.getElementById('app').style.display='block';
 })();
@@ -704,7 +710,7 @@ document.getElementById('playX').onclick=closeAct;
 ovl.onclick=function(e){ if(e.target===ovl) closeAct(); };
 
 function win(msg){
-  playBd.innerHTML='<div class="win"><div class="m">🌟</div><h3>You did it!</h3>'+
+  playBd.innerHTML='<div class="win">'+(window.Sunny?Sunny.html('cheer',96):'<div class="m">🌟</div>')+'<h3>You did it!</h3>'+
     '<p>'+msg+'</p>'+
     '<button class="btn btn-primary" id="againBtn" style="width:auto">Play again</button> '+
     '<button class="btn btn-ghost" id="doneBtn" style="width:auto">Back to the topic</button></div>';
@@ -756,7 +762,8 @@ function render(){
     if(!st.seen) st.seen=[];
     if(st.seen.length===a.parts.length){ return win('You met every part of the plant.'); }
     speakPrompt('parts', 'Hi friend! Tap one of my parts to learn its secret.');
-    playBd.innerHTML='<div class="q">Hi friend! 🌻</div><div class="qs">Tap one of my parts to learn its secret.</div>'+
+    playBd.innerHTML=(window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:8px">'+Sunny.html(st.msg?'happy':'wave',86)+'</div>':'')+
+      '<div class="q">Hi friend!</div><div class="qs">Tap one of my parts to learn its secret.</div>'+
       '<div class="grid2">'+a.parts.map(function(x,i){
         var seen=st.seen.indexOf(i)>-1;
         return '<button class="opt'+(seen?' right':'')+'" data-i="'+i+'"><span class="e">'+x.e+'</span>'+x.k+'</button>';
@@ -947,7 +954,8 @@ function paintMovie(){
   } else {
     /* Deliberately visible and empty, so Ms. Nia can see exactly where
        her film goes before she has filmed it. */
-    slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg"><div class="big">&#127916;</div>'+
+    slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
+      (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',64)+'</div>':'<div class="big">&#127916;</div>')+
       '<b>Ms. Nia&rsquo;s movie goes here</b><span>Three minutes in the real garden &mdash; add the link in Session setup</span></div>';
     sub.textContent='Coming soon';
     btn.style.display='none';

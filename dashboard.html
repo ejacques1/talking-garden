@@ -127,10 +127,11 @@ section{padding:44px 0 0}
 </nav>
 
 <header class="hello">
-  <div class="wrap hello-in">
+  <div class="wrap hello-in" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><div id="helloSunny" style="flex:none"></div><div style="flex:1;min-width:240px">
     <h1 id="helloTitle">Hello!</h1>
     <p id="helloSub">Here's what's growing this week.</p>
     <div class="kidchips" id="kidchips"></div>
+    </div>
   </div>
 </header>
 
@@ -181,6 +182,7 @@ section{padding:44px 0 0}
 <div class="proto"><i></i> Prototype — sample content</div>
 </div>
 
+<script src="sunny.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
@@ -252,6 +254,9 @@ function drawBadges(got){
     document.getElementById('badgeTitle').textContent = c.dataset.name+"'s badges";
   };
   if(kids.length) document.getElementById('badgeTitle').textContent = kids[0].name+"'s badges";
+
+  var hs=document.getElementById('helloSunny');
+  if(hs && window.Sunny) hs.innerHTML=Sunny.html('wave',86);
 
   drawTopics();
 
