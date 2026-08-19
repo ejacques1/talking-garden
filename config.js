@@ -16,8 +16,8 @@
 ------------------------------------------------------------------- */
 
 window.TG_CONFIG = {
-  SUPABASE_URL:      '',   // e.g. 'https://abcdefgh.supabase.co'
-  SUPABASE_ANON_KEY: '',   // e.g. 'eyJhbGciOi...'
+  SUPABASE_URL:      'https://msldloxmoniiyanllduq.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_-VKCpT0qxzgUu25XqdFjtw_U-I-CQXf',
 };
 
 // Demo mode turns itself off automatically once both values are filled in.
