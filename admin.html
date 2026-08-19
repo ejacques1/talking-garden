@@ -98,6 +98,8 @@ tr:last-child td{border-bottom:none}
 </nav>
 
 <div class="wrap">
+  <div id="connBanner" style="display:none;margin-top:18px;border-radius:12px;padding:12px 16px;font-size:13.5px;font-weight:600"></div>
+
   <div class="tabs">
     <button class="tab on" data-p="report">Student progress</button>
     <button class="tab" data-p="sessions">Sessions</button>
@@ -141,7 +143,7 @@ tr:last-child td{border-bottom:none}
       <label for="sZoom">Zoom link <span>(your personal meeting room — the same one every week)</span></label>
       <input id="sZoom" placeholder="https://us02web.zoom.us/j/1234567890">
 
-      <label for="sMovie">Topic movie <span>(leave blank to use Sunny's animated film)</span></label>
+      <label for="sMovie">Your garden film <span>(optional &mdash; leave blank and Sunny&rsquo;s animation is used instead)</span></label>
       <input id="sMovie" placeholder="https://youtu.be/xxxxxxxxxxx">
 
       <label for="sRec">Recording <span>(paste after the session — a YouTube unlisted link works well)</span></label>
@@ -324,7 +326,13 @@ async function saveSession(){
     recording_url: document.getElementById('sRec').value.trim(),
     host_name: 'Ms. Nia'
   });
-  if(res !== true){ document.getElementById('sMsg').textContent='Could not save: '+res; return; }
+  if(res !== true){
+    var m=document.getElementById('sMsg');
+    m.style.color='var(--terra)';
+    m.textContent='NOT saved — '+res;
+    return;
+  }
+  document.getElementById('sMsg').style.color='';
   document.getElementById('sMsg').textContent = editingId ? 'Updated.' : 'Added. Families see it now.';
   clearForm(); prefillFromLast(); drawSessions();
 }
@@ -394,7 +402,7 @@ function drawSessions(){
     ? '<b>Past sessions tab:</b> '+recs.length+' recording'+(recs.length===1?'':'s')
     : '<b>Past sessions tab:</b> empty — it explains why to families');
   var mv=(up&&up.movie_url)||(past[0]&&past[0].movie_url);
-  bits.push('<b>Movie tab:</b> '+(mv?'your film':'Sunny’s animation')+', once a child has done the before-check');
+  bits.push('<b>First tab:</b> '+(mv?'“In the garden” — your film':'“Sunny explains” — the animation')+', once a child has done the before-check');
   document.getElementById('familyView').innerHTML='What families see right now for this topic:<br>'+bits.join('<br>');
 }
 
@@ -413,6 +421,16 @@ function drawSessions(){
   ROWS = await loadReport();
   drawReport();
   document.getElementById('filterTopic').onchange=drawReport;
+
+  var cb=document.getElementById('connBanner');
+  cb.style.display='block';
+  if(window.TG_DEMO){
+    cb.style.background='var(--terra-l)'; cb.style.border='1px solid #EFCFC1'; cb.style.color='#8E3D1F';
+    cb.innerHTML='&#9888;&#65039; Not connected to the database. Anything you save here stays in this browser and will disappear. Hard-reload the page (Cmd+Shift+R); if it persists, config.js is missing its Supabase key.';
+  } else {
+    cb.style.background='var(--sage-l)'; cb.style.border='1px solid #CBDDC6'; cb.style.color='var(--sage-d)';
+    cb.innerHTML='&#10003; Connected. Sessions and progress save to the database and everyone sees them.';
+  }
 
   document.getElementById('reportDemo').textContent = window.TG_DEMO
     ? 'Demo mode — showing what this browser recorded. Connected to Supabase this reads every family.'

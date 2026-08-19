@@ -351,7 +351,7 @@ img{max-width:100%;display:block}
     <div class="stage-bd">
       <p>Ms. Nia takes you around the beds with a camera. Ask questions, watch a real seed get planted, and listen out — somewhere in the middle we say the <b>secret garden word</b>.</p>
       <div class="sessiontabs">
-        <button class="stog on" data-mode="movie">The movie</button>
+        <button class="stog on" data-mode="movie" id="tabMovie">Sunny explains</button>
         <button class="stog" data-mode="live">Before &amp; during the session</button>
         <button class="stog" data-mode="rec">Past sessions</button>
       </div>
@@ -1141,17 +1141,27 @@ function paintVideo(){
         (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',62)+'</div>':'<div class="big">&#128274;</div>')+
         '<b>Finish the before-check first</b>'+
         '<span>Then Sunny will show you how a plant grows. We ask first so we can see what you learn.</span></div>';
-      title.textContent='Plant Life Cycle — the movie';
+      title.textContent='Plant Life Cycle — Sunny explains';
       when.textContent='Unlocks when you have done the before-check';
       return;
     }
     var mv = (upcoming && upcoming.movie_url) || (history[0] && history[0].movie_url);
     var emb = embedUrl(mv);
-    if(emb){ slot.innerHTML='<iframe src="'+emb+'" allowfullscreen title="Topic movie"></iframe>';
-             when.textContent='Ms. Nia’s film · watch it as often as you like'; }
-    else if(window.TGMovie){ TGMovie.mount(slot);
-             when.textContent='Animated · narrated · about a minute'; }
-    title.textContent='Plant Life Cycle — the movie';
+    var tabBtn = document.getElementById('tabMovie');
+    if(emb){
+      /* A real film is here, so call it one. */
+      slot.innerHTML='<iframe src="'+emb+'" allowfullscreen title="Garden film"></iframe>';
+      when.textContent='Filmed in the garden · watch it as often as you like';
+      title.textContent='Plant Life Cycle — in the garden';
+      if(tabBtn) tabBtn.textContent='In the garden';
+    } else if(window.TGMovie){
+      /* Sunny's animation. Named for what it is so nobody expects
+         a film and feels short-changed by a cartoon. */
+      TGMovie.mount(slot);
+      when.textContent='A short animation · narrated · about a minute';
+      title.textContent='Plant Life Cycle — Sunny explains';
+      if(tabBtn) tabBtn.textContent='Sunny explains';
+    }
     return;
   }
 

@@ -116,6 +116,7 @@
         starts_at:  row.starts_at,
         garden_word: (row.word||'').trim().toLowerCase(),
         join_url: row.join_url || null,
+        movie_url: row.movie_url || null,
         recording_url: row.recording_url || null,
         host_name: row.host_name || null,
         repeat_weekly: !!row.repeat_weekly
@@ -135,9 +136,14 @@
       try{
         var c = await sb();
         var r = row.id
-          ? await c.from('sessions').update(payload).eq('id', row.id)
-          : await c.from('sessions').insert(payload);
+          ? await c.from('sessions').update(payload).eq('id', row.id).select()
+          : await c.from('sessions').insert(payload).select();
         if (r.error) throw r.error;
+        /* An insert blocked by row level security can come back without
+           an error and without rows. Treat writing nothing as a failure
+           rather than reporting a save that did not happen. */
+        if (!r.data || !r.data.length)
+          return 'the database accepted the request but saved nothing — usually means this account is not an admin';
         cacheSessions = null; await S.loadAll(true);
         return true;
       }catch(e){ return String(e.message||e); }
