@@ -611,8 +611,14 @@ var ACTS = {
   },
   need: {
     title:'What does a plant need?',
-    items:[{e:'☀️',n:'Sunshine',y:1},{e:'💧',n:'Water',y:1},{e:'🌬️',n:'Air',y:1},
-           {e:'🪨',n:'Good soil',y:1},{e:'🍭',n:'Candy',y:0},{e:'📺',n:'Television',y:0}]
+    items:[
+      {e:'☀️',n:'Sunshine',y:1, why:'Leaves catch sunlight and turn it into food.'},
+      {e:'💧',n:'Water',y:1,    why:'Roots drink it up from the soil.'},
+      {e:'🌬️',n:'Air',y:1,     why:'Plants take in air through tiny holes in their leaves.'},
+      {e:'🪨',n:'Good soil',y:1,why:'Soil holds the water and the nutrients roots need.'},
+      {e:'🍭',n:'Candy',y:0,    why:'Plants make their own food from sunlight — they never need sweets.'},
+      {e:'📺',n:'Television',y:0,why:'A plant does fine with no telly at all!'}
+    ]
   }
 };
 
@@ -775,14 +781,33 @@ function render(){
     playBd.innerHTML='<div class="q">'+it.e+' '+it.n+'</div><div class="qs">Does a plant need this to grow?</div>'+
       '<div class="buckets"><button class="bucket b-yes" data-y="1">👍 Yes it does</button>'+
       '<button class="bucket b-no" data-y="0">👎 No it doesn’t</button></div>'+
-      '<div class="say">'+(st.msg||'Tap yes or no.')+'</div>'+
+      '<div class="say" id="needSay">'+(st.msg||'Tap yes or no.')+'</div>'+
       '<div class="pbar"><i style="width:'+(st.i/a.items.length*100)+'%"></i></div>';
     [].forEach.call(playBd.querySelectorAll('.bucket'), function(b){
       b.onclick=function(){
-        if((+b.dataset.y)===it.y){ st.msg='Correct!'; st.i++; }
-        else { st.msg= it.y ? 'Actually yes — plants really do need that.' : 'Actually no — plants do fine without it.'; st.i++; }
-        speakNews(st.msg);
-        setTimeout(render,650);
+        var right=(+b.dataset.y)===it.y;
+        var say=document.getElementById('needSay');
+        var buckets=playBd.querySelectorAll('.bucket');
+
+        if(!right){
+          /* Let them have another go rather than pushing them past it.
+             On a yes/no question a child should get to end on being right,
+             and the explanation lands better attached to a correct answer. */
+          b.style.borderColor='var(--terra)';
+          say.textContent='Not quite \u2014 have another go!';
+          if(window.TGAudio) TGAudio.say('Not quite. Have another go!');
+          setTimeout(function(){ b.style.borderColor=''; }, 700);
+          return;
+        }
+
+        b.style.borderColor='var(--sage)';
+        st.msg='That\u2019s right! '+it.why;
+        say.textContent=st.msg;
+        [].forEach.call(buckets, function(x){ x.style.pointerEvents='none'; });
+        /* Wait for the sentence to actually finish. Cutting it off was why a
+           wrong answer never got further than the word "Actually". */
+        var go=function(){ st.i++; st.msg=null; render(); };
+        if(window.TGAudio) TGAudio.sayThen(st.msg, go, 2400); else setTimeout(go, 2400);
       };
     });
     return;

@@ -76,6 +76,22 @@
     stop: stop,
     say: function(t, o){ stop(); return say(t, o); },
 
+    /* Say something, then run cb when the voice actually finishes.
+       Falls back to a timer when speech is muted or unsupported, so
+       callers never stall waiting for an event that will not fire. */
+    sayThen: function(text, cb, fallbackMs){
+      var done = false;
+      var finish = function(){ if (!done){ done = true; cb && cb(); } };
+      if (!supported || !enabled()){ setTimeout(finish, fallbackMs || 900); return; }
+      stop();
+      var u = say(text);
+      if (!u){ setTimeout(finish, fallbackMs || 900); return; }
+      u.onend = finish;
+      u.onerror = finish;
+      /* Safety net: some browsers never fire onend if the tab is hidden. */
+      setTimeout(finish, Math.max(fallbackMs || 0, 1200 + String(text).length * 55));
+    },
+
     /* Read a question, then its choices, as one flowing prompt. */
     readQuestion: function(question, choices){
       if (!supported || !enabled()) return;
