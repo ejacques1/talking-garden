@@ -145,6 +145,47 @@ img{max-width:100%;display:block}
 .resetbar button{background:none;border:none;font-family:var(--sans);font-size:13px;color:var(--faint);cursor:pointer;text-decoration:underline}
 .proto{position:fixed;left:16px;bottom:16px;z-index:99;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:99px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
 .proto i{width:7px;height:7px;border-radius:50%;background:var(--sun);display:block}
+
+/* ---------- activity player ---------- */
+.ovl{position:fixed;inset:0;background:rgba(31,35,32,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.ovl.on{display:flex}
+.play{width:100%;max-width:440px;background:#fff;border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.3);overflow:hidden}
+.play-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--paper2)}
+.play-hd b{font-family:var(--serif);font-size:16px;color:var(--ink);flex:1}
+.play-x{background:none;border:none;font-size:24px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+.play-bd{padding:22px 20px 24px;min-height:330px}
+.q{font-family:var(--serif);font-size:21px;color:var(--ink);text-align:center;margin-bottom:5px}
+.qs{font-size:14px;color:var(--muted);text-align:center;margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.opt{border:3px solid var(--line);border-radius:16px;padding:15px 10px;text-align:center;background:var(--paper2);cursor:pointer;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);transition:.14s}
+.opt:hover{border-color:var(--sage);transform:translateY(-2px)}
+.opt .e{display:block;font-size:32px;margin-bottom:5px}
+.opt.right{border-color:var(--sage);background:var(--sage-l)}
+.opt.wrong{border-color:var(--terra);background:var(--terra-l)}
+.opt.used{opacity:.35;pointer-events:none}
+.say{margin-top:16px;background:var(--sun-l);border-radius:15px;padding:14px 16px;font-size:14.5px;color:#6B4E08;text-align:center;min-height:52px;display:flex;align-items:center;justify-content:center}
+.seqrow{display:flex;gap:7px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.slot{width:52px;height:52px;border-radius:14px;border:2px dashed var(--line-d);display:grid;place-items:center;font-size:24px;background:var(--paper2)}
+.slot.filled{border-style:solid;border-color:var(--sage);background:var(--sage-l)}
+.buckets{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+.bucket{border-radius:16px;padding:13px;text-align:center;font-size:14px;font-weight:700;cursor:pointer;border:3px solid transparent;transition:.14s}
+.b-yes{background:var(--sage-l);color:var(--sage-d)}
+.b-no{background:var(--terra-l);color:#8E3D1F}
+.bucket:hover{transform:translateY(-2px)}
+.pbar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:18px}
+.pbar i{display:block;height:100%;background:var(--sage);border-radius:99px;transition:width .3s ease}
+.win{text-align:center;padding:14px 0}
+.win .m{font-size:52px;margin-bottom:10px}
+.win h3{font-size:23px;margin-bottom:6px}
+.win p{font-size:15px;color:var(--muted);margin-bottom:18px}
+.mcard{cursor:pointer}
+.mcard .tick{opacity:0;transition:.2s}
+.mcard.done .tick{opacity:1}
+
+
+.teksnote{font-size:13px;color:var(--muted);background:var(--paper2);border:1px solid var(--line);border-left:3px solid var(--sage);border-radius:10px;padding:10px 14px;margin-bottom:16px}
+.teksnote b{color:var(--ink)}
+.telabel{display:block;font-size:11.5px;font-weight:600;color:var(--sage);margin-top:6px;letter-spacing:.01em}
 </style>
 </head>
 <body>
@@ -277,24 +318,27 @@ img{max-width:100%;display:block}
     </div>
     <div class="stage-bd">
       <p>Quick, tappy, and endlessly repeatable. Play them as many times as you want — every one you finish earns a badge.</p>
-      <div class="cards">
-        <a class="mcard" href="#s4">
+      <p class="teksnote" id="teksNote"></p>
+      <div class="cards" id="actCards">
+        <a class="mcard" data-act="seq">
           <span class="e e-green">🌱</span>
           <span><h4>Put the cycle in order</h4><p>Seed → sprout → leaves → flower → seed again.</p></span>
           <span class="tick">✓</span>
         </a>
-        <a class="mcard" href="#s4">
+        <a class="mcard" data-act="parts">
           <span class="e e-sky">🌻</span>
           <span><h4>Meet Sunny the Sprout</h4><p>Tap each part of the plant and learn its garden secret.</p></span>
           <span class="tick">✓</span>
         </a>
-        <a class="mcard" href="#s4">
+        <a class="mcard" data-act="eat">
           <span class="e e-terra">🥕</span>
           <span><h4>Which part do we eat?</h4><p>Match the food to the part of the plant it came from.</p></span>
+          <span class="tick">✓</span>
         </a>
-        <a class="mcard" href="#s4">
+        <a class="mcard" data-act="need">
           <span class="e e-grape">💧</span>
           <span><h4>What does a plant need?</h4><p>Sort what helps a plant grow from what doesn't.</p></span>
+          <span class="tick">✓</span>
         </a>
       </div>
     </div>
@@ -329,9 +373,17 @@ img{max-width:100%;display:block}
 
 </div>
 
+<div class="ovl" id="ovl">
+  <div class="play">
+    <div class="play-hd"><b id="playTitle">Activity</b><button class="play-x" id="playX">&times;</button></div>
+    <div class="play-bd" id="playBd"></div>
+  </div>
+</div>
+
 <div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
 <div class="proto"><i></i> Prototype — visual layout only</div>
 
+<script src="teks.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
@@ -403,6 +455,194 @@ document.getElementById('resetBtn').addEventListener('click',function(){
   document.getElementById('boot').style.display='none';
   document.getElementById('app').style.display='block';
 })();
+
+/* ================= activity player ================= */
+var ACTS = {
+  seq: {
+    title:'Put the cycle in order',
+    stages:[{e:'🟤',n:'Seed'},{e:'🌱',n:'Sprout'},{e:'🌿',n:'Leaves'},{e:'🩴',n:'Grown plant'},{e:'🌻',n:'Flower'}]
+  },
+  parts: {
+    title:'Meet Sunny the Sprout',
+    parts:[
+      {k:'Roots', e:'🟫', t:"My roots are like little straws underground! They drink water and hold me down."},
+      {k:'Stem',  e:'🌿', t:"My stem is a tiny elevator! Water rides up it to feed my leaves."},
+      {k:'Leaves',e:'🍃', t:"My leaves catch sunshine and turn it into food. That's my superpower!"},
+      {k:'Flower',e:'🌸', t:"My flower says hello to the bees, who help me make seeds for new plants."}
+    ]
+  },
+  eat: {
+    title:'Which part do we eat?',
+    foods:[{e:'🥕',n:'Carrot',a:'Root'},{e:'🥦',n:'Broccoli',a:'Flower'},
+           {e:'🥬',n:'Lettuce',a:'Leaf'},{e:'🌽',n:'Corn',a:'Seed'}],
+    opts:['Root','Leaf','Flower','Seed']
+  },
+  need: {
+    title:'What does a plant need?',
+    items:[{e:'☀️',n:'Sunshine',y:1},{e:'💧',n:'Water',y:1},{e:'🌬️',n:'Air',y:1},
+           {e:'🪨',n:'Good soil',y:1},{e:'🍭',n:'Candy',y:0},{e:'📺',n:'Television',y:0}]
+  }
+};
+
+var ovl=document.getElementById('ovl'), playBd=document.getElementById('playBd'), playTitle=document.getElementById('playTitle');
+var cur=null, st={};
+
+function doneKey(k){ return 'tg_act_'+TOPIC+'_'+k; }
+function isActDone(k){ try{ return localStorage.getItem(doneKey(k))==='1'; }catch(e){ return false; } }
+function markAct(k){ try{ localStorage.setItem(doneKey(k),'1'); }catch(e){} paintActs(); }
+function paintActs(){
+  [].forEach.call(document.querySelectorAll('#actCards .mcard'), function(c){
+    c.classList.toggle('done', isActDone(c.dataset.act));
+    if(window.TEKS && !c.querySelector('.telabel')){
+      var a=TEKS.activities[c.dataset.act];
+      if(a){
+        var l=document.createElement('span');
+        l.className='telabel';
+        l.textContent=TEKS.label(c.dataset.act)+' — '+a.skill;
+        c.querySelector('span:nth-child(2)').appendChild(l);
+      }
+    }
+  });
+  var t = window.TEKS && TEKS.topics[TOPIC];
+  var note = document.getElementById('teksNote');
+  if(t && note){
+    note.innerHTML = 'Aligned to <b>Texas Essential Knowledge and Skills</b> — '+
+      t.grade+' science, '+t.section+' ('+t.strand+'): '+t.claim;
+  }
+}
+
+function openAct(k){
+  cur=k; st={};
+  playTitle.textContent = ACTS[k].title;
+  ovl.classList.add('on');
+  document.body.style.overflow='hidden';
+  render();
+}
+function closeAct(){ ovl.classList.remove('on'); document.body.style.overflow=''; cur=null; }
+document.getElementById('playX').onclick=closeAct;
+ovl.onclick=function(e){ if(e.target===ovl) closeAct(); };
+
+function win(msg){
+  playBd.innerHTML='<div class="win"><div class="m">🌟</div><h3>You did it!</h3>'+
+    '<p>'+msg+'</p>'+
+    '<button class="btn btn-primary" id="againBtn" style="width:auto">Play again</button> '+
+    '<button class="btn btn-ghost" id="doneBtn" style="width:auto">Back to the topic</button></div>';
+  markAct(cur);
+  document.getElementById('againBtn').onclick=function(){ st={}; render(); };
+  document.getElementById('doneBtn').onclick=closeAct;
+}
+
+function render(){
+  var a=ACTS[cur];
+
+  /* ---- sequence ---- */
+  if(cur==='seq'){
+    if(!st.order){
+      st.order=[];
+      st.display=a.stages.map(function(x,i){return i});
+      for(var z=st.display.length-1;z>0;z--){                 // real shuffle, or the answer is just left-to-right
+        var j=Math.floor(Math.random()*(z+1)), tmp=st.display[z];
+        st.display[z]=st.display[j]; st.display[j]=tmp;
+      }
+    }
+    if(st.order.length===a.stages.length){ return win('You put the whole plant life cycle in order.'); }
+    playBd.innerHTML='<div class="q">What comes next?</div><div class="qs">Tap them from the very beginning to the end.</div>'+
+      '<div class="seqrow">'+a.stages.map(function(x,i){
+        var f=st.order[i]!=null;
+        return '<div class="slot'+(f?' filled':'')+'">'+(f?a.stages[st.order[i]].e:'')+'</div>';
+      }).join('')+'</div>'+
+      '<div class="grid2">'+st.display.map(function(i){
+        var x=a.stages[i], used=st.order.indexOf(i)>-1;
+        return '<button class="opt'+(used?' used':'')+'" data-i="'+i+'"><span class="e">'+x.e+'</span>'+x.n+'</button>';
+      }).join('')+'</div>'+
+      '<div class="say" id="say">'+(st.msg||'Which one is first?')+'</div>'+
+      '<div class="pbar"><i style="width:'+(st.order.length/a.stages.length*100)+'%"></i></div>';
+    [].forEach.call(playBd.querySelectorAll('.opt'), function(b){
+      b.onclick=function(){
+        var i=+b.dataset.i;
+        if(i===st.order.length){ st.order.push(i); st.msg='Yes! Keep going.'; }
+        else { st.msg='Not that one yet — try an earlier stage.'; b.classList.add('wrong'); }
+        setTimeout(render,180);
+      };
+    });
+    return;
+  }
+
+  /* ---- plant parts ---- */
+  if(cur==='parts'){
+    if(!st.seen) st.seen=[];
+    if(st.seen.length===a.parts.length){ return win('You met every part of the plant.'); }
+    playBd.innerHTML='<div class="q">Hi friend! 🌻</div><div class="qs">Tap one of my parts to learn its secret.</div>'+
+      '<div class="grid2">'+a.parts.map(function(x,i){
+        var seen=st.seen.indexOf(i)>-1;
+        return '<button class="opt'+(seen?' right':'')+'" data-i="'+i+'"><span class="e">'+x.e+'</span>'+x.k+'</button>';
+      }).join('')+'</div>'+
+      '<div class="say">'+(st.msg||'Tap a part to hear from Sunny.')+'</div>'+
+      '<div class="pbar"><i style="width:'+(st.seen.length/a.parts.length*100)+'%"></i></div>';
+    [].forEach.call(playBd.querySelectorAll('.opt'), function(b){
+      b.onclick=function(){
+        var i=+b.dataset.i;
+        if(st.seen.indexOf(i)<0) st.seen.push(i);
+        st.msg=a.parts[i].t;
+        render();
+      };
+    });
+    return;
+  }
+
+  /* ---- which part do we eat ---- */
+  if(cur==='eat'){
+    if(st.i==null){ st.i=0; st.hits=0; }
+    if(st.i>=a.foods.length){ return win('You matched every food to its plant part.'); }
+    var f=a.foods[st.i];
+    playBd.innerHTML='<div class="q">'+f.e+' '+f.n+'</div><div class="qs">Which part of the plant do we eat?</div>'+
+      '<div class="grid2">'+a.opts.map(function(o){
+        return '<button class="opt" data-o="'+o+'">'+o+'</button>';
+      }).join('')+'</div>'+
+      '<div class="say">'+(st.msg||'Take your best guess!')+'</div>'+
+      '<div class="pbar"><i style="width:'+(st.i/a.foods.length*100)+'%"></i></div>';
+    [].forEach.call(playBd.querySelectorAll('.opt'), function(b){
+      b.onclick=function(){
+        if(b.dataset.o===f.a){
+          b.classList.add('right'); st.msg='That’s right — a '+f.n.toLowerCase()+' is a '+f.a.toLowerCase()+'!';
+          st.i++; st.hits++;
+        } else {
+          b.classList.add('wrong'); st.msg='Not quite — have another go.';
+        }
+        setTimeout(render,600);
+      };
+    });
+    return;
+  }
+
+  /* ---- what does a plant need ---- */
+  if(cur==='need'){
+    if(st.i==null){ st.i=0; }
+    if(st.i>=a.items.length){ return win('You know exactly what a plant needs to grow.'); }
+    var it=a.items[st.i];
+    playBd.innerHTML='<div class="q">'+it.e+' '+it.n+'</div><div class="qs">Does a plant need this to grow?</div>'+
+      '<div class="buckets"><button class="bucket b-yes" data-y="1">👍 Yes it does</button>'+
+      '<button class="bucket b-no" data-y="0">👎 No it doesn’t</button></div>'+
+      '<div class="say">'+(st.msg||'Tap yes or no.')+'</div>'+
+      '<div class="pbar"><i style="width:'+(st.i/a.items.length*100)+'%"></i></div>';
+    [].forEach.call(playBd.querySelectorAll('.bucket'), function(b){
+      b.onclick=function(){
+        if((+b.dataset.y)===it.y){ st.msg='Correct!'; st.i++; }
+        else { st.msg= it.y ? 'Actually yes — plants really do need that.' : 'Actually no — plants do fine without it.'; st.i++; }
+        setTimeout(render,650);
+      };
+    });
+    return;
+  }
+}
+
+document.getElementById('actCards').addEventListener('click', function(e){
+  var c=e.target.closest('.mcard'); if(!c) return;
+  e.preventDefault();
+  openAct(c.dataset.act);
+});
+paintActs();
+
 </script>
 </body>
 </html>
