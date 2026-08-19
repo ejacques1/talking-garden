@@ -760,10 +760,22 @@ function render(){
     [].forEach.call(playBd.querySelectorAll('.opt'), function(b){
       b.onclick=function(){
         if(b.dataset.o===f.a){
-          b.classList.add('right'); st.msg='That’s right — a '+f.n.toLowerCase()+' is a '+f.a.toLowerCase()+'!';
-          st.i++; st.hits++;
+          b.classList.add('right');
+          st.msg='That’s right — a '+f.n.toLowerCase()+' is a '+f.a.toLowerCase()+'!';
+          st.i++; st.hits++; st.tries=0;
         } else {
-          b.classList.add('wrong'); st.msg='Not quite — have another go.';
+          b.classList.add('wrong');
+          st.tries=(st.tries||0)+1;
+          if(st.tries<2){
+            st.msg='Not quite — have another go.';
+          } else {
+            /* Second miss: show them rather than letting it loop. */
+            st.msg='A '+f.n.toLowerCase()+' is a '+f.a.toLowerCase()+'.';
+            [].forEach.call(playBd.querySelectorAll('.opt'), function(x){
+              if(x.dataset.o===f.a) x.classList.add('right');
+            });
+            st.i++; st.tries=0;
+          }
         }
         speakNews(st.msg);
         setTimeout(render,600);
@@ -790,13 +802,28 @@ function render(){
         var buckets=playBd.querySelectorAll('.bucket');
 
         if(!right){
-          /* Let them have another go rather than pushing them past it.
-             On a yes/no question a child should get to end on being right,
-             and the explanation lands better attached to a correct answer. */
+          st.tries=(st.tries||0)+1;
           b.style.borderColor='var(--terra)';
-          say.textContent='Not quite \u2014 have another go!';
-          if(window.TGAudio) TGAudio.say('Not quite. Have another go!');
-          setTimeout(function(){ b.style.borderColor=''; }, 700);
+
+          if(st.tries<2){
+            /* One retry, so a child can end on being right rather than
+               being pushed past a mistake. */
+            say.textContent='Not quite \u2014 have another go!';
+            if(window.TGAudio) TGAudio.say('Not quite. Have another go!');
+            setTimeout(function(){ b.style.borderColor=''; }, 700);
+            return;
+          }
+
+          /* Second miss: stop looping and just teach them the answer. */
+          var ans=(it.y?'Yes':'No');
+          st.msg='The answer is '+ans.toLowerCase()+'. '+it.why;
+          say.textContent=st.msg;
+          [].forEach.call(buckets, function(x){
+            x.style.pointerEvents='none';
+            if((+x.dataset.y)===it.y) x.style.borderColor='var(--sage)';
+          });
+          var go2=function(){ st.i++; st.msg=null; st.tries=0; render(); };
+          if(window.TGAudio) TGAudio.sayThen(st.msg, go2, 2600); else setTimeout(go2, 2600);
           return;
         }
 
@@ -806,7 +833,7 @@ function render(){
         [].forEach.call(buckets, function(x){ x.style.pointerEvents='none'; });
         /* Wait for the sentence to actually finish. Cutting it off was why a
            wrong answer never got further than the word "Actually". */
-        var go=function(){ st.i++; st.msg=null; render(); };
+        var go=function(){ st.i++; st.msg=null; st.tries=0; render(); };
         if(window.TGAudio) TGAudio.sayThen(st.msg, go, 2400); else setTimeout(go, 2400);
       };
     });
