@@ -308,7 +308,7 @@ img{max-width:100%;display:block}
     <div class="stage-hd">
       <div class="snum">2</div>
       <div>
-        <div class="sk">Saturday · 10:00 AM</div>
+        <div class="sk" id="stageWhen">Live session</div>
         <h2>Watch and join us</h2>
       </div>
     </div>
@@ -325,7 +325,7 @@ img{max-width:100%;display:block}
         <div class="livemeta">
           <div>
             <b id="sessTitle">Plant Life Cycle &mdash; live session</b>
-            <span id="sessWhen">Saturday &middot; 10:00 AM CT &middot; with Ms. Nia</span>
+            <span id="sessWhen"></span>
           </div>
           <a class="btn btn-primary" id="joinBtn" href="#" target="_blank" rel="noopener">Join the garden session</a>
         </div>
@@ -368,7 +368,7 @@ img{max-width:100%;display:block}
 
   <!-- STAGE 3 -->
   <section class="stage lock" id="s3">
-    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join us on Saturday and type in the garden word to unlock these.</p></div></div>
+    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join the live session and type in the garden word to unlock these.</p></div></div>
     <div class="stage-hd">
       <div class="snum">3</div>
       <div>
@@ -447,7 +447,8 @@ img{max-width:100%;display:block}
         <div class="rbox"><small>Before</small><b id="rBefore">—</b></div>
         <div class="rbox after"><small>After</small><b id="rAfter">—</b></div>
       </div>
-      <button class="btn btn-primary" id="postBtn" style="margin-bottom:18px">Take the after-quiz →</button>
+      <p class="teksnote" id="postGate" style="margin-bottom:14px;border-left-color:var(--sun)"></p>
+      <button class="btn btn-primary" id="postBtn" style="margin-bottom:18px">Take the after-check →</button>
       <div id="certWrap" style="display:none">
         <div class="cert" id="certCard">
           <div class="certseal" id="certSeal"></div>
@@ -483,6 +484,7 @@ img{max-width:100%;display:block}
 <div class="proto"><i></i> Prototype — sample content</div>
 
 <script src="sunny.js"></script>
+<script src="session.js"></script>
 <script src="movie.js"></script>
 <script src="audio.js"></script>
 <script src="projects.js"></script>
@@ -497,7 +499,16 @@ var TOPIC=(new URLSearchParams(location.search).get('t')||'plant');
 var BUILT=['plant'];
 if(BUILT.indexOf(TOPIC)<0){ location.replace('dashboard.html?soon='+encodeURIComponent(TOPIC)); }
 var PREKEY='tg_pre_'+TOPIC;
+/* The after-check only means something once a child has actually done
+   the learning. Finishing an activity IS the score here — every one of
+   them teaches the answer and will not complete until it is right — so
+   completion is the gate rather than a separate mark. */
+var NEED_ACTIVITIES = 3, NEED_BUILDS = 1;
 
+function seeYou(){
+  var d = window.TGSession && TGSession.long(TOPIC);
+  return d ? ('See you on '+d+'!') : 'See you at the next garden session!';
+}
 function preDone(){ try{ return localStorage.getItem(PREKEY)==='1'; }catch(e){ return false; } }
 function setPre(){
   try{
@@ -530,8 +541,8 @@ function paint(){
     var s0=TG.session(), k0=(s0&&s0.profile.children&&s0.profile.children[0]);
     var r0=TGQuiz.result(TOPIC,'pre', k0&&k0.name);
     document.getElementById('preDone').textContent = r0
-      ? '\u2713 Finished \u2014 '+r0+' skills to start with. See you Saturday!'
-      : '\u2713 Finished \u2014 see you Saturday!';
+      ? '\u2713 Finished \u2014 '+r0+' skills to start with. '+seeYou()
+      : '\u2713 Finished \u2014 '+seeYou();
     if(preWasLate()){
       document.getElementById('preDone').textContent +=
         '  (Taken after the session \u2014 counted, but flagged in reporting.)';
@@ -541,6 +552,9 @@ function paint(){
   ['s3','s4','s5'].forEach(function(id){
     document.getElementById(id).classList.toggle('lock', !unlocked);
   });
+
+  var sw=document.getElementById('stageWhen');
+  if(sw) sw.textContent = (window.TGSession && TGSession.long(TOPIC)) || 'Live session';
 
   var wh=document.getElementById('wordHint');
   if(wh) wh.innerHTML='Prototype hint: the word is <b>'+((setup().word||'sunflower'))+'</b>';
@@ -691,7 +705,11 @@ var cur=null, st={};
 
 function doneKey(k){ return 'tg_act_'+TOPIC+'_'+k; }
 function isActDone(k){ try{ return localStorage.getItem(doneKey(k))==='1'; }catch(e){ return false; } }
-function markAct(k){ try{ localStorage.setItem(doneKey(k),'1'); }catch(e){} paintActs(); }
+function markAct(k){
+  try{ localStorage.setItem(doneKey(k),'1'); }catch(e){}
+  paintActs();
+  if(typeof paintScores==='function') paintScores();
+}
 function paintActs(){
   [].forEach.call(document.querySelectorAll('#actCards .mcard'), function(c){
     c.classList.toggle('done', isActDone(c.dataset.act));
@@ -996,14 +1014,37 @@ document.getElementById('actCards').addEventListener('click', function(e){
 paintActs();
 
 /* ---- after-quiz + live scores ---- */
+function activitiesDone(){
+  return ['seq','parts','eat','need','worm','seed'].filter(isActDone).length;
+}
+function buildsDone(){
+  return (window.TOPIC_BUILDS && TOPIC_BUILDS[TOPIC] || [])
+    .filter(function(b){ return isActDone('build_'+b.id); }).length;
+}
+function afterUnlocked(){
+  return activitiesDone() >= NEED_ACTIVITIES && buildsDone() >= NEED_BUILDS;
+}
+
 function paintScores(){
   var sess=TG.session(), k=(sess&&sess.profile.children&&sess.profile.children[0]);
   var pre=TGQuiz.result(TOPIC,'pre',k&&k.name), post=TGQuiz.result(TOPIC,'post',k&&k.name);
   var b=document.getElementById('rBefore'), a=document.getElementById('rAfter');
   if(b) b.textContent = pre  || '\u2014';
   if(a) a.textContent = post || '\u2014';
-  var pb=document.getElementById('postBtn');
-  if(pb) pb.textContent = post ? 'Take it again \u2192' : 'Take the after-quiz \u2192';
+  var pb=document.getElementById('postBtn'), gate=document.getElementById('postGate');
+  if(pb){
+    var ok=afterUnlocked();
+    pb.disabled = !ok;
+    pb.style.opacity = ok ? '' : '.5';
+    pb.style.cursor  = ok ? '' : 'not-allowed';
+    pb.textContent = post ? 'Take it again \u2192' : 'Take the after-check \u2192';
+    if(gate){
+      gate.style.display = ok ? 'none' : 'block';
+      gate.innerHTML = 'Play a little first, then come back and show us how you grew.<br>'+
+        '<b>'+activitiesDone()+' of '+NEED_ACTIVITIES+'</b> activities finished &nbsp;&middot;&nbsp; '+
+        '<b>'+buildsDone()+' of '+NEED_BUILDS+'</b> project built';
+    }
+  }
   var cert=document.getElementById('certWrap');
   if(cert) cert.style.display = post ? 'block' : 'none';
   if(post){
@@ -1031,6 +1072,7 @@ paintScores();
 
 /* ================= session video slot ================= */
 var SKEY='tg_session_'+TOPIC, mode='movie';
+
 
 function setup(){ try{ return JSON.parse(localStorage.getItem(SKEY))||{}; }catch(e){ return {}; } }
 function saveSetup(o){ try{ localStorage.setItem(SKEY, JSON.stringify(o)); }catch(e){} }
@@ -1122,7 +1164,7 @@ function paintVideo(){
         '<b>Your recording appears here</b><span>Paste a link in Session setup below</span></div>';
     }
     title.textContent = 'Plant Life Cycle — session recording';
-    when.textContent  = cfg.rec ? 'Watch it again any time' : 'Available after Saturday’s session';
+    when.textContent  = cfg.rec ? 'Watch it again any time' : 'Available after the live session';
     join.textContent  = 'Watch the recording';
     join.href         = cfg.rec || '#';
     join.style.display = cfg.rec ? 'inline-flex' : 'none';
@@ -1131,7 +1173,7 @@ function paintVideo(){
       '<div class="slotmsg"><div class="big">&#127793;</div><b>We’re in the garden</b>'+
       '<span>'+(cfg.zoom ? 'Tap join to come with us' : 'Ms. Nia adds the Zoom link in setup below')+'</span></div>';
     title.textContent = 'Plant Life Cycle — live session';
-    when.textContent  = 'Saturday · 10:00 AM CT · with Ms. Nia';
+    when.textContent  = (window.TGSession && TGSession.line(TOPIC,'Ms. Nia')) || 'Date to be confirmed';
     join.textContent  = 'Join the garden session';
     join.href         = cfg.zoom || '#';
     join.style.display = 'inline-flex';

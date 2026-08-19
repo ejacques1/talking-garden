@@ -138,19 +138,7 @@ section{padding:44px 0 0}
 </header>
 
 <div class="next">
-  <div class="nextcard">
-    <div class="grow">
-      <div class="lab">Your next live session</div>
-      <h3>Butterfly Life Cycle</h3>
-      <p>Saturday · 10:00 AM CT · with Ms. Nia</p>
-    </div>
-    <div class="countdown">
-      <div class="cd"><b>2</b><small>days</small></div>
-      <div class="cd"><b>14</b><small>hrs</small></div>
-      <div class="cd"><b>05</b><small>min</small></div>
-    </div>
-    <a class="btn btn-white" href="topic.html">Get ready →</a>
-  </div>
+  <div class="nextcard" id="nextCard"></div>
 </div>
 
 <main class="wrap">
@@ -185,13 +173,14 @@ section{padding:44px 0 0}
 </div>
 
 <script src="sunny.js"></script>
+<script src="session.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
 var TOPICS=[
  {slug:'plant',     emoji:'🌻', art:'a-sage',  name:'Plant Life Cycle',     href:'topic.html?t=plant', pct:100, state:'open',  note:'All 5 stages done'},
- {slug:'butterfly', emoji:'🦋', art:'a-grape', name:'Butterfly Life Cycle', href:'topic.html?t=butterfly', pct:20,  state:'live',  note:'Live session Saturday'},
- {slug:'frog',      emoji:'🐸', art:'a-teal',  name:'Frog Life Cycle',      href:'topic.html?t=frog', pct:0,   state:'lock',  note:'Live session Saturday'},
+ {slug:'butterfly', emoji:'🦋', art:'a-grape', name:'Butterfly Life Cycle', href:'topic.html?t=butterfly', pct:20,  state:'live',  note:'Live session'},
+ {slug:'frog',      emoji:'🐸', art:'a-teal',  name:'Frog Life Cycle',      href:'topic.html?t=frog', pct:0,   state:'lock',  note:'Live session'},
  {slug:'worm',      emoji:'🪱', art:'a-sun',   name:'Worms & Living Soil',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
  {slug:'pollinator',emoji:'🐝', art:'a-terra', name:'Pollinators at Work',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
  {slug:'kitchen',   emoji:'🥕', art:'a-sky',   name:'Garden to Kitchen',    href:'#',          pct:0,   state:'soon',  note:'Coming soon'}
@@ -205,21 +194,37 @@ var BADGES=[
 
 /* Session details are set by Ms. Nia in the topic's setup panel.
    Tiles read the real date from there instead of saying "Saturday". */
-function sessionFor(slug){
-  try{ return JSON.parse(localStorage.getItem('tg_session_'+slug))||{}; }catch(e){ return {}; }
-}
-function prettyDate(v){
-  if(!v) return null;
-  var d=new Date(v); if(isNaN(d)) return null;
-  return d.toLocaleDateString('en-US',{month:'long', day:'numeric'});
-}
+function prettyDate(slug){ return window.TGSession ? TGSession.short(slug) : null; }
 
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+
+function drawNext(){
+  var host=document.getElementById('nextCard'); if(!host||!window.TGSession) return;
+  var nx=TGSession.next(TOPICS.map(function(t){return t.slug;}));
+  if(!nx){
+    host.innerHTML='<div class="grow"><div class="lab">Live sessions</div>'+
+      '<h3>Nothing scheduled yet</h3><p>Ms. Nia will post the next garden session here.</p></div>';
+    return;
+  }
+  var t=TOPICS.filter(function(x){return x.slug===nx.slug;})[0]||{name:nx.slug};
+  var c=TGSession.countdown(nx.slug)||{days:0,hrs:0,mins:0};
+  var pad=function(n){ return (n<10?'0':'')+n; };
+  host.innerHTML=
+    '<div class="grow"><div class="lab">Your next live session</div>'+
+      '<h3>'+esc(t.name)+'</h3>'+
+      '<p>'+esc(TGSession.line(nx.slug,'Ms. Nia'))+'</p></div>'+
+    '<div class="countdown">'+
+      '<div class="cd"><b>'+c.days+'</b><small>days</small></div>'+
+      '<div class="cd"><b>'+pad(c.hrs)+'</b><small>hrs</small></div>'+
+      '<div class="cd"><b>'+pad(c.mins)+'</b><small>min</small></div>'+
+    '</div>'+
+    '<a class="btn btn-white" href="topic.html?t='+encodeURIComponent(nx.slug)+'">Get ready &rarr;</a>';
+}
 
 function drawTopics(){
   document.getElementById('topics').innerHTML = TOPICS.map(function(t){
     var unlocked = TG.isUnlocked(t.slug) || t.state==='open';
-    var when = prettyDate(sessionFor(t.slug).when);
+    var when = prettyDate(t.slug);
     var enterable = unlocked && t.href !== '#';
 
     var note, tagCls, tagTxt;
@@ -284,6 +289,7 @@ function drawBadges(got){
   var hs=document.getElementById('helloSunny');
   if(hs && window.Sunny) hs.innerHTML=Sunny.html('wave',86);
 
+  drawNext();
   drawTopics();
 
   var soon=new URLSearchParams(location.search).get('soon');
