@@ -211,12 +211,17 @@ formUp.onsubmit=async function(e){
   if(!kids.length){ say(m,'Add at least one child so we know who is learning.',false); return; }
   b.disabled=true; m.className='msg';
   try{
-    await TG.signUp({
+    var r = await TG.signUp({
       email:document.getElementById('upEmail').value,
       password:pass,
       parentName:document.getElementById('upName').value.trim(),
       children:kids
     });
+    if(r && r.needsConfirmation){
+      say(m,'Almost there — check your inbox and click the link we just sent, then come back and log in.',true);
+      b.disabled=false;
+      return;
+    }
     say(m,'Account created — welcome to the garden!',true);
     setTimeout(function(){ location.href=NEXT; },600);
   }catch(err){ say(m, err.message||'Could not create the account.', false); b.disabled=false; }

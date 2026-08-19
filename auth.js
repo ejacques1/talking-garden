@@ -63,7 +63,7 @@
         };
         d.current = key;
         writeDemo(d);
-        return d.users[key];
+        return { user: d.users[key], needsConfirmation: false };
       }
       var s = await sb();
       var res = await s.auth.signUp({
@@ -72,15 +72,23 @@
         options: { data: { parent_name: o.parentName } }
       });
       if (res.error) throw res.error;
-      // children rows are written after the session exists
-      if (res.data.session && (o.children || []).length) {
-        await s.from('children').insert(
-          o.children.filter(function (c) { return c.name; }).map(function (c) {
+
+      var kids = (o.children || []).filter(function (c) { return c.name; });
+
+      if (res.data.session) {
+        // Confirmation is off: we already have a session, write the children now.
+        if (kids.length) {
+          await s.from('children').insert(kids.map(function (c) {
             return { parent_id: res.data.user.id, name: c.name, grade: c.grade };
-          })
-        );
+          }));
+        }
+        return { user: res.data.user, needsConfirmation: false };
       }
-      return res.data.user;
+
+      // Confirmation is on: no session yet. Park the children and write them
+      // on first successful sign-in instead of silently losing them.
+      try { localStorage.setItem('tg_pending_children', JSON.stringify(kids)); } catch (e) {}
+      return { user: res.data.user, needsConfirmation: true };
     },
 
     async signIn(o) {
@@ -129,6 +137,20 @@
       var res = await s.auth.getSession();
       if (!res.data.session) { global.__tg_session = null; return null; }
       var user = res.data.session.user;
+      // flush children parked during an unconfirmed signup
+      try {
+        var pending = JSON.parse(localStorage.getItem('tg_pending_children') || '[]');
+        if (pending.length) {
+          var existing = await s.from('children').select('id').eq('parent_id', user.id).limit(1);
+          if (!existing.data || !existing.data.length) {
+            await s.from('children').insert(pending.map(function (c) {
+              return { parent_id: user.id, name: c.name, grade: c.grade };
+            }));
+          }
+          localStorage.removeItem('tg_pending_children');
+        }
+      } catch (e) {}
+
       var kids = await s.from('children').select('*').eq('parent_id', user.id);
       var prof = {
         parentName: (user.user_metadata && user.user_metadata.parent_name) || '',
