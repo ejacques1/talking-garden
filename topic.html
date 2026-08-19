@@ -313,7 +313,7 @@ img{max-width:100%;display:block}
       </div>
     </div>
     <div class="stage-bd">
-      <p>Three minutes in the real garden with Ms. Nia. Watch it before Saturday, watch it again after, watch it at bedtime &mdash; it is always here.</p>
+      <p>Sunny explains the whole life cycle in about a minute. Watch it before Saturday, watch it again after, watch it at bedtime &mdash; it is always here.</p>
       <div class="livecard">
         <div class="shot" id="movieSlot"></div>
         <div class="livemeta">
@@ -507,6 +507,7 @@ img{max-width:100%;display:block}
 <div class="proto"><i></i> Prototype — sample content</div>
 
 <script src="sunny.js"></script>
+<script src="movie.js"></script>
 <script src="audio.js"></script>
 <script src="projects.js"></script>
 <script src="teks.js"></script>
@@ -1083,10 +1084,12 @@ function paintMovie(){
   } else {
     /* Deliberately visible and empty, so Ms. Nia can see exactly where
        her film goes before she has filmed it. */
-    slot.innerHTML='<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
-      (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',64)+'</div>':'<div class="big">&#127916;</div>')+
-      '<b>Ms. Nia&rsquo;s movie goes here</b><span>Three minutes in the real garden &mdash; add the link in Session setup</span></div>';
-    sub.textContent='Coming soon';
+    /* No film pasted in, so play the animated one. It is a real movie,
+       not a placeholder, and Ms. Nia's garden footage can replace or
+       join it whenever she shoots it. */
+    if(window.TGMovie){ TGMovie.mount(slot); }
+    else slot.innerHTML='<img src="img/wide2.jpg" alt="">';
+    sub.textContent='Animated &middot; narrated &middot; about a minute';
     btn.style.display='none';
   }
 }
