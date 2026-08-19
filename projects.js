@@ -1,9 +1,16 @@
 /* ------------------------------------------------------------------
    Shared project data — The Talking Garden
    ------------------------------------------------------------------
-   ONE source of truth for every hands-on build. Used by:
+   ONE source of truth for every hands-on build. Used by topic.html
+   stage 3, rendered inline so a family never leaves the topic they
+   are working through.
 
-     library.html  browsing everything, by track
+   (The standalone library page was removed: it sorted by the old
+   track model, sat outside the login, and let anyone read every
+   project without an account or attending a session.)
+
+   Previously also used by:
+
      topic.html    stage 3, rendered inline so a family never
                    leaves the topic they are working through
 

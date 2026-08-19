@@ -80,6 +80,8 @@ section{padding:44px 0 0}
 @media(max-width:580px){.topics{grid-template-columns:1fr}}
 .topic{position:relative;border-radius:var(--rl);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;display:flex;flex-direction:column;transition:.18s}
 .topic:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.topic.notyet{cursor:default}
+.topic.notyet:hover{transform:none;box-shadow:var(--shadow)}
 .topic-art{height:132px;display:grid;place-items:center;font-size:54px;position:relative}
 .a-sage{background:var(--sage-l)}.a-grape{background:var(--grape-l)}.a-teal{background:var(--teal-l)}
 .a-sun{background:var(--sun-l)}.a-terra{background:var(--terra-l)}.a-sky{background:var(--sky-l)}
@@ -201,22 +203,46 @@ var BADGES=[
  {e:'🐝',n:'Pollinator Pal',  d:'Built a bee house'}
 ];
 
+/* Session details are set by Ms. Nia in the topic's setup panel.
+   Tiles read the real date from there instead of saying "Saturday". */
+function sessionFor(slug){
+  try{ return JSON.parse(localStorage.getItem('tg_session_'+slug))||{}; }catch(e){ return {}; }
+}
+function prettyDate(v){
+  if(!v) return null;
+  var d=new Date(v); if(isNaN(d)) return null;
+  return d.toLocaleDateString('en-US',{month:'long', day:'numeric'});
+}
+
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
 
 function drawTopics(){
   document.getElementById('topics').innerHTML = TOPICS.map(function(t){
     var unlocked = TG.isUnlocked(t.slug) || t.state==='open';
-    var locked = !unlocked && t.state!=='live';
-    var tagCls = unlocked?'tag-open':(t.state==='soon'?'tag-soon':(t.state==='live'?'tag-soon':'tag-lock'));
-    var tagTxt = unlocked?'Open':(t.state==='soon'?'Soon':(t.state==='live'?'Live Sat':'Locked'));
-    var pct = unlocked ? t.pct : 0;
-    return '<a class="topic'+(locked?' locked':'')+'" href="'+t.href+'">'+
-      (locked?'<span class="lockbadge">🔒</span>':'')+
+    var when = prettyDate(sessionFor(t.slug).when);
+    var enterable = unlocked && t.href !== '#';
+
+    var note, tagCls, tagTxt;
+    if(unlocked){            note = t.note; tagCls='tag-open'; tagTxt='Open'; }
+    else if(t.state==='live'){ note = when ? 'Live session \u00b7 '+when : 'Live session date coming';
+                               tagCls='tag-soon'; tagTxt = when || 'Scheduled'; }
+    else if(t.state==='soon'){ note = 'Coming soon'; tagCls='tag-soon'; tagTxt='Soon'; }
+    else {                     note = when ? 'Live session \u00b7 '+when : 'Not scheduled yet';
+                               tagCls='tag-lock'; tagTxt='Locked'; }
+
+    var inner =
+      (enterable?'':'<span class="lockbadge">\ud83d\udd12</span>')+
       '<div class="topic-art '+t.art+'">'+t.emoji+'</div>'+
       '<div class="topic-body"><h3>'+esc(t.name)+'</h3>'+
-      '<div class="prog"><i style="width:'+pct+'%"></i></div>'+
-      '<div class="topic-foot"><span class="small">'+esc(t.note)+'</span>'+
-      '<span class="tag '+tagCls+'">'+tagTxt+'</span></div></div></a>';
+      '<div class="prog"><i style="width:'+(unlocked?t.pct:0)+'%"></i></div>'+
+      '<div class="topic-foot"><span class="small">'+esc(note)+'</span>'+
+      '<span class="tag '+tagCls+'">'+esc(tagTxt)+'</span></div></div>';
+
+    /* Only topics a family can actually enter are links. A tile with
+       nothing behind it should not invite a click that goes nowhere. */
+    return enterable
+      ? '<a class="topic" href="'+t.href+'">'+inner+'</a>'
+      : '<div class="topic locked notyet">'+inner+'</div>';
   }).join('');
 }
 

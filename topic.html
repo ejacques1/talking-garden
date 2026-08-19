@@ -303,43 +303,20 @@ img{max-width:100%;display:block}
     </div>
   </section>
 
-  <!-- STAGE 2 : THE MOVIE -->
-  <section class="stage" id="smovie">
-    <div class="stage-hd">
-      <div class="snum">2</div>
-      <div>
-        <div class="sk">Watch any time</div>
-        <h2>The garden movie</h2>
-      </div>
-    </div>
-    <div class="stage-bd">
-      <p>Sunny explains the whole life cycle in about a minute. Watch it before Saturday, watch it again after, watch it at bedtime &mdash; it is always here.</p>
-      <div class="livecard">
-        <div class="shot" id="movieSlot"></div>
-        <div class="livemeta">
-          <div>
-            <b>Plant Life Cycle &mdash; the movie</b>
-            <span id="movieSub">Always available</span>
-          </div>
-          <a class="btn btn-primary" id="movieBtn" href="#" target="_blank" rel="noopener" style="display:none">Watch on YouTube</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- STAGE 3 : LIVE -->
   <section class="stage" id="s2">
     <div class="stage-hd">
-      <div class="snum">3</div>
+      <div class="snum">2</div>
       <div>
         <div class="sk">Saturday · 10:00 AM</div>
-        <h2>Meet us live in the garden</h2>
+        <h2>Watch and join us</h2>
       </div>
     </div>
     <div class="stage-bd">
       <p>Ms. Nia takes you around the beds with a camera. Ask questions, watch a real seed get planted, and listen out — somewhere in the middle we say the <b>secret garden word</b>.</p>
       <div class="sessiontabs">
-        <button class="stog on" data-mode="live">Before &amp; during the session</button>
+        <button class="stog on" data-mode="movie">The movie</button>
+        <button class="stog" data-mode="live">Before &amp; during the session</button>
         <button class="stog" data-mode="rec">After the session</button>
       </div>
 
@@ -384,7 +361,7 @@ img{max-width:100%;display:block}
           <button class="btn btn-sun" id="wordBtn">Unlock the topic</button>
         </div>
         <div class="wordmsg" id="wordMsg"></div>
-        <p style="font-size:12.5px;color:#9A8250;margin-top:12px">Prototype hint: the word is <b>sunflower</b></p>
+        <p style="font-size:12.5px;color:#9A8250;margin-top:12px" id="wordHint"></p>
       </div>
     </div>
   </section>
@@ -393,7 +370,7 @@ img{max-width:100%;display:block}
   <section class="stage lock" id="s3">
     <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join us on Saturday and type in the garden word to unlock these.</p></div></div>
     <div class="stage-hd">
-      <div class="snum">4</div>
+      <div class="snum">3</div>
       <div>
         <div class="sk">Hands in the soil</div>
         <h2>Build it at home</h2>
@@ -402,7 +379,6 @@ img{max-width:100%;display:block}
     <div class="stage-bd">
       <p>Hands-on builds that carry the same skills off the screen and into the soil. Each has a materials list, step-by-step build mode, and a "why it works" note.</p>
       <div class="cards" id="buildCards"></div>
-      <p class="teksnote" style="margin-top:14px;margin-bottom:0;border-left-color:var(--line-d)">Looking for something else? <a href="library.html" style="color:var(--sage);font-weight:600">Browse the whole Garden Library &rarr;</a></p>
       </div>
     </div>
   </section>
@@ -411,7 +387,7 @@ img{max-width:100%;display:block}
   <section class="stage lock" id="s4">
     <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>These are the tap-and-play activities. They unlock with the garden word.</p></div></div>
     <div class="stage-hd">
-      <div class="snum">5</div>
+      <div class="snum">4</div>
       <div>
         <div class="sk">Any time you like</div>
         <h2>Practice &amp; play</h2>
@@ -459,7 +435,7 @@ img{max-width:100%;display:block}
   <section class="stage lock" id="s5">
     <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Finish the activities first</h4><p>Do a few builds and activities, then come back and show us how much you grew.</p></div></div>
     <div class="stage-hd">
-      <div class="snum">6</div>
+      <div class="snum">5</div>
       <div>
         <div class="sk">Show your growth</div>
         <h2>Show what you grew</h2>
@@ -538,12 +514,11 @@ function setPre(){
 function preWasLate(){ try{ return localStorage.getItem(PREKEY+'_late')==='1'; }catch(e){ return false; } }
 
 var RAIL=[
- {n:1,label:'Before-check', id:'s1'},
- {n:2,label:'The movie',    id:'smovie'},
- {n:3,label:'Live session', id:'s2'},
- {n:4,label:'Build at home',id:'s3'},
- {n:5,label:'Practice & play', id:'s4'},
- {n:6,label:'After-check',  id:'s5'}
+ {n:1,label:'Before-check',   id:'s1'},
+ {n:2,label:'Watch & join',   id:'s2'},
+ {n:3,label:'Build at home',  id:'s3'},
+ {n:4,label:'Practice & play',id:'s4'},
+ {n:5,label:'After-check',    id:'s5'}
 ];
 
 function paint(){
@@ -567,6 +542,10 @@ function paint(){
     document.getElementById(id).classList.toggle('lock', !unlocked);
   });
 
+  var wh=document.getElementById('wordHint');
+  if(wh) wh.innerHTML='Prototype hint: the word is <b>'+((setup().word||'sunflower'))+'</b>';
+  if(typeof paintVideo==='function' && mode==='movie') paintVideo();
+
   var wi=document.getElementById('wordIn'), wb=document.getElementById('wordBtn');
   if(wi && wb){
     wi.disabled = !pre;
@@ -574,8 +553,8 @@ function paint(){
     wb.style.opacity = pre ? '' : '.5';
   }
 
-  var done = unlocked ? 5 : (pre?1:0);
-  var now  = unlocked ? 6 : (pre?2:1);
+  var done = unlocked ? 4 : (pre?1:0);
+  var now  = unlocked ? 5 : (pre?2:1);
   document.getElementById('rail').innerHTML = RAIL.map(function(r){
     var cls = r.n<=done ? 'done' : (r.n===now ? 'now' : '');
     return '<a class="rpill '+cls+'" href="#'+r.id+'"><i>'+(r.n<=done?'\u2713':r.n)+'</i>'+r.label+'</a>';
@@ -600,7 +579,8 @@ async function tryWord(){
     return;
   }
   if(!v){ m.className='wordmsg bad'; m.textContent='Type the word you heard in the session.'; return; }
-  if(v!=='sunflower'){ m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.'; return; }
+  var expected = (setup().word || 'sunflower').trim().toLowerCase();
+  if(v!==expected){ m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.'; return; }
   setPre();
   await TG.unlock(TOPIC);
   paint();
@@ -1050,7 +1030,7 @@ if(postBtn) postBtn.addEventListener('click',function(){
 paintScores();
 
 /* ================= session video slot ================= */
-var SKEY='tg_session_'+TOPIC, mode='live';
+var SKEY='tg_session_'+TOPIC, mode='movie';
 
 function setup(){ try{ return JSON.parse(localStorage.getItem(SKEY))||{}; }catch(e){ return {}; } }
 function saveSetup(o){ try{ localStorage.setItem(SKEY, JSON.stringify(o)); }catch(e){} }
@@ -1096,6 +1076,36 @@ function paintMovie(){
 
 function paintVideo(){
   var cfg = setup(), slot = document.getElementById('videoSlot');
+  var title0 = document.getElementById('sessTitle'), when0 = document.getElementById('sessWhen');
+  var join0 = document.getElementById('joinBtn');
+
+  if(mode === 'movie'){
+    /* The movie teaches the whole life cycle, so watching it before the
+       before-check would wreck the baseline. It stays shut until the
+       check is done, and then it is the first thing they get. */
+    if(!preDone()){
+      slot.innerHTML = '<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
+        (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',62)+'</div>':'<div class="big">&#128274;</div>')+
+        '<b>Finish the before-check first</b>'+
+        '<span>Then Sunny will show you how a plant grows</span></div>';
+      title0.textContent='Plant Life Cycle \u2014 the movie';
+      when0.textContent='Unlocks when you have done the before-check';
+      join0.style.display='none';
+      return;
+    }
+    var mEmb = embedUrl(cfg.movie);
+    if(mEmb){
+      slot.innerHTML = '<iframe src="'+mEmb+'" allowfullscreen title="Topic movie"></iframe>';
+      when0.textContent='Ms. Nia\u2019s film \u00b7 watch it as often as you like';
+    } else if(window.TGMovie){
+      TGMovie.mount(slot);
+      when0.textContent='Animated \u00b7 narrated \u00b7 about a minute';
+    }
+    title0.textContent='Plant Life Cycle \u2014 the movie';
+    join0.style.display='none';
+    return;
+  }
+
   var title = document.getElementById('sessTitle'), when = document.getElementById('sessWhen');
   var join = document.getElementById('joinBtn');
   if(!slot) return;
