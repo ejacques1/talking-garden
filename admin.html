@@ -13,6 +13,10 @@
 <meta property="og:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta property="og:image" content="https://talking-garden.vercel.app/og.png">
 <meta property="og:url" content="https://talking-garden.vercel.app/admin.html">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Talking Garden — Dew of Heaven Children's Garden">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Garden admin — The Talking Garden">
 <meta name="twitter:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
@@ -116,6 +120,9 @@ tr:last-child td{border-bottom:none}
         <button class="btn btn-ghost" id="csvBtn">Download as spreadsheet</button>
       </div>
       <div class="scroll"><table id="reportTable"></table></div>
+      <h3 style="margin-top:28px;font-size:16px">Which skills children gained</h3>
+      <p class="sub">Each skill is tied to a Texas Essential Knowledge and Skills expectation, so a funder can see exactly what was taught.</p>
+      <div class="scroll"><table id="skillTable"></table></div>
       <div class="empty hide" id="reportEmpty">No results yet. They appear as children take the before and after checks.</div>
       <p class="demo" id="reportDemo"></p>
     </div>
@@ -169,6 +176,7 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <script src="session.js"></script>
+<script src="teks.js"></script>
 <script src="quiz.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
@@ -223,7 +231,10 @@ function demoRows(){
       if(!pre && !post) return;
       var pAt=null, qAt=null;
       try{ pAt=localStorage.getItem('tg_pre_'+t.slug+'_at'); }catch(e){}
-      out.push({ child:k.name, grade:k.grade, topic:t.name, slug:t.slug,
+      var bS=null,aS=null;
+      try{ bS=JSON.parse(localStorage.getItem('tg_comp_'+t.slug+'_pre_'+k.name)); }catch(e){}
+      try{ aS=JSON.parse(localStorage.getItem('tg_comp_'+t.slug+'_post_'+k.name)); }catch(e){}
+      out.push({ child:k.name, grade:k.grade, topic:t.name, slug:t.slug, beforeSkills:bS, afterSkills:aS,
                  before:pre?+pre.split('/')[0]:null, beforeOf:pre?+pre.split('/')[1]:null, beforeAt:pAt,
                  after:post?+post.split('/')[0]:null, afterOf:post?+post.split('/')[1]:null, afterAt:qAt,
                  late:(function(){ try{ return localStorage.getItem('tg_pre_'+t.slug+'_late')==='1'; }catch(e){ return false; } })() });
@@ -247,6 +258,8 @@ function drawReport(){
     '<div><b>'+withBoth.length+'</b><small>Completed both</small></div>'+
     '<div><b>'+(gain>0?'+':'')+gain+'</b><small>Avg skills gained</small></div>';
 
+  drawSkills(rows);
+
   var t=document.getElementById('reportTable');
   document.getElementById('reportEmpty').classList.toggle('hide', rows.length>0);
   if(!rows.length){ t.innerHTML=''; return; }
@@ -266,16 +279,48 @@ function drawReport(){
     }).join('')+'</tbody>';
 }
 
+/* Skill-by-skill: how many children held it before, how many after,
+   and the standard it maps to. This is the table that answers "what
+   did the money actually teach?" */
+function drawSkills(rows){
+  var host=document.getElementById('skillTable');
+  var slug=document.getElementById('filterTopic').value || 'plant';
+  var comps=(window.TGQuiz && TGQuiz.settings.competencies(slug))||[];
+  if(!comps.length || !rows.length){ host.innerHTML=''; return; }
+
+  host.innerHTML='<thead><tr><th>Skill</th><th>Standard</th><th>Had it before</th><th>Has it after</th><th>Newly gained</th></tr></thead><tbody>'+
+    comps.map(function(c){
+      var before=0, after=0, gained=0;
+      rows.forEach(function(r){
+        if(r.beforeSkills && r.beforeSkills[c.id]) before++;
+        if(r.afterSkills  && r.afterSkills[c.id])  after++;
+        if(r.afterSkills && r.afterSkills[c.id] && !(r.beforeSkills && r.beforeSkills[c.id])) gained++;
+      });
+      var se=(window.TEKS && TEKS.se[c.teks]);
+      return '<tr><td class="kid">'+esc(c.label)+
+        (se?'<small>'+esc(se.text.slice(0,72))+(se.text.length>72?'…':'')+'</small>':'')+'</td>'+
+        '<td><b>'+esc(c.teks)+'</b>'+(se?'<small style="display:block;color:var(--muted);font-weight:400">'+esc(se.grade)+'</small>':'')+'</td>'+
+        '<td>'+before+'</td><td>'+after+'</td>'+
+        '<td>'+(gained?'<span class="pill up">+'+gained+'</span>':'<span class="pill flat">0</span>')+'</td></tr>';
+    }).join('')+'</tbody>';
+}
+
 document.getElementById('csvBtn').onclick=function(){
   var filter=document.getElementById('filterTopic').value;
   var rows=ROWS.filter(function(r){ return !filter || r.slug===filter; });
-  var head=['Child','Grade','Topic','Skills before','Before date','Skills after','After date','Skills gained'];
+  var slug0=document.getElementById('filterTopic').value || 'plant';
+  var comps=(window.TGQuiz && TGQuiz.settings.competencies(slug0))||[];
+  var head=['Child','Grade','Topic','Skills before','Before date','Skills after','After date','Skills gained']
+    .concat(comps.map(function(c){ return c.label+' ('+c.teks+')'; }));
   var lines=[head.join(',')].concat(rows.map(function(r){
     var g=(r.before!=null&&r.after!=null)?(r.after-r.before):'';
     return [r.child,r.grade||'',r.topic,
             r.before!=null?r.before+'/'+r.beforeOf:'', r.beforeAt?new Date(r.beforeAt).toISOString().slice(0,10):'',
             r.after!=null?r.after+'/'+r.afterOf:'',   r.afterAt?new Date(r.afterAt).toISOString().slice(0,10):'',
-            g].map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
+            g].concat(comps.map(function(c){
+              var had=r.beforeSkills&&r.beforeSkills[c.id], has=r.afterSkills&&r.afterSkills[c.id];
+              return has&&!had ? 'gained' : (has ? 'already had' : 'not yet');
+            })).map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
   }));
   var blob=new Blob([lines.join('\n')],{type:'text/csv'});
   var a=document.createElement('a');
