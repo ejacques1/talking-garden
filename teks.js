@@ -60,7 +60,9 @@ window.TEKS = {
     seq:   { se:'K.13(C)', skill:'Sequence the stages of a simple plant life cycle' },
     parts: { se:'2.13(A)', skill:'Identify plant structures and how each helps the plant survive' },
     eat:   { se:'2.13(A)', skill:'Relate edible foods to the plant structure they come from' },
-    need:  { se:'K.12(A)', skill:'Identify what plants depend on to grow' }
+    need:  { se:'K.12(A)', skill:'Identify what plants depend on to grow' },
+    seed:  { se:'K.12(A)', skill:'Grow a plant by giving it what it needs' },
+    worm:  { se:'K.12(A)', skill:'Sort what feeds the soil plants grow in' }
   },
 
   label: function (key) {

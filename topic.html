@@ -244,6 +244,8 @@ img{max-width:100%;display:block}
 
 .sndbtn{background:none;border:none;font-size:19px;cursor:pointer;padding:2px 6px;line-height:1;opacity:.8}
 .sndbtn:hover{opacity:1}
+
+.seedart{font-size:72px;line-height:1;transition:transform .22s ease}
 </style>
 </head>
 <body>
@@ -435,9 +437,19 @@ img{max-width:100%;display:block}
           <span class="tick">✓</span>
         </a>
         <a class="mcard" data-act="need">
-          <span class="e e-grape">💧</span>
-          <span><h4>What does a plant need?</h4><p>Sort what helps a plant grow from what doesn't.</p></span>
-          <span class="tick">✓</span>
+          <span class="e e-sky">&#128167;</span>
+          <span><h4>What does a plant need?</h4><p>Sort what helps a plant grow from what doesn&rsquo;t.</p></span>
+          <span class="tick">&#10003;</span>
+        </a>
+        <a class="mcard" data-act="worm">
+          <span class="e e-sun">&#129712;</span>
+          <span><h4>The Worm Caf&eacute;</h4><p>Sort the scraps &mdash; which ones would the worms eat?</p></span>
+          <span class="tick">&#10003;</span>
+        </a>
+        <a class="mcard" data-act="seed">
+          <span class="e e-grape">&#9728;&#65039;</span>
+          <span><h4>Seed to Sprout</h4><p>Give your seed sun and water, and watch it grow into Sunny.</p></span>
+          <span class="tick">&#10003;</span>
         </a>
       </div>
     </div>
@@ -654,6 +666,29 @@ var ACTS = {
       {e:'🪨',n:'Good soil',y:1,why:'Soil holds the water and the nutrients roots need.'},
       {e:'🍭',n:'Candy',y:0,    why:'Plants make their own food from sunlight — they never need sweets.'},
       {e:'📺',n:'Television',y:0,why:'A plant does fine with no telly at all!'}
+    ]
+  },
+  worm: {
+    title:'The Worm Caf\u00e9',
+    items:[
+      {e:'&#127820;', n:'Banana peel',    y:1, why:'Worms love soft fruit skins.'},
+      {e:'&#127822;', n:'Apple core',     y:1, why:'Cores break down fast and worms munch right through them.'},
+      {e:'&#129386;', n:'Lettuce leaves', y:1, why:'Leafy scraps are a worm favourite.'},
+      {e:'&#129365;', n:'Carrot tops',    y:1, why:'The green tops we do not eat are perfect worm food.'},
+      {e:'&#9749;',   n:'Coffee grounds', y:1, why:'Worms really do love coffee grounds!'},
+      {e:'&#127829;', n:'Pizza slice',    y:0, why:'Greasy food makes the bin smell and brings pests.'},
+      {e:'&#129380;', n:'Plastic bottle', y:0, why:'Plastic never breaks down. It stays plastic forever.'},
+      {e:'&#128267;', n:'Battery',        y:0, why:'Batteries hold chemicals that would hurt the worms.'}
+    ]
+  },
+  seed: {
+    title:'Seed to Sprout',
+    stages:[
+      {e:'&#129700;', n:'A tiny seed',        say:'I&rsquo;m just a seed. Give me what I need!'},
+      {e:'&#127793;', n:'A little sprout!',   say:'Look! I&rsquo;m poking through the soil.'},
+      {e:'&#127807;', n:'Growing leaves!',    say:'My leaves are catching the sunshine.'},
+      {e:'&#129388;', n:'A strong plant!',    say:'My roots are drinking deep now.'},
+      {e:'SUNNY',     n:'It&rsquo;s me &mdash; Sunny!', say:'You grew me! Sun AND water, every time.'}
     ]
   }
 };
@@ -872,6 +907,100 @@ function render(){
            wrong answer never got further than the word "Actually". */
         var go=function(){ st.i++; st.msg=null; st.tries=0; render(); };
         if(window.TGAudio) TGAudio.sayThen(st.msg, go, 2400); else setTimeout(go, 2400);
+      };
+    });
+    return;
+  }
+
+  /* ---- the worm cafe: sort the scraps ---- */
+  if(cur==='worm'){
+    if(st.i==null){ st.i=0; }
+    if(st.i>=a.items.length){ return win('You sorted every scrap. The worms are very well fed.'); }
+    var wi=a.items[st.i];
+    speakPrompt('worm_'+st.i, wi.n+'. Would the worms eat this?');
+    playBd.innerHTML='<div style="display:grid;place-items:center;font-size:66px;line-height:1;margin-bottom:6px">'+wi.e+'</div>'+
+      '<div class="q">'+wi.n+'</div><div class="qs">Would the worms eat this?</div>'+
+      '<div class="buckets"><button class="bucket b-yes" data-y="1">&#128523; Feed the worms</button>'+
+      '<button class="bucket b-no" data-y="0">&#128683; No thanks</button></div>'+
+      '<div class="say" id="wormSay">'+(st.msg||'Tap one to sort it.')+'</div>'+
+      '<div class="pbar"><i style="width:'+(st.i/a.items.length*100)+'%"></i></div>';
+    [].forEach.call(playBd.querySelectorAll('.bucket'), function(b){
+      b.onclick=function(){
+        var right=(+b.dataset.y)===wi.y, say=document.getElementById('wormSay');
+        var buckets=playBd.querySelectorAll('.bucket');
+        if(!right){
+          st.tries=(st.tries||0)+1;
+          b.style.borderColor='var(--terra)';
+          if(st.tries<2){
+            say.textContent='Not quite — have another go!';
+            speakNews('Not quite. Have another go!');
+            setTimeout(function(){ b.style.borderColor=''; }, 700);
+            return;
+          }
+          st.msg=(wi.y?'Yes they would. ':'No they would not. ')+wi.why;
+          say.textContent=st.msg;
+          [].forEach.call(buckets, function(x){
+            x.style.pointerEvents='none';
+            if((+x.dataset.y)===wi.y) x.style.borderColor='var(--sage)';
+          });
+          var g2=function(){ st.i++; st.msg=null; st.tries=0; render(); };
+          if(window.TGAudio) TGAudio.sayThen(st.msg, g2, 2600); else setTimeout(g2, 2600);
+          return;
+        }
+        b.style.borderColor='var(--sage)';
+        st.msg='That is right! '+wi.why;
+        say.textContent=st.msg;
+        [].forEach.call(buckets, function(x){ x.style.pointerEvents='none'; });
+        var go=function(){ st.i++; st.msg=null; st.tries=0; render(); };
+        if(window.TGAudio) TGAudio.sayThen(st.msg, go, 2400); else setTimeout(go, 2400);
+      };
+    });
+    return;
+  }
+
+  /* ---- seed to sprout: grow it yourself ---- */
+  if(cur==='seed'){
+    if(st.sun==null){ st.sun=0; st.wat=0; }
+    var stage=Math.min(st.sun, st.wat, a.stages.length-1);
+    var sd=a.stages[stage];
+    var art = sd.e==='SUNNY'
+      ? (window.Sunny ? Sunny.html('cheer',110) : '<div style="font-size:64px">&#127803;</div>')
+      : '<div class="seedart">'+sd.e+'</div>';
+
+    if(stage===a.stages.length-1){
+      speakPrompt('seed_done', 'You grew me! Sun and water, every time.');
+      return win('You gave your seed sun AND water until it grew all the way into a sunflower.');
+    }
+
+    speakPrompt('seed_'+stage, sd.say.replace(/&[a-z]+;/g,"'"));
+
+    playBd.innerHTML=
+      '<div style="display:grid;place-items:center;min-height:132px">'+art+'</div>'+
+      '<div class="q" style="font-size:19px">'+sd.n+'</div>'+
+      '<div class="say" id="seedSay">'+(st.msg||sd.say)+'</div>'+
+      '<div class="grid2" style="margin-top:14px">'+
+        '<button class="opt" data-g="sun"><span class="e">&#9728;&#65039;</span>Sun &middot; '+st.sun+'</button>'+
+        '<button class="opt" data-g="wat"><span class="e">&#128167;</span>Water &middot; '+st.wat+'</button>'+
+      '</div>'+
+      '<div class="pbar"><i style="width:'+(stage/(a.stages.length-1)*100)+'%"></i></div>';
+
+    [].forEach.call(playBd.querySelectorAll('.opt'), function(b){
+      b.onclick=function(){
+        var g=b.dataset.g;
+        if(g==='sun') st.sun++; else st.wat++;
+        /* The original let a child tap sun ten times and reach the flower
+           with no water at all, while telling them plants need both.
+           Growth now needs sun AND water, so the mechanic teaches it. */
+        if(st.sun > st.wat + 1){
+          st.msg='That&rsquo;s plenty of sunshine &mdash; I&rsquo;m thirsty!';
+          speakNews('That is plenty of sunshine. I am thirsty!');
+        } else if(st.wat > st.sun + 1){
+          st.msg='I&rsquo;ve had lots to drink &mdash; I need sunshine now!';
+          speakNews('I have had lots to drink. I need sunshine now!');
+        } else {
+          st.msg=null;
+        }
+        render();
       };
     });
     return;
