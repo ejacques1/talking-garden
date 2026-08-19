@@ -200,8 +200,9 @@
       if (global.__tg_admin != null) return global.__tg_admin;
       try {
         var s = await sb();
-        var r = await s.from('admins').select('user_id').eq('user_id', sess.user.id).maybeSingle();
-        global.__tg_admin = !!(r.data);
+        /* Ask the database, so an admin named only by email still counts. */
+        var r = await s.rpc('is_admin');
+        global.__tg_admin = r.data === true;
       } catch (e) { global.__tg_admin = false; }
       return global.__tg_admin;
     },
