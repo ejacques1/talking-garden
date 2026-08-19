@@ -294,7 +294,7 @@ img{max-width:100%;display:block}
         <span class="mini">📖 Almost no reading</span>
       </div>
       <button class="btn btn-primary" id="preBtn">Start the before-quiz →</button>
-      <div class="statusline" id="preDone" style="display:none">✓ Finished — you scored 2 out of 6. See you Saturday!</div>
+      <div class="statusline" id="preDone" style="display:none"></div>
     </div>
   </section>
 
@@ -333,6 +333,8 @@ img{max-width:100%;display:block}
           <input id="inZoom" placeholder="https://us02web.zoom.us/j/1234567890">
           <label>Recording link <span>(after the session &mdash; a YouTube unlisted link works well)</span></label>
           <input id="inRec" placeholder="https://youtu.be/xxxxxxxxxxx">
+          <label>Session date &amp; time <span>(so we know whether a before-check was taken in time)</span></label>
+          <input id="inWhen" type="datetime-local">
           <label>The garden word <span>(say it out loud during the session)</span></label>
           <input id="inWord" placeholder="sunflower">
           <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
@@ -477,7 +479,19 @@ if(BUILT.indexOf(TOPIC)<0){ location.replace('dashboard.html?soon='+encodeURICom
 var PREKEY='tg_pre_'+TOPIC;
 
 function preDone(){ try{ return localStorage.getItem(PREKEY)==='1'; }catch(e){ return false; } }
-function setPre(){ try{ localStorage.setItem(PREKEY,'1'); }catch(e){} }
+function setPre(){
+  try{
+    localStorage.setItem(PREKEY,'1');
+    localStorage.setItem(PREKEY+'_at', new Date().toISOString());
+    /* A baseline taken after the session has already happened is not a
+       baseline. Record that so the ED can exclude it from reporting
+       rather than quietly under-reporting her own results. */
+    var cfg={}; try{ cfg=JSON.parse(localStorage.getItem('tg_session_'+TOPIC))||{}; }catch(e){}
+    var late = cfg.when ? (new Date() > new Date(cfg.when)) : false;
+    localStorage.setItem(PREKEY+'_late', late ? '1' : '0');
+  }catch(e){}
+}
+function preWasLate(){ try{ return localStorage.getItem(PREKEY+'_late')==='1'; }catch(e){ return false; } }
 
 var RAIL=[
  {n:1,label:'Before-quiz'},{n:2,label:'Live session'},{n:3,label:'Build at home'},
@@ -493,15 +507,12 @@ function paint(){
     var s0=TG.session(), k0=(s0&&s0.profile.children&&s0.profile.children[0]);
     var r0=TGQuiz.result(TOPIC,'pre', k0&&k0.name);
     document.getElementById('preDone').textContent = r0
-      ? '\u2713 Finished \u2014 you scored '+r0+'. See you Saturday!'
+      ? '\u2713 Finished \u2014 '+r0+' skills to start with. See you Saturday!'
       : '\u2713 Finished \u2014 see you Saturday!';
-  }
-  if(pre){
-    var sess0=TG.session(), k0=(sess0&&sess0.profile.children&&sess0.profile.children[0]);
-    var r0=TGQuiz.result(TOPIC,'pre', k0&&k0.name);
-    document.getElementById('preDone').textContent = r0
-      ? '\u2713 Finished — you scored '+r0+'. See you Saturday!'
-      : '\u2713 Finished — see you Saturday!';
+    if(preWasLate()){
+      document.getElementById('preDone').textContent +=
+        '  (Taken after the session \u2014 counted, but flagged in reporting.)';
+    }
   }
 
   ['s3','s4','s5'].forEach(function(id){
@@ -858,6 +869,7 @@ var ss=document.getElementById('saveSetup');
 if(ss) ss.onclick=function(){
   var cfg={ zoom:document.getElementById('inZoom').value.trim(),
             rec: document.getElementById('inRec').value.trim(),
+            when:document.getElementById('inWhen').value,
             word:document.getElementById('inWord').value.trim().toLowerCase() };
   saveSetup(cfg); paintVideo();
   document.getElementById('setupMsg').textContent='Saved. The family page above is updated.';
@@ -876,6 +888,7 @@ if(df) df.onclick=function(){
   if(cfg.zoom) document.getElementById('inZoom').value=cfg.zoom;
   if(cfg.rec)  document.getElementById('inRec').value=cfg.rec;
   if(cfg.word) document.getElementById('inWord').value=cfg.word;
+  if(cfg.when) document.getElementById('inWhen').value=cfg.when;
 })();
 paintVideo();
 
