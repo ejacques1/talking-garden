@@ -139,7 +139,7 @@
           '<div class="tgm-dots">'+ SCENES.map(function(){ return '<i></i>'; }).join('') +'</div>'+
           '<div class="tgm-ctl"><button data-a="replay">Start again</button></div>'+
           '<div class="tgm-cap"></div>'+
-          '<div class="tgm-start"><div>&#9654;&nbsp; Watch the movie</div></div>'+
+          '<div class="tgm-start"><div>&#9654;&nbsp; Watch Sunny explain</div></div>'+
         '</div>';
 
       var root = host.querySelector('.tgm');
