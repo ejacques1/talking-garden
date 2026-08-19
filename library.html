@@ -232,6 +232,23 @@ var PROJECTS=[
     science:'Worms are nature’s recyclers. They eat scraps and turn them into <b>castings</b> — the richest plant food there is. Their tunnels also let air and water reach plant roots. In a clear cup, you can actually <b>see</b> it happen.',
     learn:'decomposition · ecosystems · soil health · observation & journaling' },
 
+  { id:'sunflower', track:'grow', emoji:'🌻', color:'var(--sage-l)', flag:'The whole life cycle',
+    title:'The Sunflower Cup', blurb:'Plant one seed and watch every single stage happen on your windowsill.',
+    meta:{time:'15 min to start', diff:'Easy', mess:'A little messy', help:'Kid-led'},
+    materials:['A clear cup','Potting soil','1 sunflower seed','Water in a spray bottle','A sunny windowsill','A ruler','Paper for a growth journal'],
+    grownup:'Kids can lead this one start to finish.',
+    steps:[
+      ['Fill the cup','Fill your cup about three quarters full with soil. Press it down gently — not too hard, roots need air.'],
+      ['Plant the seed','Poke a hole as deep as your fingertip, drop the seed in, and cover it lightly.'],
+      ['Water and wait','Mist until the soil is damp like a wrung-out sponge. Put it somewhere sunny.'],
+      ['Watch for the sprout','In about a week a shoot appears. Draw what you see and measure it with your ruler.'],
+      ['Measure every day','Write down the height each day. How much did it grow overnight?'],
+      ['Find the parts','Once it has leaves, point to the roots, stem and leaves. What is each one doing?'],
+      ['Plant it out','When it outgrows the cup, plant it in the garden and wait for the flower — then the new seeds.']
+    ],
+    science:'You are watching a whole life cycle: seed, seedling, plant, flower, and then fruit with new seeds inside. The seed already holds a tiny plant and a packed lunch. Once water wakes it up, roots go down for water, the stem lifts the leaves up, and the leaves catch sunlight to make food. The flower is the part that makes the next generation of seeds.',
+    learn:'plant life cycle · plant parts and their jobs · what plants need · measuring change over time',
+    teks:'Kindergarten K.13(C), K.12(A) · Grade 2 2.13(A)' },
   { id:'scrap', track:'grow', emoji:'🥬', color:'var(--sage-l)', flag:'Flagship project',
     title:'Grow a Plant from a Scrap', blurb:'No garden needed — regrow a green onion on the windowsill.',
     meta:{time:'10 min', diff:'Easy', mess:'Tidy', help:'Kid-led'},
@@ -429,6 +446,12 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeBuil
 document.getElementById('resetBtn').onclick=function(){ setDone([]); render(curFilter); };
 
 render('all');
+
+/* deep link from a topic page: library.html?p=sunflower */
+(function(){
+  var want=new URLSearchParams(location.search).get('p');
+  if(want && PROJECTS.some(function(p){return p.id===want;})) openBuild(want);
+})();
 </script>
 </body>
 </html>
