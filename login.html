@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in — The Talking Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EA;--paper:#FFF;--paper2:#FCFAF3;
+  --ink:#1F2320;--body:#55584F;--muted:#7B7D72;--faint:#A8A99C;
+  --sage:#4F7C4A;--sage-d:#33512F;--sage-l:#E7F0E4;
+  --sun:#F2B233;--sun-l:#FDF1D6;--terra:#C25A36;--terra-l:#FBE8E0;
+  --line:#E8E1D2;--line-d:#D6CDB8;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --shadow:0 2px 4px rgba(31,35,32,.04),0 10px 28px rgba(31,35,32,.07);
+  --shadow-lg:0 4px 8px rgba(31,35,32,.05),0 22px 50px rgba(31,35,32,.11);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+h1,h2,h3{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:700}
+p{margin:0}a{color:var(--sage)}
+.top{padding:22px 24px}
+.brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none}
+.brand-mark{width:38px;height:38px;border-radius:11px;background:var(--sage);display:grid;place-items:center;font-size:20px}
+.brand-txt{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--ink);line-height:1.15}
+.brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.mid{flex:1;display:grid;place-items:center;padding:20px 24px 60px}
+.card{width:100%;max-width:470px;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow-lg);overflow:hidden}
+.card-hd{padding:30px 32px 0;text-align:center}
+.card-hd .m{font-size:36px;margin-bottom:10px}
+.card-hd h1{font-size:27px;margin-bottom:8px}
+.card-hd p{font-size:15px;color:var(--muted)}
+.tabs{display:flex;gap:6px;padding:22px 32px 0}
+.tab{flex:1;font-family:var(--sans);font-size:14.5px;font-weight:600;padding:11px;border-radius:12px;border:2px solid var(--line);background:var(--paper2);color:var(--muted);cursor:pointer;transition:.15s}
+.tab.on{background:var(--sage);border-color:var(--sage);color:#fff}
+form{padding:22px 32px 30px}
+label{display:block;font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+input,select{width:100%;font-family:var(--sans);font-size:15.5px;padding:13px 15px;border-radius:12px;border:2px solid var(--line);background:var(--paper2);color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
+.field{margin-bottom:16px}
+.kidrow{display:flex;gap:9px;margin-bottom:9px}
+.kidrow input{flex:2}.kidrow select{flex:1.1}
+.kidrow button{flex:none;width:44px;border-radius:12px;border:2px solid var(--line);background:var(--paper2);color:var(--muted);font-size:19px;cursor:pointer}
+.kidrow button:hover{border-color:var(--terra);color:var(--terra)}
+.addkid{background:none;border:none;color:var(--sage);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
+.hint{font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:16px}
+.btn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:16px;font-weight:600;padding:15px;border-radius:999px;border:2px solid transparent;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--sage);color:#fff;box-shadow:0 4px 0 var(--sage-d)}
+.btn-primary:hover{background:var(--sage-d)}
+.btn-primary:disabled{opacity:.6;cursor:wait;box-shadow:none}
+.alt{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}
+.msg{margin-top:14px;padding:12px 15px;border-radius:12px;font-size:14px;font-weight:500;display:none}
+.msg.err{display:block;background:var(--terra-l);color:#8E3D1F;border:1px solid #EFCFC1}
+.msg.ok{display:block;background:var(--sage-l);color:var(--sage-d);border:1px solid #CBDDC6}
+.banner{max-width:470px;margin:0 auto 16px;background:var(--sun-l);border:1px solid #EBD9A8;border-radius:14px;padding:13px 16px;font-size:13.5px;color:#7A5A0C}
+.banner b{color:#5A4208}
+.foot{text-align:center;padding:0 24px 30px;font-size:13px;color:var(--faint)}
+.sep{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--faint);font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line)}
+.hide{display:none}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">🌱</span>
+    <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
+  </a>
+</div>
+
+<div class="mid">
+  <div style="width:100%">
+    <div class="banner" id="demoBanner">
+      <b>Demo mode.</b> Accounts are saved in this browser only, so you can click the whole flow right now.
+      Fill in <b>config.js</b> with a Supabase URL and anon key to switch on real accounts.
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <div class="m">🌻</div>
+        <h1 id="hdTitle">Welcome back</h1>
+        <p id="hdSub">Sign in to reach your garden topics.</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab on" id="tabIn" type="button">Log in</button>
+        <button class="tab" id="tabUp" type="button">Create account</button>
+      </div>
+
+      <!-- LOG IN -->
+      <form id="formIn">
+        <div class="field">
+          <label for="inEmail">Email</label>
+          <input id="inEmail" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="inPass">Password</label>
+          <input id="inPass" type="password" autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" type="submit">Log in →</button>
+        <div class="sep hide" id="magicSep">or</div>
+        <button class="btn hide" id="magicBtn" type="button" style="background:#fff;border-color:var(--line-d);color:var(--ink)">Email me a magic link</button>
+        <div class="msg" id="msgIn"></div>
+        <p class="alt">New here? <a href="#" id="toUp">Create a family account</a></p>
+      </form>
+
+      <!-- SIGN UP -->
+      <form id="formUp" class="hide">
+        <div class="field">
+          <label for="upName">Your name (the grown-up)</label>
+          <input id="upName" type="text" autocomplete="name" placeholder="Angela Brooks">
+        </div>
+        <div class="field">
+          <label for="upEmail">Email</label>
+          <input id="upEmail" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="upPass">Choose a password</label>
+          <input id="upPass" type="password" autocomplete="new-password" placeholder="At least 6 characters">
+        </div>
+
+        <label>Who's gardening with you?</label>
+        <p class="hint">First names only — that's all we ever store about a child.</p>
+        <div id="kids"></div>
+        <button class="addkid" id="addKid" type="button">+ Add another child</button>
+
+        <div style="height:20px"></div>
+        <button class="btn btn-primary" type="submit">Create our account →</button>
+        <div class="msg" id="msgUp"></div>
+        <p class="alt">Already have one? <a href="#" id="toIn">Log in</a></p>
+      </form>
+    </div>
+
+    <p class="foot">Dew of Heaven Children's Garden · Spring, TX</p>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script>
+var qs=new URLSearchParams(location.search), NEXT=qs.get('next')||'dashboard.html';
+
+if(!window.TG_DEMO){
+  document.getElementById('demoBanner').style.display='none';
+  document.getElementById('magicSep').classList.remove('hide');
+  document.getElementById('magicBtn').classList.remove('hide');
+}
+
+/* ---- tabs ---- */
+var tabIn=document.getElementById('tabIn'), tabUp=document.getElementById('tabUp'),
+    formIn=document.getElementById('formIn'), formUp=document.getElementById('formUp'),
+    hdT=document.getElementById('hdTitle'), hdS=document.getElementById('hdSub');
+function show(which){
+  var up = which==='up';
+  tabUp.className='tab'+(up?' on':''); tabIn.className='tab'+(up?'':' on');
+  formUp.classList.toggle('hide',!up); formIn.classList.toggle('hide',up);
+  hdT.textContent = up?'Start your garden':'Welcome back';
+  hdS.textContent = up?'One account for the whole family — free.':'Sign in to reach your garden topics.';
+}
+tabIn.onclick=function(){show('in')}; tabUp.onclick=function(){show('up')};
+document.getElementById('toUp').onclick=function(e){e.preventDefault();show('up')};
+document.getElementById('toIn').onclick=function(e){e.preventDefault();show('in')};
+if(qs.get('mode')==='signup') show('up');
+
+/* ---- child rows ---- */
+var GRADES=['K','1st','2nd','3rd','4th','5th','6th'];
+function addKidRow(){
+  var row=document.createElement('div'); row.className='kidrow';
+  row.innerHTML='<input type="text" placeholder="Child\'s first name" class="kname">'+
+    '<select class="kgrade">'+GRADES.map(function(g){return '<option value="'+g+'">'+g+'</option>'}).join('')+'</select>'+
+    '<button type="button" title="Remove">×</button>';
+  row.querySelector('button').onclick=function(){
+    if(document.querySelectorAll('#kids .kidrow').length>1) row.remove();
+  };
+  document.getElementById('kids').appendChild(row);
+}
+document.getElementById('addKid').onclick=addKidRow;
+addKidRow();
+
+function readKids(){
+  return [].slice.call(document.querySelectorAll('#kids .kidrow')).map(function(r){
+    return {name:r.querySelector('.kname').value.trim(), grade:r.querySelector('.kgrade').value};
+  }).filter(function(k){return k.name});
+}
+
+function say(el,text,ok){ el.className='msg '+(ok?'ok':'err'); el.textContent=text; }
+
+/* ---- submit: log in ---- */
+formIn.onsubmit=async function(e){
+  e.preventDefault();
+  var b=formIn.querySelector('button[type=submit]'), m=document.getElementById('msgIn');
+  b.disabled=true; m.className='msg';
+  try{
+    await TG.signIn({email:document.getElementById('inEmail').value, password:document.getElementById('inPass').value});
+    say(m,'Welcome back! Taking you in…',true);
+    setTimeout(function(){ location.href=NEXT; },500);
+  }catch(err){ say(m, err.message||'Could not sign in.', false); b.disabled=false; }
+};
+
+/* ---- submit: sign up ---- */
+formUp.onsubmit=async function(e){
+  e.preventDefault();
+  var b=formUp.querySelector('button[type=submit]'), m=document.getElementById('msgUp');
+  var pass=document.getElementById('upPass').value;
+  if(pass.length<6){ say(m,'Please pick a password of at least 6 characters.',false); return; }
+  var kids=readKids();
+  if(!kids.length){ say(m,'Add at least one child so we know who is learning.',false); return; }
+  b.disabled=true; m.className='msg';
+  try{
+    await TG.signUp({
+      email:document.getElementById('upEmail').value,
+      password:pass,
+      parentName:document.getElementById('upName').value.trim(),
+      children:kids
+    });
+    say(m,'Account created — welcome to the garden!',true);
+    setTimeout(function(){ location.href=NEXT; },600);
+  }catch(err){ say(m, err.message||'Could not create the account.', false); b.disabled=false; }
+};
+
+/* ---- magic link (real mode only) ---- */
+document.getElementById('magicBtn').onclick=async function(){
+  var m=document.getElementById('msgIn'), email=document.getElementById('inEmail').value;
+  if(!email){ say(m,'Type your email first, then tap the magic link button.',false); return; }
+  try{ await TG.sendMagicLink(email); say(m,'Check your inbox — we sent you a sign-in link.',true); }
+  catch(err){ say(m, err.message||'Could not send the link.', false); }
+};
+</script>
+</body>
+</html>

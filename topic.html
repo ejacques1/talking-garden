@@ -149,13 +149,16 @@ img{max-width:100%;display:block}
 </head>
 <body>
 
+<div id="boot" style="display:grid;place-items:center;min-height:70vh;color:var(--faint)">Opening your garden…</div>
+<div id="app" style="display:none">
+
 <nav class="nav">
   <div class="nav-in">
     <a class="brand" href="index.html">
       <span class="brand-mark">🌱</span>
       <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
     </a>
-    <span class="who"><span class="avatar">🌻</span><span>Maya, 2nd grade</span></span>
+    <span class="who"><span class="avatar" id="avatar">🌻</span><span id="whoName">—</span></span><button id="outBtn" style="background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;margin-left:14px">Log out</button>
   </div>
 </nav>
 
@@ -316,7 +319,7 @@ img{max-width:100%;display:block}
       <div class="cert">
         <div class="m">🏅</div>
         <h4>Junior Garden Scientist</h4>
-        <p>Maya · Plant Life Cycle · completed August 2026</p>
+        <p id="certLine">Plant Life Cycle · completed August 2026</p>
         <button class="btn btn-ghost" onclick="window.print()">Print my certificate</button>
       </div>
     </div>
@@ -324,73 +327,82 @@ img{max-width:100%;display:block}
 
 </main>
 
+</div>
+
 <div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
 <div class="proto"><i></i> Prototype — visual layout only</div>
 
+<script src="config.js"></script>
+<script src="auth.js"></script>
 <script>
-var KEY='tg_topic_plant_v1';
-function state(){ try{ return JSON.parse(localStorage.getItem(KEY))||{pre:false,unlocked:false}; }catch(e){ return {pre:false,unlocked:false}; } }
-function save(s){ try{ localStorage.setItem(KEY,JSON.stringify(s)); }catch(e){} }
+var TOPIC='plant', PREKEY='tg_pre_'+TOPIC;
+
+function preDone(){ try{ return localStorage.getItem(PREKEY)==='1'; }catch(e){ return false; } }
+function setPre(){ try{ localStorage.setItem(PREKEY,'1'); }catch(e){} }
 
 var RAIL=[
- {n:1,label:'Before-quiz'},
- {n:2,label:'Live session'},
- {n:3,label:'Build at home'},
- {n:4,label:'Practice & play'},
- {n:5,label:'After-quiz'}
+ {n:1,label:'Before-quiz'},{n:2,label:'Live session'},{n:3,label:'Build at home'},
+ {n:4,label:'Practice & play'},{n:5,label:'After-quiz'}
 ];
 
 function paint(){
-  var s=state();
-  // stage 1
-  document.getElementById('preBtn').style.display = s.pre?'none':'inline-flex';
-  document.getElementById('preDone').style.display = s.pre?'flex':'none';
-  // stages 3-5 lock
+  var unlocked = TG.isUnlocked(TOPIC), pre = preDone();
+
+  document.getElementById('preBtn').style.display = pre?'none':'inline-flex';
+  document.getElementById('preDone').style.display = pre?'flex':'none';
+
   ['s3','s4','s5'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(s.unlocked){ el.classList.remove('lock'); }
-    else { el.classList.add('lock'); }
+    document.getElementById(id).classList.toggle('lock', !unlocked);
   });
-  // rail
-  var done = s.unlocked ? 4 : (s.pre?1:0);
-  var now  = s.unlocked ? 5 : (s.pre?2:1);
+
+  var done = unlocked ? 4 : (pre?1:0);
+  var now  = unlocked ? 5 : (pre?2:1);
   document.getElementById('rail').innerHTML = RAIL.map(function(r){
     var cls = r.n<=done ? 'done' : (r.n===now ? 'now' : '');
-    var mark = r.n<=done ? '✓' : r.n;
-    return '<a class="rpill '+cls+'" href="#s'+r.n+'"><i>'+mark+'</i>'+r.label+'</a>';
+    return '<a class="rpill '+cls+'" href="#s'+r.n+'"><i>'+(r.n<=done?'\u2713':r.n)+'</i>'+r.label+'</a>';
   }).join('');
 }
 
 document.getElementById('preBtn').addEventListener('click',function(){
-  var s=state(); s.pre=true; save(s); paint();
+  setPre(); paint();
   document.getElementById('s2').scrollIntoView({behavior:'smooth',block:'start'});
 });
 
-function tryWord(){
+async function tryWord(){
   var v=document.getElementById('wordIn').value.trim().toLowerCase();
   var m=document.getElementById('wordMsg');
-  if(v==='sunflower'){
-    var s=state(); s.pre=true; s.unlocked=true; save(s); paint();
-    m.className='wordmsg good'; m.textContent='🎉 Unlocked! Everything below is open — and it stays open.';
-    setTimeout(function(){ document.getElementById('s3').scrollIntoView({behavior:'smooth',block:'start'}); },500);
-  } else if(!v){
-    m.className='wordmsg bad'; m.textContent='Type the word you heard in the session.';
-  } else {
-    m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.';
-  }
+  if(!v){ m.className='wordmsg bad'; m.textContent='Type the word you heard in the session.'; return; }
+  if(v!=='sunflower'){ m.className='wordmsg bad'; m.textContent='That is not quite it — have another listen to the recording.'; return; }
+  setPre();
+  await TG.unlock(TOPIC);
+  paint();
+  m.className='wordmsg good'; m.textContent='\ud83c\udf89 Unlocked! Everything below is open — and it stays open.';
+  setTimeout(function(){ document.getElementById('s3').scrollIntoView({behavior:'smooth',block:'start'}); },500);
 }
 document.getElementById('wordBtn').addEventListener('click',tryWord);
 document.getElementById('wordIn').addEventListener('keydown',function(e){ if(e.key==='Enter') tryWord(); });
 
 document.getElementById('resetBtn').addEventListener('click',function(){
-  try{ localStorage.removeItem(KEY); }catch(e){}
+  try{ localStorage.removeItem(PREKEY); }catch(e){}
   document.getElementById('wordIn').value='';
   document.getElementById('wordMsg').className='wordmsg';
-  paint();
-  window.scrollTo({top:0,behavior:'smooth'});
+  paint(); window.scrollTo({top:0,behavior:'smooth'});
 });
 
-paint();
+(async function(){
+  var s = await TG.requireAuth();
+  if(!s) return;
+  var p = s.profile, kids = p.children || [];
+  var who = kids.length ? kids[0].name + (kids[0].grade ? ', '+kids[0].grade+' grade' : '') : (p.parentName||p.email);
+  document.getElementById('whoName').textContent = who;
+  document.getElementById('avatar').textContent = kids.length ? (kids[0].name[0]||'?').toUpperCase() : '\ud83c\udf3b';
+  document.getElementById('certLine').textContent =
+    (kids.length ? kids[0].name+' \u00b7 ' : '') + 'Plant Life Cycle \u00b7 completed August 2026';
+  document.getElementById('outBtn').onclick = async function(){ await TG.signOut(); location.href='index.html'; };
+  paint();
+  document.getElementById('boot').style.display='none';
+  document.getElementById('app').style.display='block';
+})();
 </script>
 </body>
 </html>

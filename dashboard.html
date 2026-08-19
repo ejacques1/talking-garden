@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Your garden — The Talking Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EA;--paper:#FFF;--paper2:#FCFAF3;
+  --ink:#1F2320;--body:#55584F;--muted:#7B7D72;--faint:#A8A99C;
+  --sage:#4F7C4A;--sage-d:#33512F;--sage-l:#E7F0E4;
+  --sun:#F2B233;--sun-l:#FDF1D6;--terra:#C25A36;--terra-l:#FBE8E0;
+  --sky:#3E90CC;--sky-l:#E2F0FA;--grape:#7A5BC4;--grape-l:#EEE8FB;--teal:#1F9B8E;--teal-l:#DEF3F1;
+  --line:#E8E1D2;--line-d:#D6CDB8;
+  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --r:18px;--rl:26px;
+  --shadow:0 2px 4px rgba(31,35,32,.04),0 10px 28px rgba(31,35,32,.07);
+  --shadow-lg:0 4px 8px rgba(31,35,32,.05),0 22px 50px rgba(31,35,32,.11);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper2);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:700}
+p{margin:0}a{color:inherit}img{max-width:100%;display:block}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 24px;border-radius:999px;border:2px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--sage);color:#fff;box-shadow:0 4px 0 var(--sage-d)}
+.btn-primary:hover{background:var(--sage-d)}
+.btn-white{background:#fff;color:var(--sage-d);box-shadow:0 4px 0 rgba(0,0,0,.14)}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-d)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1040px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--sage);display:grid;place-items:center;font-size:19px;flex:none}
+.brand-txt{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);line-height:1.15}
+.brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.out:hover{color:var(--terra)}
+.acct{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--body)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-size:15px;flex:none}
+@media(max-width:560px){.acct span.nm{display:none}}
+
+/* hello */
+.hello{background:var(--sage-l);border-bottom:1px solid #D6E3D1;padding:32px 0 34px;position:relative;overflow:hidden}
+.hello::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.4);right:-100px;top:-130px}
+.hello-in{position:relative;z-index:2}
+.hello h1{font-size:clamp(27px,4vw,38px);font-weight:900;margin-bottom:8px}
+.hello p{color:#456141;font-size:17px}
+.kidchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.kidchip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CBDDC6;border-radius:999px;padding:7px 15px 7px 8px;font-size:14px;font-weight:600;color:var(--sage-d);cursor:pointer;transition:.15s}
+.kidchip .a{width:26px;height:26px;border-radius:50%;background:var(--sun-l);display:grid;place-items:center;font-size:13px}
+.kidchip.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.kidchip.on .a{background:rgba(255,255,255,.28)}
+
+/* next session */
+.next{margin:-18px auto 0;position:relative;z-index:5;max-width:1040px;padding:0 24px}
+.nextcard{background:var(--ink);color:rgba(255,255,255,.8);border-radius:var(--rl);box-shadow:var(--shadow-lg);padding:24px 28px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.nextcard .lab{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sun);margin-bottom:6px}
+.nextcard h3{color:#fff;font-size:22px;margin-bottom:4px}
+.nextcard p{font-size:14.5px;color:rgba(255,255,255,.6)}
+.nextcard .grow{flex:1;min-width:210px}
+.countdown{display:flex;gap:8px}
+.cd{background:rgba(255,255,255,.09);border-radius:12px;padding:9px 13px;text-align:center;min-width:56px}
+.cd b{display:block;font-family:var(--serif);font-size:21px;color:#fff;line-height:1.1}
+.cd small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+section{padding:44px 0 0}
+.sec-hd{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.sec-hd h2{font-size:25px}
+.sec-hd p{font-size:14.5px;color:var(--muted)}
+
+/* topics */
+.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:880px){.topics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.topics{grid-template-columns:1fr}}
+.topic{position:relative;border-radius:var(--rl);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;display:flex;flex-direction:column;transition:.18s}
+.topic:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.topic-art{height:132px;display:grid;place-items:center;font-size:54px;position:relative}
+.a-sage{background:var(--sage-l)}.a-grape{background:var(--grape-l)}.a-teal{background:var(--teal-l)}
+.a-sun{background:var(--sun-l)}.a-terra{background:var(--terra-l)}.a-sky{background:var(--sky-l)}
+.topic.locked .topic-art{filter:saturate(.72)}
+.lockbadge{position:absolute;top:11px;right:11px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;font-size:14px;box-shadow:var(--shadow);z-index:2}
+.topic-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
+.topic-body h3{font-size:19px;margin-bottom:11px}
+.prog{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:10px}
+.prog i{display:block;height:100%;background:var(--sage);border-radius:99px}
+.topic-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
+.small{font-size:12.5px;color:var(--muted)}
+.tag{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:99px}
+.tag-open{background:var(--sage-l);color:var(--sage-d)}
+.tag-lock{background:#F1EFE8;color:var(--muted)}
+.tag-soon{background:var(--sun-l);color:#8A6410}
+
+/* badges */
+.badges{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:60px}
+.badge{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);min-width:170px}
+.badge .e{font-size:26px;filter:grayscale(1);opacity:.35}
+.badge.got .e{filter:none;opacity:1}
+.badge b{display:block;font-family:var(--serif);font-size:15px;color:var(--ink)}
+.badge small{font-size:12.5px;color:var(--muted)}
+.demo{background:var(--sun-l);border:1px solid #EBD9A8;border-radius:14px;padding:12px 16px;font-size:13.5px;color:#7A5A0C;margin-top:22px}
+.proto{position:fixed;left:16px;bottom:16px;z-index:99;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:99px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
+.proto i{width:7px;height:7px;border-radius:50%;background:var(--sun);display:block}
+.boot{display:grid;place-items:center;min-height:70vh;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<div id="boot" class="boot">Opening your garden…</div>
+
+<div id="app" style="display:none">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="dashboard.html">
+      <span class="brand-mark">🌱</span>
+      <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
+    </a>
+    <span class="acct"><span class="avatar" id="avatar">🌻</span><span class="nm" id="acctName">—</span></span>
+    <button class="out" id="outBtn">Log out</button>
+  </div>
+</nav>
+
+<header class="hello">
+  <div class="wrap hello-in">
+    <h1 id="helloTitle">Hello!</h1>
+    <p id="helloSub">Here's what's growing this week.</p>
+    <div class="kidchips" id="kidchips"></div>
+  </div>
+</header>
+
+<div class="next">
+  <div class="nextcard">
+    <div class="grow">
+      <div class="lab">Your next live session</div>
+      <h3>Butterfly Life Cycle</h3>
+      <p>Saturday · 10:00 AM CT · with Ms. Angela</p>
+    </div>
+    <div class="countdown">
+      <div class="cd"><b>2</b><small>days</small></div>
+      <div class="cd"><b>14</b><small>hrs</small></div>
+      <div class="cd"><b>05</b><small>min</small></div>
+    </div>
+    <a class="btn btn-white" href="topic.html">Get ready →</a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section>
+    <div class="sec-hd">
+      <div>
+        <h2>Your garden topics</h2>
+        <p>Unlocked topics stay open forever — come back any time.</p>
+      </div>
+    </div>
+    <div class="topics" id="topics"></div>
+  </section>
+
+  <section>
+    <div class="sec-hd">
+      <div>
+        <h2 id="badgeTitle">Badges</h2>
+        <p>Earned by finishing activities and builds.</p>
+      </div>
+    </div>
+    <div class="badges" id="badges"></div>
+  </section>
+
+  <div class="demo" id="demoNote" style="margin-bottom:50px">
+    <b>Demo mode.</b> This account lives in your browser only. Add your Supabase URL and anon key to <b>config.js</b> to switch on real accounts, then run <b>supabase-schema.sql</b> in the SQL editor.
+  </div>
+
+</main>
+
+<div class="proto"><i></i> Prototype — visual layout only</div>
+</div>
+
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script>
+var TOPICS=[
+ {slug:'plant',     emoji:'🌻', art:'a-sage',  name:'Plant Life Cycle',     href:'topic.html', pct:100, state:'open',  note:'All 5 stages done'},
+ {slug:'butterfly', emoji:'🦋', art:'a-grape', name:'Butterfly Life Cycle', href:'topic.html', pct:20,  state:'live',  note:'Live session Saturday'},
+ {slug:'frog',      emoji:'🐸', art:'a-teal',  name:'Frog Life Cycle',      href:'topic.html', pct:0,   state:'lock',  note:'Live session Saturday'},
+ {slug:'worm',      emoji:'🪱', art:'a-sun',   name:'Worms & Living Soil',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
+ {slug:'pollinator',emoji:'🐝', art:'a-terra', name:'Pollinators at Work',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
+ {slug:'kitchen',   emoji:'🥕', art:'a-sky',   name:'Garden to Kitchen',    href:'#',          pct:0,   state:'soon',  note:'Coming soon'}
+];
+var BADGES=[
+ {e:'🌱',n:'First Sprout',    d:'Finished a first activity'},
+ {e:'🪱',n:'Worm Farmer',     d:'Built the worm observatory'},
+ {e:'🏅',n:'Garden Scientist',d:'Completed a whole topic'},
+ {e:'🐝',n:'Pollinator Pal',  d:'Built a bee house'}
+];
+
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+
+function drawTopics(){
+  document.getElementById('topics').innerHTML = TOPICS.map(function(t){
+    var unlocked = TG.isUnlocked(t.slug) || t.state==='open';
+    var locked = !unlocked && t.state!=='live';
+    var tagCls = unlocked?'tag-open':(t.state==='soon'?'tag-soon':(t.state==='live'?'tag-soon':'tag-lock'));
+    var tagTxt = unlocked?'Open':(t.state==='soon'?'Soon':(t.state==='live'?'Live Sat':'Locked'));
+    var pct = unlocked ? t.pct : 0;
+    return '<a class="topic'+(locked?' locked':'')+'" href="'+t.href+'">'+
+      (locked?'<span class="lockbadge">🔒</span>':'')+
+      '<div class="topic-art '+t.art+'">'+t.emoji+'</div>'+
+      '<div class="topic-body"><h3>'+esc(t.name)+'</h3>'+
+      '<div class="prog"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="topic-foot"><span class="small">'+esc(t.note)+'</span>'+
+      '<span class="tag '+tagCls+'">'+tagTxt+'</span></div></div></a>';
+  }).join('');
+}
+
+function drawBadges(got){
+  document.getElementById('badges').innerHTML = BADGES.map(function(b,i){
+    var has = i<got;
+    return '<div class="badge'+(has?' got':'')+'"><span class="e">'+b.e+'</span>'+
+      '<span><b>'+esc(b.n)+'</b><small>'+(has?esc(b.d):'Not earned yet')+'</small></span></div>';
+  }).join('');
+}
+
+(async function(){
+  var s = await TG.requireAuth();
+  if(!s) return;                                  // requireAuth redirects
+
+  var p = s.profile;
+  var kids = p.children || [];
+  var first = (p.parentName||'').trim().split(' ')[0] || 'friend';
+
+  document.getElementById('acctName').textContent = p.parentName || p.email;
+  document.getElementById('avatar').textContent = (first[0]||'🌻').toUpperCase();
+  document.getElementById('helloTitle').textContent = 'Hello, '+first+'!';
+  document.getElementById('helloSub').textContent = kids.length===1
+    ? 'Here\'s what\'s growing for '+kids[0].name+' this week.'
+    : 'Here\'s what\'s growing for your '+kids.length+' gardeners this week.';
+
+  document.getElementById('kidchips').innerHTML = kids.map(function(k,i){
+    return '<button class="kidchip'+(i===0?' on':'')+'" data-i="'+i+'" data-name="'+esc(k.name)+'">'+
+      '<span class="a">'+esc((k.name[0]||'?').toUpperCase())+'</span>'+esc(k.name)+' · '+esc(k.grade||'')+'</button>';
+  }).join('');
+  document.getElementById('kidchips').onclick=function(e){
+    var c=e.target.closest('.kidchip'); if(!c) return;
+    [].forEach.call(document.querySelectorAll('.kidchip'),function(x){x.className='kidchip'});
+    c.className='kidchip on';
+    document.getElementById('badgeTitle').textContent = c.dataset.name+"'s badges";
+  };
+  if(kids.length) document.getElementById('badgeTitle').textContent = kids[0].name+"'s badges";
+
+  drawTopics();
+  drawBadges(TG.isUnlocked('plant')?3:1);
+
+  if(!window.TG_DEMO) document.getElementById('demoNote').style.display='none';
+
+  document.getElementById('outBtn').onclick=async function(){
+    await TG.signOut(); location.href='index.html';
+  };
+
+  document.getElementById('boot').style.display='none';
+  document.getElementById('app').style.display='block';
+})();
+</script>
+</body>
+</html>
