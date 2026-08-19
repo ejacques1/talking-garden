@@ -123,6 +123,7 @@
     var body = el('playBd'), Q = st.qs;
 
     if (st.stage === 'who'){
+      if (global.TGAudio) TGAudio.say('Who is playing?');
       body.innerHTML = '<div class="q">Who’s playing?</div><div class="qs">So we can save your progress.</div>'+
         '<div class="grid2">'+ st.kids.map(function(k,i){
           return '<button class="opt" data-k="'+i+'"><span class="e">&#127803;</span>'+k.name+'</button>'; }).join('') +'</div>';
@@ -167,6 +168,7 @@
     }
 
     var q = Q[st.i];
+    if (global.TGAudio) TGAudio.readQuestion(q.q, q.opts.map(function(o){ return o.t; }));
     body.innerHTML = '<div class="q">'+q.q+'</div>'+
       '<div class="qs">Question '+(st.i+1)+' of '+Q.length+'</div>'+
       '<div class="grid2">'+ q.opts.map(function(o,i){
@@ -178,13 +180,15 @@
       b.onclick=function(){
         var picked=q.opts[+b.dataset.i], right=!!picked.ok;
         st.right[st.i]=right;
-        if(st.phase==='pre'){ b.classList.add('right'); el('qSay').textContent='Got it — next one!'; }
+        if(st.phase==='pre'){ b.classList.add('right'); el('qSay').textContent='Got it — next one!'; if(global.TGAudio) TGAudio.say('Got it! Next one.'); }
         else{
           b.classList.add(right?'right':'wrong');
           if(!right){
             [].forEach.call(body.querySelectorAll('.opt'),function(x){ if(q.opts[+x.dataset.i].ok) x.classList.add('right'); });
-            el('qSay').textContent='The answer is '+q.opts.filter(function(o){return o.ok})[0].t+'.';
-          } else el('qSay').textContent='That’s right!';
+            var corr='The answer is '+q.opts.filter(function(o){return o.ok})[0].t+'.';
+            el('qSay').textContent=corr;
+            if(global.TGAudio) TGAudio.say(corr);
+          } else { el('qSay').textContent='That’s right!'; if(global.TGAudio) TGAudio.say('That is right!'); }
         }
         [].forEach.call(body.querySelectorAll('.opt'),function(x){ x.style.pointerEvents='none'; });
         setTimeout(function(){ st.i++; render(); }, st.phase==='pre'?450:1100);

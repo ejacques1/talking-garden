@@ -241,6 +241,9 @@ img{max-width:100%;display:block}
 .bprog{display:flex;gap:4px;margin-bottom:14px}
 .bprog i{flex:1;height:6px;border-radius:99px;background:var(--line);display:block}
 .bprog i.on{background:var(--sage)}
+
+.sndbtn{background:none;border:none;font-size:19px;cursor:pointer;padding:2px 6px;line-height:1;opacity:.8}
+.sndbtn:hover{opacity:1}
 </style>
 </head>
 <body>
@@ -457,7 +460,7 @@ img{max-width:100%;display:block}
 
 <div class="ovl" id="ovl">
   <div class="play">
-    <div class="play-hd"><b id="playTitle">Activity</b><button class="play-x" id="playX">&times;</button></div>
+    <div class="play-hd"><b id="playTitle">Activity</b><span id="sndSlot"></span><button class="play-x" id="playX">&times;</button></div>
     <div class="play-bd" id="playBd"></div>
   </div>
 </div>
@@ -465,6 +468,7 @@ img{max-width:100%;display:block}
 <div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
 <div class="proto"><i></i> Prototype — sample content</div>
 
+<script src="audio.js"></script>
 <script src="projects.js"></script>
 <script src="teks.js"></script>
 <script src="quiz.js"></script>
@@ -675,6 +679,7 @@ function render(){
       }
     }
     if(st.order.length===a.stages.length){ return win('You put the whole plant life cycle in order.'); }
+    if(window.TGAudio) TGAudio.readQuestion('What comes next? Tap them from the very beginning to the end.', a.stages.map(function(x){return x.n;}));
     playBd.innerHTML='<div class="q">What comes next?</div><div class="qs">Tap them from the very beginning to the end.</div>'+
       '<div class="seqrow">'+a.stages.map(function(x,i){
         var f=st.order[i]!=null;
@@ -701,6 +706,7 @@ function render(){
   if(cur==='parts'){
     if(!st.seen) st.seen=[];
     if(st.seen.length===a.parts.length){ return win('You met every part of the plant.'); }
+    if(window.TGAudio && !st.msg) TGAudio.say('Hi friend! Tap one of my parts to learn its secret.');
     playBd.innerHTML='<div class="q">Hi friend! 🌻</div><div class="qs">Tap one of my parts to learn its secret.</div>'+
       '<div class="grid2">'+a.parts.map(function(x,i){
         var seen=st.seen.indexOf(i)>-1;
@@ -713,6 +719,7 @@ function render(){
         var i=+b.dataset.i;
         if(st.seen.indexOf(i)<0) st.seen.push(i);
         st.msg=a.parts[i].t;
+        if(window.TGAudio) TGAudio.say(a.parts[i].t);
         render();
       };
     });
@@ -724,6 +731,7 @@ function render(){
     if(st.i==null){ st.i=0; st.hits=0; }
     if(st.i>=a.foods.length){ return win('You matched every food to its plant part.'); }
     var f=a.foods[st.i];
+    if(window.TGAudio) TGAudio.readQuestion(f.n+'. Which part of the plant do we eat?', a.opts);
     playBd.innerHTML='<div class="q">'+f.e+' '+f.n+'</div><div class="qs">Which part of the plant do we eat?</div>'+
       '<div class="grid2">'+a.opts.map(function(o){
         return '<button class="opt" data-o="'+o+'">'+o+'</button>';
@@ -749,6 +757,7 @@ function render(){
     if(st.i==null){ st.i=0; }
     if(st.i>=a.items.length){ return win('You know exactly what a plant needs to grow.'); }
     var it=a.items[st.i];
+    if(window.TGAudio) TGAudio.say(it.n+'. Does a plant need this to grow?');
     playBd.innerHTML='<div class="q">'+it.e+' '+it.n+'</div><div class="qs">Does a plant need this to grow?</div>'+
       '<div class="buckets"><button class="bucket b-yes" data-y="1">👍 Yes it does</button>'+
       '<button class="bucket b-no" data-y="0">👎 No it doesn’t</button></div>'+
@@ -932,6 +941,7 @@ function paintBuild(){
       '<div class="brow"><button class="btn btn-primary" id="bNext" style="width:auto">Start building &rarr;</button></div>';
   } else if(buildStep<=p.steps.length){
     var st=p.steps[buildStep-1];
+    if(window.TGAudio) TGAudio.say(st[0]+'. '+st[1]);
     body.innerHTML='<div class="bprog">'+p.steps.map(function(x,i){
         return '<i class="'+(i<buildStep?'on':'')+'"></i>'; }).join('')+'</div>'+
       '<div class="qs" style="text-align:left;margin-bottom:4px">Step '+buildStep+' of '+p.steps.length+'</div>'+
@@ -961,6 +971,14 @@ document.addEventListener('click', function(e){
   if(c){ e.preventDefault(); openBuildInline(c.dataset.build); }
 });
 paintBuilds();
+
+/* speaker toggle lives in the modal header, for every activity */
+(function(){
+  var slot=document.getElementById('sndSlot');
+  if(slot && window.TGAudio && TGAudio.supported) slot.appendChild(TGAudio.button());
+  var x=document.getElementById('playX');
+  if(x) x.addEventListener('click', function(){ if(window.TGAudio) TGAudio.stop(); });
+})();
 
 </script>
 </body>
