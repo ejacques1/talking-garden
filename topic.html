@@ -617,6 +617,18 @@ var ACTS = {
 };
 
 var ovl=document.getElementById('ovl'), playBd=document.getElementById('playBd'), playTitle=document.getElementById('playTitle');
+
+/* Activities re-render on every tap. Without this, the full prompt and
+   every option get read out again after each answer, which is maddening
+   when you are five and just want to tap the next one. Speak a prompt
+   once per item; after that only say what is new. */
+var spokeKey=null;
+function speakPrompt(key, text, choices){
+  if(!window.TGAudio || spokeKey===key) return;
+  spokeKey=key;
+  TGAudio.readQuestion(text, choices);
+}
+function speakNews(text){ if(window.TGAudio && text) TGAudio.say(text); }
 var cur=null, st={};
 
 function doneKey(k){ return 'tg_act_'+TOPIC+'_'+k; }
@@ -645,7 +657,7 @@ function paintActs(){
 }
 
 function openAct(k){
-  cur=k; st={};
+  cur=k; st={}; spokeKey=null;
   playTitle.textContent = ACTS[k].title;
   ovl.classList.add('on');
   document.body.style.overflow='hidden';
@@ -679,7 +691,7 @@ function render(){
       }
     }
     if(st.order.length===a.stages.length){ return win('You put the whole plant life cycle in order.'); }
-    if(window.TGAudio) TGAudio.readQuestion('What comes next? Tap them from the very beginning to the end.', a.stages.map(function(x){return x.n;}));
+    speakPrompt('seq', 'What comes next? Tap them from the very beginning to the end.', a.stages.map(function(x){return x.n;}));
     playBd.innerHTML='<div class="q">What comes next?</div><div class="qs">Tap them from the very beginning to the end.</div>'+
       '<div class="seqrow">'+a.stages.map(function(x,i){
         var f=st.order[i]!=null;
@@ -696,6 +708,7 @@ function render(){
         var i=+b.dataset.i;
         if(i===st.order.length){ st.order.push(i); st.msg='Yes! Keep going.'; }
         else { st.msg='Not that one yet — try an earlier stage.'; b.classList.add('wrong'); }
+        speakNews(st.msg);
         setTimeout(render,180);
       };
     });
@@ -706,7 +719,7 @@ function render(){
   if(cur==='parts'){
     if(!st.seen) st.seen=[];
     if(st.seen.length===a.parts.length){ return win('You met every part of the plant.'); }
-    if(window.TGAudio && !st.msg) TGAudio.say('Hi friend! Tap one of my parts to learn its secret.');
+    speakPrompt('parts', 'Hi friend! Tap one of my parts to learn its secret.');
     playBd.innerHTML='<div class="q">Hi friend! 🌻</div><div class="qs">Tap one of my parts to learn its secret.</div>'+
       '<div class="grid2">'+a.parts.map(function(x,i){
         var seen=st.seen.indexOf(i)>-1;
@@ -719,7 +732,7 @@ function render(){
         var i=+b.dataset.i;
         if(st.seen.indexOf(i)<0) st.seen.push(i);
         st.msg=a.parts[i].t;
-        if(window.TGAudio) TGAudio.say(a.parts[i].t);
+        speakNews(a.parts[i].t);
         render();
       };
     });
@@ -731,7 +744,7 @@ function render(){
     if(st.i==null){ st.i=0; st.hits=0; }
     if(st.i>=a.foods.length){ return win('You matched every food to its plant part.'); }
     var f=a.foods[st.i];
-    if(window.TGAudio) TGAudio.readQuestion(f.n+'. Which part of the plant do we eat?', a.opts);
+    speakPrompt('eat_'+st.i, f.n+'. Which part of the plant do we eat?', a.opts);
     playBd.innerHTML='<div class="q">'+f.e+' '+f.n+'</div><div class="qs">Which part of the plant do we eat?</div>'+
       '<div class="grid2">'+a.opts.map(function(o){
         return '<button class="opt" data-o="'+o+'">'+o+'</button>';
@@ -746,6 +759,7 @@ function render(){
         } else {
           b.classList.add('wrong'); st.msg='Not quite — have another go.';
         }
+        speakNews(st.msg);
         setTimeout(render,600);
       };
     });
@@ -757,7 +771,7 @@ function render(){
     if(st.i==null){ st.i=0; }
     if(st.i>=a.items.length){ return win('You know exactly what a plant needs to grow.'); }
     var it=a.items[st.i];
-    if(window.TGAudio) TGAudio.say(it.n+'. Does a plant need this to grow?');
+    speakPrompt('need_'+st.i, it.n+'. Does a plant need this to grow?');
     playBd.innerHTML='<div class="q">'+it.e+' '+it.n+'</div><div class="qs">Does a plant need this to grow?</div>'+
       '<div class="buckets"><button class="bucket b-yes" data-y="1">👍 Yes it does</button>'+
       '<button class="bucket b-no" data-y="0">👎 No it doesn’t</button></div>'+
@@ -767,6 +781,7 @@ function render(){
       b.onclick=function(){
         if((+b.dataset.y)===it.y){ st.msg='Correct!'; st.i++; }
         else { st.msg= it.y ? 'Actually yes — plants really do need that.' : 'Actually no — plants do fine without it.'; st.i++; }
+        speakNews(st.msg);
         setTimeout(render,650);
       };
     });
@@ -920,7 +935,7 @@ function paintBuilds(){
 
 function openBuildInline(id){
   curBuild=projectById(id); if(!curBuild) return;
-  buildStep=0;
+  buildStep=0; spokeKey=null;
   document.getElementById('playTitle').textContent=curBuild.title;
   document.getElementById('ovl').classList.add('on');
   document.body.style.overflow='hidden';
@@ -941,7 +956,10 @@ function paintBuild(){
       '<div class="brow"><button class="btn btn-primary" id="bNext" style="width:auto">Start building &rarr;</button></div>';
   } else if(buildStep<=p.steps.length){
     var st=p.steps[buildStep-1];
-    if(window.TGAudio) TGAudio.say(st[0]+'. '+st[1]);
+    if(window.TGAudio && spokeKey!=='build_'+p.id+'_'+buildStep){
+      spokeKey='build_'+p.id+'_'+buildStep;
+      TGAudio.say(st[0]+'. '+st[1]);
+    }
     body.innerHTML='<div class="bprog">'+p.steps.map(function(x,i){
         return '<i class="'+(i<buildStep?'on':'')+'"></i>'; }).join('')+'</div>'+
       '<div class="qs" style="text-align:left;margin-bottom:4px">Step '+buildStep+' of '+p.steps.length+'</div>'+
