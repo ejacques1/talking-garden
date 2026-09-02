@@ -72,6 +72,8 @@ section{padding:78px 0}
 .world{border-radius:var(--rl);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease}
 .world:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
 .world-top{height:8px}
+.world-face{display:grid;place-items:center;padding:14px 0 2px}
+.world-face img{width:88px;height:auto}
 .world-body{padding:22px 22px 24px;flex:1;display:flex;flex-direction:column}
 .world-body .who{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
 .world-body h3{font-size:22px;margin-bottom:8px}
@@ -225,6 +227,7 @@ footer{background:var(--beige);border-top:1px solid var(--line);padding:40px 0;f
 document.getElementById('worldGrid').innerHTML = WORLDS.map(function(w){
   return '<a class="world" href="login.html">'+
     '<div class="world-top" style="background:'+w.color+'"></div>'+
+    '<div class="world-face"><img src="../'+w.img+'" alt="'+w.guide+'"></div>'+
     '<div class="world-body">'+
       '<div class="who" style="color:'+w.color+'">'+w.guide+' &middot; '+w.subject+'</div>'+
       '<h3>'+w.name+'</h3>'+

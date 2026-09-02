@@ -90,7 +90,7 @@ section{padding:44px 0 0}
 .topic.notyet{cursor:default}
 .topic.notyet:hover{transform:none;box-shadow:var(--shadow)}
 .topic-art{height:120px;display:grid;place-items:center;position:relative}
-.topic-art img{width:74px}
+.topic-art img{width:96px;height:auto}
 .a-grow{background:#EAF1E5}.a-protect{background:#F7EEDF}.a-soil{background:#F0E9E2}
 .a-create{background:var(--blue-l)}.a-nourish{background:#E9F0E4}.a-preserve{background:#F0EAF5}
 
@@ -197,6 +197,7 @@ var TOPICS = WORLDS.map(function(w, i){
   return {
     slug:  w.key,
     guide: w.guide,
+    img:   w.img,
     color: w.color,
     name:  w.name,
     art:   'a-'+w.key,
@@ -272,7 +273,8 @@ function drawTopics(){
     var inner =
       (enterable?'':'<span class="lockbadge">\ud83d\udd12</span>')+
       '<div class="topic-art '+t.art+'">'+
-        (window.Dewey ? Dewey.html(unlocked?'excited':'happy', 74) : '')+'</div>'+
+        '<img src="'+t.img+'" alt="'+esc(t.guide)+'">'+
+      '</div>'+
       '<div class="topic-body">'+
       '<div class="guide" style="color:'+t.color+'">'+esc(t.guide)+'</div>'+
       '<h3>'+esc(t.name)+'</h3>'+
