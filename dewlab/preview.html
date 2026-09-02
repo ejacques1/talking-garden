@@ -29,6 +29,9 @@ figcaption{font-size:12px;color:var(--muted);font-weight:700;margin-top:6px;text
 <h2>Avatar size</h2>
 <div class="row" id="sm"></div>
 
+<h2>Dewey in action &mdash; full body</h2>
+<div class="row" id="act"></div>
+
 <h2>DHCG palette</h2>
 <div class="swatches" id="pal"></div>
 
@@ -40,6 +43,9 @@ document.getElementById('say').innerHTML =
   Dewey.say("Hi! I'm Dewey. Ready to find out what a plant needs to grow?", 'happy', 80);
 document.getElementById('sm').innerHTML = Dewey.expressions.map(function(e){
   return '<figure>'+Dewey.html(e,46)+'<figcaption>'+e+'</figcaption></figure>'; }).join('');
+document.getElementById('act').innerHTML = ['explores','experiments','learns','grows','creates'].map(function(a){
+  return '<figure><img src="img/dewey-'+a+'.png" width="150" style="border-radius:14px;display:block"><figcaption>'+a+'</figcaption></figure>'; }).join('');
+
 var pal=[['--blue','#0071BC','Blue · headings'],['--tan','#C27A2C','Tan · subheads'],
          ['--green','#639245','Green · leaf'],['--yellow','#E7E1A2','Yellow · highlight'],
          ['--beige','#F3F0EC','Beige · background'],['--red','#E3612B','Red · accent ⚠']];
