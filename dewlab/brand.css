@@ -1,0 +1,50 @@
+/* ------------------------------------------------------------------
+   DewLab — Dew of Heaven Children's Garden
+   ------------------------------------------------------------------
+   Palette straight from the DHCG brand document.
+
+   NOTE: the brand sheet lists the red as #e3612p, which is not a
+   valid hex value. #E3612B is used here and matches the reds sampled
+   from the flyer artwork — confirm with DHCG before launch.
+
+   FONTS: the brand uses JA Jayagiri Sans Rough, Canva Sans, Genty
+   Sans and Hero, none of which can be served on the web. Montserrat
+   and Finger Paint are on the brand sheet AND on Google Fonts, so
+   they carry the identity; Nunito stands in for Canva Sans as the
+   closest available body face.
+------------------------------------------------------------------- */
+:root{
+  /* ---- DHCG brand ---- */
+  --blue:#0071BC;          /* headings, bird and flower element      */
+  --tan:#C27A2C;           /* subheadings                            */
+  --green:#639245;         /* highlight at 16%, leaf element         */
+  --yellow:#E7E1A2;        /* highlight, flower accents              */
+  --beige:#F3F0EC;         /* background                             */
+  --red:#E3612B;           /* accent, emphasis, flower element       */
+
+  /* ---- derived, for interface use ---- */
+  --blue-d:#00558C;
+  --blue-l:#E4F1FA;
+  --green-d:#4A6E33;
+  --green-l:#EAF1E5;
+  --tan-d:#96601F;
+  --yellow-warm:#F2D64F;   /* readable accent; brand yellow is pale  */
+  --red-d:#B8481B;
+  --red-l:#FBE7DE;
+
+  --ink:#16283A;
+  --body:#4A5A66;
+  --muted:#7A8892;
+  --faint:#A9B3BA;
+  --paper:#FFFFFF;
+  --line:#E4E0D8;
+  --line-d:#D2CCC0;
+
+  --display:'Montserrat',system-ui,sans-serif;
+  --sans:'Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --fun:'Finger Paint',var(--display);
+
+  --r:16px; --rl:26px;
+  --shadow:0 2px 4px rgba(22,40,58,.05), 0 10px 28px rgba(22,40,58,.08);
+  --shadow-lg:0 4px 8px rgba(22,40,58,.06), 0 22px 50px rgba(22,40,58,.12);
+}
