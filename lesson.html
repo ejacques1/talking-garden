@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lesson — DewLab</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0071BC">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--beige);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--display);color:var(--ink);margin:0;line-height:1.14;letter-spacing:-.02em;font-weight:800}
+p{margin:0}a{color:inherit}img{max-width:100%;display:block}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:700;padding:13px 24px;border-radius:999px;border:2px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;transition:.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-primary{background:var(--w);color:#fff;box-shadow:0 4px 0 var(--wd)}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-d)}
+.btn-sun{background:var(--yellow-warm);color:#5C4E10;box-shadow:0 4px 0 #C9AE28}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:900px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:14px}
+.back{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:14.5px;color:var(--body);margin-right:auto}
+.back:hover{color:var(--w)}
+.out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.out:hover{color:var(--red)}
+.who{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--body)}
+.av{width:30px;height:30px;border-radius:50%;background:var(--yellow-warm);display:grid;place-items:center;font-size:14px;flex:none}
+
+/* lesson head */
+.lhead{background:var(--wl);border-bottom:1px solid var(--line);padding:26px 0 28px;position:relative;overflow:hidden}
+.lhead::after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.45);right:-110px;top:-130px}
+.lhead-in{position:relative;z-index:2;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.guide{width:96px;flex:none}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--wd);margin-bottom:7px}
+.lhead h1{font-size:clamp(25px,4.2vw,36px);font-weight:900;margin-bottom:6px}
+.tagline{font-size:16.5px;color:var(--body)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;color:var(--body)}
+@media(max-width:600px){.lhead-in{grid-template-columns:1fr;text-align:center}.guide{margin:0 auto;width:80px}.chips{justify-content:center}}
+
+/* rail */
+.rail{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:47px;z-index:40}
+.rail-in{max-width:900px;margin:0 auto;padding:11px 22px;display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rstep{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--faint);white-space:nowrap;background:none;border:none;font-family:var(--sans);cursor:pointer;padding:5px 9px;border-radius:999px}
+.rstep i{width:19px;height:19px;border-radius:50%;background:var(--line);color:#fff;display:grid;place-items:center;font-size:11px;font-style:normal;flex:none}
+.rstep.now{color:var(--wd);background:var(--wl)}.rstep.now i{background:var(--w)}
+.rstep.was{color:var(--green-d)}.rstep.was i{background:var(--green)}
+
+/* stages */
+.stage{background:#fff;border:1px solid var(--line);border-radius:var(--rl);padding:26px 28px;margin:20px 0;box-shadow:var(--shadow);position:relative}
+.stage.lock{opacity:.55}
+.stage.lock::after{content:'\1F512';position:absolute;top:20px;right:24px;font-size:19px;opacity:.5}
+.sn{display:flex;align-items:center;gap:11px;margin-bottom:5px}
+.sn i{width:27px;height:27px;border-radius:50%;background:var(--w);color:#fff;display:grid;place-items:center;font-size:13px;font-style:normal;font-weight:800;font-family:var(--display);flex:none}
+.stage h2{font-size:21px}
+.stage>p.lede{color:var(--muted);font-size:15px;margin:2px 0 16px 38px}
+@media(max-width:600px){.stage{padding:22px 20px}.stage>p.lede{margin-left:0}}
+.statusline{background:var(--green-l);border-radius:12px;padding:11px 15px;font-size:14.5px;font-weight:600;color:var(--green-d);display:flex;align-items:center;gap:9px}
+.note{background:var(--yellow);border-radius:12px;padding:13px 16px;font-size:14px;color:#5C5320;margin-top:14px}
+.safety{background:var(--red-l);border:1px solid #F2CDBA;border-radius:12px;padding:12px 16px;font-size:14px;color:#7A3D1C;margin-top:14px}
+.safety b{color:var(--red-d)}
+
+/* session box */
+.sess{background:var(--wl);border-radius:16px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.sess b{display:block;font-family:var(--display);font-size:16px;color:var(--ink)}
+.sess span{font-size:14px;color:var(--body)}
+.wordbox{background:var(--yellow);border-radius:16px;padding:18px 20px;margin-top:16px}
+.wordbox h4{font-size:16px;margin-bottom:4px}
+.wordbox p{font-size:14px;color:#5C5320;margin-bottom:12px}
+.wordrow{display:flex;gap:9px;flex-wrap:wrap}
+.wordrow input{flex:1;min-width:170px;font-family:var(--sans);font-size:16px;font-weight:600;padding:12px 16px;border:2px solid #DCCB7A;border-radius:999px;background:#fff;color:var(--ink)}
+.wordrow input:focus{outline:none;border-color:var(--yellow-warm)}
+.wordmsg{margin-top:10px;font-size:14px;font-weight:700;min-height:20px}
+.wordmsg.no{color:var(--red-d)}.wordmsg.yes{color:var(--green-d)}
+
+/* build */
+.build{border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.build-hd{background:var(--wl);padding:17px 20px}
+.build-hd h3{font-size:18px;margin-bottom:4px}
+.build-hd p{font-size:14.5px;color:var(--body)}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.meta span{background:#fff;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:700;color:var(--body)}
+.build-bd{padding:19px 20px}
+.build-bd h4{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.mats{list-style:none;margin:0 0 18px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:5px}
+.mats li{font-size:14.5px;padding-left:19px;position:relative}
+.mats li::before{content:'';position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;background:var(--w)}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--wl);color:var(--wd);display:grid;place-items:center;font-size:12.5px;font-weight:800;font-family:var(--display)}
+.steps b{display:block;font-size:15.5px;color:var(--ink)}
+.steps span{font-size:14.5px;color:var(--body)}
+.why{background:var(--wl);border-radius:12px;padding:14px 17px;font-size:14.5px;margin-top:16px}
+.why b{color:var(--wd);display:block;font-family:var(--display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+
+/* activity cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
+.card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:17px 18px;text-align:left;font-family:var(--sans);cursor:pointer;transition:.15s;position:relative}
+.card:hover{border-color:var(--w);transform:translateY(-3px);box-shadow:var(--shadow)}
+.card .ce{font-size:28px;display:block;margin-bottom:8px}
+.card b{display:block;font-family:var(--display);font-size:16px;color:var(--ink);margin-bottom:4px}
+.card span{font-size:13.5px;color:var(--muted);display:block}
+.card .skill{margin-top:10px;font-size:11.5px;font-weight:700;color:var(--green-d);background:var(--green-l);border-radius:8px;padding:6px 9px;display:block}
+.card.done{border-color:var(--green)}
+.card.done::after{content:'\2713';position:absolute;top:13px;right:15px;color:var(--green);font-weight:900}
+
+/* certificate */
+.result{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.rbox{background:var(--beige);border-radius:14px;padding:13px 20px;text-align:center;flex:1;min-width:120px}
+.rbox small{display:block;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.rbox b{font-family:var(--display);font-size:24px;color:var(--ink)}
+.rbox.after{background:var(--green-l)}.rbox.after b{color:var(--green-d)}
+.cert{background:linear-gradient(150deg,#fff,var(--wl));border:3px solid var(--w);border-radius:22px;padding:30px 28px;text-align:center;position:relative;overflow:hidden}
+.cert::before{content:'';position:absolute;inset:9px;border:1.5px dashed rgba(0,0,0,.13);border-radius:15px;pointer-events:none}
+.certseal{width:60px;margin:0 auto 12px}
+.certkick{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--wd);font-weight:800}
+.certname{font-family:var(--fun);font-size:clamp(27px,5vw,39px);color:var(--ink);margin:9px 0 3px;line-height:1.1}
+.certfor{font-size:14px;color:var(--muted)}
+.certline{font-family:var(--display);font-weight:800;font-size:19px;color:var(--ink);margin-top:5px}
+.certskills{list-style:none;margin:15px auto 0;padding:0;max-width:400px;text-align:left}
+.certskills li{font-size:13.5px;padding:5px 0 5px 24px;position:relative;color:var(--body)}
+.certskills li::before{content:'\2B50';position:absolute;left:0}
+.certskills li.kept::before{content:'\2705'}
+.certfoot{margin-top:18px;padding-top:14px;border-top:1px solid rgba(0,0,0,.1);font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.certbtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+
+/* overlay */
+.ovl{position:fixed;inset:0;background:rgba(22,40,58,.55);backdrop-filter:blur(3px);z-index:100;display:none;place-items:center;padding:18px}
+.ovl.on{display:grid}
+.play{background:#fff;border-radius:24px;width:min(560px,100%);max-height:92vh;overflow:auto;box-shadow:var(--shadow-lg)}
+.play-hd{padding:15px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:11px}
+.play-hd b{font-family:var(--display);font-size:16px;color:var(--ink);margin-right:auto}
+.play-x{background:var(--beige);border:none;width:31px;height:31px;border-radius:50%;font-size:19px;color:var(--muted);cursor:pointer;line-height:1}
+.play-bd{padding:22px 20px 26px}
+.q{font-family:var(--display);font-weight:800;font-size:19px;color:var(--ink);margin-bottom:5px;line-height:1.25}
+.qs{font-size:13px;color:var(--muted);margin-bottom:15px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:460px){.grid2{grid-template-columns:1fr}}
+.opt{background:#fff;border:2px solid var(--line);border-radius:14px;padding:13px 15px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:.12s}
+.opt:hover{border-color:var(--w)}
+.opt .e{font-size:22px;flex:none}
+.opt.right{border-color:var(--green);background:var(--green-l)}
+.opt.wrong{border-color:var(--red);background:var(--red-l)}
+.opt.picked{border-color:var(--w);background:var(--wl)}
+.say{margin-top:14px;background:var(--beige);border-radius:12px;padding:11px 14px;font-size:14px;color:var(--body);min-height:20px}
+.pbar{height:6px;background:var(--line);border-radius:999px;margin-top:16px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--w);border-radius:999px;transition:.3s}
+.win{text-align:center;padding:8px 0}
+.win .m{font-size:44px;margin-bottom:9px}
+.win h3{font-size:22px;margin-bottom:7px}
+.win p{font-size:15px;color:var(--body);margin-bottom:15px}
+.crows{text-align:left;margin:14px 0 18px}
+.crow{display:grid;grid-template-columns:24px 1fr;gap:9px;padding:8px 0;border-top:1px solid var(--line)}
+.crow .ci{font-size:15px}
+.crow .cl{font-size:14.5px;font-weight:700;color:var(--ink)}
+.crow .cl em{display:block;font-style:normal;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
+.crow.notyet .cl{color:var(--muted)}
+
+/* activity engine */
+.tray{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tile{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:8px;transition:.12s}
+.tile .e{font-size:20px}
+.tile:hover{border-color:var(--w)}
+.tile.sel{border-color:var(--w);background:var(--wl)}
+.tile.ok{border-color:var(--green);background:var(--green-l);cursor:default}
+.tile.no{border-color:var(--red);background:var(--red-l);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.slots{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;background:var(--beige);border-radius:14px;padding:10px;margin-bottom:14px}
+.slot{background:#fff;border:2px dashed var(--line-d);border-radius:12px;min-width:52px;min-height:32px;display:grid;place-items:center;font-size:12px;color:var(--faint);padding:6px 10px;font-weight:700}
+.slot.full{border-style:solid;border-color:var(--green);background:var(--green-l);color:var(--green-d);font-size:14px}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px}
+.bin{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center;font-family:var(--sans);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;transition:.12s}
+.bin:hover{border-color:var(--w);background:var(--wl)}
+.bin .e{font-size:24px;display:block;margin-bottom:5px}
+.bin small{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-top:4px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.col{display:flex;flex-direction:column;gap:7px}
+.col h5{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+.big{font-size:40px;text-align:center;margin-bottom:6px}
+
+.resetbar{text-align:center;padding:26px 0 40px}
+.resetbar button{background:none;border:none;font-family:var(--sans);font-size:13px;color:var(--faint);cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div id="boot" style="display:grid;place-items:center;min-height:70vh;color:var(--faint)">Opening the lesson…</div>
+
+<div id="app" style="display:none">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="back" href="dashboard.html">&larr; <span id="backTxt">All worlds</span></a>
+    <span class="who"><span class="av" id="av">&#127803;</span><span id="whoName">—</span></span>
+    <button class="out" id="outBtn">Log out</button>
+  </div>
+</nav>
+
+<header class="lhead">
+  <div class="wrap lhead-in">
+    <img class="guide" id="guideImg" src="" alt="">
+    <div>
+      <div class="eyebrow" id="eyebrow"></div>
+      <h1 id="lTitle">—</h1>
+      <p class="tagline" id="lTag"></p>
+      <div class="chips" id="lChips"></div>
+    </div>
+  </div>
+</header>
+
+<div class="rail"><div class="rail-in" id="rail"></div></div>
+
+<main class="wrap">
+
+  <section class="stage" id="s1">
+    <div class="sn"><i>1</i><h2>Before we start</h2></div>
+    <p class="lede">A few picture questions, read out loud. There is no pass or fail — it just marks where you are starting from.</p>
+    <button class="btn btn-primary" id="preBtn">Start the before-check &rarr;</button>
+    <div class="statusline" id="preDone" style="display:none"></div>
+  </section>
+
+  <section class="stage" id="s2">
+    <div class="sn"><i>2</i><h2>Meet us live</h2></div>
+    <p class="lede" id="s2lede">Join the live session with your guide. Somewhere in the middle they will say the secret word.</p>
+    <div class="sess">
+      <div><b id="sessTitle">Live session</b><span id="sessWhen">Date coming soon</span></div>
+      <a class="btn btn-primary" id="joinBtn" href="#" target="_blank" rel="noopener">Join the session</a>
+    </div>
+    <div class="wordbox">
+      <h4>The secret word</h4>
+      <p id="wordP">Type the word your guide said during the session.</p>
+      <div class="wordrow">
+        <input id="wordIn" placeholder="Type the secret word…" autocomplete="off">
+        <button class="btn btn-sun" id="wordBtn">Unlock the lesson</button>
+      </div>
+      <div class="wordmsg" id="wordMsg"></div>
+      <p style="font-size:12.5px;color:#9A8250;margin-top:10px" id="wordHint"></p>
+    </div>
+  </section>
+
+  <section class="stage lock" id="s3">
+    <div class="sn"><i>3</i><h2>Try it at home</h2></div>
+    <p class="lede">One hands-on build. Take your time — it does not have to happen today.</p>
+    <div id="buildSlot"></div>
+  </section>
+
+  <section class="stage lock" id="s4">
+    <div class="sn"><i>4</i><h2>Play &amp; practise</h2></div>
+    <p class="lede" id="s4lede">Short games. You can play them as many times as you like.</p>
+    <div class="cards" id="actCards"></div>
+  </section>
+
+  <section class="stage lock" id="s5">
+    <div class="sn"><i>5</i><h2>Show what you grew</h2></div>
+    <p class="lede">The same skills, different questions. This is the one that goes on the certificate.</p>
+    <div class="result">
+      <div class="rbox"><small>Before</small><b id="rBefore">—</b></div>
+      <div class="rbox after"><small>After</small><b id="rAfter">—</b></div>
+    </div>
+    <p class="note" id="postGate"></p>
+    <button class="btn btn-primary" id="postBtn">Take the after-check &rarr;</button>
+    <div id="certWrap" style="display:none;margin-top:20px"></div>
+  </section>
+
+</main>
+
+<div class="resetbar"><button id="resetBtn">Reset this lesson on this device</button></div>
+</div>
+
+<div class="ovl" id="ovl">
+  <div class="play">
+    <div class="play-hd"><b id="playTitle">Activity</b><span id="sndSlot"></span><button class="play-x" id="playX">&times;</button></div>
+    <div class="play-bd" id="playBd"></div>
+  </div>
+</div>
+
+<script src="worlds.js"></script>
+<script src="lessons.js"></script>
+<script src="session.js"></script>
+<script src="audio.js"></script>
+<script src="quiz.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="play.js"></script>
+<script src="lesson.js"></script>
+</body>
+</html>

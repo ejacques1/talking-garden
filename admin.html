@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garden admin — The Talking Garden</title>
+<title>DewLab admin — Dew of Heaven Children&rsquo;s Garden</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <meta name="theme-color" content="#4F7C4A">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="The Talking Garden">
-<meta property="og:title" content="Garden admin — The Talking Garden">
+<meta property="og:site_name" content="DewLab">
+<meta property="og:title" content="DewLab admin">
 <meta property="og:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta property="og:image" content="https://talking-garden.vercel.app/og.png">
 <meta property="og:url" content="https://talking-garden.vercel.app/admin.html">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Talking Garden — Dew of Heaven Children's Garden">
+<meta property="og:image:alt" content="DewLab — Dew of Heaven Children's Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Garden admin — The Talking Garden">
+<meta name="twitter:title" content="DewLab admin">
 <meta name="twitter:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta name="twitter:image" content="https://talking-garden.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -107,6 +107,7 @@ tr:last-child td{border-bottom:none}
   <div class="tabs">
     <button class="tab on" data-p="report">Student progress</button>
     <button class="tab" data-p="sessions">Sessions</button>
+    <button class="tab" data-p="curriculum">Curriculum</button>
   </div>
 
   <!-- ============ REPORT ============ -->
@@ -172,26 +173,89 @@ tr:last-child td{border-bottom:none}
       <p class="demo" id="familyView" style="margin-top:16px"></p>
     </div>
   </section>
+
+  <!-- ============ CURRICULUM ============ -->
+  <section id="p-curriculum" class="hide">
+    <div class="card">
+      <h3>What is written</h3>
+      <p class="sub">Every lesson in DewLab, the skills it checks, and whether its live session is on the calendar. A lesson with no session stays shut to families.</p>
+      <div class="scroll"><table id="curTable"></table></div>
+    </div>
+
+    <div class="card">
+      <h3>Standards still to confirm</h3>
+      <p class="sub">Six standards were read directly from TEKS Guide and are safe to quote. Everything else below is the alignment a lesson was <b>written toward</b> and nobody has checked yet against the published standard. Families are never shown these, and neither is a funder, until someone confirms them.</p>
+      <div class="scroll"><table id="stdTable"></table></div>
+    </div>
+  </section>
 </div>
 </div>
 
+<script src="worlds.js"></script>
+<script src="lessons.js"></script>
 <script src="session.js"></script>
 <script src="teks.js"></script>
 <script src="quiz.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
-var TOPICS=[
-  {slug:'plant',      name:'Plant Life Cycle'},
-  {slug:'butterfly',  name:'Butterfly Life Cycle'},
-  {slug:'frog',       name:'Frog Life Cycle'},
-  {slug:'worm',       name:'Worms & Living Soil'},
-  {slug:'pollinator', name:'Pollinators at Work'},
-  {slug:'kitchen',    name:'Garden to Kitchen'}
-];
+/* The twelve lessons, read from lessons.js. This list used to be
+   typed out here and had drifted — it still offered Butterfly, Frog
+   and Garden to Kitchen, none of which exist, so a session scheduled
+   against one of them would never have appeared to a family. */
+var TOPICS = (window.LESSONS ? LESSONS.list() : []).map(function(L){
+  var w = (window.WORLDS||[]).filter(function(x){ return x.key===L.world; })[0] || {};
+  return { slug:L.slug, name:L.title, world:w.name||L.world, guide:w.guide||'',
+           needsStandards: !!L.standardsTodo };
+});
 function esc(v){ return String(v==null?'':v).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
 function nameOf(slug){ var t=TOPICS.filter(function(x){return x.slug===slug})[0]; return t?t.name:slug; }
 function fmt(d){ return d ? new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—'; }
+
+/* ---------- curriculum ----------
+   The answer to "what exactly are the skills?" — every lesson, every
+   skill, in one table, with the standards that still need checking
+   kept visibly separate from the six that were verified. */
+function drawCurriculum(){
+  var rows = TOPICS.map(function(t){
+    var L = LESSONS[t.slug];
+    var sess = window.TGSession ? TGSession.forTopic(t.slug) : [];
+    var next = window.TGSession ? TGSession.next(t.slug) : null;
+    var when = next ? fmt(next.starts_at) : (sess.length ? 'ran ' + fmt(sess[0].starts_at) : '—');
+    var state = sess.length ? (next ? 'Scheduled' : 'Catch-up') : 'Not scheduled';
+    /* The plant lesson keeps its skills in quiz.js, so ask the quiz
+       rather than the lesson record — otherwise its column showed
+       standards codes where every other row shows skills. */
+    var comps = (L.competencies && L.competencies.length)
+                ? L.competencies
+                : (window.TGQuiz ? TGQuiz.settings.competencies(t.slug) : []);
+    var skills = comps.map(function(c){ return c.label; });
+    return '<tr>'+
+      '<td><b>'+esc(t.world)+'</b><br><span style="color:#8A9199">'+esc(t.guide)+'</span></td>'+
+      '<td><b>'+esc(L.title)+'</b><br><span style="color:#8A9199">'+esc(L.grades||'')+
+        ' &middot; '+(L.activities?L.activities.length:6)+' activities</span></td>'+
+      '<td>'+ (skills.length
+              ? '<ol style="margin:0;padding-left:17px">'+skills.map(function(k){ return '<li>'+esc(k)+'</li>'; }).join('')+'</ol>'
+              : '&mdash;') +'</td>'+
+      '<td>'+esc(state)+'<br><span style="color:#8A9199">'+esc(when)+'</span></td>'+
+      '</tr>';
+  }).join('');
+  document.getElementById('curTable').innerHTML =
+    '<thead><tr><th>World</th><th>Lesson</th><th>Skills it checks</th><th>Live session</th></tr></thead><tbody>'+rows+'</tbody>';
+
+  var std = TOPICS.map(function(t){
+    var L = LESSONS[t.slug];
+    if (L.standards)
+      return '<tr><td><b>'+esc(L.title)+'</b></td>'+
+             '<td>'+L.standards.map(esc).join(', ')+'</td>'+
+             '<td style="color:#4A6E33;font-weight:700">Verified &mdash; read from TEKS Guide</td></tr>';
+    return '<tr><td><b>'+esc(L.title)+'</b></td>'+
+           '<td>'+(L.standardsTodo||[]).map(esc).join('<br>')+'</td>'+
+           '<td style="color:#B8481B;font-weight:700">To confirm</td></tr>';
+  }).join('');
+  document.getElementById('stdTable').innerHTML =
+    '<thead><tr><th>Lesson</th><th>Written toward</th><th>Status</th></tr></thead><tbody>'+std+'</tbody>';
+}
 
 /* ---------- tabs ---------- */
 [].forEach.call(document.querySelectorAll('.tab'), function(b){
@@ -200,6 +264,8 @@ function fmt(d){ return d ? new Date(d).toLocaleDateString('en-US',{month:'short
     b.className='tab on';
     document.getElementById('p-report').classList.toggle('hide', b.dataset.p!=='report');
     document.getElementById('p-sessions').classList.toggle('hide', b.dataset.p!=='sessions');
+    document.getElementById('p-curriculum').classList.toggle('hide', b.dataset.p!=='curriculum');
+    if (b.dataset.p==='curriculum') drawCurriculum();
   };
 });
 
@@ -284,7 +350,7 @@ function drawReport(){
    did the money actually teach?" */
 function drawSkills(rows){
   var host=document.getElementById('skillTable');
-  var slug=document.getElementById('filterTopic').value || 'plant';
+  var slug=document.getElementById('filterTopic').value || (TOPICS[0]&&TOPICS[0].slug) || '';
   var comps=(window.TGQuiz && TGQuiz.settings.competencies(slug))||[];
   if(!comps.length || !rows.length){ host.innerHTML=''; return; }
 
@@ -308,7 +374,7 @@ function drawSkills(rows){
 document.getElementById('csvBtn').onclick=function(){
   var filter=document.getElementById('filterTopic').value;
   var rows=ROWS.filter(function(r){ return !filter || r.slug===filter; });
-  var slug0=document.getElementById('filterTopic').value || 'plant';
+  var slug0=document.getElementById('filterTopic').value || (TOPICS[0]&&TOPICS[0].slug) || '';
   var comps=(window.TGQuiz && TGQuiz.settings.competencies(slug0))||[];
   var head=['Child','Grade','Topic','Skills before','Before date','Skills after','After date','Skills gained']
     .concat(comps.map(function(c){ return c.label+' ('+c.teks+')'; }));
@@ -456,7 +522,8 @@ function drawSessions(){
   var sess = await TG.requireAdmin();
   if(!sess) return;
 
-  var opts=TOPICS.map(function(t){ return '<option value="'+t.slug+'">'+esc(t.name)+'</option>'; }).join('');
+  var opts=TOPICS.map(function(t){
+    return '<option value="'+t.slug+'">'+esc(t.world)+' \u00b7 '+esc(t.name)+'</option>'; }).join('');
   document.getElementById('sTopic').innerHTML=opts;
   document.getElementById('filterTopic').innerHTML='<option value="">All topics</option>'+opts;
 

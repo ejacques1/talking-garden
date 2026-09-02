@@ -83,6 +83,20 @@
     ]
   };
 
+  /* ---- lessons.js supplies every lesson written after the first ----
+     The plant lesson keeps its bank above because it predates
+     lessons.js. Everything since lives in one record per lesson, so
+     adding a lesson never means editing this file. Anything already
+     defined here wins, so nothing can be silently overwritten. */
+  if (global.LESSONS){
+    for (var _s in global.LESSONS){
+      var _L = global.LESSONS[_s];
+      if (!_L || !_L.slug || !_L.bank) continue;
+      if (!COMPETENCIES[_s]) COMPETENCIES[_s] = _L.competencies;
+      if (!BANK[_s])         BANK[_s]         = _L.bank;
+    }
+  }
+
   var st = null;
   function el(id){ return document.getElementById(id); }
   function key(topic, phase, child){ return 'tg_comp_'+topic+'_'+phase+'_'+(child||'me'); }
@@ -150,7 +164,8 @@
           '<p>Thanks '+(st.child?st.child.name:'')+' — that’s our starting point. '+
           'You answered <b>'+correct+' of '+Q.length+'</b> questions right today.</p>'+
           '<p style="font-size:13.5px;color:var(--muted);margin-top:8px">We’ll ask about the same four skills again after the live session.</p>'+
-          '<button class="btn btn-primary" id="qDone" style="width:auto">See you Saturday &rarr;</button></div>';
+          '<button class="btn btn-primary" id="qDone" style="width:auto">'+
+            (global.TGSession && TGSession.nextLong(st.topic) ? 'See you '+TGSession.nextLong(st.topic) : 'See you at the session')+' &rarr;</button></div>';
       } else {
         var before = read(st.topic,'pre', st.child && st.child.name) || {};
         var rows = COMPETENCIES[st.topic].map(function(c){
@@ -159,7 +174,7 @@
           var icon  = state==='gained' ? '&#11088;' : (state==='kept' ? '&#9989;' : '&#8226;');
           var note  = state==='gained' ? 'New!' : (state==='kept' ? 'Already knew it' : 'Keep practising');
           return '<div class="crow '+state+'"><span class="ci">'+icon+'</span>'+
-                 '<span class="cl">'+c.label+'<em>'+c.teks+' &middot; '+note+'</em></span></div>';
+                 '<span class="cl">'+c.label+'<em>'+(c.teks?c.teks+' &middot; ':'')+note+'</em></span></div>';
         }).join('');
         var gained = COMPETENCIES[st.topic].filter(function(c){ return per[c.id] && !before[c.id]; }).length;
         body.innerHTML = '<div class="win"><div class="m">&#127775;</div>'+

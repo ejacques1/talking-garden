@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>World — DewLab</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0071BC">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--beige);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);color:var(--ink);margin:0;line-height:1.14;letter-spacing:-.02em;font-weight:800}
+p{margin:0}a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:900px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:14px}
+.back{font-weight:700;font-size:14.5px;color:var(--body);margin-right:auto}
+.back:hover{color:var(--w)}
+.out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.hd{background:var(--wl);border-bottom:1px solid var(--line);padding:30px 0 32px;position:relative;overflow:hidden}
+.hd::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.45);right:-120px;top:-140px}
+.hd-in{position:relative;z-index:2;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.hd img{width:112px;flex:none}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--wd);margin-bottom:7px}
+.hd h1{font-size:clamp(28px,4.6vw,40px);font-weight:900;margin-bottom:7px}
+.hd p{font-size:16.5px;max-width:36em}
+@media(max-width:600px){.hd-in{grid-template-columns:1fr;text-align:center}.hd img{margin:0 auto;width:92px}}
+main{padding:26px 0 50px}
+h2.sec{font-size:20px;margin-bottom:4px}
+p.sub{color:var(--muted);font-size:15px;margin-bottom:18px}
+.lessons{display:grid;gap:14px}
+.lsn{background:#fff;border:2px solid var(--line);border-radius:var(--rl);padding:20px 22px;display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;box-shadow:var(--shadow);transition:.15s}
+a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
+.lsn .n{width:44px;height:44px;border-radius:50%;background:var(--wl);color:var(--wd);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:18px}
+.lsn h3{font-size:18px;margin-bottom:3px}
+.lsn p{font-size:14.5px;color:var(--body)}
+.lsn .meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.lsn .meta span{background:var(--beige);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;color:var(--muted)}
+.tag{font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.tag-open{background:var(--green-l);color:var(--green-d)}
+.tag-live{background:var(--yellow);color:#6B5B14}
+.tag-soon{background:var(--beige);color:var(--muted)}
+.tag-done{background:var(--wl);color:var(--wd)}
+.lsn.locked{opacity:.6;grid-template-columns:44px 1fr auto}
+@media(max-width:560px){.lsn{grid-template-columns:38px 1fr;}.lsn .tag{grid-column:2}}
+.bar{height:7px;background:var(--line);border-radius:999px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--w);border-radius:999px}
+.covers{background:#fff;border:1px solid var(--line);border-radius:var(--rl);padding:20px 22px;margin-top:24px}
+.covers h3{font-size:16px;margin-bottom:10px}
+.covers ul{margin:0;padding-left:19px}
+.covers li{font-size:14.5px;margin-bottom:5px}
+.srcs{margin-top:22px;font-size:13.5px;color:var(--muted)}
+.srcs a{color:var(--wd);border-bottom:1px solid rgba(0,0,0,.14)}
+</style>
+</head>
+<body>
+<div id="boot" style="display:grid;place-items:center;min-height:70vh;color:var(--faint)">Opening the world…</div>
+<div id="app" style="display:none">
+
+<nav class="nav"><div class="nav-in">
+  <a class="back" href="dashboard.html">&larr; All worlds</a>
+  <button class="out" id="outBtn">Log out</button>
+</div></nav>
+
+<header class="hd"><div class="wrap hd-in">
+  <img id="gImg" src="" alt="">
+  <div>
+    <div class="eyebrow" id="gLine"></div>
+    <h1 id="wName">—</h1>
+    <p id="wBlurb"></p>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <h2 class="sec">Lessons in this world</h2>
+  <p class="sub" id="lSub"></p>
+  <div class="lessons" id="lessons"></div>
+
+  <div class="covers">
+    <h3>What this world covers</h3>
+    <ul id="topics"></ul>
+  </div>
+
+  <p class="srcs" id="srcs"></p>
+</main>
+</div>
+
+<script src="worlds.js"></script>
+<script src="lessons.js"></script>
+<script src="session.js"></script>
+<script src="quiz.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script>
+(function(){
+  var KEY = new URLSearchParams(location.search).get('w') || '';
+  var W = (WORLDS||[]).filter(function(w){ return w.key===KEY; })[0];
+  if(!W){ location.replace('dashboard.html'); return; }
+
+  function el(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function shade(hex,amt){
+    var n=parseInt(String(hex).replace('#',''),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+    r=Math.round(r+(amt<0?r*amt:(255-r)*amt));g=Math.round(g+(amt<0?g*amt:(255-g)*amt));
+    b=Math.round(b+(amt<0?b*amt:(255-b)*amt));
+    return '#'+[r,g,b].map(function(v){return ('0'+v.toString(16)).slice(-2)}).join('');
+  }
+
+  (async function(){
+    var s = await TG.requireAuth(); if(!s) return;
+    await TGSession.loadAll();
+
+    var rs = document.documentElement.style;
+    rs.setProperty('--w', W.color);
+    rs.setProperty('--wd', shade(W.color,-0.28));
+    rs.setProperty('--wl', shade(W.color, 0.86));
+    document.title = W.name + ' — DewLab';
+    document.querySelector('meta[name=theme-color]').content = W.color;
+
+    el('gImg').src = W.img; el('gImg').alt = W.guide;
+    el('gLine').textContent = W.subject + ' · with ' + W.guide;
+    el('wName').textContent = W.name;
+    el('wBlurb').textContent = W.blurb;
+
+    var lessons = LESSONS.forWorld(W.key);
+    el('lSub').textContent = lessons.length + ' lessons. A lesson opens once its live session has been scheduled.';
+
+    var kids = (s.profile && s.profile.children) || [];
+    var kidName = kids[0] && kids[0].name;
+
+    el('lessons').innerHTML = lessons.map(function(L){
+      var sessions = TGSession.forTopic(L.slug);
+      var unlocked = TG.isUnlocked(L.slug);
+      var done     = !!(window.TGQuiz && TGQuiz.result(L.slug,'post',kidName));
+      var next     = TGSession.next(L.slug);
+      var last     = TGSession.past(L.slug)[0];
+
+      var tag, cls;
+      if (done)            { tag='Finished'; cls='tag-done'; }
+      else if (unlocked)   { tag='Open';     cls='tag-open'; }
+      else if (next)       { tag=TGSession.short(next); cls='tag-live'; }
+      else if (last)       { tag='Catch up'; cls='tag-live'; }
+      else                 { tag='Soon';     cls='tag-soon'; }
+
+      var enterable = unlocked || sessions.length > 0;
+      var when = next ? 'Live ' + TGSession.short(next)
+               : last ? 'Last session ' + TGSession.short(last)
+               : 'No session scheduled yet';
+
+      var inner =
+        '<div class="n">'+L.n+'</div>'+
+        '<div>'+
+          '<h3>'+esc(L.title)+'</h3>'+
+          '<p>'+esc(L.tagline||'')+'</p>'+
+          '<div class="meta">'+
+            (L.grades?'<span>Grades '+esc(L.grades)+'</span>':'')+
+            (L.competencies?'<span>'+L.competencies.length+' skills</span>':
+             L.standards?'<span>'+L.standards.length+' standards</span>':'')+
+            '<span>'+esc(when)+'</span>'+
+          '</div>'+
+        '</div>'+
+        '<span class="tag '+cls+'">'+esc(tag)+'</span>';
+
+      var href = L.page || ('lesson.html?t='+encodeURIComponent(L.slug));
+      return enterable
+        ? '<a class="lsn" href="'+href+'">'+inner+'</a>'
+        : '<div class="lsn locked">'+inner+'</div>';
+    }).join('');
+
+    el('topics').innerHTML = (W.topics||[]).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('');
+
+    var srcs = {};
+    lessons.forEach(function(L){ (L.sources||[]).forEach(function(x){ srcs[x.url]=x.name; }); });
+    var keys = Object.keys(srcs);
+    el('srcs').innerHTML = keys.length
+      ? 'Written from ' + keys.map(function(u){
+          return '<a href="'+u+'" target="_blank" rel="noopener">'+esc(srcs[u])+'</a>'; }).join(' · ')
+      : '';
+
+    el('outBtn').onclick = async function(){ await TG.signOut(); location.href='login.html'; };
+    el('boot').style.display='none'; el('app').style.display='';
+  })();
+})();
+</script>
+</body>
+</html>

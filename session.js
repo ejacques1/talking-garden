@@ -175,7 +175,13 @@
       var ms=d-new Date(); if(ms<=0) return null;
       return { days:Math.floor(ms/86400000), hrs:Math.floor(ms/3600000)%24, mins:Math.floor(ms/60000)%60 };
     },
-    passed: function(s){ var d=S.d(s); return d ? (new Date()>d) : false; }
+    passed: function(s){ var d=S.d(s); return d ? (new Date()>d) : false; },
+
+    /* Slug-aware. The formatters above take a session row, so calling
+       long(slug) quietly returned nothing and every page fell back to
+       generic wording. These take the slug and find the row first. */
+    nextLong: function(slug){ var n=S.next(slug)||S.past(slug)[0]; return n ? S.long(n) : null; },
+    nextLine: function(slug){ var n=S.next(slug)||S.past(slug)[0]; return n ? S.line(n) : null; }
   };
 
   /* ================= activity progress ================= */
