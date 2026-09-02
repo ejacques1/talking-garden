@@ -3,87 +3,77 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your garden — The Talking Garden</title>
+<title>Your worlds — DewLab</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <meta name="theme-color" content="#4F7C4A">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="The Talking Garden">
-<meta property="og:title" content="Your garden — The Talking Garden">
+<meta property="og:site_name" content="DewLab">
+<meta property="og:title" content="Your garden — DewLab">
 <meta property="og:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta property="og:image" content="https://talking-garden.vercel.app/og.png">
 <meta property="og:url" content="https://talking-garden.vercel.app/dashboard.html">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Talking Garden — Dew of Heaven Children's Garden">
+<meta property="og:image:alt" content="DewLab — Dew of Heaven Children's Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Your garden — The Talking Garden">
+<meta name="twitter:title" content="Your garden — DewLab">
 <meta name="twitter:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta name="twitter:image" content="https://talking-garden.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
 <style>
-:root{
-  --cream:#F7F3EA;--paper:#FFF;--paper2:#FCFAF3;
-  --ink:#1F2320;--body:#55584F;--muted:#7B7D72;--faint:#A8A99C;
-  --sage:#4F7C4A;--sage-d:#33512F;--sage-l:#E7F0E4;
-  --sun:#F2B233;--sun-l:#FDF1D6;--terra:#C25A36;--terra-l:#FBE8E0;
-  --sky:#3E90CC;--sky-l:#E2F0FA;--grape:#7A5BC4;--grape-l:#EEE8FB;--teal:#1F9B8E;--teal-l:#DEF3F1;
-  --line:#E8E1D2;--line-d:#D6CDB8;
-  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  --r:18px;--rl:26px;
-  --shadow:0 2px 4px rgba(31,35,32,.04),0 10px 28px rgba(31,35,32,.07);
-  --shadow-lg:0 4px 8px rgba(31,35,32,.05),0 22px 50px rgba(31,35,32,.11);
-}
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper2);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:700}
+body{margin:0;background:var(--beige);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--display);color:var(--ink);margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:700}
 p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 24px;border-radius:999px;border:2px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;transition:.15s}
 .btn:hover{transform:translateY(-2px)}
-.btn-primary{background:var(--sage);color:#fff;box-shadow:0 4px 0 var(--sage-d)}
-.btn-primary:hover{background:var(--sage-d)}
-.btn-white{background:#fff;color:var(--sage-d);box-shadow:0 4px 0 rgba(0,0,0,.14)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 4px 0 var(--blue-d)}
+.btn-primary:hover{background:var(--blue-d)}
+.btn-white{background:#fff;color:var(--blue-d);box-shadow:0 4px 0 rgba(0,0,0,.14)}
 .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-d)}
 
 /* nav */
 .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav-in{max-width:1040px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:16px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
-.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--sage);display:grid;place-items:center;font-size:19px;flex:none}
-.brand-txt{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);line-height:1.15}
+.brand-mark{width:38px;height:auto;flex:none}
+.brand-txt{font-family:var(--display);font-weight:700;font-size:16px;color:var(--ink);line-height:1.15}
 .brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
 .out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
-.out:hover{color:var(--terra)}
+.out:hover{color:var(--red)}
 .acct{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--body)}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-size:15px;flex:none}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--yellow-warm);display:grid;place-items:center;font-size:15px;flex:none}
 @media(max-width:560px){.acct span.nm{display:none}}
 
 /* hello */
-.hello{background:var(--sage-l);border-bottom:1px solid #D6E3D1;padding:32px 0 34px;position:relative;overflow:hidden}
+.hello{background:var(--blue-l);border-bottom:1px solid #D6E3D1;padding:32px 0 34px;position:relative;overflow:hidden}
 .hello::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.4);right:-100px;top:-130px}
 .hello-in{position:relative;z-index:2}
 .hello h1{font-size:clamp(27px,4vw,38px);font-weight:900;margin-bottom:8px}
 .hello p{color:#456141;font-size:17px}
 .kidchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.kidchip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CBDDC6;border-radius:999px;padding:7px 15px 7px 8px;font-size:14px;font-weight:600;color:var(--sage-d);cursor:pointer;transition:.15s}
-.kidchip .a{width:26px;height:26px;border-radius:50%;background:var(--sun-l);display:grid;place-items:center;font-size:13px}
-.kidchip.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.kidchip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CBDDC6;border-radius:999px;padding:7px 15px 7px 8px;font-size:14px;font-weight:600;color:var(--blue-d);cursor:pointer;transition:.15s}
+.kidchip .a{width:26px;height:26px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-size:13px}
+.kidchip.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .kidchip.on .a{background:rgba(255,255,255,.28)}
 
 /* next session */
 .next{margin:-18px auto 0;position:relative;z-index:5;max-width:1040px;padding:0 24px}
 .nextcard{background:var(--ink);color:rgba(255,255,255,.8);border-radius:var(--rl);box-shadow:var(--shadow-lg);padding:24px 28px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-.nextcard .lab{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sun);margin-bottom:6px}
+.nextcard .lab{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow-warm);margin-bottom:6px}
 .nextcard h3{color:#fff;font-size:22px;margin-bottom:4px}
 .nextcard p{font-size:14.5px;color:rgba(255,255,255,.6)}
 .nextcard .grow{flex:1;min-width:210px}
 .countdown{display:flex;gap:8px}
 .cd{background:rgba(255,255,255,.09);border-radius:12px;padding:9px 13px;text-align:center;min-width:56px}
-.cd b{display:block;font-family:var(--serif);font-size:21px;color:#fff;line-height:1.1}
+.cd b{display:block;font-family:var(--display);font-size:21px;color:#fff;line-height:1.1}
 .cd small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5)}
 
 section{padding:44px 0 0}
@@ -99,32 +89,35 @@ section{padding:44px 0 0}
 .topic:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
 .topic.notyet{cursor:default}
 .topic.notyet:hover{transform:none;box-shadow:var(--shadow)}
-.topic-art{height:132px;display:grid;place-items:center;font-size:54px;position:relative}
-.a-sage{background:var(--sage-l)}.a-grape{background:var(--grape-l)}.a-teal{background:var(--teal-l)}
-.a-sun{background:var(--sun-l)}.a-terra{background:var(--terra-l)}.a-sky{background:var(--sky-l)}
+.topic-art{height:120px;display:grid;place-items:center;position:relative}
+.topic-art img{width:74px}
+.a-grow{background:#EAF1E5}.a-protect{background:#F7EEDF}.a-soil{background:#F0E9E2}
+.a-create{background:var(--blue-l)}.a-nourish{background:#E9F0E4}.a-preserve{background:#F0EAF5}
+
 .topic.locked .topic-art{filter:saturate(.72)}
 .lockbadge{position:absolute;top:11px;right:11px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;font-size:14px;box-shadow:var(--shadow);z-index:2}
 .topic-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
-.topic-body h3{font-size:19px;margin-bottom:11px}
+.topic-body h3{font-size:20px;margin-bottom:11px}
+.topic-body .guide{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
 .prog{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:10px}
-.prog i{display:block;height:100%;background:var(--sage);border-radius:99px}
+.prog i{display:block;height:100%;background:var(--blue);border-radius:99px}
 .topic-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
 .small{font-size:12.5px;color:var(--muted)}
 .tag{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:99px}
-.tag-open{background:var(--sage-l);color:var(--sage-d)}
+.tag-open{background:var(--blue-l);color:var(--blue-d)}
 .tag-lock{background:#F1EFE8;color:var(--muted)}
-.tag-soon{background:var(--sun-l);color:#8A6410}
+.tag-soon{background:var(--yellow);color:#8A6410}
 
 /* badges */
 .badges{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:60px}
 .badge{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);min-width:170px}
 .badge .e{font-size:26px;filter:grayscale(1);opacity:.35}
 .badge.got .e{filter:none;opacity:1}
-.badge b{display:block;font-family:var(--serif);font-size:15px;color:var(--ink)}
+.badge b{display:block;font-family:var(--display);font-size:15px;color:var(--ink)}
 .badge small{font-size:12.5px;color:var(--muted)}
-.demo{background:var(--sun-l);border:1px solid #EBD9A8;border-radius:14px;padding:12px 16px;font-size:13.5px;color:#7A5A0C;margin-top:22px}
+.demo{background:var(--yellow);border:1px solid #EBD9A8;border-radius:14px;padding:12px 16px;font-size:13.5px;color:#7A5A0C;margin-top:22px}
 .proto{position:fixed;left:16px;bottom:16px;z-index:99;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:9px 15px;border-radius:99px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
-.proto i{width:7px;height:7px;border-radius:50%;background:var(--sun);display:block}
+.proto i{width:7px;height:7px;border-radius:50%;background:var(--yellow-warm);display:block}
 .boot{display:grid;place-items:center;min-height:70vh;color:var(--faint)}
 </style>
 </head>
@@ -137,17 +130,17 @@ section{padding:44px 0 0}
 <nav class="nav">
   <div class="nav-in">
     <a class="brand" href="dashboard.html">
-      <span class="brand-mark">🌱</span>
-      <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
+      <img class="brand-mark" src="img/dewey-happy.png" alt="">
+      <span class="brand-txt">DewLab<span>Dew of Heaven Children's Garden</span></span>
     </a>
-    <a class="btn btn-primary" id="adminLink" href="admin.html" style="display:none;padding:9px 18px;font-size:13.5px">Garden admin</a>
+    <a class="btn btn-primary" id="adminLink" href="admin.html" style="display:none;padding:9px 18px;font-size:13.5px">DewLab admin</a>
     <span class="acct"><span class="avatar" id="avatar">🌻</span><span class="nm" id="acctName">—</span></span>
     <button class="out" id="outBtn">Log out</button>
   </div>
 </nav>
 
 <header class="hello">
-  <div class="wrap hello-in" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><div id="helloSunny" style="flex:none"></div><div style="flex:1;min-width:240px">
+  <div class="wrap hello-in" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><div id="helloDewey" style="flex:none"></div><div style="flex:1;min-width:240px">
     <h1 id="helloTitle">Hello!</h1>
     <p id="helloSub">Here's what's growing this week.</p>
     <div class="kidchips" id="kidchips"></div>
@@ -164,8 +157,8 @@ section{padding:44px 0 0}
   <section>
     <div class="sec-hd">
       <div>
-        <h2>Your garden topics</h2>
-        <p>Unlocked topics stay open forever — come back any time.</p>
+        <h2>Your learning worlds</h2>
+        <p>Unlocked worlds stay open forever — come back any time.</p>
       </div>
     </div>
     <div class="topics" id="topics"></div>
@@ -190,19 +183,29 @@ section{padding:44px 0 0}
 <div class="proto"><i></i> Prototype — sample content</div>
 </div>
 
-<script src="sunny.js"></script>
+<script src="dewey.js"></script>
+<script src="worlds.js"></script>
 <script src="session.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
-var TOPICS=[
- {slug:'plant',     emoji:'🌻', art:'a-sage',  name:'Plant Life Cycle',     href:'topic.html?t=plant', pct:100, state:'open',  note:'All 5 stages done'},
- {slug:'butterfly', emoji:'🦋', art:'a-grape', name:'Butterfly Life Cycle', href:'topic.html?t=butterfly', pct:20,  state:'live',  note:'Live session'},
- {slug:'frog',      emoji:'🐸', art:'a-teal',  name:'Frog Life Cycle',      href:'topic.html?t=frog', pct:0,   state:'lock',  note:'Live session'},
- {slug:'worm',      emoji:'🪱', art:'a-sun',   name:'Worms & Living Soil',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
- {slug:'pollinator',emoji:'🐝', art:'a-terra', name:'Pollinators at Work',  href:'#',          pct:0,   state:'soon',  note:'Coming soon'},
- {slug:'kitchen',   emoji:'🥕', art:'a-sky',   name:'Garden to Kitchen',    href:'#',          pct:0,   state:'soon',  note:'Coming soon'}
-];
+/* The dashboard shows DewLab's six worlds. Each world's lessons live
+   inside it; the world itself opens once a family has attended its
+   live session. Guides, colours and topics come from worlds.js so
+   this list and the marketing pages can never disagree. */
+var TOPICS = WORLDS.map(function(w, i){
+  return {
+    slug:  w.key,
+    guide: w.guide,
+    color: w.color,
+    name:  w.name,
+    art:   'a-'+w.key,
+    href:  'topic.html?t='+w.key,
+    pct:   i === 0 ? 100 : 0,
+    state: i === 0 ? 'open' : (i === 1 ? 'live' : 'soon'),
+    note:  i === 0 ? 'Both lessons done' : (i === 1 ? 'Live session' : 'Coming soon')
+  };
+});
 var BADGES=[
  {e:'🌱',n:'First Sprout',    d:'Finished a first activity'},
  {e:'🪱',n:'Worm Farmer',     d:'Built the worm observatory'},
@@ -222,7 +225,7 @@ function drawNext(){
   var nx=TGSession.soonest(TOPICS.map(function(t){return t.slug;}));
   if(!nx){
     host.innerHTML='<div class="grow"><div class="lab">Live sessions</div>'+
-      '<h3>Nothing scheduled yet</h3><p>Ms. Nia will post the next garden session here.</p></div>';
+      '<h3>Nothing scheduled yet</h3><p>Ms. Nia will post the next live session here.</p></div>';
     return;
   }
   var t=TOPICS.filter(function(x){return x.slug===nx.topic;})[0]||{name:nx.topic};
@@ -268,8 +271,11 @@ function drawTopics(){
 
     var inner =
       (enterable?'':'<span class="lockbadge">\ud83d\udd12</span>')+
-      '<div class="topic-art '+t.art+'">'+t.emoji+'</div>'+
-      '<div class="topic-body"><h3>'+esc(t.name)+'</h3>'+
+      '<div class="topic-art '+t.art+'">'+
+        (window.Dewey ? Dewey.html(unlocked?'excited':'happy', 74) : '')+'</div>'+
+      '<div class="topic-body">'+
+      '<div class="guide" style="color:'+t.color+'">'+esc(t.guide)+'</div>'+
+      '<h3>'+esc(t.name)+'</h3>'+
       '<div class="prog"><i style="width:'+(unlocked?t.pct:0)+'%"></i></div>'+
       '<div class="topic-foot"><span class="small">'+esc(note)+'</span>'+
       '<span class="tag '+tagCls+'">'+esc(tagTxt)+'</span></div></div>';
@@ -302,7 +308,7 @@ function drawBadges(got){
   document.getElementById('avatar').textContent = (first[0]||'🌻').toUpperCase();
   document.getElementById('helloTitle').textContent = 'Hello, '+first+'!';
   document.getElementById('helloSub').textContent = kids.length===1
-    ? 'Here\'s what\'s growing for '+kids[0].name+' this week.'
+    ? 'Here\'s what\'s waiting for '+kids[0].name+' this week.'
     : 'Here\'s what\'s growing for your '+kids.length+' gardeners this week.';
 
   document.getElementById('kidchips').innerHTML = kids.map(function(k,i){
@@ -317,8 +323,8 @@ function drawBadges(got){
   };
   if(kids.length) document.getElementById('badgeTitle').textContent = kids[0].name+"'s badges";
 
-  var hs=document.getElementById('helloSunny');
-  if(hs && window.Sunny) hs.innerHTML=Sunny.html('wave',86);
+  var hs=document.getElementById('helloDewey');
+  if(hs && window.Dewey) hs.innerHTML=Dewey.html('excited',96,{enter:true});
 
   /* Only Ms. Nia and Kiara should ever see this; everyone else never
      learns the page exists. */
@@ -335,7 +341,7 @@ function drawBadges(got){
     var t=TOPICS.filter(function(x){return x.slug===soon;})[0];
     var n=document.createElement('div');
     n.className='demo';
-    n.style.cssText='margin:0 0 20px;background:var(--sun-l);border-color:#EBD9A8';
+    n.style.cssText='margin:0 0 20px;background:var(--yellow);border-color:#EBD9A8';
     n.innerHTML='<b>'+((t&&t.name)||'That topic')+'</b> isn\'t built yet — Plant Life Cycle is the one that\'s finished end to end. Start there.';
     var main=document.querySelector('main'); main.insertBefore(n, main.firstChild);
   }

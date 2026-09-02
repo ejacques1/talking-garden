@@ -3,76 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign in — The Talking Garden</title>
+<title>Sign in — DewLab</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <meta name="theme-color" content="#4F7C4A">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="The Talking Garden">
-<meta property="og:title" content="Sign in — The Talking Garden">
+<meta property="og:site_name" content="DewLab">
+<meta property="og:title" content="Sign in — DewLab">
 <meta property="og:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta property="og:image" content="https://talking-garden.vercel.app/og.png">
 <meta property="og:url" content="https://talking-garden.vercel.app/login.html">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Talking Garden — Dew of Heaven Children's Garden">
+<meta property="og:image:alt" content="DewLab — Dew of Heaven Children's Garden">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sign in — The Talking Garden">
+<meta name="twitter:title" content="Sign in — DewLab">
 <meta name="twitter:description" content="Live garden sessions, hands-on builds and playful science for children in kindergarten through 6th grade, from Dew of Heaven Children's Garden in Spring, Texas.">
 <meta name="twitter:image" content="https://talking-garden.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
 <style>
-:root{
-  --cream:#F7F3EA;--paper:#FFF;--paper2:#FCFAF3;
-  --ink:#1F2320;--body:#55584F;--muted:#7B7D72;--faint:#A8A99C;
-  --sage:#4F7C4A;--sage-d:#33512F;--sage-l:#E7F0E4;
-  --sun:#F2B233;--sun-l:#FDF1D6;--terra:#C25A36;--terra-l:#FBE8E0;
-  --line:#E8E1D2;--line-d:#D6CDB8;
-  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  --shadow:0 2px 4px rgba(31,35,32,.04),0 10px 28px rgba(31,35,32,.07);
-  --shadow-lg:0 4px 8px rgba(31,35,32,.05),0 22px 50px rgba(31,35,32,.11);
-}
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-h1,h2,h3{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:700}
-p{margin:0}a{color:var(--sage)}
+body{margin:0;background:var(--beige);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);color:var(--ink);margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:700}
+p{margin:0}a{color:var(--blue)}
 .top{padding:22px 24px}
 .brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none}
-.brand-mark{width:38px;height:38px;border-radius:11px;background:var(--sage);display:grid;place-items:center;font-size:20px}
-.brand-txt{font-family:var(--serif);font-weight:700;font-size:17px;color:var(--ink);line-height:1.15}
+.brand-mark{width:40px;height:auto}
+.brand-txt{font-family:var(--display);font-weight:700;font-size:17px;color:var(--ink);line-height:1.15}
 .brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
 .mid{flex:1;display:grid;place-items:center;padding:20px 24px 60px}
-.card{width:100%;max-width:470px;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow-lg);overflow:hidden}
+.card{width:100%;max-width:470px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow-lg);overflow:hidden}
 .card-hd{padding:30px 32px 0;text-align:center}
 .card-hd .m{font-size:36px;margin-bottom:10px}
 .card-hd h1{font-size:27px;margin-bottom:8px}
 .card-hd p{font-size:15px;color:var(--muted)}
 .tabs{display:flex;gap:6px;padding:22px 32px 0}
-.tab{flex:1;font-family:var(--sans);font-size:14.5px;font-weight:600;padding:11px;border-radius:12px;border:2px solid var(--line);background:var(--paper2);color:var(--muted);cursor:pointer;transition:.15s}
-.tab.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.tab{flex:1;font-family:var(--sans);font-size:14.5px;font-weight:600;padding:11px;border-radius:12px;border:2px solid var(--line);background:var(--beige);color:var(--muted);cursor:pointer;transition:.15s}
+.tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
 form{padding:22px 32px 30px}
 label{display:block;font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
-input,select{width:100%;font-family:var(--sans);font-size:15.5px;padding:13px 15px;border-radius:12px;border:2px solid var(--line);background:var(--paper2);color:var(--ink)}
-input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
+input,select{width:100%;font-family:var(--sans);font-size:15.5px;padding:13px 15px;border-radius:12px;border:2px solid var(--line);background:var(--beige);color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--blue);background:#fff}
 .field{margin-bottom:16px}
 .kidrow{display:flex;gap:9px;margin-bottom:9px}
 .kidrow input{flex:2}.kidrow select{flex:1.1}
-.kidrow button{flex:none;width:44px;border-radius:12px;border:2px solid var(--line);background:var(--paper2);color:var(--muted);font-size:19px;cursor:pointer}
-.kidrow button:hover{border-color:var(--terra);color:var(--terra)}
-.addkid{background:none;border:none;color:var(--sage);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
+.kidrow button{flex:none;width:44px;border-radius:12px;border:2px solid var(--line);background:var(--beige);color:var(--muted);font-size:19px;cursor:pointer}
+.kidrow button:hover{border-color:var(--red);color:var(--red)}
+.addkid{background:none;border:none;color:var(--blue);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
 .hint{font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:16px}
 .btn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-size:16px;font-weight:600;padding:15px;border-radius:999px;border:2px solid transparent;cursor:pointer;transition:.15s}
-.btn-primary{background:var(--sage);color:#fff;box-shadow:0 4px 0 var(--sage-d)}
-.btn-primary:hover{background:var(--sage-d)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 4px 0 var(--blue-d)}
+.btn-primary:hover{background:var(--blue-d)}
 .btn-primary:disabled{opacity:.6;cursor:wait;box-shadow:none}
 .alt{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}
 .msg{margin-top:14px;padding:12px 15px;border-radius:12px;font-size:14px;font-weight:500;display:none}
-.msg.err{display:block;background:var(--terra-l);color:#8E3D1F;border:1px solid #EFCFC1}
-.msg.ok{display:block;background:var(--sage-l);color:var(--sage-d);border:1px solid #CBDDC6}
-.banner{max-width:470px;margin:0 auto 16px;background:var(--sun-l);border:1px solid #EBD9A8;border-radius:14px;padding:13px 16px;font-size:13.5px;color:#7A5A0C}
+.msg.err{display:block;background:var(--red-l);color:#8E3D1F;border:1px solid #EFCFC1}
+.msg.ok{display:block;background:var(--blue-l);color:var(--blue-d);border:1px solid #CBDDC6}
+.banner{max-width:470px;margin:0 auto 16px;background:var(--yellow);border:1px solid #EBD9A8;border-radius:14px;padding:13px 16px;font-size:13.5px;color:#7A5A0C}
 .banner b{color:#5A4208}
 .foot{text-align:center;padding:0 24px 30px;font-size:13px;color:var(--faint)}
 .sep{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--faint);font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
@@ -84,8 +76,8 @@ input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
 
 <div class="top">
   <a class="brand" href="index.html">
-    <span class="brand-mark">🌱</span>
-    <span class="brand-txt">The Talking Garden<span>Dew of Heaven Children's Garden</span></span>
+    <img class="brand-mark" src="img/dewey-happy.png" alt="">
+    <span class="brand-txt">DewLab<span>Dew of Heaven Children's Garden</span></span>
   </a>
 </div>
 
@@ -98,9 +90,9 @@ input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
 
     <div class="card">
       <div class="card-hd">
-        <div class="m" id="loginSunny"></div>
+        <div class="m" id="deweySpot"></div>
         <h1 id="hdTitle">Welcome back</h1>
-        <p id="hdSub">Sign in to reach your garden topics.</p>
+        <p id="hdSub">Sign in to reach your learning worlds.</p>
       </div>
 
       <div class="tabs">
@@ -140,7 +132,7 @@ input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
           <input id="upPass" type="password" autocomplete="new-password" placeholder="At least 6 characters">
         </div>
 
-        <label>Who's gardening with you?</label>
+        <label>Who's learning with you?</label>
         <p class="hint">First names only — that's all we ever store about a child.</p>
         <div id="kids"></div>
         <button class="addkid" id="addKid" type="button">+ Add another child</button>
@@ -156,12 +148,12 @@ input:focus,select:focus{outline:none;border-color:var(--sage);background:#fff}
   </div>
 </div>
 
-<script src="sunny.js"></script>
+<script src="dewey.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
-var _ls=document.getElementById('loginSunny');
-if(_ls && window.Sunny) _ls.innerHTML='<div style="display:grid;place-items:center">'+Sunny.html('wave',78)+'</div>';
+var _d=document.getElementById('deweySpot');
+if(_d && window.Dewey) _d.innerHTML='<div style="display:grid;place-items:center">'+Dewey.html('happy',108,{enter:true})+'</div>';
 var qs=new URLSearchParams(location.search), NEXT=qs.get('next')||'dashboard.html';
 
 if(!window.TG_DEMO){
@@ -178,8 +170,8 @@ function show(which){
   var up = which==='up';
   tabUp.className='tab'+(up?' on':''); tabIn.className='tab'+(up?'':' on');
   formUp.classList.toggle('hide',!up); formIn.classList.toggle('hide',up);
-  hdT.textContent = up?'Start your garden':'Welcome back';
-  hdS.textContent = up?'One account for the whole family — free.':'Sign in to reach your garden topics.';
+  hdT.textContent = up?'Start exploring':'Welcome back';
+  hdS.textContent = up?'One account for the whole family — free.':'Sign in to reach your learning worlds.';
 }
 tabIn.onclick=function(){show('in')}; tabUp.onclick=function(){show('up')};
 document.getElementById('toUp').onclick=function(e){e.preventDefault();show('up')};
@@ -242,7 +234,7 @@ formUp.onsubmit=async function(e){
       b.disabled=false;
       return;
     }
-    say(m,'Account created — welcome to the garden!',true);
+    say(m,'Account created — welcome to DewLab!',true);
     setTimeout(function(){ location.href=NEXT; },600);
   }catch(err){ say(m, err.message||'Could not create the account.', false); b.disabled=false; }
 };
