@@ -287,6 +287,10 @@ img{max-width:100%;display:block}
 .cert-ring{position:absolute;inset:9px;border:1px dashed #E0C88E;border-radius:16px;pointer-events:none}
 .certseal{position:relative;display:grid;place-items:center;margin-bottom:2px;width:64px;margin-left:auto;margin-right:auto}
 .certseal img{width:100%;height:auto}
+.certsign{position:relative;margin-top:20px;text-align:center}
+.certsigline{width:min(280px,70%);height:1px;background:rgba(0,0,0,.18);margin:0 auto 8px}
+.certsign b{display:block;font-family:var(--display);font-size:16px;color:var(--ink)}
+.certsign span{font-size:12.5px;color:var(--muted)}
 .certkicker{position:relative;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#A08543;margin-bottom:16px}
 .certawarded{position:relative;font-size:13px;color:#96792A;letter-spacing:.04em}
 .certname{position:relative;font-family:var(--serif);font-size:clamp(30px,7vw,42px);font-weight:900;color:var(--ink);line-height:1.05;margin:4px 0 6px}
@@ -495,6 +499,7 @@ img{max-width:100%;display:block}
           <div class="certawarded">is a</div>
           <h4>Junior Garden Scientist</h4>
           <div class="certscore" id="certScore"></div>
+          <div class="certsign" id="certSign"></div>
           <p id="certLine">Plant Life Cycle</p>
           <div class="certsig">
             <span><b>Ms. Nia</b><br>Garden Director</span>
@@ -529,6 +534,7 @@ img{max-width:100%;display:block}
 
 <script src="worlds.js"></script>
 <script src="lessons.js"></script>
+<script src="org.js"></script>
 <script src="sunny.js"></script>
 <script src="session.js"></script>
 <script src="lipsync.js"></script>
@@ -1108,8 +1114,13 @@ function paintScores(){
   if(a) a.textContent = post || '\u2014';
   var br=document.getElementById('rBeforeRaw'), ar=document.getElementById('rAfterRaw');
   var brw=TGQuiz.raw(TOPIC,'pre',k&&k.name), arw=TGQuiz.raw(TOPIC,'post',k&&k.name);
-  if(br) br.textContent = brw ? (brw+' questions') : '';
-  if(ar) ar.textContent = arw ? (arw+' questions') : '';
+  if(br) br.textContent = brw ? (brw+' questions right') : '';
+  if(ar) ar.textContent = arw ? (arw+' questions right') : '';
+  /* The big number is SKILLS. Say so, because it sat beside a question
+     count with a different denominator and read as a mistake. */
+  var bl=document.querySelector('.rbox small'), al=document.querySelectorAll('.rbox small')[1];
+  if(bl) bl.textContent = 'Skills before';
+  if(al) al.textContent = 'Skills after';
   var pb=document.getElementById('postBtn'), gate=document.getElementById('postGate');
   if(pb){
     var ok=afterUnlocked();
@@ -1119,9 +1130,12 @@ function paintScores(){
     pb.textContent = post ? 'Take it again \u2192' : 'Take the after-check \u2192';
     if(gate){
       gate.style.display = ok ? 'none' : 'block';
-      gate.innerHTML = 'Play a little first, then come back and show us how you grew.<br>'+
-        '<b>'+activitiesDone()+' of '+NEED_ACTIVITIES+'</b> activities finished &nbsp;&middot;&nbsp; '+
-        '<b>'+buildsDone()+' of '+NEED_BUILDS+'</b> project built';
+      var needA = Math.max(0, NEED_ACTIVITIES - activitiesDone());
+      var needB = Math.max(0, NEED_BUILDS - buildsDone());
+      gate.innerHTML = 'A few more things first.<br>'+
+        (needA ? '<b>'+needA+' more</b> game'+(needA===1?'':'s')+' to play' : '<b>&#9989;</b> games done')+
+        ' &nbsp;&middot;&nbsp; '+
+        (needB ? '<b>'+needB+'</b> thing to make at home' : '<b>&#9989;</b> made something');
     }
   }
   var cert=document.getElementById('certWrap');
@@ -1134,8 +1148,15 @@ function paintScores(){
     if(sc) sc.textContent = (g && g.length)
       ? ('Gained '+g.length+' new '+(g.length===1?'skill':'skills')+': '+g.map(function(c){return c.label.replace(/^Knows |^Can /,'');}).join(' \u00b7 '))
       : ('Skills demonstrated: '+post);
+    /* No grade band, no standards code. A fourth grader was handed a
+       certificate saying Kindergarten, which is the opposite of what
+       this is for. The standard belongs in the funder report. */
     var cl=document.getElementById('certLine');
-    if(cl) cl.textContent = 'Plant Life Cycle · Kindergarten TEKS K.13(C)';
+    if(cl) cl.textContent = 'The Plant Life Cycle';
+    var sg=document.getElementById('certSign');
+    if(sg && window.DHCG) sg.innerHTML =
+      '<div class="certsigline"></div><b>'+DHCG.signer.name+'</b>'+
+      '<span>'+DHCG.signer.title+' &middot; '+DHCG.name+'</span>';
     var dt=document.getElementById('certDate');
     if(dt) dt.textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   }

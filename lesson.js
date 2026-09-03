@@ -104,13 +104,15 @@
      — how long is this going to take? */
   function paintPills(){
     var n = (L.competencies||[]).length * 2;
-    var b = L.build || {};
+    var b = buildList()[0] || L.build || {};
     var rows = {
       p1:['&#9201; About four minutes', '&#128444;&#65039; '+n+' picture questions', '&#128218; Read aloud'],
       p2:['&#9201; About 45 minutes', '&#128100; Live, not a recording', '&#128273; The secret word is said here'],
-      p3:['&#9201; '+(b.time||''), '&#128101; '+(b.help||''), '&#129529; '+(b.mess||'')],
-      p4:[(L.activities||[]).length+' games', '&#128260; Play them as often as you like',
+      /* Play comes before the build now, so 3 is the games and 4 is
+         the thing they make. */
+      p3:[(L.activities||[]).length+' games', '&#128260; Play them as often as you like',
           '&#127793; Each one names the skill it builds'],
+      p4:['&#9201; '+(b.time||''), '&#128101; '+(b.help||''), '&#129529; '+(b.mess||'')],
       p5:['&#9201; About four minutes', '&#128200; The same skills, different questions',
           '&#127942; Ends with a certificate']
     };
@@ -367,6 +369,7 @@
      and reads the build in the order a person would say it. */
   function spoken(stage){
     var n = (L.competencies||[]).length * 2;
+    var b = buildList()[0] || {};
     if (stage === 1)
       return 'Before we start. A few picture questions, read out loud. '+
              'There is no pass or fail — it just marks where you are starting from. '+
@@ -381,7 +384,7 @@
                            : 'No session is scheduled yet.') +
              ' When you have the secret word, type it in the yellow box to open the rest of the lesson.';
     }
-    if (stage === 3){
+    if (stage === 4){
       var b = curBuild || buildList()[0] || {};
       return [b.title, b.blurb,
               'You will need: ' + (b.materials||[]).join(', ') + '.',
@@ -392,7 +395,7 @@
         .concat(L.safety ? ['Safety. ' + L.safety] : [])
         .join(' ');
     }
-    if (stage === 4)
+    if (stage === 3)
       return 'Play and practise. Short games you can play as many times as you like. '+
              'There are ' + (L.activities||[]).length + '. ' +
              (L.activities||[]).map(function(a){ return a.title + '. ' + a.teaches + '.'; }).join(' ');
@@ -615,6 +618,7 @@
 
   /* ---------------- the certificate ---------------- */
   function paintCert(){
+    var ORG = global.DHCG || { name:'Dew of Heaven Children\u2019s Garden', signer:{name:'',title:''} };
     var k = child(), name = k ? k.name : 'A DewLab learner';
     var gained = TGQuiz.gained(SLUG, name) || [];
     var comps  = (L.competencies||[]);
@@ -635,28 +639,116 @@
             return '<li class="'+(isNew?'':'kept')+'">'+esc(c.label)+'</li>';
           }).join('')+
         '</ul>'+
-        '<div class="certfoot"><span>'+esc(W.name||'')+(W.guide?' · with '+esc(W.guide):'')+'</span>'+
+        /* Signed by the organisation, not by whoever happened to run
+           the session. No grade band and no standards code: a fourth
+           grader was handed a certificate saying Kindergarten, which
+           is the opposite of what this is for. */
+        '<div class="certsign">'+
+          '<div class="certsigline"></div>'+
+          '<b>'+esc(ORG.signer.name)+'</b>'+
+          '<span>'+esc(ORG.signer.title)+' &middot; '+esc(ORG.name)+'</span>'+
+        '</div>'+
+        '<div class="certfoot"><span>'+esc(W.name||'')+(W.guide?' &middot; with '+esc(W.guide):'')+'</span>'+
           '<span>'+esc(when)+'</span></div>'+
       '</div>'+
       '<div class="certbtns">'+
         '<button class="btn btn-primary" id="shareCert">Share it</button>'+
+        '<button class="btn btn-ghost" id="saveCert">Save as a picture</button>'+
         '<button class="btn btn-ghost" id="printCert">Print</button>'+
-      '</div>';
+      '</div>'+
+      '<p style="font-size:12.5px;color:var(--muted);margin-top:9px">Sharing sends a picture of the certificate, not a link.</p>';
 
-    el('rBefore').textContent = before || '—';
-    el('rAfter').textContent  = after  || '—';
+    /* These are SKILLS, not questions, and the two used to sit next to
+       "you answered 6 of 8" with no way to tell them apart. */
+    var rawBefore = TGQuiz.raw(SLUG,'pre',  name);
+    var rawAfter  = TGQuiz.raw(SLUG,'post', name);
+    el('rBefore').innerHTML = (before || '&mdash;') +
+      (rawBefore ? '<em>'+esc(rawBefore)+' questions</em>' : '');
+    el('rAfter').innerHTML  = (after  || '&mdash;') +
+      (rawAfter  ? '<em>'+esc(rawAfter)+' questions</em>'  : '');
 
     el('printCert').onclick = function(){ window.print(); };
+
+    /* Share used to send a sentence, so a text message showed words
+       where a certificate should be. Draw the real thing instead. */
+    async function certImage(){
+      var card = el('certCard');
+      /* Measure the card, but never trust a degenerate measurement —
+         a hidden tab reports zero and would produce a one-pixel-wide
+         certificate. */
+      var ratio = (card && card.offsetWidth > 40)
+        ? card.offsetHeight / card.offsetWidth : 0.72;
+      ratio = Math.max(0.55, Math.min(1.4, ratio));
+      var W2 = 1200, H2 = Math.round(1200 * ratio);
+      var cv = document.createElement('canvas');
+      cv.width = W2; cv.height = H2;
+      var g = cv.getContext('2d');
+      var css = getComputedStyle(document.documentElement);
+      var blue = (css.getPropertyValue('--blue') || '#0071BC').trim();
+      var ink  = (css.getPropertyValue('--ink')  || '#16283A').trim();
+
+      g.fillStyle = '#FFFFFF'; g.fillRect(0,0,W2,H2);
+      g.strokeStyle = blue; g.lineWidth = 14;
+      g.strokeRect(7,7,W2-14,H2-14);
+
+      function line(text, y, size, weight, colour, font){
+        g.fillStyle = colour; g.textAlign = 'center';
+        g.font = weight+' '+size+'px '+(font||'Montserrat, system-ui, sans-serif');
+        g.fillText(text, W2/2, y);
+      }
+      var y = 130;
+      line(ORG.name.toUpperCase(), y, 30, '800', blue); y += 96;
+      line(name, y, 92, '900', ink); y += 62;
+      line('finished', y, 32, '400', '#7A8892', 'Nunito, sans-serif'); y += 68;
+      line(L.title, y, 52, '800', ink); y += 76;
+
+      g.font = '400 28px Nunito, sans-serif'; g.fillStyle = '#4A5A66'; g.textAlign = 'left';
+      (L.competencies||[]).forEach(function(c){
+        g.fillText('\u2605  ' + c.label, 130, y); y += 46;
+      });
+
+      y = H2 - 150;
+      g.strokeStyle = '#D2CCC0'; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(W2/2-190, y); g.lineTo(W2/2+190, y); g.stroke();
+      line(ORG.signer.name, y + 46, 34, '800', ink);
+      line(ORG.signer.title, y + 84, 24, '400', '#7A8892', 'Nunito, sans-serif');
+      line(when, H2 - 40, 24, '400', '#A9B3BA', 'Nunito, sans-serif');
+
+      return new Promise(function(res){ cv.toBlob(res, 'image/png'); });
+    }
+
+    el('saveCert').onclick = async function(){
+      var blob = await certImage(); if (!blob) return;
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name.replace(/\s+/g,'-') + '-' + L.slug + '.png';
+      a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+    };
+
     el('shareCert').onclick = async function(){
-      var txt = name + ' just finished ' + L.title + ' at DewLab, with Dew of Heaven Children’s Garden.';
-      if (navigator.share){ try{ await navigator.share({ title:'DewLab', text:txt }); return; }catch(e){} }
-      try{ await navigator.clipboard.writeText(txt); this.textContent = 'Copied!'; }
-      catch(e){ this.textContent = 'Press and hold to copy'; }
+      var btn = this;
+      var txt = name + ' just finished ' + L.title + ' at DewLab.';
+      try {
+        var blob = await certImage();
+        var file = new File([blob], name.replace(/\s+/g,'-')+'.png', { type:'image/png' });
+        if (navigator.canShare && navigator.canShare({ files:[file] })){
+          await navigator.share({ files:[file], text:txt });
+          return;
+        }
+        /* No file sharing here — hand them the picture to send instead
+           of quietly falling back to a sentence. */
+        el('saveCert').click();
+        btn.textContent = 'Saved — attach it';
+      } catch(e){
+        btn.textContent = 'Try Save as a picture';
+      }
+      setTimeout(function(){ btn.textContent = 'Share it'; }, 4000);
     };
   }
 
   /* ---------------- the whole page ---------------- */
-  var RAIL = ['Before','Live','At home','Play','Show it'];
+  var RAIL = ['Before','Live','Play','At home','Show it'];
 
   function paint(){
     var unlocked = TG.isUnlocked(SLUG), pre = preDone();
@@ -701,9 +793,11 @@
     el('postGate').textContent = !unlocked
       ? 'Opens once you have the secret word.'
       : ready
-        ? 'You are ready. This one counts.'
-        : 'Play ' + NEED_PLAY + ' game' + (NEED_PLAY===1?'':'s') + ' and do the build first — ' +
-          'you have played ' + played + ' and ' + (built() ? 'done the build' : 'not done the build yet') + '.';
+        ? 'You have done everything. Ready when you are.'
+        : 'A few more things first: ' +
+          (NEED_PLAY - played > 0 ? (NEED_PLAY - played) + ' more game' + ((NEED_PLAY-played)===1?'':'s') : '') +
+          (NEED_PLAY - played > 0 && !built() ? ', and ' : '') +
+          (!built() ? 'one thing made at home' : '') + '.';
 
     var sl = el('stdList');
     if (sl && window.TEKS){
@@ -713,6 +807,39 @@
                '<span>'+esc(c.label)+'<em>'+esc(se.subject||'Science')+' &middot; '+esc(se.grade)+
                ' &middot; '+esc(se.section)+'</em></span></div>';
       }).join('');
+    }
+
+    /* What to do next, on the stage they are standing on. They finished
+       two games and had no idea whether that was enough. */
+    var needBuild = !built(), needPlay = Math.max(0, NEED_PLAY - played);
+    var nu = el('nextUp'), nu2 = el('nextUp2');
+    if (nu){
+      if (!unlocked) nu.style.display = 'none';
+      else {
+        nu.style.display = '';
+        nu.className = 'nextup' + (needPlay ? '' : ' done');
+        nu.innerHTML = needPlay
+          ? '<span class="big">'+played+' of '+NEED_PLAY+'</span>'+
+            '<span>games played<small>'+needPlay+' more, then one thing to make at home.</small></span>'
+          : '<span class="big">&#9989;</span>'+
+            '<span>That is enough playing<small>'+
+            (needBuild ? 'Next: make one thing at home, just below.'
+                       : 'You have done everything. Go and show what you grew.')+'</small></span>';
+      }
+    }
+    if (nu2){
+      if (!unlocked) nu2.style.display = 'none';
+      else {
+        nu2.style.display = '';
+        nu2.className = 'nextup' + (needBuild ? '' : ' done');
+        nu2.innerHTML = needBuild
+          ? '<span class="big">&#128736;&#65039;</span>'+
+            '<span>Pick any one and make it<small>Just one. Then you are ready for the last part.</small></span>'
+          : '<span class="big">&#9989;</span>'+
+            '<span>You made it<small>'+
+            (needPlay ? needPlay+' more game'+(needPlay===1?'':'s')+' to play first.'
+                      : 'Everything is done. Go and show what you grew.')+'</small></span>';
+      }
     }
 
     var post = TGQuiz.result(SLUG,'post', k && k.name);
