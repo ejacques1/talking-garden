@@ -23,21 +23,24 @@
 <meta name="twitter:image" content="https://talking-garden.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
 <style>
+/* Same treatment as the plant lesson: the old names are kept because
+   the rules below use them, but they now point at brand.css. This is
+   the page DHCG shows people, so it should not be the one page still
+   wearing the old identity. */
 :root{
-  --cream:#F7F3EA;--paper:#FFF;--paper2:#FCFAF3;
-  --ink:#1F2320;--body:#55584F;--muted:#7B7D72;--faint:#A8A99C;
-  --sage:#4F7C4A;--sage-d:#33512F;--sage-l:#E7F0E4;
-  --sun:#F2B233;--sun-l:#FDF1D6;--terra:#C25A36;--terra-l:#FBE8E0;
-  --sky:#3E90CC;--sky-l:#E2F0FA;
-  --line:#E8E1D2;--line-d:#D6CDB8;
-  --serif:'Fraunces',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  --r:16px;--shadow:0 2px 4px rgba(31,35,32,.04),0 10px 28px rgba(31,35,32,.07);
+  --cream:var(--beige); --paper2:var(--beige);
+  --sage:var(--green);  --sage-d:var(--green-d); --sage-l:var(--green-l);
+  --sun:var(--yellow-warm); --sun-l:var(--yellow);
+  --terra:var(--red);   --terra-l:var(--red-l);
+  --sky:var(--blue);    --sky-l:var(--blue-l);
+  --serif:var(--display);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper2);color:var(--body);font-family:var(--sans);font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.15;letter-spacing:-.02em;font-weight:700}
+body{margin:0;background:var(--beige);color:var(--body);font-family:var(--sans);font-size:15.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--display);color:var(--ink);margin:0;line-height:1.15;letter-spacing:-.02em;font-weight:800}
 p{margin:0}a{color:var(--sage)}
 .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:14.5px;font-weight:600;padding:11px 20px;border-radius:999px;border:2px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap}
@@ -95,7 +98,7 @@ tr:last-child td{border-bottom:none}
 <div id="app" style="display:none">
 <nav class="nav">
   <div class="nav-in">
-    <b>Garden admin<span>Dew of Heaven Children's Garden</span></b>
+    <b>DewLab admin<span>Dew of Heaven Children's Garden</span></b>
     <a href="dashboard.html">Family view</a>
     <a href="#" id="outBtn">Log out</a>
   </div>
@@ -108,6 +111,7 @@ tr:last-child td{border-bottom:none}
     <button class="tab on" data-p="report">Student progress</button>
     <button class="tab" data-p="sessions">Sessions</button>
     <button class="tab" data-p="curriculum">Curriculum</button>
+    <button class="tab" data-p="write">Write a lesson</button>
   </div>
 
   <!-- ============ REPORT ============ -->
@@ -188,11 +192,78 @@ tr:last-child td{border-bottom:none}
       <div class="scroll"><table id="stdTable"></table></div>
     </div>
   </section>
+
+  <!-- ============ WRITE ============ -->
+  <section id="p-write" class="hide">
+    <div class="card">
+      <h3>Lessons</h3>
+      <p class="sub">The twelve that ship with DewLab, plus anything you have changed. An edit sits on top of the original &mdash; the original is never deleted, so &ldquo;start again&rdquo; always works.</p>
+      <div class="scroll"><table id="writeTable"></table></div>
+    </div>
+
+    <div class="card hide" id="editCard">
+      <h3 id="editTitle">Edit</h3>
+      <p class="sub" id="editSub"></p>
+
+      <div class="tabs" style="padding-top:0;margin-bottom:18px">
+        <button class="tab on" data-e="form">Change the wording</button>
+        <button class="tab" data-e="paste">Paste a whole lesson</button>
+        <button class="tab" data-e="hist">History</button>
+      </div>
+
+      <!-- ---- the fields a person actually edits by hand ---- -->
+      <div id="e-form">
+        <div class="row"><label style="flex:1">Title<input id="fTitle"></label>
+          <label style="width:150px">Grades<input id="fGrades"></label></div>
+        <label>One line about it<input id="fTag"></label>
+        <label>Safety line<textarea id="fSafety" rows="2"></textarea></label>
+
+        <h3 style="font-size:16px;margin-top:24px">Skills</h3>
+        <p class="sub">What a child should be able to do afterwards. Changing the wording here changes it on the certificate and the funder report.</p>
+        <div id="fComps"></div>
+
+        <h3 style="font-size:16px;margin-top:24px">The at-home build</h3>
+        <div class="row"><label style="flex:1">Build title<input id="bTitle"></label>
+          <label style="width:170px">How long<input id="bTime"></label></div>
+        <label>One line about it<input id="bBlurb"></label>
+        <div class="row"><label style="flex:1">Who helps<input id="bHelp"></label>
+          <label style="flex:1">How messy<input id="bMess"></label></div>
+        <label>What you need <span style="font-weight:400;color:#8A9199">(one per line)</span><textarea id="bMats" rows="5"></textarea></label>
+        <label>Steps <span style="font-weight:400;color:#8A9199">(one per line, as <b>Heading | what to do</b>)</span><textarea id="bSteps" rows="7"></textarea></label>
+        <label>Why it works<textarea id="bWhy" rows="3"></textarea></label>
+      </div>
+
+      <!-- ---- the whole record, for the AI route ---- -->
+      <div id="e-paste" class="hide">
+        <p class="sub">Give your own ChatGPT or Claude the prompt below along with your material, then paste what it gives you back into the box. Nothing is sent anywhere from this page &mdash; you are doing the asking, so there is no AI cost here.</p>
+        <button class="btn btn-ghost" id="copyPrompt" style="margin-bottom:14px">Copy the prompt</button>
+        <label>The lesson<textarea id="pasteBox" rows="14" spellcheck="false" style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px"></textarea></label>
+        <button class="btn btn-ghost" id="loadCurrent">Load the current lesson into the box</button>
+      </div>
+
+      <div id="e-hist" class="hide">
+        <p class="sub">Every save is kept. Load an older one back into the editor if a change did not work out.</p>
+        <div class="scroll"><table id="histTable"></table></div>
+      </div>
+
+      <div id="editProblems" class="hide" style="margin-top:18px;border-radius:12px;padding:14px 16px;background:#FBE7DE;border:1px solid #F2CDBA"></div>
+
+      <div class="row" style="margin-top:22px">
+        <button class="btn btn-primary" id="saveLesson">Check and save</button>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px">
+          <input type="checkbox" id="fPublish" style="width:auto"> Show it to families
+        </label>
+        <button class="btn btn-ghost" id="revertLesson" style="margin-left:auto">Start again from the original</button>
+        <button class="btn btn-ghost" id="closeEdit">Close</button>
+      </div>
+    </div>
+  </section>
 </div>
 </div>
 
 <script src="worlds.js"></script>
 <script src="lessons.js"></script>
+<script src="content.js"></script>
 <script src="session.js"></script>
 <script src="teks.js"></script>
 <script src="quiz.js"></script>
@@ -266,6 +337,259 @@ function drawCurriculum(){
     '<thead><tr><th>Lesson</th><th>Skill</th><th>Student expectation</th><th>As published in 19 TAC</th></tr></thead><tbody>'+std+'</tbody>';
 }
 
+/* ---------- writing a lesson ----------
+   Two ways in, because two different jobs.
+
+   Changing the wording is a form: the fields a person actually reaches
+   for — a title, a safety line, the steps of a build. It cannot break
+   a lesson's shape.
+
+   Pasting a whole lesson is the AI route DHCG asked for. Staff give
+   their own ChatGPT or Claude the prompt below with their material,
+   and paste the result back. Nothing leaves this page, so there is no
+   API cost to DHCG and a person reads it before it ships.
+
+   Either way it goes through the same validation in content.js. A
+   saved lesson that crashes a page is worse than an unedited one. */
+
+var editing = null;
+
+var SYSTEM_PROMPT = [
+'You are writing one lesson for DewLab, the learning platform of Dew of Heaven Children’s Garden in Spring, Texas.',
+'',
+'Return ONE JSON object and nothing else. No commentary, no code fence.',
+'',
+'SHAPE',
+'{',
+'  "slug": "lowercase letters and numbers only, no spaces",',
+'  "world": "one of: grow, protect, soil, create, nourish, preserve",',
+'  "n": 1,',
+'  "title": "short and plain",',
+'  "tagline": "one sentence a child would understand",',
+'  "grades": "K–3",',
+'  "safety": "the real risk in this lesson, in one or two sentences",',
+'  "sources": [{"name":"...","url":"..."}],',
+'  "competencies": [{"id":"short","label":"Knows / Can ... — what a child can do afterwards"}],',
+'  "bank": [{"c":"skill id","q":"the question","opts":[{"e":"&#127793;","t":"answer","ok":1},{"e":"&#128167;","t":"wrong"},{"e":"&#9728;&#65039;","t":"wrong"}]}],',
+'  "build": {"title":"...","blurb":"...","time":"...","help":"...","mess":"...",',
+'            "materials":["..."],"steps":[["Heading","What to do"]],"why":"why it works"},',
+'  "activities": [',
+'    {"id":"x1","type":"order","title":"...","teaches":"...","prompt":"...","items":[{"e":"&#127793;","t":"..."}]},',
+'    {"id":"x2","type":"sort","title":"...","teaches":"...","prompt":"...",',
+'     "bins":[{"id":"a","label":"...","e":"&#9989;"}],"items":[{"e":"&#127793;","t":"...","bin":"a"}]},',
+'    {"id":"x3","type":"match","title":"...","teaches":"...","prompt":"...",',
+'     "pairs":[{"a":{"e":"&#127793;","t":"..."},"b":{"t":"..."}}]},',
+'    {"id":"x4","type":"pick","title":"...","teaches":"...",',
+'     "questions":[{"q":"...","opts":[{"e":"&#9989;","t":"right","ok":1},{"e":"&#10060;","t":"wrong"}],',
+'                   "why":"a real explanation, not just the answer repeated"}]}',
+'  ]',
+'}',
+'',
+'RULES',
+'1. Exactly four competencies, and at least FOUR questions per competency.',
+'   The before-check and after-check draw different questions for the same',
+'   skill, so fewer than four means the after-check repeats the before-check.',
+'2. Every question has exactly one option with "ok": 1, and at least three options.',
+'3. Emoji are HTML entities like &#127793;. Check that the picture matches the',
+'   word — a mousetrap where a seed is meant is worse than no picture.',
+'4. At least three activities, using at least two different types.',
+'5. Every "why" in a pick activity explains the reasoning. Never restate the answer.',
+'6. Age: kindergarten to 6th grade. Pictures over paragraphs, one idea per question.',
+'7. Say "a grown-up", not "your parent". Some children are with a grandparent or a carer.',
+'8. NEVER write a food preservation safety number — no canning times, temperatures',
+'   or acidity levels. If a lesson needs one, link to nchfp.uga.edu instead.',
+'9. The build must be doable at home with ordinary things, and its "why" should',
+'   explain the science, not just praise the child.',
+'',
+'MATERIAL',
+'Write the lesson from the material below. If it does not cover something the',
+'shape needs, say so at the end in one line after the JSON rather than inventing it.'
+].join('\n');
+
+function drawWrite(){
+  var rows = TOPICS.map(function(t){
+    var L = LESSONS[t.slug];
+    var edited = window.TGContent && TGContent.isEdited(t.slug);
+    var comps = (L.competencies && L.competencies.length) ? L.competencies
+              : (window.TGQuiz ? TGQuiz.settings.competencies(t.slug) : []);
+    return '<tr>'+
+      '<td><b>'+esc(L.title)+'</b><br><span style="color:#8A9199">'+esc(t.world)+' &middot; '+esc(L.grades||'')+'</span></td>'+
+      '<td>'+comps.length+' skills<br><span style="color:#8A9199">'+((L.bank||[]).length||'—')+' questions</span></td>'+
+      '<td>'+(L.legacy
+              ? '<span style="color:#8A9199">Built in code</span>'
+              : (edited ? '<span style="color:#4A6E33;font-weight:700">Edited</span>'
+                        : '<span style="color:#8A9199">As shipped</span>'))+'</td>'+
+      '<td>'+(L.legacy ? '' :
+        '<button class="btn btn-ghost editBtn" data-s="'+esc(t.slug)+'" style="padding:8px 16px;font-size:13px">Edit</button>')+'</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('writeTable').innerHTML =
+    '<thead><tr><th>Lesson</th><th>Size</th><th>State</th><th></th></tr></thead><tbody>'+rows+'</tbody>';
+
+  [].forEach.call(document.querySelectorAll('.editBtn'), function(b){
+    b.onclick = function(){ openEditor(b.dataset.s); };
+  });
+}
+
+function lines(a){ return (a||[]).join('\n'); }
+function unlines(v){ return String(v||'').split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
+
+function openEditor(slug){
+  editing = JSON.parse(JSON.stringify(LESSONS[slug]));
+  delete editing.edited;
+  var L = editing;
+
+  document.getElementById('editCard').classList.remove('hide');
+  document.getElementById('editTitle').textContent = 'Editing: ' + L.title;
+  document.getElementById('editSub').textContent =
+    'Changes are checked before they save. Nothing reaches a family until "Show it to families" is ticked.';
+
+  document.getElementById('fTitle').value  = L.title || '';
+  document.getElementById('fGrades').value = L.grades || '';
+  document.getElementById('fTag').value    = L.tagline || '';
+  document.getElementById('fSafety').value = L.safety || '';
+
+  document.getElementById('fComps').innerHTML = (L.competencies||[]).map(function(c,i){
+    return '<label>Skill '+(i+1)+(c.teks?' <span style="font-weight:400;color:#8A9199">· '+esc(c.teks)+'</span>':'')+
+           '<input class="compIn" data-i="'+i+'" value="'+esc(c.label)+'"></label>';
+  }).join('');
+
+  var b = L.build || {};
+  document.getElementById('bTitle').value = b.title || '';
+  document.getElementById('bTime').value  = b.time || '';
+  document.getElementById('bBlurb').value = b.blurb || '';
+  document.getElementById('bHelp').value  = b.help || '';
+  document.getElementById('bMess').value  = b.mess || '';
+  document.getElementById('bMats').value  = lines(b.materials);
+  document.getElementById('bSteps').value = (b.steps||[]).map(function(s){ return s[0]+' | '+s[1]; }).join('\n');
+  document.getElementById('bWhy').value   = b.why || '';
+
+  document.getElementById('pasteBox').value = '';
+  document.getElementById('editProblems').classList.add('hide');
+  document.getElementById('fPublish').checked = !!(window.TGContent && TGContent.isEdited(slug));
+  document.getElementById('editCard').scrollIntoView({behavior:'smooth'});
+  drawHistory(slug);
+}
+
+/* Read the form back onto the record being edited. The paste box wins
+   when it has something in it, because that is the whole lesson. */
+function collect(){
+  var pasted = document.getElementById('pasteBox').value.trim();
+  if (pasted){
+    var L;
+    try{ L = JSON.parse(pasted); }
+    catch(e){ return { err:['That is not valid JSON. '+e.message] }; }
+    return { L:L };
+  }
+  var L = editing;
+  L.title   = document.getElementById('fTitle').value.trim();
+  L.grades  = document.getElementById('fGrades').value.trim();
+  L.tagline = document.getElementById('fTag').value.trim();
+  L.safety  = document.getElementById('fSafety').value.trim();
+  [].forEach.call(document.querySelectorAll('.compIn'), function(inp){
+    L.competencies[+inp.dataset.i].label = inp.value.trim();
+  });
+  L.build = L.build || {};
+  L.build.title = document.getElementById('bTitle').value.trim();
+  L.build.time  = document.getElementById('bTime').value.trim();
+  L.build.blurb = document.getElementById('bBlurb').value.trim();
+  L.build.help  = document.getElementById('bHelp').value.trim();
+  L.build.mess  = document.getElementById('bMess').value.trim();
+  L.build.materials = unlines(document.getElementById('bMats').value);
+  L.build.why   = document.getElementById('bWhy').value.trim();
+  L.build.steps = unlines(document.getElementById('bSteps').value).map(function(row){
+    var i = row.indexOf('|');
+    return i < 0 ? [row, ''] : [row.slice(0,i).trim(), row.slice(i+1).trim()];
+  });
+  return { L:L };
+}
+
+function showProblems(list){
+  var box = document.getElementById('editProblems');
+  if (!list || !list.length){ box.classList.add('hide'); return; }
+  box.classList.remove('hide');
+  box.innerHTML = '<b style="color:#B8481B">Not saved — '+list.length+
+    (list.length===1?' thing to fix':' things to fix')+'</b><ul style="margin:9px 0 0;padding-left:19px">'+
+    list.map(function(t){ return '<li style="font-size:14px;margin-bottom:4px">'+esc(t)+'</li>'; }).join('')+'</ul>';
+}
+
+async function drawHistory(slug){
+  var rows = await TGContent.history(slug);
+  document.getElementById('histTable').innerHTML = rows.length
+    ? '<thead><tr><th>Saved</th><th>Title then</th><th></th></tr></thead><tbody>'+
+      rows.map(function(r){
+        return '<tr><td>'+fmt(r.saved_at)+'</td><td>'+esc((r.data&&r.data.title)||'—')+'</td>'+
+          '<td><button class="btn btn-ghost histBtn" data-id="'+r.id+'" style="padding:7px 14px;font-size:13px">Load into the box</button></td></tr>';
+      }).join('')+'</tbody>'
+    : '<tbody><tr><td style="color:#8A9199">Nothing saved yet.</td></tr></tbody>';
+  [].forEach.call(document.querySelectorAll('.histBtn'), function(b){
+    b.onclick = function(){
+      var r = rows.filter(function(x){ return String(x.id)===b.dataset.id; })[0];
+      if (!r) return;
+      document.getElementById('pasteBox').value = JSON.stringify(r.data, null, 2);
+      [].forEach.call(document.querySelectorAll('[data-e]'), function(x){ x.className='tab'; });
+      document.querySelector('[data-e="paste"]').className='tab on';
+      ['form','paste','hist'].forEach(function(k){
+        document.getElementById('e-'+k).classList.toggle('hide', k!=='paste'); });
+    };
+  });
+}
+
+/* ---------- editor controls ---------- */
+function wireEditor(){
+  [].forEach.call(document.querySelectorAll('[data-e]'), function(b){
+    b.onclick = function(){
+      [].forEach.call(document.querySelectorAll('[data-e]'), function(x){ x.className='tab'; });
+      b.className='tab on';
+      ['form','paste','hist'].forEach(function(k){
+        document.getElementById('e-'+k).classList.toggle('hide', k!==b.dataset.e); });
+    };
+  });
+
+  document.getElementById('copyPrompt').onclick = async function(){
+    try{ await navigator.clipboard.writeText(SYSTEM_PROMPT); this.textContent='Copied — paste it into ChatGPT or Claude'; }
+    catch(e){
+      /* Clipboard is blocked in some browsers. Show it instead of
+         failing silently, so the prompt is still gettable. */
+      document.getElementById('pasteBox').value = SYSTEM_PROMPT;
+      this.textContent='Put it in the box below — copy it from there';
+    }
+    var b=this; setTimeout(function(){ b.textContent='Copy the prompt'; }, 4000);
+  };
+
+  document.getElementById('loadCurrent').onclick = function(){
+    document.getElementById('pasteBox').value = JSON.stringify(editing, null, 2);
+  };
+
+  document.getElementById('closeEdit').onclick = function(){
+    document.getElementById('editCard').classList.add('hide');
+    editing = null;
+  };
+
+  document.getElementById('saveLesson').onclick = async function(){
+    var got = collect();
+    if (got.err){ showProblems(got.err); return; }
+    var btn = this; btn.disabled = true; btn.textContent = 'Checking…';
+    var res = await TGContent.save(got.L, document.getElementById('fPublish').checked);
+    btn.disabled = false; btn.textContent = 'Check and save';
+    if (!res.ok){ showProblems(res.problems); return; }
+    showProblems(null);
+    editing = got.L;
+    btn.textContent = 'Saved';
+    setTimeout(function(){ btn.textContent='Check and save'; }, 2500);
+    drawWrite(); drawCurriculum(); drawHistory(got.L.slug);
+  };
+
+  document.getElementById('revertLesson').onclick = async function(){
+    if (!editing) return;
+    if (!confirm('Throw away every change to "'+editing.title+'" and go back to the lesson as shipped?')) return;
+    var r = await TGContent.revert(editing.slug);
+    if (r !== true){ showProblems([String(r)]); return; }
+    openEditor(editing.slug);
+    drawWrite(); drawCurriculum();
+  };
+}
+
 /* ---------- tabs ---------- */
 [].forEach.call(document.querySelectorAll('.tab'), function(b){
   b.onclick=function(){
@@ -274,7 +598,9 @@ function drawCurriculum(){
     document.getElementById('p-report').classList.toggle('hide', b.dataset.p!=='report');
     document.getElementById('p-sessions').classList.toggle('hide', b.dataset.p!=='sessions');
     document.getElementById('p-curriculum').classList.toggle('hide', b.dataset.p!=='curriculum');
+    document.getElementById('p-write').classList.toggle('hide', b.dataset.p!=='write');
     if (b.dataset.p==='curriculum') drawCurriculum();
+    if (b.dataset.p==='write') drawWrite();
   };
 });
 
@@ -536,6 +862,8 @@ function drawSessions(){
   document.getElementById('sTopic').innerHTML=opts;
   document.getElementById('filterTopic').innerHTML='<option value="">All topics</option>'+opts;
 
+  if (window.TGContent) await TGContent.load();
+  wireEditor();
   await TGSession.loadAll();
   prefillFromLast();
   drawSessions();

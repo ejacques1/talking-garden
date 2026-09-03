@@ -186,6 +186,7 @@ section{padding:44px 0 0}
 <script src="dewey.js"></script>
 <script src="worlds.js"></script>
 <script src="lessons.js"></script>
+<script src="content.js"></script>
 <script src="quiz.js"></script>
 <script src="session.js"></script>
 <script src="config.js"></script>
@@ -358,6 +359,7 @@ function drawBadges(got){
     if(ok) document.getElementById('adminLink').style.display='inline-flex';
   });
 
+  if (window.TGContent) await TGContent.load();
   await TGSession.loadAll();
   drawNext();
   drawTopics();

@@ -320,6 +320,15 @@
     var s = await TG.requireAuth();
     if (!s) return;                                  /* requireAuth redirects */
 
+    /* Anything DHCG has edited in the admin panel covers the shipped
+       lesson. Done before the first paint so a family never sees the
+       old wording flash and then change. */
+    if (global.TGContent){
+      await TGContent.load();
+      var edited = global.LESSONS[SLUG];
+      if (edited && edited !== L && !edited.legacy) L = edited;
+    }
+
     paintBrand();
 
     var kids = (s.profile && s.profile.children) || [];
