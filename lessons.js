@@ -408,7 +408,45 @@ LESSONS.myplate = {
       opts:[{e:'&#128069;',t:'You feel thirsty or your mouth is dry',ok:1},{e:'&#128064;',t:'Your eyes change colour'},{e:'&#128066;',t:'Your ears ring'},{e:'&#129504;',t:'You cannot tell'}]}
   ],
 
-  build:{
+  movie:{ render:'myplate', minutes:1, guide:'Chef Sprout' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['A plate, and a real meal you can put on it',
+         'Foods from all five groups, out on the counter',
+         'One meal that is honestly NOT balanced — toast and cheese is perfect',
+         'A glass of water and a fizzy drink, side by side'],
+    runsheet:[
+      ['0:00','Hello, holding an empty plate',
+       'Say who you are. Hold up the empty plate. "I am going to build lunch, and you are going to tell me what I got wrong."'],
+      ['0:35','Build the unbalanced one first, deliberately',
+       'Put toast and cheese on it. Nothing else. Hold it up. "What is missing?" Pause and let them answer at the screen.',
+       'H.2.6(C)'],
+      ['1:30','Now fix it in front of them',
+       'Add the fruit and vegetables, saying each one. Show the halfway line with your hand. "Half. That is the whole rule."',
+       'H.2.6(B)'],
+      ['2:30','Name the five as you go',
+       'Point at each thing on the finished plate and name its group. Five groups, one plate, no lists.',
+       'H.2.6(A)'],
+      ['3:15','The two drinks',
+       'Hold up water and a fizzy drink. Do not tell them which is better — ask which one they think their body wants after running around.',
+       'H.2.6(D)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','What to do this week',
+       'Ask them to draw one meal they really ate, then add one thing to it. One. Point them at the build.'],
+      ['4:45','Goodbye',
+       'Wave.']
+    ],
+    dont:[
+      'Do not name the five groups from scratch — the animation does it. Build a plate instead.',
+      'Do not call any food bad. The lesson is proportion, not guilt.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'Your Real Plate, Drawn',
     blurb:'Draw one meal you actually ate this week, then colour in how much of it was fruit and vegetables.',
     time:'20 minutes',
@@ -422,11 +460,47 @@ LESSONS.myplate = {
       ['Add one thing','Draw one fruit or vegetable you would happily add next time. Just one.'],
       ['Show a grown-up','Tell them which one you added and why you picked that one.']
     ],
-    why:'Nobody changes what they eat from a poster. They change it from noticing. Drawing a meal you really ate turns a rule into a picture of your own week — and adding one thing is a change small enough to actually happen.'
-  },
+    why:'Nobody changes what they eat from a poster. They change it from noticing. Drawing a meal you really ate turns a rule into a picture of your own week — and adding one thing is a change small enough to actually happen.',
+    teks:'H.2.6(B)', teksNote:'the half-a-plate rule, on a real meal'
+   },
+   {
+    title:'The Snack Swap Shelf',
+    blurb:'Set up one shelf so the easy snack is also the good one.',
+    time:'20 minutes', help:'Grown-up helps reach the shelf', mess:'Tidy',
+    teks:'H.2.6(C)', teksNote:'making the better choice the easy one',
+    materials:['A shelf or a low drawer','A bowl','Fruit that needs no preparation','Carrot or cucumber sticks in a tub','A pen and paper'],
+    steps:[
+      ['Pick the shelf you actually reach for','The one at eye level, or the one nearest the door. Be honest about which it is.'],
+      ['Put the fruit bowl there','Front and centre. Nothing in front of it.'],
+      ['Cut a tub of sticks','Carrots, cucumber, peppers. A tub of ready ones, in the fridge at the front.'],
+      ['Move the rest up or back','Not gone. Just not first.'],
+      ['Count for a week','Tally what you actually grabbed. See if the shelf changed anything.']
+    ],
+    why:'Nobody makes a good choice by deciding harder. They make it because the good thing was closer. Moving one bowl does more than a week of being told, and the tally at the end proves it to the child rather than to you.'
+   },
+   {
+    title:'The Rainbow Week',
+    blurb:'Get every colour on your plate across seven days, and colour in the chart.',
+    time:'5 minutes a day', help:'Kid-led', mess:'Tidy',
+    teks:'H.2.6(A)', teksNote:'why different colours matter',
+    materials:['Paper','Coloured pencils','Seven days'],
+    steps:[
+      ['Draw seven rows and six colour boxes','Red, orange, yellow, green, blue-purple, white.'],
+      ['Colour a box when you eat that colour','It has to be a fruit or a vegetable. Ketchup is not red.'],
+      ['Find the gaps by Wednesday','Which colour is empty? Blue-purple usually is.'],
+      ['Go hunting for the missing one','Blueberries, red cabbage, aubergine, plums.'],
+      ['Look at the whole week','Which colour was easiest? Which did you have to try for?']
+    ],
+    why:'Different colours in fruit and veg come from different compounds, so eating a range is not decoration — it is the point. A chart with a visible gap is a far better prompt than a rule, because the child spots the gap themselves.'
+   }
+  ],
 
   activities:[
-    {id:'platesort', type:'sort', title:'Five Groups',
+    {id:'fillplate', type:'custom', render:'fillPlate', title:'Fill Your Own Plate', teks:'H.2.6(B)',
+      teaches:'Build a real meal and watch whether half of it is fruit and veg',
+      prompt:'Add food to the plate. Watch the two bars as you go.'},
+
+    {id:'platesort', type:'sort', title:'Five Groups', teks:'H.2.6(A)',
       teaches:'Sort real foods into the five MyPlate groups',
       prompt:'Tap a food, then tap the group it belongs to.',
       bins:[{id:'fruit',label:'Fruits',e:'&#127822;'},{id:'veg',label:'Vegetables',e:'&#129388;'},
@@ -440,7 +514,7 @@ LESSONS.myplate = {
         {e:'&#129371;',t:'Milk',bin:'dairy'},{e:'&#129472;',t:'Cheese',bin:'dairy'}
       ]},
 
-    {id:'platehalf', type:'pick', title:'Half the Plate',
+    {id:'platehalf', type:'pick', title:'Half the Plate', teks:'H.2.6(B)',
       teaches:'Judge whether a plate has enough fruit and vegetables',
       questions:[
         {q:'Pasta, garlic bread and a glass of milk. What is missing?',
@@ -454,7 +528,7 @@ LESSONS.myplate = {
          why:'Watermelon is genuinely good food. But fruit alone will not give you the protein or grains your body wants for the rest of the afternoon.'}
       ]},
 
-    {id:'plateswap', type:'match', title:'Make the Swap',
+    {id:'plateswap', type:'match', title:'Make the Swap', teks:'H.2.6(C)',
       teaches:'Match a snack to a swap that fuels you longer',
       prompt:'Tap a snack, then tap a swap that would keep you going longer.',
       pairs:[
@@ -527,7 +601,45 @@ LESSONS.farmtotable = {
       opts:[{e:'&#129379;',t:'Still fine — good for smoothies or baking',ok:1},{e:'&#128465;&#65039;',t:'Always rubbish'},{e:'&#9760;&#65039;',t:'Dangerous'},{e:'&#128027;',t:'Full of insects'}]}
   ],
 
-  build:{
+  movie:{ render:'farmtotable', minutes:1, guide:'Chef Sprout' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['Two of the same fruit — one from your garden or a local farm, one from far away',
+         'The packaging or sticker with the country on it',
+         'A compost bin or scrap tub',
+         'A map, or just point at the wall'],
+    runsheet:[
+      ['0:00','Hello, holding two of the same fruit',
+       'Say who you are. Hold up two strawberries, or two tomatoes. "Same fruit. One came from three miles away. One came from three thousand."'],
+      ['0:40','Read the label out loud',
+       'Turn the far one over and read the country off it. Then say how it got here: picked green, boxed, shipped, ripened in a warehouse.',
+       '3.11(A)'],
+      ['1:40','Cut both open',
+       'Cut them and hold the two halves to the camera. Let them see the difference. Say why — one was picked ripe because it only had to travel an hour.',
+       '3.11(A)'],
+      ['2:40','Show the scrap tub',
+       'Hold up a day of peelings. "Every one of these took water, and work, and a lorry. Throwing it away wastes all of that too, not just the food."',
+       '5.11'],
+      ['3:20','Tip the scraps into the compost',
+       'Do it on camera. "Or it goes back into the soil and grows the next one. That is the difference."',
+       '3.11(C)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','What to look for this week',
+       'Ask them to find five foods at home and read where each one came from. Point them at the build.'],
+      ['4:45','Goodbye',
+       'Wave.']
+    ],
+    dont:[
+      'Do not explain the journey step by step — the animation does that. Hold the two fruits up instead.',
+      'Do not make far-travelled food the villain. Bananas do not grow in Texas, and that is fine.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Kitchen Map',
     blurb:'Find out how far five foods in your kitchen travelled, and put them on a map.',
     time:'30 minutes',
@@ -541,11 +653,47 @@ LESSONS.farmtotable = {
       ['Draw the lines','Draw a line from each place to your house. Longest line wins the prize for furthest traveller.'],
       ['Find the closest','Which one came from nearest? Could anything on your list have been grown in Texas?']
     ],
-    why:'The lines are the point. Once a child has drawn one from Ecuador to their own kitchen, "where food comes from" stops being an abstract idea and becomes a distance they can see.'
-  },
+    why:'The lines are the point. Once a child has drawn one from Ecuador to their own kitchen, "where food comes from" stops being an abstract idea and becomes a distance they can see.',
+    teks:'3.11(A)', teksNote:'where food comes from, measured'
+   },
+   {
+    title:'The Leftover Ledger',
+    blurb:'Weigh what your house scrapes off plates for one week, then work out the year.',
+    time:'A minute a day, for a week', help:'Grown-up with the scales', mess:'A little messy',
+    teks:'5.11', teksNote:'how much is actually wasted',
+    materials:['A tub','Kitchen scales','Paper and a pencil','One week'],
+    steps:[
+      ['Scrape plate leftovers into the tub','Only what was cooked and not eaten. Peelings do not count — those were never food.'],
+      ['Weigh it once a day','Same time. Write the number down. Then compost it.'],
+      ['Do not change how you serve','This week is for finding out what normal is.'],
+      ['Add up on day seven','Then multiply by fifty-two.'],
+      ['Talk about one change','Smaller helpings? Going back for seconds? Pick one and try it next week.']
+    ],
+    why:'Peelings were never going to be eaten. Leftovers were, and somebody grew them, drove them and cooked them. Separating the two is the honest version of the food waste conversation, and the times-fifty-two makes a small tub into something the child can picture.'
+   },
+   {
+    title:'Grow the Shortest Journey',
+    blurb:'Plant one thing you would otherwise buy, and race it against the shop.',
+    time:'20 minutes to plant', help:'Kid-led', mess:'A little messy',
+    teks:'3.11(A)', teksNote:'the shortest possible food journey',
+    materials:['A pot','Potting soil','Seed or a cutting of something you buy often','Water','A label'],
+    steps:[
+      ['Pick something you actually buy','Salad leaves, basil, spring onions. Something that turns up in your kitchen anyway.'],
+      ['Plant it and write the date','Label it with what it is and when you started.'],
+      ['Keep buying the shop one too','You need something to compare it with.'],
+      ['Wait until you can pick your own','Then put the two side by side. Taste both.'],
+      ['Work out the two journeys','How far did the shop one travel? How far did yours? Say both numbers out loud.']
+    ],
+    why:'Three metres against three hundred miles is a comparison a child can hold in their head, and tasting both at once makes the point without anyone having to argue it.'
+   }
+  ],
 
   activities:[
-    {id:'ftorder', type:'order', title:'The Journey',
+    {id:'howfar', type:'custom', render:'howFar', title:'How Far Did It Come?', teks:'3.11(A)',
+      teaches:'Follow three foods back to where they started',
+      prompt:'Pick a food and follow it back to where it started.'},
+
+    {id:'ftorder', type:'order', title:'The Journey', teks:'3.11(A)',
       teaches:'Put the farm-to-table journey in the right order',
       prompt:'Tap them in the order a tomato actually travels.',
       items:[
@@ -557,7 +705,7 @@ LESSONS.farmtotable = {
         {e:'&#127869;',t:'Eaten'}
       ]},
 
-    {id:'ftnear', type:'sort', title:'Near or Far?',
+    {id:'ftnear', type:'sort', title:'Near or Far?', teks:'3.11(A)',
       teaches:'Judge which foods travelled a long way to reach Texas',
       prompt:'Could this have been grown near Spring, Texas — or did it travel?',
       bins:[{id:'near',label:'Could be grown near you',e:'&#127968;'},{id:'far',label:'Travelled a long way',e:'&#9992;&#65039;'}],
@@ -568,7 +716,7 @@ LESSONS.farmtotable = {
         {e:'&#129389;',t:'Mango',bin:'far'},{e:'&#127792;',t:'Cocoa beans',bin:'far'}
       ]},
 
-    {id:'ftwaste', type:'pick', title:'Waste Less',
+    {id:'ftwaste', type:'pick', title:'Waste Less', teks:'3.11(C)',
       teaches:'Choose the option that wastes the least food',
       questions:[
         {q:'You peeled a heap of carrots. What happens to the peelings?',
@@ -1441,7 +1589,46 @@ LESSONS.seedbot = {
       opts:[{e:'&#128218;',t:'Useful — now you know that change was wrong',ok:1},{e:'&#128546;',t:'A total failure'},{e:'&#128683;',t:'Worth ignoring'},{e:'&#128465;&#65039;',t:'A reason to stop'}]}
   ],
 
-  build:{
+  movie:{ render:'seedbot', minutes:1, guide:'Tinker' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['A dandelion clock, a maple key, or any seed that flies',
+         'A burr, or a sock you walked through long grass in',
+         'A bean pod that has dried and split',
+         'Paper, scissors and paperclips, to build one on camera',
+         'Somewhere with a bit of height to drop from'],
+    runsheet:[
+      ['0:00','Hello, holding one seed',
+       'Say who you are. Hold up a dandelion clock. "This is a solved engineering problem, and I did not solve it."'],
+      ['0:40','Blow it, and film where it goes',
+       'Blow the clock and follow one seed with the camera as far as you can. Say nothing while you do.',
+       '2.12(C)'],
+      ['1:20','Show the other three ways',
+       'Burr on the sock. Split bean pod. A berry. Four different solutions to exactly the same problem.',
+       '2.12(C)'],
+      ['2:10','Build a paper one, badly, on purpose',
+       'Cut a strip, one paperclip, no wings. Drop it. It falls like a stone. "That is version one. Version one is meant to be bad."',
+       '3.1(G)'],
+      ['3:00','Change ONE thing and drop it again',
+       'Add wings. Only wings. Drop from the same height. "Better. And I know exactly why, because I only changed one thing."',
+       '2.2(D)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','The challenge',
+       'Ask them to beat your time, and to write down every version including the bad ones. Point them at the build.'],
+      ['4:45','Goodbye',
+       'Wave.']
+    ],
+    dont:[
+      'Do not explain seed dispersal from scratch — the animation does it. Blow a dandelion instead.',
+      'Do not build a good one first. The bad version one is the whole point.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Flying Seed Challenge',
     blurb:'Build a paper seed that stays in the air the longest. Then build a better one.',
     time:'40 minutes',
@@ -1456,11 +1643,48 @@ LESSONS.seedbot = {
       ['Test and record','Drop it from exactly the same height. Better or worse? Write it down.'],
       ['Go again','Three more rounds. Keep every version — the failures are the data.']
     ],
-    why:'A maple key is a solved engineering problem, and copying it teaches more than being told about drag. The one-change rule is the real lesson: it is the difference between fiddling and testing, and it is the same rule behind every fair experiment a child will ever run.'
-  },
+    why:'A maple key is a solved engineering problem, and copying it teaches more than being told about drag. The one-change rule is the real lesson: it is the difference between fiddling and testing, and it is the same rule behind every fair experiment a child will ever run.',
+    teks:'3.1(G)', teksNote:'designing, testing and improving a prototype'
+   },
+   {
+    title:'The Sock Walk',
+    blurb:'Walk through long grass in an old sock and see what hitched a ride.',
+    time:'20 minutes', help:'Grown-up picks where to walk', mess:'A little messy',
+    teks:'2.12(C)', teksNote:'seeds that travel on animals',
+    materials:['An old thick sock, light coloured','Somewhere with long grass or weeds','A tray','A magnifier if you have one','A pot of soil'],
+    steps:[
+      ['Sock over your shoe','Pull it right over the outside of your shoe. Fluffy side out.'],
+      ['Walk through the rough stuff','Long grass, weedy edges, the bit nobody mows. Five minutes.'],
+      ['Take it off and look','Pick everything off onto a tray. How many different kinds are there?'],
+      ['Look closely','Hooks? Barbs? Sticky? Each one is a different way of holding on.'],
+      ['Plant some','Push a few into a pot of soil and water it. See what you accidentally carried home.']
+    ],
+    why:'The child becomes the animal. Every seed on that sock chose them as transport, and planting what comes up turns an idea about dispersal into a plant on a windowsill.'
+   },
+   {
+    title:'The Best of Five',
+    blurb:'Build five seed travellers, keep every one, and chart the times.',
+    time:'45 minutes', help:'Grown-up cuts if needed', mess:'Tidy',
+    teks:'2.2(D)', teksNote:'changing one thing and measuring it',
+    materials:['Paper','Scissors','Paperclips','Sticky tape','A stopwatch','Paper for a chart'],
+    steps:[
+      ['Build version one','Simple. A strip, two folded wings, one clip.'],
+      ['Drop and time it three times','Three drops, same height. Take the middle number — one drop tells you nothing.'],
+      ['Change ONE thing','Longer wings. Or an extra clip. Or a wider body. Write down which.'],
+      ['Time that one three times too','Same height, same way of letting go.'],
+      ['Keep going to five versions','Do not throw any away. Line them up in order.'],
+      ['Chart it','A bar for each version. The shape of that chart is what you learned.']
+    ],
+    why:'Three drops instead of one is the bit that makes it real science — a single drop is luck. Keeping all five, including the worst, is the other bit: the failures are what mark the edges of what works.'
+   }
+  ],
 
   activities:[
-    {id:'seedways', type:'sort', title:'How Does It Travel?',
+    {id:'droptest', type:'custom', render:'dropTest', title:'The Drop Test', teks:'2.2(D)',
+      teaches:'Change one thing at a time and measure what it did',
+      prompt:'Set it up, drop it, then change ONE thing and drop again.'},
+
+    {id:'seedways', type:'sort', title:'How Does It Travel?', teks:'2.12(C)',
       teaches:'Sort seeds by the way they move away from the parent plant',
       prompt:'How does this seed get around?',
       bins:[{id:'wind',label:'Wind',e:'&#127788;&#65039;'},{id:'animal',label:'Animal',e:'&#128054;'},
@@ -1472,7 +1696,7 @@ LESSONS.seedbot = {
         {e:'&#129362;',t:'Pea pod',bin:'pop'},{e:'&#127793;',t:'Touch-me-not',bin:'pop'}
       ]},
 
-    {id:'seedcycle', type:'order', title:'The Design Cycle',
+    {id:'seedcycle', type:'order', title:'The Design Cycle', teks:'3.1(B)',
       teaches:'Put the engineering design steps in order',
       prompt:'Tap the steps in the order an engineer works.',
       items:[
@@ -1484,7 +1708,7 @@ LESSONS.seedbot = {
         {e:'&#128260;',t:'Improve and test again'}
       ]},
 
-    {id:'seedimprove', type:'pick', title:'What Would You Change?',
+    {id:'seedimprove', type:'pick', title:'What Would You Change?', teks:'2.2(D)',
       teaches:'Make one change at a time and predict its effect',
       questions:[
         {q:'Your paper seed drops like a stone.',
@@ -1561,7 +1785,47 @@ LESSONS.sunpower = {
       opts:[{e:'&#128221;',t:'Exactly that — it explains your numbers',ok:1},{e:'&#128683;',t:'Nothing'},{e:'&#10060;',t:'Pretend it stayed sunny'},{e:'&#128465;&#65039;',t:'Throw the results away'}]}
   ],
 
-  build:{
+  movie:{ render:'sunpower', minutes:1, guide:'Tinker' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['Two thermometers',
+         'A black sheet of paper and a white one',
+         'Aluminium foil',
+         'A pizza box oven, already built',
+         'Something to melt — chocolate on a cracker',
+         'A sunny day, ideally around midday'],
+    runsheet:[
+      ['0:00','Hello, in full sun',
+       'Say who you are and stand in the sun. "I am going to cook something today without plugging anything in."'],
+      ['0:35','Black paper and white paper, thermometers on both',
+       'Lay both out with a thermometer on each. Start them. Say you will come back to them — the wait is part of it.',
+       '5.8(C)'],
+      ['1:15','Bounce sunlight with the foil while you wait',
+       'Catch the sun with foil and move the bright patch across a wall. "It does not soak it up. It throws it. Which means I can aim it."',
+       '5.8(C)'],
+      ['2:00','Come back to the two thermometers',
+       'Read both out loud. Let the gap speak. "Same sun. Same minute. Different colour."',
+       '4.8(B)'],
+      ['2:50','Show the oven and name the three parts',
+       'Point at the black bottom, the foil flap, the clear lid. One sentence each on what it is doing.',
+       '2.9(A)'],
+      ['3:30','Put the snack in and close it',
+       'Do it on camera. Say when you started. Tell them you will show the result at the start of the next session.'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:30','Goodbye',
+       'Say what the next session is. Wave.']
+    ],
+    dont:[
+      'Do not explain absorb and reflect first — the animation does it. Put the two papers out and let the thermometers say it.',
+      'Do not skip the wait. Coming back to a measurement is the lesson.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Pizza Box Solar Oven',
     blurb:'Build an oven out of a pizza box and let the sun melt something for you.',
     time:'45 minutes to build, an hour in the sun',
@@ -1576,11 +1840,49 @@ LESSONS.sunpower = {
       ['Aim it','Outside, in full sun. Prop the flap with a stick or a ruler until it throws the brightest patch into the box.'],
       ['Cook and measure','Put your snack in on a plate. Note the time and the temperature. Check every ten minutes and write down what you see.']
     ],
-    why:'Three separate ideas in one box: foil reflects light in, black absorbs it as heat, and the clear window lets light through but traps the heat inside. Take away any one of the three and it barely warms up — which is the experiment worth doing next.'
-  },
+    why:'Three separate ideas in one box: foil reflects light in, black absorbs it as heat, and the clear window lets light through but traps the heat inside. Take away any one of the three and it barely warms up — which is the experiment worth doing next.',
+    teks:'4.8(B)', teksNote:'absorbing, reflecting and trapping heat'
+   },
+   {
+    title:'Black and White in the Sun',
+    blurb:'Two papers, two thermometers, one number that settles the argument.',
+    time:'30 minutes', help:'Kid-led', mess:'Tidy',
+    teks:'5.8(C)', teksNote:'dark absorbs, light reflects',
+    materials:['A sheet of black paper','A sheet of white paper','2 thermometers, or one and some patience','A sunny spot','Paper to record on'],
+    steps:[
+      ['Lay both papers in full sun','Side by side, same spot, same time. That is what makes it fair.'],
+      ['A thermometer on each','Resting on the paper, not held.'],
+      ['Write the starting numbers','They should be about the same. If they are not, wait.'],
+      ['Read them every five minutes','Four readings. Write all of them down.'],
+      ['Work out the gap','How many degrees apart at the end? That gap is the whole experiment.'],
+      ['Try a third colour','Red, blue, silver foil. Where does it sit between the two?']
+    ],
+    why:'One thermometer proves nothing — two, side by side in the same sun, prove everything. And reading them four times rather than once shows the gap growing, which is more convincing than a single number.'
+   },
+   {
+    title:'The Shade Map',
+    blurb:'Track where the shade falls across one day and work out where to sit in August.',
+    time:'10 minutes, four times in a day', help:'Kid-led', mess:'Tidy',
+    teks:'4.11(A)', teksNote:'using the sun rather than fighting it',
+    materials:['Paper','Coloured pencils','Chalk if you are outside','Four moments in one day'],
+    steps:[
+      ['Draw your yard or balcony','Rough is fine. Mark the house, the fence, any trees.'],
+      ['Go out at nine and shade in the shadows','Use one colour. Write the time.'],
+      ['Again at noon','Different colour. Same drawing.'],
+      ['Again at three, and again at six','Two more colours.'],
+      ['Find the spot that was never sunny','And the spot that was always sunny.'],
+      ['Say what you would put in each','Lettuce in one. Peppers in the other. A chair in the third.']
+    ],
+    why:'The sun moves and shade moves with it, which is obvious and almost nobody has actually watched. Four drawings on one page turn that into a map, and the map decides where things get planted.'
+   }
+  ],
 
   activities:[
-    {id:'sunabsorb', type:'sort', title:'Soak It Up or Bounce It Back',
+    {id:'solarbuild', type:'custom', render:'solarBuild', title:'Build the Oven', teks:'4.8(B)',
+      teaches:'Work out what each part of a solar oven is doing',
+      prompt:'Add and remove parts. Watch the thermometer decide which ones matter.'},
+
+    {id:'sunabsorb', type:'sort', title:'Soak It Up or Bounce It Back', teks:'5.8(C)',
       teaches:'Predict which surfaces absorb sunlight and which reflect it',
       prompt:'In bright sun, does this soak up the heat or bounce it away?',
       bins:[{id:'absorb',label:'Absorbs — gets hot',e:'&#128293;'},{id:'reflect',label:'Reflects — stays cool',e:'&#10024;'}],
@@ -1591,7 +1893,7 @@ LESSONS.sunpower = {
         {e:'&#10052;&#65039;',t:'Fresh snow',bin:'reflect'},{e:'&#129694;',t:'A mirror',bin:'reflect'}
       ]},
 
-    {id:'sunparts', type:'match', title:'Every Part Has a Job',
+    {id:'sunparts', type:'match', title:'Every Part Has a Job', teks:'4.8(B)',
       teaches:'Match each part of a solar oven to what it actually does',
       prompt:'Tap a part, then tap its job.',
       pairs:[
@@ -1601,7 +1903,7 @@ LESSONS.sunpower = {
         {a:{e:'&#128230;',t:'Box walls'},     b:{t:'Hold the warm air in one place'}}
       ]},
 
-    {id:'suntest', type:'pick', title:'Make It a Fair Test',
+    {id:'suntest', type:'pick', title:'Make It a Fair Test', teks:'2.9(A)',
       teaches:'Spot what would spoil a fair test of a solar oven',
       questions:[
         {q:'You test the black-bottom box in the morning and the white-bottom box after lunch.',
@@ -1683,7 +1985,47 @@ LESSONS.drying = {
       opts:[{e:'&#128104;&#8205;&#127859;',t:'Ask a grown-up and follow tested instructions exactly',ok:1},{e:'&#128302;',t:'Guess the time'},{e:'&#128241;',t:'Copy a recipe off social media'},{e:'&#128336;',t:'Boil it a bit longer to be safe'}]}
   ],
 
-  build:{
+  movie:{ render:'drying', minutes:1, guide:'Mason' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['Fresh herbs, cut that morning',
+         'A bundle you hung two weeks ago, fully dry',
+         'String, and a paper bag with holes punched in it',
+         'A clean dry jar and a label',
+         'Something spoiled — a mouldy berry in a bag, to show what you are preventing'],
+    runsheet:[
+      ['0:00','Hello, holding fresh herbs',
+       'Say who you are. Hold a fresh bunch. "This will be slimy in a week. Unless I take one thing out of it."'],
+      ['0:40','Show the mouldy one, at a distance',
+       'Hold up the spoiled berry in its bag. Do not open it. "That is not time. That is something living, eating, and it needed water to start."',
+       '4.12(B)'],
+      ['1:30','Tie the bundle and bag it on camera',
+       'Tie the stems, punch holes in the bag, put the bundle in leaves-down, tie it closed. Say what the holes are for: the water has to have somewhere to go.',
+       '3.10(B)'],
+      ['2:30','Bring out the two-week-old one',
+       'Untie it. Hold a fresh leaf and a dry leaf side by side.'],
+      ['3:00','The crumble test, on camera',
+       'Crush the dry one — it powders. Bend the fresh one — it folds. "Crumbles is done. Bends means water is still in there, and water in the jar is where mould starts."',
+       '3.10(B)'],
+      ['3:40','Jar it and write the date',
+       'Crumble into the jar, lid on, write the label in front of them.'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:25','The one warning, said plainly',
+       'Drying herbs is safe to do yourself. Canning is not. Say it in those words, and say that jars of vegetables need a grown-up and tested instructions from the National Center for Home Food Preservation. Every time.'],
+      ['4:50','Goodbye',
+       'Wave.']
+    ],
+    dont:[
+      'Do not explain why food spoils from scratch — the animation does it. Show the mouldy one instead.',
+      'Do not give any canning time, temperature or acidity. Not one. Send them to nchfp.uga.edu.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Herb Drying Bundle',
     blurb:'Hang a bunch of herbs in a paper bag and end up with a jar you seasoned yourself.',
     time:'15 minutes, then one to two weeks hanging',
@@ -1699,11 +2041,49 @@ LESSONS.drying = {
       ['Test after a week','Leaves are ready when they crumble instead of bending. Not quite? Give them longer.'],
       ['Jar and label','Crumble the leaves into a clean dry jar. Write what it is and today’s date. Check tomorrow for any moisture on the glass.']
     ],
-    why:'Everything about this build is the same principle: water leaves, spoiling stops. The paper bag lets water vapour escape while blocking dust and light, and the crumble test is a real dryness check — a leaf that bends is still holding water, and water in the jar is where mould starts.'
-  },
+    why:'Everything about this build is the same principle: water leaves, spoiling stops. The paper bag lets water vapour escape while blocking dust and light, and the crumble test is a real dryness check — a leaf that bends is still holding water, and water in the jar is where mould starts.',
+    teks:'3.10(B)', teksNote:'removing the water that spoilage needs'
+   },
+   {
+    title:'The Drying Race',
+    blurb:'Three ways to dry the same herb, and a fair test of which wins.',
+    time:'15 minutes, then a week', help:'Kid-led', mess:'Tidy',
+    teks:'3.10(B)', teksNote:'what moving air and warmth actually do',
+    materials:['Enough of one herb for three equal bunches','String','A paper bag with holes','Three different spots: airy and shaded, sunny windowsill, a closed cupboard','A label for each'],
+    steps:[
+      ['Cut three equal bunches','Same herb, same size, same day. Equal is what makes it a test.'],
+      ['Label them one, two, three','Write where each one is going.'],
+      ['Hang them in the three spots','Airy and shaded. Sunny windowsill. Closed cupboard with no airflow.'],
+      ['Check every day','Which is crumbling first? Does any of them smell wrong?'],
+      ['Call it after a week','Which spot won? Which one went mouldy or lost its colour?'],
+      ['Say why','It is not about heat. It is about moving air taking the water away.']
+    ],
+    why:'People assume drying is about heat, so the sunny windowsill should win. It usually does not — the sun bleaches the colour and the flavour out while the still air holds the moisture in. Three bunches settle that better than any explanation.'
+   },
+   {
+    title:'The Water Weight',
+    blurb:'Weigh herbs before and after drying and find out how much of a plant is water.',
+    time:'10 minutes, then a week', help:'Grown-up with the scales', mess:'Tidy',
+    teks:'3.10(B)', teksNote:'how much water is actually in a plant',
+    materials:['Kitchen scales that show grams','A bunch of fresh herbs','A paper bag','Paper and a pencil'],
+    steps:[
+      ['Weigh the fresh bunch','Write the number down. Be exact.'],
+      ['Hang it to dry as usual','Somewhere warm and airy, in a holed paper bag.'],
+      ['Wait until it crumbles','A week or two. Do not rush it.'],
+      ['Weigh it again','Same scales. Write the second number.'],
+      ['Work out what left','First number minus second. That is the water.'],
+      ['Turn it into a fraction','Most of it, usually. Say the fraction out loud.']
+    ],
+    why:'Herbs are roughly four fifths water, and a child who has weighed that themselves understands preservation in one number. It also explains why dried herbs are stronger by the spoonful — everything else got concentrated.'
+   }
+  ],
 
   activities:[
-    {id:'drykeep', type:'sort', title:'Keeps or Spoils?',
+    {id:'dryout', type:'custom', render:'dryOut', title:'Take the Water Out', teks:'4.12(B)',
+      teaches:'See why removing water stops food spoiling',
+      prompt:'Drag the water out and watch what stops growing.'},
+
+    {id:'drykeep', type:'sort', title:'Keeps or Spoils?', teks:'4.12(B)',
       teaches:'Predict which foods keep at room temperature and which spoil',
       prompt:'Left in a cupboard for a month, what happens?',
       bins:[{id:'keeps',label:'Keeps',e:'&#9989;'},{id:'spoils',label:'Spoils',e:'&#9888;&#65039;'}],
@@ -1714,7 +2094,7 @@ LESSONS.drying = {
         {e:'&#129367;',t:'Fresh salad',bin:'spoils'},{e:'&#127827;',t:'Fresh strawberries',bin:'spoils'}
       ]},
 
-    {id:'dryorder', type:'order', title:'Fresh to Jar',
+    {id:'dryorder', type:'order', title:'Fresh to Jar', teks:'3.10(B)',
       teaches:'Sequence the steps of drying herbs safely',
       prompt:'Tap the steps in the order you would actually do them.',
       items:[
@@ -1726,7 +2106,7 @@ LESSONS.drying = {
         {e:'&#129387;',t:'Jar it and write the date'}
       ]},
 
-    {id:'drysafe', type:'pick', title:'Ask or Carry On?',
+    {id:'drysafe', type:'pick', title:'Ask or Carry On?', teks:'H.5.2(E)',
       teaches:'Know which preserving jobs need a grown-up and tested instructions',
       questions:[
         {q:'You want to hang mint up to dry in the kitchen.',
@@ -1805,7 +2185,48 @@ LESSONS.seedsaving = {
       opts:[{e:'&#127793;',t:'Plant the garden again without buying seed',ok:1},{e:'&#128722;',t:'Buy more seed'},{e:'&#128164;',t:'Skip the garden'},{e:'&#128683;',t:'Nothing different'}]}
   ],
 
-  build:{
+  movie:{ render:'seedsaving', minutes:1, guide:'Mason' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['A plant in the beds you deliberately left to go to seed',
+         'A dry bean pod that rattles, and a green one',
+         'A drooping brown sunflower head',
+         'Paper, glue and a pen for the envelope',
+         'Seeds you saved last year — and ideally the plant they became'],
+    runsheet:[
+      ['0:00','Hello, next to the plant you let go to seed',
+       'Say who you are. "Most people pull this up. I left it on purpose, and I am about to tell you why."'],
+      ['0:40','Choose the best plant, out loud',
+       'Walk past a few and pick the strongest, saying why as you go. "This one did well in our heat, in our soil. Those are the ones I want again."',
+       '4.13(B)'],
+      ['1:40','Rattle the two pods',
+       'Shake the dry brown one next to the camera so they hear it. Then squeeze the green one. "One is finished. One is still being filled."',
+       '3.13(B)'],
+      ['2:30','Open the sunflower head',
+       'Rub the seeds out into your palm on camera. Let them see how many come from one head.',
+       'K.13(C)'],
+      ['3:10','The fingernail test',
+       'Press a nail into a seed. "If it dents, it is not dry. Put it in a jar like that and you get mould instead of a garden."'],
+      ['3:40','Fold the envelope and write on it',
+       'Make it in front of them. Write the plant and the year. Say why the year matters.',
+       'K.13(D)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:25','Show last year\'s seeds, and what they became',
+       'Hold up an envelope from last year, and point at the plant growing from it. "That is the loop closing. I did not buy anything."'],
+      ['4:50','Goodbye',
+       'Wave.']
+    ],
+    dont:[
+      'Do not explain the life cycle again — the animation and the Grow world both did. Rattle the pod instead.',
+      'Do not save seed from a plant you cannot name on camera. Say that out loud as the rule.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Seed Envelope',
     blurb:'Save seed from one plant, dry it properly, and make the envelope that gets it to next spring.',
     time:'20 minutes, plus a week of drying',
@@ -1821,11 +2242,49 @@ LESSONS.seedsaving = {
       ['Fold the envelope','Fold and glue a paper envelope. Write the plant, the date and where it grew.'],
       ['Store it cool and dark','A drawer or a tin. Then put a note in a calendar for planting season.']
     ],
-    why:'This is the same principle as the drying lesson, aimed at a living thing instead of a stored one: a seed is alive but resting, and water is what would wake it up too early or rot it. Dry, dark and cool keeps it asleep until you decide it is spring — which is why the label carries a date.'
-  },
+    why:'This is the same principle as the drying lesson, aimed at a living thing instead of a stored one: a seed is alive but resting, and water is what would wake it up too early or rot it. Dry, dark and cool keeps it asleep until you decide it is spring — which is why the label carries a date.',
+    teks:'4.13(B)', teksNote:'choosing which traits to keep'
+   },
+   {
+    title:'The Fingernail Test',
+    blurb:'Learn the one check that decides whether saved seed lives or moulds.',
+    time:'10 minutes, spread over a week', help:'Kid-led', mess:'Tidy',
+    teks:'3.13(B)', teksNote:'knowing when a seed is dry enough',
+    materials:['Seeds you have collected','A plate or tray','Somewhere airy out of direct sun','Paper and a pencil'],
+    steps:[
+      ['Spread them in one layer','Not a heap. A heap dries on the outside and stays damp in the middle.'],
+      ['Test one on day one','Press a fingernail into it. It will dent. Write down that it dented.'],
+      ['Test one every day','Same test, one seed, once a day. Note the day it stops denting.'],
+      ['Stir them once or twice','So the ones underneath get their turn in the air.'],
+      ['Only jar them after two clear days','Two days of no dent, not one. Then seal.'],
+      ['Check the glass tomorrow','Any misting inside means they were not dry. Tip them back out.']
+    ],
+    why:'One test, done daily, turns "dry enough" from a guess into a date. And checking the glass the next morning is the safety net — condensation is the only warning you get before mould.'
+   },
+   {
+    title:'Next Year\'s Envelopes',
+    blurb:'Save from three plants, make three envelopes, and set a reminder for spring.',
+    time:'30 minutes', help:'Grown-up helps name the plants', mess:'Tidy',
+    teks:'K.13(D)', teksNote:'closing the loop to next season',
+    materials:['Seed from three plants you can name','Paper','Glue or tape','A pen','A tin or a drawer','A calendar'],
+    steps:[
+      ['Pick three you can name for certain','If nobody can name it, do not save it. That is the rule.'],
+      ['Clean each lot','Brush off the bits of pod and flower. Bits hold moisture.'],
+      ['Fold three envelopes','Fold, glue two edges, leave the top open until you fill it.'],
+      ['Label before you fill','Plant, year, and where it grew. Writing it after means one gets forgotten.'],
+      ['Store cool and dark','A tin in a drawer. Not the windowsill, not above the stove.'],
+      ['Put a note in the calendar','Pick the month you should sow each one. Future you will not remember.']
+    ],
+    why:'The calendar note is the part everyone skips and the part that makes it work. A drawer of unlabelled seed in March is a drawer of mystery; three dated envelopes and a reminder is next year\'s garden already decided.'
+   }
+  ],
 
   activities:[
-    {id:'seedready', type:'sort', title:'Ready or Not?',
+    {id:'readyornot', type:'custom', render:'readyOrNot', title:'Ready or Not?', teks:'3.13(B)',
+      teaches:'Judge whether a seed is finished by looking at it',
+      prompt:'Look at it. Would you take that seed?'},
+
+    {id:'seedready', type:'sort', title:'Ready or Not?', teks:'3.13(B)',
       teaches:'Judge whether a seed is ready to save',
       prompt:'Is this seed ready to collect?',
       bins:[{id:'ready',label:'Ready to save',e:'&#9989;'},{id:'wait',label:'Wait longer',e:'&#8987;'}],
@@ -1836,7 +2295,7 @@ LESSONS.seedsaving = {
         {e:'&#127801;',t:'Flower still blooming',bin:'wait'},{e:'&#127823;',t:'Hard green tomato',bin:'wait'}
       ]},
 
-    {id:'seedsteps', type:'order', title:'Plant to Envelope',
+    {id:'seedsteps', type:'order', title:'Plant to Envelope', teks:'K.13(C)',
       teaches:'Sequence seed saving from collection to storage',
       prompt:'Tap the steps in order.',
       items:[
@@ -1848,7 +2307,7 @@ LESSONS.seedsaving = {
         {e:'&#129482;',t:'Store somewhere cool and dark'}
       ]},
 
-    {id:'seedstore', type:'pick', title:'Will It Grow Next Spring?',
+    {id:'seedstore', type:'pick', title:'Will It Grow Next Spring?', teks:'K.13(D)',
       teaches:'Choose storage that keeps seed alive',
       questions:[
         {q:'Seeds in a sealed jar on a sunny kitchen windowsill.',

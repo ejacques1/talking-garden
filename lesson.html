@@ -214,6 +214,70 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .crow .cl em{display:block;font-style:normal;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
 .crow.notyet .cl{color:var(--muted)}
 
+/* ---- Nourish, Create and Preserve hand-built activities ---- */
+.plate{position:relative;min-height:130px;border:4px solid #D2CCC0;border-radius:50%/34%;background:#fff;
+  margin-bottom:13px;padding:20px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;transition:.3s}
+.plate.good{border-color:var(--green);box-shadow:0 0 0 5px var(--green-l)}
+.onplate{font-size:30px;line-height:1;cursor:pointer;border-radius:50%;padding:5px;transition:.15s}
+.onplate:hover{transform:scale(1.15)}
+.plateempty{color:var(--faint);font-size:14.5px;font-weight:600}
+.gauges{display:grid;gap:10px;margin-bottom:13px}
+.gauge{display:grid;grid-template-columns:1fr 88px;gap:10px;align-items:center;font-size:13.5px;font-weight:700;color:var(--body)}
+.gauge span{grid-column:1/-1;color:var(--muted);font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.gbar{height:11px;background:var(--line);border-radius:99px;overflow:hidden}
+.gbar i{display:block;height:100%;background:var(--yellow-warm);border-radius:99px;transition:.35s}
+.gbar i.ok{background:var(--green)}
+.gauge b{font-family:var(--display);font-size:14px;text-align:right;color:var(--ink)}
+
+.picks{display:grid;gap:8px;margin-bottom:13px}
+.pickf{display:flex;align-items:center;gap:11px;background:#fff;border:2px solid var(--line);border-radius:14px;
+  padding:12px 15px;font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+.pickf:hover{border-color:var(--w)}
+.pickf.on{border-color:var(--w);background:var(--wl)}
+.pickf.seen{border-color:var(--green)}
+.pickf .e{font-size:24px}
+.journey{background:var(--beige);border-radius:14px;padding:15px;margin-bottom:12px}
+.stop{display:flex;align-items:center;gap:12px;background:#fff;border-radius:11px;padding:10px 14px;font-size:14.5px;font-weight:600}
+.stop .se{font-size:22px}
+.arrow{text-align:center;color:var(--faint);font-size:15px;line-height:1.5}
+
+.rig{display:grid;place-items:center;margin-bottom:12px}
+.rig svg{width:120px;height:130px}
+.dials{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:6px}
+.dial{background:var(--beige);border-radius:13px;padding:11px 8px;text-align:center}
+.dial span{display:block;font-size:11.5px;font-weight:800;color:var(--muted);margin-bottom:6px}
+.dialrow{display:flex;align-items:center;justify-content:center;gap:9px}
+.dialrow button{width:28px;height:28px;border-radius:50%;border:none;background:#fff;font-size:16px;
+  font-weight:800;color:var(--ink);cursor:pointer}
+.dialrow button:disabled{opacity:.3;cursor:not-allowed}
+.dialrow b{font-family:var(--display);font-size:18px;min-width:18px}
+.runs{display:grid;gap:5px;margin-top:12px}
+.run{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;background:var(--beige);
+  border-radius:10px;padding:8px 12px;font-size:13px}
+.run.best{background:var(--green-l)}
+.run b{font-family:var(--display);color:var(--muted)}
+.run span{color:var(--muted);font-family:ui-monospace,monospace;font-size:12px}
+.run i{font-style:normal;font-family:var(--display);font-weight:800;color:var(--ink)}
+
+.oven{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;background:linear-gradient(#E4F1FA,#EFF4E6);
+  border-radius:16px;padding:16px;margin-bottom:13px;transition:background .5s}
+.oven.hot{background:linear-gradient(#FBE0C6,#F6EFD9)}
+.ovenbox{position:relative;height:96px;background:#C9A46B;border-radius:11px;overflow:hidden}
+.oblack{position:absolute;left:8px;right:8px;bottom:8px;height:52%;background:#16283A;border-radius:7px}
+.olid{position:absolute;inset:6px;background:rgba(220,234,244,.55);border:2px solid rgba(255,255,255,.8);border-radius:8px}
+.ofoil{position:absolute;top:5px;right:8px;font-size:19px}
+.osnack{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font-size:24px;z-index:3}
+.ovtemp{text-align:center;min-width:104px}
+.ovtemp b{font-family:var(--display);font-size:26px;color:var(--ink);display:block}
+.ovtemp span{font-size:12px;color:var(--muted);font-weight:700}
+
+.dryrow{display:flex;align-items:center;justify-content:center;gap:34px;margin-bottom:14px;min-height:96px}
+.dryleaf{font-size:58px;line-height:1;transition:.4s}
+.drymould{font-size:26px;letter-spacing:3px}
+.seedcard{background:var(--beige);border-radius:16px;padding:22px;text-align:center;margin-bottom:14px}
+.seedart{font-size:52px;line-height:1;margin-bottom:9px}
+.seedcard b{font-size:16px;color:var(--ink)}
+
 /* ---- Soil's hand-built activities ---- */
 .jar{display:grid;place-items:center;margin-bottom:13px}
 .jarglass{position:relative;width:150px;height:172px;border:4px solid rgba(22,40,58,.16);border-radius:12px 12px 22px 22px;
@@ -484,9 +548,13 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 <script src="act-seasons.js"></script>
 <script src="act-protect.js"></script>
 <script src="act-soil.js"></script>
+<script src="act-nourish.js"></script>
+<script src="act-create.js"></script>
+<script src="act-preserve.js"></script>
 <script src="movie-seasons.js"></script>
 <script src="movie-protect.js"></script>
 <script src="movie-soil.js"></script>
+<script src="movie-rest.js"></script>
 <script src="lesson.js"></script>
 </body>
 </html>
