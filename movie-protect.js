@@ -129,6 +129,7 @@
       var cap  = root.querySelector('.pmv-cap');
       var dots = root.querySelectorAll('.pmv-dots i');
       var start= root.querySelector('.pmv-start');
+      var lipImg = root.querySelector('.pmv-guide img'), lipStop = null;
 
       var MIN_SCENE = 2600, sceneAt = 0;
 
