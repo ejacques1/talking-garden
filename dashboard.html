@@ -91,14 +91,14 @@ section{padding:44px 0 0}
 .topic.notyet:hover{transform:none;box-shadow:var(--shadow)}
 .topic-art{height:120px;display:grid;place-items:center;position:relative}
 .topic-art img{width:96px;height:auto}
-.a-grow{background:#EAF1E5}.a-protect{background:#F7EEDF}.a-soil{background:#F0E9E2}
-.a-create{background:var(--blue-l)}.a-nourish{background:#E9F0E4}.a-preserve{background:#F0EAF5}
+/* One ground for all six. The guide is what tells them apart. */
+.a-grow,.a-protect,.a-soil,.a-create,.a-nourish,.a-preserve{background:var(--beige)}
 
 .topic.locked .topic-art{filter:saturate(.72)}
 .lockbadge{position:absolute;top:11px;right:11px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;font-size:14px;box-shadow:var(--shadow);z-index:2}
 .topic-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
 .topic-body h3{font-size:20px;margin-bottom:11px}
-.topic-body .guide{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.topic-body .guide{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;color:var(--blue-d)}
 .prog{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:10px}
 .prog i{display:block;height:100%;background:var(--blue);border-radius:99px}
 .topic-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
@@ -321,7 +321,7 @@ function drawTopics(){
         '<img src="'+t.img+'" alt="'+esc(t.guide)+'">'+
       '</div>'+
       '<div class="topic-body">'+
-      '<div class="guide" style="color:'+t.color+'">'+esc(t.guide)+'</div>'+
+      '<div class="guide">'+esc(t.guide)+'</div>'+
       '<h3>'+esc(t.name)+'</h3>'+
       '<div class="prog"><i style="width:'+pct+'%"></i></div>'+
       '<div class="topic-foot"><span class="small">'+esc(note)+'</span>'+

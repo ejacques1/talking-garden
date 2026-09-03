@@ -105,6 +105,43 @@
       }
     },
 
+    /* A small "read this to me" button attached to a block of text.
+       Different job from button() below: that one mutes the whole
+       page, this one reads one specific thing on demand.
+
+       Why it exists: the platform claims read-aloud on every prompt,
+       and the quiz and activities did it — but the at-home build, the
+       longest text in a lesson, was silent. A five-year-old could not
+       read the thing they were supposed to go and make. */
+    readBtn: function(getText, label){
+      var b = document.createElement('button');
+      b.className = 'readbtn';
+      b.type = 'button';
+      b.innerHTML = '&#128266;';
+      b.title = label || 'Read this out loud';
+      b.setAttribute('aria-label', b.title);
+      b.onclick = function(e){
+        e.preventDefault(); e.stopPropagation();
+        if (!enabled()) setEnabled(true);
+        var t = typeof getText === 'function' ? getText() : getText;
+        stop();
+        say(String(t||'').replace(/\s+/g,' ').trim());
+      };
+      return b;
+    },
+
+    /* Attach a read-aloud button to every element matching a selector.
+       Called after each paint, so freshly drawn text gets one too. */
+    attach: function(root, selector){
+      var host = root || document;
+      [].forEach.call(host.querySelectorAll(selector), function(el){
+        if (el.dataset.readable) return;      /* already has one */
+        el.dataset.readable = '1';
+        var b = global.TGAudio.readBtn(function(){ return el.innerText || el.textContent; });
+        el.appendChild(b);
+      });
+    },
+
     /* A speaker button that mutes and unmutes, wherever it is placed. */
     button: function(){
       var b = document.createElement('button');

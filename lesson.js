@@ -63,9 +63,12 @@
   function paintBrand(){
     var c = W.color || '#0071BC';
     var root = document.documentElement.style;
+    /* Blue leads on every page and the ground stays beige, exactly as
+       the DHCG brand sheet specifies. The world is told apart by its
+       guide, not by re-tinting the whole interface. */
     root.setProperty('--w',  c);
     root.setProperty('--wd', shade(c,-0.28));
-    root.setProperty('--wl', shade(c, 0.86));
+    root.setProperty('--wl', '#E4F1FA');
     document.title = L.title + ' — DewLab';
     var tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.content = c;
 
@@ -112,6 +115,111 @@
     });
   }
 
+  /* ---------------- stage 2: the video ----------------
+     Restored from the plant lesson, which has had it since the start.
+     The new lesson page shipped with only a join button, so a
+     recording Ms. Nia pasted into the admin panel went nowhere on
+     eleven of the twelve lessons. */
+  var mode = 'live', recIdx = 0;
+
+  function embedUrl(u){
+    if (!u) return null;
+    u = String(u).trim();
+    var m;
+    if ((m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/)))
+      return 'https://www.youtube.com/embed/' + m[1];
+    if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/)))
+      return 'https://player.vimeo.com/video/' + m[1];
+    return null;   /* Zoom share links cannot be framed; we link out instead */
+  }
+
+  function paintVideo(){
+    var slot = el('videoSlot'); if (!slot) return;
+    var title = el('sessTitle'), when = el('sessWhen'), join = el('joinBtn');
+    var upcoming = TGSession.next(SLUG);
+    var history  = TGSession.past(SLUG);
+
+    /* ---- past sessions: every recording, never overwritten ---- */
+    if (mode === 'rec'){
+      join.style.display = 'none';
+      title.textContent = 'Past sessions';
+      if (!preDone()){
+        slot.innerHTML = '<div class="slotmsg"><div class="big">&#128274;</div>'+
+          '<b>Finish the before-check first</b>'+
+          '<span>Then you can watch any session you missed, any time</span></div>';
+        when.textContent = 'Opens once you have done the before-check';
+        return;
+      }
+      var withRec = history.filter(function(x){ return x.recording_url; });
+      if (!withRec.length){
+        /* Empty for a reason, so give the reason. An unexplained empty
+           tab looks broken and Ms. Nia gets asked about it. */
+        var why, sub;
+        if (upcoming){
+          why = 'The first recording lands after ' + TGSession.long(upcoming);
+          sub = 'Recordings are added once a session has run';
+        } else if (history.length){
+          why = 'Ms. Nia has not added the recording yet';
+          sub = 'Last session was ' + TGSession.long(history[0]);
+        } else {
+          why = 'No sessions have run yet';
+          sub = 'Recordings appear here after the first one';
+        }
+        slot.innerHTML = '<div class="slotmsg"><div class="big">&#127909;</div><b>'+esc(why)+'</b>'+
+          '<span>Every session stays here once it is added, so you can always catch up</span></div>';
+        when.textContent = sub;
+        return;
+      }
+      var cur = withRec[recIdx] || withRec[0];
+      var rEmb = embedUrl(cur.recording_url);
+      slot.innerHTML = rEmb
+        ? '<iframe src="'+rEmb+'" allowfullscreen title="Session recording"></iframe>'
+        : '<div class="slotmsg"><div class="big">&#9654;&#65039;</div><b>Watch the recording</b>'+
+          '<span>It opens in a new tab</span></div>';
+      when.innerHTML = withRec.map(function(x,i){
+        return '<button class="reclink'+(i===recIdx?' on':'')+'" data-r="'+i+'">'+esc(TGSession.short(x))+'</button>';
+      }).join('');
+      [].forEach.call(el('videoSlot').parentNode.querySelectorAll('.reclink'), function(b){
+        b.onclick = function(){ recIdx = +b.dataset.r; paintVideo(); };
+      });
+      if (!rEmb){
+        join.href = cur.recording_url; join.textContent = 'Watch the recording';
+        join.style.display = 'inline-flex';
+      }
+      return;
+    }
+
+    /* ---- the live session ---- */
+    title.textContent = L.title + ' — live session';
+    var movie = embedUrl((upcoming && upcoming.movie_url) || (history[0] && history[0].movie_url));
+    if (movie && preDone()){
+      /* A film Ms. Nia has recorded for this lesson plays here. */
+      slot.innerHTML = '<iframe src="'+movie+'" allowfullscreen title="'+esc(L.title)+'"></iframe>';
+    } else if (upcoming){
+      slot.innerHTML = '<span class="livebadge"><i></i>Coming up</span>'+
+        '<div class="slotmsg"><div class="big">&#127793;</div><b>We are in the garden</b>'+
+        '<span>'+(upcoming.join_url ? 'Tap join to come with us' : 'Ms. Nia adds the link in the admin panel')+'</span></div>';
+    } else {
+      slot.innerHTML = '<div class="slotmsg"><div class="big">&#128197;</div>'+
+        '<b>'+(history.length ? 'That session has finished' : 'No session scheduled yet')+'</b>'+
+        '<span>'+(history.length
+          ? 'Watch it under Past sessions — Ms. Nia will post the next date here'
+          : 'Ms. Nia will post the next live session here')+'</span></div>';
+    }
+
+    if (upcoming){
+      when.textContent = TGSession.line(upcoming, 'Ms. Nia');
+      join.href = upcoming.join_url || '#';
+      join.textContent = 'Join the session';
+      join.style.display = upcoming.join_url ? 'inline-flex' : 'none';
+    } else {
+      when.textContent = history.length
+        ? 'Last session · ' + TGSession.long(history[0])
+        : 'Ms. Nia will post the date here';
+      join.style.display = 'none';
+    }
+  }
+
   /* ---------------- stage 3: the build ---------------- */
   function paintBuild(){
     var b = L.build; if (!b) return;
@@ -130,6 +238,7 @@
           '<h4>How to do it</h4>'+
           '<ol class="steps">'+ b.steps.map(function(s){
               return '<li><div><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></div></li>'; }).join('') +'</ol>'+
+          '<button class="readall" id="readBuild">&#128266; Read the whole build out loud</button>'+
           '<div class="why"><b>Why it works</b>'+esc(b.why)+'</div>'+
           (L.safety ? '<div class="safety"><b>Safety.</b> '+esc(L.safety)+'</div>' : '')+
           '<div style="margin-top:18px">'+
@@ -140,6 +249,23 @@
         '</div>'+
       '</div>';
     if (el('builtBtn')) el('builtBtn').onclick = function(){ set(BUILD_KEY,'1'); paint(); };
+
+    var rb = el('readBuild');
+    if (rb) rb.onclick = function(){
+      if (!TGAudio.enabled()) TGAudio.setEnabled(true);
+      /* Read it the way a grown-up would: what it is, what you need,
+         then the steps in order. Not the raw DOM text, which would
+         include the button labels. */
+      var say = [b.title, b.blurb,
+        'You will need: ' + (b.materials||[]).join(', ') + '.',
+        'Here are the steps.']
+        .concat((b.steps||[]).map(function(st, i){
+          return 'Step ' + (i+1) + '. ' + st[0] + '. ' + st[1];
+        }))
+        .concat(['Why it works. ' + b.why])
+        .join(' ');
+      TGAudio.say(say);
+    };
   }
 
   /* ---------------- stage 4: the activities ---------------- */
@@ -230,13 +356,7 @@
     }
 
     /* stage 2 */
-    var when = TGSession.nextLine(SLUG);
-    el('sessTitle').textContent = L.title + ' — live session';
-    el('sessWhen').textContent  = when || 'Ms. Nia will post the date here';
-    var next = TGSession.next(SLUG) || TGSession.past(SLUG)[0];
-    var join = el('joinBtn');
-    if (next && next.join_url){ join.href = next.join_url; join.style.display=''; }
-    else { join.style.display='none'; }
+    paintVideo();
 
     var wi = el('wordIn'), wb = el('wordBtn');
     wi.disabled = wb.disabled = (!pre || unlocked);
@@ -296,6 +416,19 @@
     paintPills();
     paintBuild();
     paintActivities();
+
+    /* Everything on the page can be read out, not just the quiz. A
+       child who cannot yet read should be able to do the whole lesson
+       on their own, which is what the page has always claimed. */
+    if (global.TGAudio && TGAudio.attach){
+      TGAudio.attach(document, '.stage h2');
+      TGAudio.attach(document, '.stage > p.lede');
+      TGAudio.attach(document, '.build-hd h3, .build-hd p');
+      TGAudio.attach(document, '.steps b, .steps span');
+      TGAudio.attach(document, '.why, .safety');
+      TGAudio.attach(document, '.mats li');
+      TGAudio.attach(document, '.wordbox h4, .wordbox p');
+    }
   }
 
   /* ---------------- word entry ---------------- */
@@ -362,6 +495,12 @@
     el('outBtn').onclick = async function(){ await TG.signOut(); location.href='login.html'; };
     el('playX').onclick  = function(){ TGPlay.close(); TGQuiz.close(); };
     el('wordBtn').onclick = tryWord;
+    [].forEach.call(document.querySelectorAll('.stog'), function(b){
+      b.onclick = function(){
+        [].forEach.call(document.querySelectorAll('.stog'), function(x){ x.className='stog'; });
+        b.className = 'stog on'; mode = b.dataset.mode; recIdx = 0; paintVideo();
+      };
+    });
     el('wordIn').addEventListener('keydown', function(e){ if (e.key === 'Enter') tryWord(); });
 
     el('preBtn').onclick = function(){
