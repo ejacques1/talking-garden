@@ -67,7 +67,20 @@
   '.rtm-start{position:absolute;inset:0;z-index:4;display:grid;place-items:center;cursor:pointer;'+
     'background:rgba(10,20,30,.42)}'+
   '.rtm-start div{background:#fff;border-radius:99px;padding:13px 24px;font-family:inherit;'+
-    'font-size:15px;font-weight:800;color:#16283A;display:flex;align-items:center;gap:9px}';
+    'font-size:15px;font-weight:800;color:#16283A;display:flex;align-items:center;gap:9px}'+
+  /* The guide stands in the frame while he talks. Sunny IS the plant
+     in the other film, so he was always on screen; Root is a separate
+     character and had been left out of his own explainer. */
+  '.rtm-guide{position:absolute;left:10px;bottom:34px;z-index:4;width:21%;max-width:96px;'+
+    'transition:transform .5s cubic-bezier(.2,.8,.3,1);pointer-events:none}'+
+  '.rtm-guide img{width:100%;height:auto;display:block;'+
+    'filter:drop-shadow(0 6px 10px rgba(20,30,20,.28))}'+
+  '.rtm-guide.talk{animation:rtmBob 1.7s ease-in-out infinite}'+
+  '@keyframes rtmBob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-5px) rotate(1deg)}}'+
+  /* A speech tail, so it reads as him saying the caption rather than
+     him standing next to a subtitle. */
+  '.rtm-cap{padding-left:29%!important}'+
+  '@media(max-width:520px){.rtm-guide{width:25%;bottom:30px}.rtm-cap{padding-left:31%!important;font-size:14.5px}}';
 
   /* ---- the picture ---- */
   function lettuce(state){
@@ -149,13 +162,14 @@
     document.head.appendChild(st);
   }
 
-  function mount(host, guideName){
+  function mount(host, guideName, guideImg){
     if (!host) return;
     injectCSS();
     var i = 0, playing = false;
 
     host.innerHTML =
       '<div class="rtm">'+ svg(SCENES[0]) +
+        '<div class="rtm-guide"><img src="'+(guideImg||'img/guide-root.png')+'" alt="'+(guideName||'Root')+'"></div>'+
         '<div class="rtm-dots">'+ SCENES.map(function(){ return '<i></i>'; }).join('') +'</div>'+
         '<div class="rtm-month"></div>'+
         '<div class="rtm-ctl"><button data-a="replay">Start again</button></div>'+
@@ -164,6 +178,7 @@
       '</div>';
 
     var root  = host.querySelector('.rtm');
+    var guide = root.querySelector('.rtm-guide');
     var cap   = root.querySelector('.rtm-cap');
     var month = root.querySelector('.rtm-month');
     var dots  = root.querySelectorAll('.rtm-dots i');
@@ -175,7 +190,7 @@
          move in opposite directions, so there is no single stack of
          things to switch on. */
       var old = root.querySelector('svg');
-      old.insertAdjacentHTML('afterend', svg(sc));
+      old.insertAdjacentHTML('beforebegin', svg(sc));
       old.remove();
       root.style.background = sc.month === 'July'
         ? 'linear-gradient(#FBE0C6,#F6EFD9 62%)'
@@ -187,7 +202,11 @@
 
     function advance(){
       if (!playing) return;
-      if (i >= SCENES.length - 1){ playing = false; return; }
+      if (i >= SCENES.length - 1){
+        playing = false;
+        if (guide) guide.classList.remove('talk');
+        return;
+      }
       i++; paint(); narrate();
     }
 
@@ -201,7 +220,9 @@
 
     function play(){
       start.style.display = 'none';
-      playing = true; i = 0; paint(); narrate();
+      playing = true; i = 0;
+      if (guide) guide.classList.add('talk');
+      paint(); narrate();
     }
 
     start.onclick = play;

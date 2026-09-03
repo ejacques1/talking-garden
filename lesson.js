@@ -182,7 +182,7 @@
         el('sessWhen').textContent = 'Opens once you have done the before-check';
         return;
       }
-      mv.mount(slot, g);
+      mv.mount(slot, g, (W && W.img) || null);
       el('sessWhen').textContent = 'A short animation · narrated · about a minute';
       return;
     }
