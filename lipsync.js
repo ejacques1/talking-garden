@@ -23,6 +23,17 @@
     return String(src||'').replace(/\.png(\?.*)?$/, '-talk.png$1');
   }
 
+  /* OFF.
+     The two-frame swap read as random flapping rather than speech,
+     because real lip sync follows the sounds being made and this
+     could only guess at a rhythm. A still character is better than a
+     bad moving one.
+
+     The open-mouth frames stay in img/ — they are what a proper
+     talking-head tool needs as input, so nothing here is wasted.
+     Flip this to true to see the old behaviour. */
+  var ENABLED = false;
+
   var Lip = {
 
     /* Preload the open frame so the first swap is not a blank flash. */
@@ -32,7 +43,7 @@
 
     /* Start mouthing on an <img>. Returns a stop function. */
     start: function (img){
-      if (!img) return function(){};
+      if (!ENABLED || !img) return function(){};
       var closed = img.getAttribute('src');
       var open   = talkSrc(closed);
       if (open === closed) return function(){};
