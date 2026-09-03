@@ -76,6 +76,9 @@
       var root = host.querySelector('.pmv'), svg = root.querySelector('svg');
       var cap = root.querySelector('.pmv-cap'), dots = root.querySelectorAll('.pmv-dots i');
       var start = root.querySelector('.pmv-start'), i = 0, playing = false;
+      var lipImg = root.querySelector('.pmv-guide img'), lipStop = null;
+
+      var MIN_SCENE = 2600, sceneAt = 0;
 
       function paint(){
         svg.innerHTML = SCENES[i].draw();
@@ -84,10 +87,17 @@
       }
       function advance(){
         if (!playing) return;
-        if (i >= SCENES.length - 1){ playing = false; return; }
+        /* A scene has to stay up long enough to read. Where audio is
+           blocked until the first tap, the speech API reports the line
+           as finished immediately and the whole film raced past. */
+        var since = Date.now() - sceneAt;
+        if (since < MIN_SCENE){ setTimeout(advance, MIN_SCENE - since); return; }
+        if (i >= SCENES.length - 1){ playing = false; if (lipStop){ lipStop(); lipStop = null; } return; }
         i++; paint(); narrate();
       }
       function narrate(){
+        sceneAt = Date.now();
+        if (global.TGLip && lipImg){ if (lipStop) lipStop(); lipStop = TGLip.start(lipImg); }
         if (global.TGAudio && TGAudio.supported && TGAudio.enabled())
           TGAudio.sayThen(SCENES[i].say, advance, 4400);
         else setTimeout(advance, 4200);
