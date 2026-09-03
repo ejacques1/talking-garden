@@ -56,7 +56,46 @@ LESSONS.plant = {
   sources:[
     {name:'Ag in the Classroom', url:'https://agclassroom.org/'},
     {name:'KidsGardening',       url:'https://kidsgardening.org/'}
-  ]
+  ],
+
+  /* The oldest lesson, and the last to get a run sheet. Its activities
+     and film are hand-built inside topic.html; only the five minutes
+     in front of the camera were missing. */
+  session:{
+    minutes:5, word:'',
+    kit:['A seed packet, and a few loose seeds to hold up',
+         'A seedling just up — days old, still tiny',
+         'A plant in full leaf',
+         'One in flower, and one that has set fruit or gone to seed',
+         'A plant you can pull up, to show the roots'],
+    runsheet:[
+      ['0:00','Hello, holding one seed',
+       'Say who you are. Hold up a single seed between two fingers, close to the camera. \"Everything you are about to see was inside this.\"'],
+      ['0:40','Walk the stages, in order, in the beds',
+       'Seedling, then leafy plant, then flower, then fruit or seed head. One walk, one stop at each. Say the stage name every time so they hear it four times.',
+       'K.13(C)'],
+      ['1:50','Pull one up and show the roots',
+       'Shake the soil off. \"This half nobody ever sees. It is drinking, and it is holding the whole thing up.\"',
+       '2.13(A)'],
+      ['2:40','Name the parts on a real plant',
+       'Point at roots, stem, leaves, flower on the plant in your hand. Ask what each one is FOR before you answer it.',
+       '2.13(A)'],
+      ['3:20','Open the seed head',
+       'Break open a dried flower head or a pod so the new seeds fall into your palm. \"Same as the one I started with. That is why it is a cycle and not a line.\"',
+       'K.13(C)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','What to plant this week',
+       'Hold the seed packet up again. Tell them to plant one, today, in a cup. Point them at the build.',
+       'K.12(A)'],
+      ['4:45','Goodbye','Wave.']
+    ],
+    dont:[
+      'Do not draw the cycle on paper — Sunny\u2019s animation already does. Walk it in the beds.',
+      'Do not list what a plant needs. That is what the activity is for.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  }
 };
 
 /* ==================================================================
@@ -992,7 +1031,46 @@ LESSONS.compost = {
       opts:[{e:'&#9851;&#65039;',t:'A cycle — things going round again',ok:1},{e:'&#10145;&#65039;',t:'A one-way trip'},{e:'&#128683;',t:'Waste'},{e:'&#128176;',t:'Shopping'}]}
   ],
 
-  build:{
+  movie:{ render:'compost', minutes:1, guide:'Wiggles' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['The compost bin or heap, and a fork to turn it',
+         'A handful of fresh scraps to add on camera',
+         'Some finished compost from the bottom — the dark crumbly stuff',
+         'One thing that should NOT go in: cheese, or a chicken bone',
+         'A soil thermometer if you have one'],
+    runsheet:[
+      ['0:00','Hello, standing at the bin',
+       'Say who you are and where you are. Lift the lid. "Everything in here was rubbish last month."'],
+      ['0:35','Put today\u2019s scraps in',
+       'Add the fresh scraps on camera and name each one. Then hold up the cheese or the bone: "Not this. This brings animals."',
+       '2.11(B)'],
+      ['1:30','Dig down and show the middle',
+       'Turn it with the fork so the middle comes up. If you have a thermometer, put it in and show the reading. "Feel that? That is not the sun. That is them working."',
+       '4.12(B)'],
+      ['2:30','Find something alive',
+       'A worm, a woodlouse, anything. Hold it up. "This is who is doing it. Nobody is paying them."',
+       '4.12(B)'],
+      ['3:20','Hold up the finished compost',
+       'Take a handful of the dark crumbly stuff from the bottom. Smell it on camera. "That was banana peel. Now it is soil, and I am about to grow food in it."',
+       '3.10(B)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','What to save this week',
+       'Ask them to save one day of fruit and vegetable scraps instead of binning them. Point them at the build.',
+       '3.11(C)'],
+      ['4:45','Goodbye','Wave.']
+    ],
+    dont:[
+      'Do not explain decomposition from scratch — the animation does it. Dig it up instead.',
+      'Do not list the greens and browns. That is what the sorting activity is for.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Compost Jar',
     blurb:'A jar on a windowsill that shows you decomposition happening, over two weeks, without a garden.',
     time:'15 minutes to build, two weeks to watch',
@@ -1006,11 +1084,48 @@ LESSONS.compost = {
       ['Somewhere warm','A windowsill out of direct blazing sun is right.'],
       ['Draw it weekly','Draw the jar once a week. What is disappearing first? What is stubborn?']
     ],
-    why:'Decomposition is invisible in a garden bin and obvious in a glass jar. Two weeks of drawings shows a child that soft wet things go first and dry woody things take far longer — which is the whole greens-and-browns idea, discovered rather than told.'
-  },
+    why:'Decomposition is invisible in a garden bin and obvious in a glass jar. Two weeks of drawings shows a child that soft wet things go first and dry woody things take far longer — which is the whole greens-and-browns idea, discovered rather than told.',
+    teks:'4.12(B)', teksNote:'decomposers, watched at work'
+   },
+   {
+    title:'The Scrap Diary',
+    blurb:'Weigh one week of kitchen scraps and find out how much your house was throwing away.',
+    time:'A minute a day, for a week', help:'Grown-up with the scales', mess:'A little messy',
+    teks:'3.11(C)', teksNote:'how much reducing and reusing actually saves',
+    materials:['A tub for fruit and vegetable scraps','Kitchen scales','Paper and a pencil','One week'],
+    steps:[
+      ['Put a tub by the chopping board','Peelings, cores, ends. Fruit and vegetable only.'],
+      ['Weigh it at the same time each day','Write the number down. Empty the tub into the compost.'],
+      ['Do not change what you eat','This week is for finding out what normal looks like. Changing it comes after.'],
+      ['Add it up on day seven','What is the total? Now multiply by fifty-two.'],
+      ['Say what that means','That is what your house would have sent to landfill this year, and it is now soil instead.']
+    ],
+    why:'A number a child measured themselves lands in a way a statistic never does. The times-fifty-two step at the end is the whole build — a small tub becomes something they can picture filling a room.'
+   },
+   {
+    title:'The Worm Hotel',
+    blurb:'Layers of sand and soil in a jar, some worms, and a week of watching them mix it.',
+    time:'20 minutes, then a week', help:'Grown-up helps find the worms', mess:'Messy',
+    teks:'4.12(B)', teksNote:'what decomposers do to soil',
+    materials:['A large clear jar','Soil','Sand','Dry leaves','2 or 3 worms from the garden','Dark paper or a cloth','Water in a spray bottle'],
+    steps:[
+      ['Layer it','Soil, then sand, then soil, then sand. Keep the bands separate and obvious.'],
+      ['Leaves on top','A handful of dry leaves. That is their food.'],
+      ['Add the worms','Two or three. Dig gently, and put them on the surface — let them go down themselves.'],
+      ['Damp and dark','Spray until it feels like a wrung-out sponge, then wrap the jar in dark paper. Worms work in the dark.'],
+      ['Look after a week','Unwrap it. What happened to your neat stripes? Where did the leaves go?'],
+      ['Put them back','Return the worms to the garden when you are done. They have work to do.']
+    ],
+    why:'The stripes are the measurement. Worms do not just eat — they move material up and down, and a week of that turns four clean bands into a mixed mess. That mixing is what makes soil soil, and it is invisible anywhere except a jar.'
+   }
+  ],
 
   activities:[
-    {id:'compsort', type:'sort', title:'In the Bin or Not?',
+    {id:'compostjar', type:'custom', render:'compostJar', title:'Twelve Weeks in a Jar', teks:'4.12(B)',
+      teaches:'See which things rot fast and which take months',
+      prompt:'Drag the weeks forward and watch what disappears first.'},
+
+    {id:'compsort', type:'sort', title:'In the Bin or Not?', teks:'2.11(B)',
       teaches:'Sort what belongs in a home compost bin',
       prompt:'Would this go in a home compost bin?',
       bins:[{id:'yes',label:'Compost it',e:'&#9851;&#65039;'},{id:'no',label:'Keep it out',e:'&#10060;'}],
@@ -1021,7 +1136,7 @@ LESSONS.compost = {
         {e:'&#128717;',t:'Plastic bag',bin:'no'},{e:'&#129387;',t:'Metal can',bin:'no'}
       ]},
 
-    {id:'compgb', type:'sort', title:'Greens and Browns',
+    {id:'compgb', type:'sort', title:'Greens and Browns', teks:'3.10(B)',
       teaches:'Tell wet nitrogen-rich greens from dry carbon-rich browns',
       prompt:'Wet and fresh is a green. Dry and papery is a brown.',
       bins:[{id:'green',label:'Greens (wet)',e:'&#129388;'},{id:'brown',label:'Browns (dry)',e:'&#127810;'}],
@@ -1032,7 +1147,7 @@ LESSONS.compost = {
         {e:'&#127806;',t:'Straw',bin:'brown'},{e:'&#128220;',t:'Shredded paper',bin:'brown'}
       ]},
 
-    {id:'comporder', type:'order', title:'Peel to Soil',
+    {id:'comporder', type:'order', title:'Peel to Soil', teks:'4.12(B)',
       teaches:'Sequence what happens to a scrap in a compost pile',
       prompt:'Tap them in the order it actually happens.',
       items:[
@@ -1044,7 +1159,7 @@ LESSONS.compost = {
         {e:'&#127793;',t:'It feeds a new plant'}
       ]},
 
-    {id:'compfix', type:'pick', title:'Fix the Pile',
+    {id:'compfix', type:'pick', title:'Fix the Pile', teks:'3.11(C)',
       teaches:'Diagnose a compost pile that is not working',
       questions:[
         {q:'The pile is soggy and smells sour.',
@@ -1121,7 +1236,44 @@ LESSONS.soillayers = {
       opts:[{e:'&#128168;',t:'Lose soil down the hill',ok:1},{e:'&#127793;',t:'Grow faster'},{e:'&#129704;',t:'Turn to stone'},{e:'&#128683;',t:'Stay exactly the same'}]}
   ],
 
-  build:{
+  movie:{ render:'soillayers', minutes:1, guide:'Wiggles' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['A spade, and somewhere you are allowed to dig a hole',
+         'A jar of garden soil and water, shaken the night before and left to settle',
+         'A patch of bare ground and a watering can',
+         'A handful of sand and a handful of clay soil, if you have both'],
+    runsheet:[
+      ['0:00','Hello, and dig the hole',
+       'Say who you are. Then dig, on camera, without narrating. Let them watch the colour change as you go down.'],
+      ['0:50','Point at the layers in your own hole',
+       'Run a finger down the side. "Dark here. Paler here. That is not one thing called dirt — that is layers."',
+       '3.10(B)'],
+      ['1:40','Feel the difference',
+       'Rub sand between your fingers, then wet clay. Squeeze the clay into a shape and hold it up. "Sand will not do that. Same rain falls on both, but the clay holds it."',
+       '3.10(B)'],
+      ['2:40','Show last night\u2019s jar',
+       'Hold up the settled jar. Point at the bands from the bottom. "I shook this last night. It sorted itself while I slept. Heaviest first."',
+       '3.10(B)'],
+      ['3:20','Pour water on bare ground',
+       'Tip the watering can onto a bare slope and film the muddy run-off. "That brown water is soil leaving. It took hundreds of years to make and it is going down the drain."',
+       '4.10(B)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','What to look at this week',
+       'Ask them to find bare ground where they live and think about where it goes when it rains. Point them at the build.'],
+      ['4:45','Goodbye','Wave.']
+    ],
+    dont:[
+      'Do not name the layers off a diagram — the animation does that. Point at them in a real hole.',
+      'Do not explain the jar test before you show it. Show the settled jar first and let them work out why.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Soil Shake Test',
     blurb:'One jar, one shake, one night of waiting — and your soil sorts itself into layers so you can read what it is made of.',
     time:'15 minutes, then overnight',
@@ -1135,11 +1287,49 @@ LESSONS.soillayers = {
       ['Leave it overnight','Do not touch it. Put it somewhere flat and go to bed.'],
       ['Read the layers','Sand settles first at the bottom, then silt, then clay on top. Measure each band and see which one your soil has most of.']
     ],
-    why:'Heavy particles fall fastest, so the jar sorts itself by particle size while you sleep. In the morning the child is not being told what their soil is made of — they are measuring it, with a ruler, from their own back yard.'
-  },
+    why:'Heavy particles fall fastest, so the jar sorts itself by particle size while you sleep. In the morning the child is not being told what their soil is made of — they are measuring it, with a ruler, from their own back yard.',
+    teks:'3.10(B)', teksNote:'what your own soil is actually made of'
+   },
+   {
+    title:'The Bare Ground Race',
+    blurb:'Two trays, one planted and one bare. Tip water down both and watch which one loses its soil.',
+    time:'25 minutes', help:'Grown-up outside, it gets messy', mess:'Messy',
+    teks:'4.10(B)', teksNote:'why roots stop erosion',
+    materials:['2 baking trays or shallow boxes','Soil','Grass turf, or a tray you planted weeks ago','A jug of water','2 clear cups','A book to prop the trays'],
+    steps:[
+      ['Fill both trays with soil','Same depth in each. One stays bare; the other gets the turf or your planted patch laid on top.'],
+      ['Prop them at the same angle','Same book under each, so both slopes match. That is what makes it fair.'],
+      ['A cup at the bottom of each','Position them to catch whatever runs off.'],
+      ['Pour the same water down both','Slowly, from the same height, the same amount. This is the rain.'],
+      ['Hold the two cups up together','One will be muddy brown. One will be nearly clear.'],
+      ['Say what the brown is','That brown is not dirt in the water. It is topsoil, leaving.']
+    ],
+    why:'Erosion is normally something a child is told about. Here they cause it, in thirty seconds, and hold the evidence in a cup. The two cups side by side make the argument better than any sentence about root systems.'
+   },
+   {
+    title:'The Soil Ribbon Test',
+    blurb:'Roll wet soil between your fingers. How long a ribbon it makes tells you what kind you have.',
+    time:'15 minutes', help:'Kid-led', mess:'A little messy',
+    teks:'3.10(B)', teksNote:'telling sand, silt and clay apart by hand',
+    materials:['A handful of soil from two or three different places','A little water','A ruler','Paper to record on'],
+    steps:[
+      ['Wet a handful','Add water a few drops at a time until it holds together like putty. Not sloppy.'],
+      ['Squeeze it upward','Push it between your thumb and the side of your finger so a flat ribbon comes out over the edge.'],
+      ['Measure before it breaks','How long did the ribbon get? Under an inch is sandy. An inch or two has some clay. Longer than two is clay-heavy.'],
+      ['Feel it too','Gritty means sand. Smooth like flour means silt. Sticky means clay.'],
+      ['Test another place','A pot, a flowerbed, a path. Write down each ribbon length.'],
+      ['Say which is best for growing','And what you would add to the worst one.']
+    ],
+    why:'Soil scientists genuinely use this test, hands only, no equipment. A child doing the real thing and getting a real answer about their own garden beats any diagram of soil triangles.'
+   }
+  ],
 
   activities:[
-    {id:'soilorder', type:'order', title:'Top to Bottom',
+    {id:'digdown', type:'custom', render:'digDown', title:'Dig Down', teks:'3.10(B)',
+      teaches:'Go through the soil layers and find out how long each took to make',
+      prompt:'Tap each layer, from the top down.'},
+
+    {id:'soilorder', type:'order', title:'Top to Bottom', teks:'3.10(B)',
       teaches:'Put the soil layers in order from the surface down',
       prompt:'Tap them in order, starting at the very top.',
       items:[
@@ -1150,7 +1340,7 @@ LESSONS.soillayers = {
         {e:'&#127956;',t:'Bedrock'}
       ]},
 
-    {id:'soiltypes', type:'match', title:'Feel the Difference',
+    {id:'soiltypes', type:'match', title:'Feel the Difference', teks:'3.10(B)',
       teaches:'Match a soil type to how it behaves',
       prompt:'Tap a soil, then tap what it does.',
       pairs:[
@@ -1160,7 +1350,7 @@ LESSONS.soillayers = {
         {a:{e:'&#9851;&#65039;',t:'Compost'},  b:{t:'Crumbly and dark — feeds the soil'}}
       ]},
 
-    {id:'soillife', type:'sort', title:'Alive Down There',
+    {id:'soillife', type:'sort', title:'Alive Down There', teks:'4.12(B)',
       teaches:'Separate the living parts of soil from the non-living',
       prompt:'Is this part of soil alive?',
       bins:[{id:'alive',label:'Living',e:'&#129440;'},{id:'not',label:'Not living',e:'&#129704;'}],
@@ -1171,7 +1361,7 @@ LESSONS.soillayers = {
         {e:'&#128168;',t:'Air',bin:'not'},{e:'&#129704;',t:'Small stones',bin:'not'}
       ]},
 
-    {id:'soilcare', type:'pick', title:'Save the Soil',
+    {id:'soilcare', type:'pick', title:'Save the Soil', teks:'4.10(B)',
       teaches:'Choose the action that keeps soil where it belongs',
       questions:[
         {q:'A bare slope in your yard washes muddy water onto the path every time it rains.',

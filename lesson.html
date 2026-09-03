@@ -214,6 +214,26 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .crow .cl em{display:block;font-style:normal;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
 .crow.notyet .cl{color:var(--muted)}
 
+/* ---- Soil's hand-built activities ---- */
+.jar{display:grid;place-items:center;margin-bottom:13px}
+.jarglass{position:relative;width:150px;height:172px;border:4px solid rgba(22,40,58,.16);border-radius:12px 12px 22px 22px;
+  background:linear-gradient(rgba(255,255,255,.7),rgba(238,244,235,.7));overflow:hidden;
+  display:flex;flex-wrap:wrap;align-content:flex-start;gap:5px;padding:11px}
+.scrap{font-size:25px;line-height:1;position:relative;z-index:2;transition:opacity .5s ease,transform .5s ease}
+.scrap.gone{opacity:0;transform:scale(.3) translateY(26px)}
+.jarsoil{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#6B4A2A,#4A331C);transition:height .5s ease}
+.weeks{background:var(--beige);border-radius:16px;padding:14px 17px}
+.weeks b{font-family:var(--display);font-size:20px;color:var(--ink);display:block;text-align:center;margin-bottom:7px}
+.weeks input[type=range]{width:100%;accent-color:var(--green)}
+
+.ground{border-radius:14px;overflow:hidden;height:230px;display:flex;flex-direction:column;margin-bottom:13px}
+.layer{flex:none;border:none;cursor:pointer;color:#fff;font-family:var(--sans);font-size:13.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:space-between;padding:0 15px;text-align:left;
+  text-shadow:0 1px 3px rgba(0,0,0,.45);transition:.15s;position:relative}
+.layer:hover{filter:brightness(1.13)}
+.layer.on{box-shadow:inset 0 0 0 3px var(--yellow-warm)}
+.layer i{font-style:normal;font-size:14px}
+
 /* ---- Protect's hand-built activities ---- */
 .meadow{position:relative;height:210px;background:linear-gradient(#E7F0FA,#EFF6E7 60%);border-radius:16px;margin-bottom:13px;overflow:hidden}
 .bloom{position:absolute;transform:translate(-50%,-50%);background:none;border:2px solid transparent;border-radius:50%;
@@ -463,8 +483,10 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 <script src="play.js"></script>
 <script src="act-seasons.js"></script>
 <script src="act-protect.js"></script>
+<script src="act-soil.js"></script>
 <script src="movie-seasons.js"></script>
 <script src="movie-protect.js"></script>
+<script src="movie-soil.js"></script>
 <script src="lesson.js"></script>
 </body>
 </html>
