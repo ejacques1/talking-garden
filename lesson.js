@@ -136,6 +136,8 @@
     return r ? { url:r, minutes:(L.session.minutes||5) } : null;
   }
 
+  function isVideoFile(u){ return /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(String(u||'')); }
+
   function embedUrl(u){
     if (!u) return null;
     u = String(u).trim();
@@ -145,6 +147,23 @@
     if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/)))
       return 'https://player.vimeo.com/video/' + m[1];
     return null;   /* Zoom share links cannot be framed; we link out instead */
+  }
+
+  /* Both versions of the opener can exist at once — the filmed one and
+     the one drawn in code — so the two can be put in front of someone
+     and judged rather than argued about. */
+  var showCoded = false;
+
+  function otherVersionLink(){
+    var mv2 = L.movie && global.TGMovies && global.TGMovies[L.movie.render];
+    if (!(L.movie && L.movie.url) || !mv2) return '';
+    return ' &middot; <a href="#" id="flipVersion" style="color:var(--wd);font-weight:700">'+
+           (showCoded ? 'see the filmed one' : 'see the simple version') + '</a>';
+  }
+
+  function wireFlip(){
+    var a = el('flipVersion');
+    if (a) a.onclick = function(e){ e.preventDefault(); showCoded = !showCoded; paintVideo(); wireFlip(); };
   }
 
   function paintVideo(){
@@ -187,10 +206,19 @@
          one drawn in code. The code version is a placeholder that means
          the lesson works before anything has been animated, not the
          thing we are aiming for. */
+      /* An uploaded file plays straight from the page — no YouTube, no
+         processing wait, which matters when the point is to look at it
+         in the next five minutes. */
+      if (isVideoFile(L.movie.url)){
+        slot.innerHTML = '<video src="'+esc(L.movie.url)+'" controls playsinline '+
+                         'style="width:100%;height:100%;display:block;background:#000"></video>';
+        el('sessWhen').innerHTML = 'Watch it as often as you like' + otherVersionLink();
+        return;
+      }
       var filmed = embedUrl(L.movie.url);
       if (filmed){
         slot.innerHTML = '<iframe src="'+filmed+'" allowfullscreen title="'+esc(L.title)+'"></iframe>';
-        el('sessWhen').textContent = 'Watch it as often as you like';
+        el('sessWhen').innerHTML = 'Watch it as often as you like' + otherVersionLink();
         return;
       }
       if (L.movie.url && !filmed){
@@ -203,6 +231,11 @@
         el('joinBtn').textContent = 'Watch it';
         el('joinBtn').style.display = 'inline-flex';
         el('sessWhen').textContent = 'A short film with ' + esc(g);
+        return;
+      }
+      if (showCoded && mv){
+        mv.mount(slot, g, (W && W.img) || null);
+        el('sessWhen').innerHTML = 'The simple version, drawn in code' + otherVersionLink();
         return;
       }
       if (!mv){
@@ -642,6 +675,7 @@
 
     /* stage 2 */
     paintVideo();
+    wireFlip();
 
     var wi = el('wordIn'), wb = el('wordBtn');
     wi.disabled = wb.disabled = (!pre || unlocked);
@@ -772,7 +806,7 @@
     [].forEach.call(document.querySelectorAll('.stog'), function(b){
       b.onclick = function(){
         [].forEach.call(document.querySelectorAll('.stog'), function(x){ x.className='stog'; });
-        b.className = 'stog on'; mode = b.dataset.mode; recIdx = 0; paintVideo();
+        b.className = 'stog on'; mode = b.dataset.mode; recIdx = 0; paintVideo(); wireFlip();
       };
     });
     el('wordIn').addEventListener('keydown', function(e){ if (e.key === 'Enter') tryWord(); });
