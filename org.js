@@ -10,11 +10,9 @@ window.DHCG = {
   name:  'Dew of Heaven Children’s Garden',
   place: 'Spring, Texas',
 
-  /* Signs every certificate. TODO: Kiara's surname — she signs as
-     Executive Director, and the certificate should carry her full
-     name rather than a first name. */
+  /* Signs every certificate. */
   signer: {
-    name:  'Kiara',
+    name:  'Kiara Syph',
     title: 'Executive Director'
   }
 };
