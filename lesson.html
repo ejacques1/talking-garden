@@ -217,14 +217,27 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .col h5{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
 .big{font-size:40px;text-align:center;margin-bottom:6px}
 
-.readbtn{background:var(--wl);border:1px solid var(--line);border-radius:50%;width:26px;height:26px;
-  font-size:12px;line-height:1;cursor:pointer;margin-left:8px;vertical-align:middle;flex:none;padding:0}
-.readbtn:hover{background:var(--yellow)}
-.sn h2 .readbtn{margin-left:10px}
-.steps b .readbtn,.build-hd h3 .readbtn{margin-left:7px}
-.readall{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);border:none;border-radius:999px;
-  padding:9px 17px;font-family:var(--sans);font-size:13.5px;font-weight:700;color:#5C4E10;cursor:pointer;margin-bottom:14px}
-.readall:hover{background:var(--yellow-warm)}
+/* One read-aloud button per card, not one per sentence. Thirty-three
+   speaker icons on a page read as clutter and stopped anyone noticing
+   any of them. */
+.readcard{display:inline-flex;align-items:center;gap:7px;background:var(--yellow);border:none;border-radius:999px;
+  padding:8px 15px;font-family:var(--sans);font-size:13px;font-weight:700;color:#5C4E10;cursor:pointer;
+  margin-left:auto;flex:none;white-space:nowrap}
+.readcard:hover{background:var(--yellow-warm)}
+.readcard.on{background:var(--yellow-warm)}
+.readcard.on::after{content:'\25A0';font-size:9px}
+
+/* Any sentence can be tapped to hear it. No icon, because the icon
+   was the problem — a faint underline on hover is enough for a
+   grown-up, and the card button is there for a child. */
+.speak{cursor:pointer;border-radius:6px;transition:background .12s}
+.speak:hover{background:var(--yellow);box-shadow:0 0 0 4px var(--yellow)}
+.speak.saying{background:var(--yellow-warm);box-shadow:0 0 0 4px var(--yellow-warm)}
+
+.readhint{display:flex;align-items:center;gap:9px;background:var(--yellow);border-radius:12px;
+  padding:11px 15px;font-size:13.5px;color:#5C5320;margin-bottom:16px}
+.readhint button{margin-left:auto;background:none;border:none;font-family:var(--sans);font-size:13px;
+  font-weight:700;color:#5C5320;cursor:pointer;text-decoration:underline}
 
 .resetbar{text-align:center;padding:26px 0 40px}
 .resetbar button{background:none;border:none;font-family:var(--sans);font-size:13px;color:var(--faint);cursor:pointer;text-decoration:underline}

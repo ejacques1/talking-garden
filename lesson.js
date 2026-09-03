@@ -220,6 +220,107 @@
     }
   }
 
+  /* ---------------- read aloud ----------------
+     One button per card and tap-any-sentence, rather than an icon
+     beside every line. The icons were noise, and noise is why nobody
+     used them.
+
+     What each card says is composed here rather than scraped from the
+     page, so the voice reads the lesson and not the button labels,
+     and reads the build in the order a person would say it. */
+  function spoken(stage){
+    var b = L.build || {}, n = (L.competencies||[]).length * 2;
+    if (stage === 1)
+      return 'Before we start. A few picture questions, read out loud. '+
+             'There is no pass or fail — it just marks where you are starting from. '+
+             'There are ' + n + ' questions and it takes about four minutes.';
+    if (stage === 2){
+      var nx = TGSession.next(SLUG), lastOne = TGSession.past(SLUG)[0];
+      return 'Meet us live. Join the live session with your guide. '+
+             'Somewhere in the middle they will say the secret word. '+
+             (nx ? 'The next session is ' + TGSession.long(nx) + '.'
+                 : lastOne ? 'The last session was ' + TGSession.long(lastOne) +
+                             '. You can watch it under past sessions.'
+                           : 'No session is scheduled yet.') +
+             ' When you have the secret word, type it in the yellow box to open the rest of the lesson.';
+    }
+    if (stage === 3)
+      return [b.title, b.blurb,
+              'You will need: ' + (b.materials||[]).join(', ') + '.',
+              'Here are the steps.']
+        .concat((b.steps||[]).map(function(st, i){
+          return 'Step ' + (i+1) + '. ' + st[0] + '. ' + st[1]; }))
+        .concat(['Why it works. ' + b.why])
+        .concat(L.safety ? ['Safety. ' + L.safety] : [])
+        .join(' ');
+    if (stage === 4)
+      return 'Play and practise. Short games you can play as many times as you like. '+
+             'There are ' + (L.activities||[]).length + '. ' +
+             (L.activities||[]).map(function(a){ return a.title + '. ' + a.teaches + '.'; }).join(' ');
+    return 'Show what you grew. The same skills, different questions. '+
+           'This is the one that goes on the certificate.';
+  }
+
+  function paintRead(){
+    if (!global.TGAudio || !TGAudio.supported) return;
+
+    [1,2,3,4,5].forEach(function(n){
+      var head = el('s'+n).querySelector('.sn');
+      if (!head || head.querySelector('.readcard')) return;
+      var b = document.createElement('button');
+      b.className = 'readcard';
+      b.type = 'button';
+      b.innerHTML = '&#128266; Read to me';
+      b.onclick = function(){
+        var already = b.classList.contains('on');
+        stopReading();
+        if (already) return;                    /* second press stops it */
+        if (!TGAudio.enabled()) TGAudio.setEnabled(true);
+        b.classList.add('on');
+        b.innerHTML = '&#128266; Stop ';
+        TGAudio.sayThen(spoken(n), function(){ stopReading(); });
+      };
+      head.appendChild(b);
+    });
+
+    /* Tap any sentence to hear just that one. */
+    [].forEach.call(document.querySelectorAll(
+      '.stage > p.lede, .build-hd h3, .build-hd p, .steps b, .steps span, '+
+      '.mats li, .why, .safety, .wordbox p, .card .skill'), function(t){
+        if (t.dataset.speak) return;
+        t.dataset.speak = '1';
+        t.classList.add('speak');
+        t.addEventListener('click', function(e){
+          e.stopPropagation();
+          stopReading();
+          if (!TGAudio.enabled()) TGAudio.setEnabled(true);
+          t.classList.add('saying');
+          TGAudio.sayThen(t.innerText, function(){ t.classList.remove('saying'); });
+        });
+      });
+
+    /* Said once, then never again. */
+    if (!get('dl_read_hint')){
+      var host = el('s1');
+      var h = document.createElement('div');
+      h.className = 'readhint';
+      h.innerHTML = '<span>&#128266;</span><span>Tap <b>Read to me</b> on any card, or tap a sentence to hear just that one.</span>'+
+                    '<button type="button">Got it</button>';
+      h.querySelector('button').onclick = function(){ set('dl_read_hint','1'); h.remove(); };
+      host.parentNode.insertBefore(h, host);
+    }
+  }
+
+  function stopReading(){
+    if (global.TGAudio) TGAudio.stop();
+    [].forEach.call(document.querySelectorAll('.readcard.on'), function(x){
+      x.classList.remove('on'); x.innerHTML = '&#128266; Read to me';
+    });
+    [].forEach.call(document.querySelectorAll('.saying'), function(x){
+      x.classList.remove('saying');
+    });
+  }
+
   /* ---------------- stage 3: the build ---------------- */
   function paintBuild(){
     var b = L.build; if (!b) return;
@@ -238,7 +339,6 @@
           '<h4>How to do it</h4>'+
           '<ol class="steps">'+ b.steps.map(function(s){
               return '<li><div><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></div></li>'; }).join('') +'</ol>'+
-          '<button class="readall" id="readBuild">&#128266; Read the whole build out loud</button>'+
           '<div class="why"><b>Why it works</b>'+esc(b.why)+'</div>'+
           (L.safety ? '<div class="safety"><b>Safety.</b> '+esc(L.safety)+'</div>' : '')+
           '<div style="margin-top:18px">'+
@@ -250,22 +350,7 @@
       '</div>';
     if (el('builtBtn')) el('builtBtn').onclick = function(){ set(BUILD_KEY,'1'); paint(); };
 
-    var rb = el('readBuild');
-    if (rb) rb.onclick = function(){
-      if (!TGAudio.enabled()) TGAudio.setEnabled(true);
-      /* Read it the way a grown-up would: what it is, what you need,
-         then the steps in order. Not the raw DOM text, which would
-         include the button labels. */
-      var say = [b.title, b.blurb,
-        'You will need: ' + (b.materials||[]).join(', ') + '.',
-        'Here are the steps.']
-        .concat((b.steps||[]).map(function(st, i){
-          return 'Step ' + (i+1) + '. ' + st[0] + '. ' + st[1];
-        }))
-        .concat(['Why it works. ' + b.why])
-        .join(' ');
-      TGAudio.say(say);
-    };
+
   }
 
   /* ---------------- stage 4: the activities ---------------- */
@@ -417,18 +502,7 @@
     paintBuild();
     paintActivities();
 
-    /* Everything on the page can be read out, not just the quiz. A
-       child who cannot yet read should be able to do the whole lesson
-       on their own, which is what the page has always claimed. */
-    if (global.TGAudio && TGAudio.attach){
-      TGAudio.attach(document, '.stage h2');
-      TGAudio.attach(document, '.stage > p.lede');
-      TGAudio.attach(document, '.build-hd h3, .build-hd p');
-      TGAudio.attach(document, '.steps b, .steps span');
-      TGAudio.attach(document, '.why, .safety');
-      TGAudio.attach(document, '.mats li');
-      TGAudio.attach(document, '.wordbox h4, .wordbox p');
-    }
+    paintRead();
   }
 
   /* ---------------- word entry ---------------- */
