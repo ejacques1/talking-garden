@@ -156,16 +156,17 @@
        the recording. */
     var haveLive = !!TGSession.next(SLUG);
     var mv = L.movie && global.TGMovies && global.TGMovies[L.movie.render];
+    var haveFilm = !!(L.movie && L.movie.url);
     var tMov = el('tabMovie'), tRec = el('tabRecorded'), tLive = el('tabLive');
     if (tMov){
-      tMov.style.display = mv ? '' : 'none';
+      tMov.style.display = (mv || haveFilm) ? '' : 'none';
       if (mv) tMov.textContent = (L.movie.guide || (W && W.guide) || 'Your guide') + ' explains';
     }
     if (tRec)  tRec.style.display  = rec ? '' : 'none';
     if (tLive) tLive.style.display = (haveLive || (!rec && !mv)) ? '' : 'none';
     /* Open on the animation when there is one — it is the shortest way
        in, and it is what the rest of the lesson builds on. */
-    if (mode === null) mode = mv ? 'movie' : (haveLive ? 'live' : (rec ? 'recorded' : 'live'));
+    if (mode === null) mode = (mv || haveFilm) ? 'movie' : (haveLive ? 'live' : (rec ? 'recorded' : 'live'));
     [].forEach.call(document.querySelectorAll('.stog'), function(b){
       b.className = 'stog' + (b.dataset.mode === mode ? ' on' : '');
     });
@@ -180,6 +181,34 @@
           '<b>Finish the before-check first</b>'+
           '<span>Then '+esc(g)+' will show you how it works. We ask first so we can see what you learn.</span></div>';
         el('sessWhen').textContent = 'Opens once you have done the before-check';
+        return;
+      }
+      /* A film made properly — in Canva or anywhere else — replaces the
+         one drawn in code. The code version is a placeholder that means
+         the lesson works before anything has been animated, not the
+         thing we are aiming for. */
+      var filmed = embedUrl(L.movie.url);
+      if (filmed){
+        slot.innerHTML = '<iframe src="'+filmed+'" allowfullscreen title="'+esc(L.title)+'"></iframe>';
+        el('sessWhen').textContent = 'Watch it as often as you like';
+        return;
+      }
+      if (L.movie.url && !filmed){
+        /* A link we cannot frame — a Canva share link, say. Send them
+           out to it rather than showing an empty black box. */
+        slot.innerHTML = '<div class="slotmsg"><div class="big">&#9654;&#65039;</div>'+
+          '<b>'+esc(g)+' explains '+esc(L.title)+'</b>'+
+          '<span>It opens in a new tab</span></div>';
+        el('joinBtn').href = L.movie.url;
+        el('joinBtn').textContent = 'Watch it';
+        el('joinBtn').style.display = 'inline-flex';
+        el('sessWhen').textContent = 'A short film with ' + esc(g);
+        return;
+      }
+      if (!mv){
+        slot.innerHTML = '<div class="slotmsg"><div class="big">&#127916;</div>'+
+          '<b>Not animated yet</b><span>'+esc(g)+'&rsquo;s film is on its way</span></div>';
+        el('sessWhen').textContent = 'Coming soon';
         return;
       }
       mv.mount(slot, g, (W && W.img) || null);

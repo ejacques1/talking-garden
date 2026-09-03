@@ -619,6 +619,12 @@ function wireEditor(){
    What Ms. Nia actually does in front of the camera. Written against
    the four skills the lesson checks, so the session is part of the
    lesson rather than a separate event that happens near it. */
+function guideOf(slug){
+  var L = LESSONS[slug];
+  var w = (window.WORLDS||[]).filter(function(x){ return L && x.key===L.world; })[0];
+  return (L && L.movie && L.movie.guide) || (w && w.guide) || 'The guide';
+}
+
 function drawRecord(){
   var sel = document.getElementById('recTopic');
   if (!sel.options.length){
@@ -644,6 +650,17 @@ function drawRecord(){
         '<input id="recWord" placeholder="e.g. sunflower" value="'+esc(S.word||'')+'"></label>'+
       '<button class="btn btn-primary" id="recSave">Save</button>'+
     '</div>'+
+
+    /* The animated opener is a separate thing from the five-minute
+       session: one is the guide explaining the idea, the other is Ms.
+       Nia in the garden. Both slots, side by side, so it is obvious
+       they are not the same video. */
+    '<div class="row" style="align-items:flex-end;margin-top:6px">'+
+      '<label style="flex:1">'+esc(guideOf(sel.value))+'&rsquo;s animated film '+
+        '<span style="font-weight:400;color:#8A9199">(made in Canva or anywhere &mdash; paste the link)</span>'+
+        '<input id="filmUrl" placeholder="https://youtu.be/… or a Canva share link" value="'+esc((L.movie&&L.movie.url)||'')+'"></label>'+
+    '</div>'+
+    '<p class="demo" style="margin-top:6px">Until a film is pasted here, the lesson plays the simple animation drawn in code. A real one replaces it the moment you save.</p>'+
     '<div id="recMsg" style="font-size:13.5px;font-weight:600;margin-top:8px"></div>'+
 
     '<h3 style="margin-top:28px;font-size:16px">Before you press record</h3>'+
@@ -673,6 +690,8 @@ function drawRecord(){
     copy.session = copy.session || {};
     copy.session.url  = document.getElementById('recUrl').value.trim();
     copy.session.word = document.getElementById('recWord').value.trim().toLowerCase();
+    var fu = document.getElementById('filmUrl');
+    if (fu){ copy.movie = copy.movie || {}; copy.movie.url = fu.value.trim(); }
     this.disabled = true; this.textContent = 'Saving…';
     var res = await TGContent.save(copy, true);
     this.disabled = false; this.textContent = 'Save';

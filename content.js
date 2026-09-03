@@ -96,6 +96,9 @@
       });
     });
 
+    if (L.movie && L.movie.url)
+      need(/^https?:\/\//.test(L.movie.url), 'The film link should start with http.');
+
     if (L.session){
       var S = L.session;
       need(!S.url || /^https?:\/\//.test(S.url), 'The recording link should start with http.');
