@@ -141,6 +141,53 @@ LESSONS.seasons = {
     why:'Two seeds, one windowsill, one difference: what temperature each seed was built for. Because everything else is identical, the result can only be about the season — which is exactly how a fair test works.'
   },
 
+  /* ---- the five minutes Ms. Nia records ----
+     A recorded session means a lesson can open on day one instead of
+     waiting for a date in the diary. When a live session IS scheduled
+     the recording stays put as catch-up, because a family who misses
+     Thursday should still have something.
+
+     The run sheet is written against the four skills, and deliberately
+     does NOT repeat the animation. The animation explains the idea;
+     this is Ms. Nia showing the real thing in the real garden. */
+  session:{
+    minutes:5,
+    word:'',                 /* set per recording in the admin panel */
+    kit:['A cool-season crop growing in the beds — lettuce, spinach or broccoli',
+         'A warm-season crop — okra, peppers or a melon vine',
+         'One bolted lettuce, if you have one (this is the money shot)',
+         'A seed packet with the planting months printed on the back',
+         'A soil thermometer if you have one'],
+    runsheet:[
+      ['0:00','Hello, and what today is about',
+       'Say who you are and where you are standing. Then: "Today we are not asking WHAT to plant. We are asking WHEN." Hold up two seed packets — one cool crop, one warm.'],
+      ['0:30','Walk to the cool-season bed',
+       'Show the lettuce or spinach actually growing. Say what month it is and that this crop wants it cool. Let them see the leaves close up.',
+       'K.10(B)'],
+      ['1:30','The bolted one — the moment of the lesson',
+       'If you have a bolted lettuce, hold it up beside a good one. "This one got too hot. It shot up tall and went bitter. Gardeners call that bolting." If you have not got one, show a photo. This is the thing they will remember.',
+       '3.12(A)'],
+      ['2:30','Walk to the warm-season bed',
+       'Show the okra or peppers. "Same garden. Same water. This one WANTS the heat." Say what would happen to it in January.',
+       'K.10(B)'],
+      ['3:15','Turn the seed packet over',
+       'Read the planting months off the back out loud. Point out that the packet already knew. "Every packet tells you. You just have to turn it over."',
+       '2.10(B)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice, and tell them to remember it. Somewhere in the middle is better than the end — a child who wanders off at 4:30 should still have heard it.'],
+      ['4:20','What to do this week',
+       'Tell them what THEY could plant right now, this month, where they live. Name two things. Then point them at the build.',
+       'K.12(A)'],
+      ['4:45','Goodbye',
+       'Say what the next session is about, if you know. Wave.']
+    ],
+    dont:[
+      'Do not re-explain bolting from scratch — the animation already did. Show it instead.',
+      'Do not read the planting calendar out month by month. That is what The Texas Year activity is for.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
   /* The plant lesson gives a family four builds to choose from and
      this one gave them one. A windowsill, a bucket and a notebook are
      not the same household. */

@@ -126,7 +126,15 @@
      The new lesson page shipped with only a join button, so a
      recording Ms. Nia pasted into the admin panel went nowhere on
      eleven of the twelve lessons. */
-  var mode = 'live', recIdx = 0;
+  var mode = null, recIdx = 0;
+
+  /* The recorded session. A lesson can now open on day one instead of
+     waiting for a date in the diary, and it stays as catch-up once
+     live sessions start running. */
+  function recording(){
+    var r = L.session && L.session.url;
+    return r ? { url:r, minutes:(L.session.minutes||5) } : null;
+  }
 
   function embedUrl(u){
     if (!u) return null;
@@ -141,6 +149,42 @@
 
   function paintVideo(){
     var slot = el('videoSlot'); if (!slot) return;
+    var rec = recording();
+
+    /* Show the tabs that have something behind them, and open on the
+       most useful one: the live session if one is coming, otherwise
+       the recording. */
+    var haveLive = !!TGSession.next(SLUG);
+    var tRec = el('tabRecorded'), tLive = el('tabLive'), tPast = el('tabPast');
+    if (tRec)  tRec.style.display  = rec ? '' : 'none';
+    if (tLive) tLive.style.display = (haveLive || !rec) ? '' : 'none';
+    if (mode === null) mode = haveLive ? 'live' : (rec ? 'recorded' : 'live');
+    [].forEach.call(document.querySelectorAll('.stog'), function(b){
+      b.className = 'stog' + (b.dataset.mode === mode ? ' on' : '');
+    });
+
+    /* ---- the recorded session ---- */
+    if (mode === 'recorded'){
+      el('joinBtn').style.display = 'none';
+      el('sessTitle').textContent = L.title + ' — with ' + ((W && W.guide) || 'your guide');
+      if (!preDone()){
+        slot.innerHTML = '<div class="slotmsg"><div class="big">&#128274;</div>'+
+          '<b>Finish the before-check first</b>'+
+          '<span>Then you can watch it as many times as you like</span></div>';
+        el('sessWhen').textContent = 'Opens once you have done the before-check';
+        return;
+      }
+      var e = embedUrl(rec && rec.url);
+      slot.innerHTML = e
+        ? '<iframe src="'+e+'" allowfullscreen title="'+esc(L.title)+'"></iframe>'
+        : '<div class="slotmsg"><div class="big">&#127909;</div><b>Ms. Nia has not recorded this one yet</b>'+
+          '<span>It will appear here when she does</span></div>';
+      el('sessWhen').textContent = rec
+        ? 'About ' + rec.minutes + ' minutes · watch it whenever you like'
+        : 'Coming soon';
+      return;
+    }
+
     var title = el('sessTitle'), when = el('sessWhen'), join = el('joinBtn');
     var upcoming = TGSession.next(SLUG);
     var history  = TGSession.past(SLUG);
@@ -207,10 +251,11 @@
         '<span>'+(upcoming.join_url ? 'Tap join to come with us' : 'Ms. Nia adds the link in the admin panel')+'</span></div>';
     } else {
       slot.innerHTML = '<div class="slotmsg"><div class="big">&#128197;</div>'+
-        '<b>'+(history.length ? 'That session has finished' : 'No session scheduled yet')+'</b>'+
+        '<b>'+(history.length ? 'That session has finished' : 'No live session scheduled yet')+'</b>'+
         '<span>'+(history.length
           ? 'Watch it under Past sessions — Ms. Nia will post the next date here'
-          : 'Ms. Nia will post the next live session here')+'</span></div>';
+          : rec ? 'Watch the recorded one instead — it is the same lesson'
+                : 'Ms. Nia will post the next live session here')+'</span></div>';
     }
 
     if (upcoming){

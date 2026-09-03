@@ -220,10 +220,17 @@ function worldPct(t, kidName){
   var done = t.lessons.filter(function(L){ return TGQuiz.result(L.slug,'post',kidName); }).length;
   return Math.round(done / t.lessons.length * 100);
 }
+/* A world is enterable once ANY of its lessons has something to watch
+   — a live session on the calendar, one that has run, or a recording.
+   Before recordings existed this meant every world stayed shut until
+   a date was in the diary. */
 function worldSessions(t){
   var all = [];
   t.lessons.forEach(function(L){ all = all.concat(TGSession.forTopic(L.slug)); });
   return all;
+}
+function worldWatchable(t){
+  return t.lessons.some(function(L){ return TGSession.hasSomething(L.slug); });
 }
 function worldUnlocked(t){
   return t.lessons.some(function(L){ return TG.isUnlocked(L.slug); });
@@ -306,13 +313,14 @@ function drawTopics(){
        past or future. Before that there is genuinely nothing to do in
        it, so the tile stays shut rather than opening onto an empty
        room. */
-    var enterable = unlocked || worldSessions(t).length > 0;
+    var enterable = unlocked || worldWatchable(t);
 
     var note, tagCls, tagTxt;
     if (pct === 100)      { note = 'All ' + t.lessons.length + ' lessons done'; tagCls='tag-open'; tagTxt='Finished'; }
     else if (unlocked)    { note = t.lessons.length + ' lessons \u00b7 ' + pct + '% done'; tagCls='tag-open'; tagTxt='Open'; }
     else if (nx)          { note = 'Live session \u00b7 ' + when; tagCls='tag-soon'; tagTxt = when; }
     else if (lt)          { note = 'Last session \u00b7 ' + when; tagCls='tag-soon'; tagTxt='Catch up'; }
+    else if (worldWatchable(t)) { note = t.lessons.length + ' lessons \u00b7 watch any time'; tagCls='tag-soon'; tagTxt='Watch now'; }
     else                  { note = t.lessons.length + ' lessons \u00b7 no session yet'; tagCls='tag-lock'; tagTxt='Soon'; }
 
     var inner =

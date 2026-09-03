@@ -86,9 +86,23 @@
     /* Every word this topic has ever used. An old recording never
        stops working because its word is still on the list. */
     words(slug){
-      return S.forTopic(slug)
+      var live = S.forTopic(slug)
         .map(function(s){ return (s.word||'').toLowerCase(); })
         .filter(Boolean);
+      /* A recorded session has a word too, and it never expires — a
+         family watching the recording in March must be able to get in
+         with the word they just heard. */
+      var L = (global.LESSONS||{})[slug];
+      var rec = L && L.session && (L.session.word||'').trim().toLowerCase();
+      if (rec && live.indexOf(rec) < 0) live.push(rec);
+      return live;
+    },
+
+    /* Does this lesson have anything to watch at all — a scheduled
+       session, one that has run, or a recording? */
+    hasSomething(slug){
+      var L = (global.LESSONS||{})[slug];
+      return S.forTopic(slug).length > 0 || !!(L && L.session && L.session.url);
     },
 
     accepts(slug, typed){

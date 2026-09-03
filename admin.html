@@ -112,6 +112,7 @@ tr:last-child td{border-bottom:none}
     <button class="tab" data-p="sessions">Sessions</button>
     <button class="tab" data-p="curriculum">Curriculum</button>
     <button class="tab" data-p="write">Write a lesson</button>
+    <button class="tab" data-p="record">Record a session</button>
   </div>
 
   <!-- ============ REPORT ============ -->
@@ -256,6 +257,18 @@ tr:last-child td{border-bottom:none}
         <button class="btn btn-ghost" id="revertLesson" style="margin-left:auto">Start again from the original</button>
         <button class="btn btn-ghost" id="closeEdit">Close</button>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ RECORD ============ -->
+  <section id="p-record" class="hide">
+    <div class="card">
+      <h3>Record a session</h3>
+      <p class="sub">Five minutes each. Once a recording is in, that lesson opens to families straight away &mdash; they do not have to wait for a date in the diary. When you do run it live, the recording stays put so anyone who misses it can still catch up.</p>
+      <div class="row" style="margin-top:0">
+        <select id="recTopic" style="max-width:320px"></select>
+      </div>
+      <div id="recSheet"></div>
     </div>
   </section>
 </div>
@@ -590,6 +603,79 @@ function wireEditor(){
   };
 }
 
+/* ---------- the run sheet ----------
+   What Ms. Nia actually does in front of the camera. Written against
+   the four skills the lesson checks, so the session is part of the
+   lesson rather than a separate event that happens near it. */
+function drawRecord(){
+  var sel = document.getElementById('recTopic');
+  if (!sel.options.length){
+    sel.innerHTML = TOPICS.map(function(t){
+      var has = LESSONS[t.slug] && LESSONS[t.slug].session;
+      return '<option value="'+t.slug+'">'+esc(t.world)+' · '+esc(t.name)+
+             (has ? '' : ' — no run sheet yet')+'</option>'; }).join('');
+    sel.onchange = drawRecord;
+    var first = TOPICS.filter(function(t){ return LESSONS[t.slug] && LESSONS[t.slug].session; })[0];
+    if (first) sel.value = first.slug;
+  }
+  var L = LESSONS[sel.value], S = L && L.session, host = document.getElementById('recSheet');
+  if (!S){
+    host.innerHTML = '<div class="empty">No run sheet written for this lesson yet.</div>';
+    return;
+  }
+
+  host.innerHTML =
+    '<div class="row" style="align-items:flex-end">'+
+      '<label style="flex:1">Paste the recording link (YouTube or Vimeo)'+
+        '<input id="recUrl" placeholder="https://youtu.be/…" value="'+esc(S.url||'')+'"></label>'+
+      '<label style="width:190px">The secret word you say'+
+        '<input id="recWord" placeholder="e.g. sunflower" value="'+esc(S.word||'')+'"></label>'+
+      '<button class="btn btn-primary" id="recSave">Save</button>'+
+    '</div>'+
+    '<div id="recMsg" style="font-size:13.5px;font-weight:600;margin-top:8px"></div>'+
+
+    '<h3 style="margin-top:28px;font-size:16px">Before you press record</h3>'+
+    '<ul style="margin:0 0 6px;padding-left:19px;font-size:14.5px">'+
+      S.kit.map(function(k){ return '<li>'+esc(k)+'</li>'; }).join('')+
+    '</ul>'+
+
+    '<h3 style="margin-top:24px;font-size:16px">'+S.minutes+' minutes, beat by beat</h3>'+
+    '<div class="scroll"><table><thead><tr><th style="width:60px">Time</th><th>What you do</th><th style="width:110px">Skill</th></tr></thead><tbody>'+
+      S.runsheet.map(function(r){
+        var se = r[3] && window.TEKS && TEKS.se[r[3]];
+        return '<tr'+(/SECRET/.test(r[1])?' style="background:var(--sun-l)"':'')+'>'+
+          '<td style="font-weight:800;color:var(--sage-d)">'+esc(r[0])+'</td>'+
+          '<td><b>'+esc(r[1])+'</b><br><span style="color:#5A6470">'+esc(r[2])+'</span></td>'+
+          '<td>'+(r[3] ? '<b>'+esc(r[3])+'</b>'+(se?'<br><span style="color:#8A9199;font-size:12px">'+esc(se.grade)+'</span>':'') : '')+'</td>'+
+        '</tr>'; }).join('')+
+    '</tbody></table></div>'+
+
+    (S.dont ? '<h3 style="margin-top:24px;font-size:16px">Leave these out</h3>'+
+      '<p class="sub" style="margin-bottom:8px">The lesson already covers them somewhere else. Repeating them costs you a minute you need.</p>'+
+      '<ul style="margin:0;padding-left:19px;font-size:14.5px">'+
+        S.dont.map(function(d){ return '<li>'+esc(d)+'</li>'; }).join('')+'</ul>' : '');
+
+  document.getElementById('recSave').onclick = async function(){
+    var msg = document.getElementById('recMsg');
+    var copy = JSON.parse(JSON.stringify(L));
+    copy.session = copy.session || {};
+    copy.session.url  = document.getElementById('recUrl').value.trim();
+    copy.session.word = document.getElementById('recWord').value.trim().toLowerCase();
+    this.disabled = true; this.textContent = 'Saving…';
+    var res = await TGContent.save(copy, true);
+    this.disabled = false; this.textContent = 'Save';
+    if (res.ok){
+      msg.style.color = '#4A6E33';
+      msg.textContent = copy.session.url
+        ? '✅ Saved. This lesson is now open to families.'
+        : '✅ Saved.';
+    } else {
+      msg.style.color = '#B8481B';
+      msg.textContent = res.problems.join(' ');
+    }
+  };
+}
+
 /* ---------- tabs ---------- */
 [].forEach.call(document.querySelectorAll('.tab'), function(b){
   b.onclick=function(){
@@ -601,6 +687,8 @@ function wireEditor(){
     document.getElementById('p-write').classList.toggle('hide', b.dataset.p!=='write');
     if (b.dataset.p==='curriculum') drawCurriculum();
     if (b.dataset.p==='write') drawWrite();
+    document.getElementById('p-record').classList.toggle('hide', b.dataset.p!=='record');
+    if (b.dataset.p==='record') drawRecord();
   };
 });
 

@@ -81,15 +81,28 @@
       need((q.opts||[]).length >= 3, 'Question '+(i+1)+' needs at least three options.');
     });
 
-    var b = L.build;
-    need(b && b.title, 'A lesson needs an at-home build with a title.');
-    if (b){
-      need((b.materials||[]).length, 'The build needs a materials list.');
-      need((b.steps||[]).length >= 3, 'The build needs at least three steps.');
+    /* A lesson may offer one build or several. */
+    var builds = (L.builds && L.builds.length) ? L.builds : (L.build ? [L.build] : []);
+    need(builds.length, 'A lesson needs at least one at-home build.');
+    builds.forEach(function(b, bi){
+      var nm = b.title || ('build '+(bi+1));
+      need(b.title, 'Build '+(bi+1)+' needs a title.');
+      need((b.materials||[]).length, '"'+nm+'" needs a materials list.');
+      need((b.steps||[]).length >= 3, '"'+nm+'" needs at least three steps.');
+      need(b.why, '"'+nm+'" needs a "why it works" note.');
       (b.steps||[]).forEach(function(st, i){
         need(Array.isArray(st) && st.length === 2 && st[0] && st[1],
-             'Build step '+(i+1)+' should be a heading and a sentence.');
+             '"'+nm+'" step '+(i+1)+' should be a heading and a sentence.');
       });
+    });
+
+    if (L.session){
+      var S = L.session;
+      need(!S.url || /^https?:\/\//.test(S.url), 'The recording link should start with http.');
+      need(!S.word || /^[a-z0-9 -]{3,24}$/i.test(S.word),
+           'The secret word should be a few plain words — no punctuation.');
+      need(!(S.url && !S.word),
+           'A recording needs a secret word, or families cannot unlock the rest of the lesson.');
     }
 
     var acts = L.activities || [];
@@ -122,8 +135,15 @@
           need(ok === 1, '"'+nm+'" question '+(i+1)+' needs exactly one correct answer.');
           need(q.why && q.why.length > 20, '"'+nm+'" question '+(i+1)+' needs an explanation of why.');
         });
+      } else if (a.type === 'custom'){
+        /* A lesson can bring a hand-built activity. All this layer can
+           check is that a renderer by that name is actually loaded —
+           if the page cannot draw it, the card would open on nothing. */
+        need(a.render, '"'+nm+'" is a custom activity but does not say which one to draw.');
+        need(!a.render || !global.TGPlay || global.TGPlay.custom[a.render],
+             '"'+nm+'" needs the script that draws it, and it is not loaded.');
       } else {
-        out.push('"'+nm+'" has type "'+(a.type||'none')+'". It must be order, sort, match or pick.');
+        out.push('"'+nm+'" has type "'+(a.type||'none')+'". It must be order, sort, match, pick or custom.');
       }
     });
 
