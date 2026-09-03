@@ -241,13 +241,25 @@
     });
   }
 
+  /* Passed to custom renderers so they do not each reinvent speech,
+     shuffling or escaping. */
+  var helpers = { say: say, esc: esc, shuffle: shuffle, plain: plain };
+
   global.TGPlay = {
+    custom: {},
     open: function(act, onDone){
       st = { act:act, onDone:onDone };
       el('playTitle').textContent = act.title;
       el('ovl').classList.add('on');
       document.body.style.overflow = 'hidden';
-      if (act.type === 'order')      renderOrder();
+      /* A lesson can bring its own activity — the plant lesson has
+         always had hand-built ones, and a generic sorter is not always
+         the truest way to teach a thing. A custom renderer registers
+         itself in TGPlay.custom and gets the same finish() and the same
+         progress tracking as the four built-in types. */
+      if (act.type === 'custom' && global.TGPlay.custom[act.render])
+        global.TGPlay.custom[act.render](el('playBd'), act, finish, helpers);
+      else if (act.type === 'order')      renderOrder();
       else if (act.type === 'sort')  renderSort();
       else if (act.type === 'match') renderMatch();
       else                           renderPick();

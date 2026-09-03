@@ -105,6 +105,14 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .wordmsg{margin-top:10px;font-size:14px;font-weight:700;min-height:20px}
 .wordmsg.no{color:var(--red-d)}.wordmsg.yes{color:var(--green-d)}
 
+/* several builds to choose from */
+.buildpick{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+.bpick{font-family:var(--sans);font-size:13.5px;font-weight:700;padding:9px 16px;border-radius:999px;
+  border:2px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.bpick.on{background:var(--w);border-color:var(--w);color:#fff}
+.bteks{background:var(--green-l);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--green-d);margin-top:12px}
+.bteks b{font-family:var(--display)}
+
 /* build */
 .build{border:1px solid var(--line);border-radius:18px;overflow:hidden}
 .build-hd{background:var(--wl);padding:17px 20px}
@@ -133,6 +141,7 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .card b{display:block;font-family:var(--display);font-size:16px;color:var(--ink);margin-bottom:4px}
 .card span{font-size:13.5px;color:var(--muted);display:block}
 .card .skill{margin-top:10px;font-size:11.5px;font-weight:700;color:var(--green-d);background:var(--green-l);border-radius:8px;padding:6px 9px;display:block}
+.card .acode{display:block;margin-top:6px;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--blue-d)}
 .card.done{border-color:var(--green)}
 .card.done::after{content:'\2713';position:absolute;top:13px;right:15px;color:var(--green);font-weight:900}
 
@@ -194,6 +203,39 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .crow .cl{font-size:14.5px;font-weight:700;color:var(--ink)}
 .crow .cl em{display:block;font-style:normal;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
 .crow.notyet .cl{color:var(--muted)}
+
+/* ---- hand-built activities that a lesson brings with it ---- */
+.yearGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:11px}
+@media(max-width:420px){.yearGrid{grid-template-columns:repeat(4,1fr)}}
+.mon{font-family:var(--sans);font-size:13.5px;font-weight:800;color:var(--ink);border:2px solid transparent;
+  border-radius:11px;padding:13px 0;cursor:pointer;transition:.12s}
+.mon:hover{transform:translateY(-2px)}
+.mon.on{border-color:var(--ink)}
+.mon.seen::after{content:'\2713';display:block;font-size:10px;color:var(--green-d);line-height:1}
+.yearKey{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.yearKey i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+.beds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.bed{background:var(--beige);border:2px solid var(--line);border-radius:16px;padding:15px 13px;text-align:center;transition:.2s}
+.bed.good{border-color:var(--green);background:var(--green-l)}
+.bedart{font-size:44px;line-height:1;margin-bottom:7px}
+.bed b{display:block;font-family:var(--display);font-size:15.5px;color:var(--ink);margin-bottom:3px}
+.bed span{font-size:13px;color:var(--body);display:block}
+.thermo{background:linear-gradient(90deg,#BFDFF2,#F7E3B5,#F6C6A8);border-radius:16px;padding:15px 17px}
+.thermo b{font-family:var(--display);font-size:22px;color:var(--ink);display:block;text-align:center;margin-bottom:7px}
+.thermo input[type=range]{width:100%;accent-color:var(--red)}
+.thermoKey{display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;color:#6B5B40;margin-top:3px}
+
+.forecast{display:flex;align-items:center;gap:16px;background:var(--ink);border-radius:16px;padding:17px 20px;margin-bottom:15px;color:#fff}
+.fcast span{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:800}
+.fcast b{font-family:var(--display);font-size:31px}
+.fcrop{margin-left:auto;text-align:center;font-size:38px;line-height:1}
+.fcrop span{display:block;font-size:12.5px;font-family:var(--sans);font-weight:700;color:rgba(255,255,255,.8);margin-top:4px}
+.outcome{border-radius:14px;padding:15px 17px}
+.outcome.good{background:var(--green-l)}
+.outcome.bad{background:var(--red-l)}
+.outcome b{display:block;font-family:var(--display);font-size:16px;margin-bottom:5px}
+.outcome span{font-size:14px;color:var(--body)}
 
 /* activity engine */
 .tray{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
@@ -366,6 +408,7 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script src="play.js"></script>
+<script src="act-seasons.js"></script>
 <script src="lesson.js"></script>
 </body>
 </html>

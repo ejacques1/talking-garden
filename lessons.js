@@ -141,9 +141,62 @@ LESSONS.seasons = {
     why:'Two seeds, one windowsill, one difference: what temperature each seed was built for. Because everything else is identical, the result can only be about the season — which is exactly how a fair test works.'
   },
 
+  /* The plant lesson gives a family four builds to choose from and
+     this one gave them one. A windowsill, a bucket and a notebook are
+     not the same household. */
+  builds:[
+    {
+      title:'The Two-Season Windowsill',
+      blurb:'Sow one cool-season seed and one warm-season seed side by side, and let the weather prove which was right.',
+      time:'20 minutes, then two weeks of watching', help:'Kid-led', mess:'A little messy',
+      teks:'K.10(B)', teksNote:'the seasons, tested rather than told',
+      materials:['2 clear cups or small pots','Potting soil','Lettuce seeds (cool season)','Bean or squash seeds (warm season)','A marker','Water'],
+      steps:[
+        ['Label your cups','Write COOL on one and WARM on the other, plus today\u2019s date.'],
+        ['Fill and sow','Fill both with soil. Lettuce seeds go just under the surface; the bean goes a finger-joint deep.'],
+        ['Same spot, same water','Put them next to each other and give them exactly the same treatment. That is what makes it a fair test.'],
+        ['Watch for two weeks','Draw what you see every few days. Which one came up first? Which one looked happier?'],
+        ['Say why','Whichever did better, tell someone why \u2014 and what you would plant next.']
+      ],
+      why:'Two seeds, one windowsill, one difference: what temperature each seed was built for. Because everything else is identical, the result can only be about the season \u2014 which is exactly how a fair test works.'
+    },
+    {
+      title:'The Frost Blanket Test',
+      blurb:'Two thermometers, one old sheet, and proof that a cover really does hold warmth.',
+      time:'10 minutes to set up, one night to wait', help:'Grown-up outside at night', mess:'Tidy',
+      teks:'3.12(A)', teksNote:'why a cover works',
+      materials:['2 outdoor thermometers','An old sheet or towel','2 sticks or garden stakes','A cold night'],
+      steps:[
+        ['Pick a cold evening','Check the forecast with a grown-up. You want a night going below about 45\u00b0F.'],
+        ['Set both thermometers outside','Put them a few steps apart, both on the ground, both out of the wind.'],
+        ['Cover one','Prop the sheet over one thermometer on two sticks so it makes a little tent. Leave the other bare.'],
+        ['Read them at first light','Go out early, before the sun hits. Write both numbers down.'],
+        ['Work out the gap','How many degrees warmer was the covered one? That gap is what saves a tomato plant.']
+      ],
+      why:'A sheet makes no heat of its own. What it does is trap the warmth the ground gives back overnight, which is usually a few degrees \u2014 and a few degrees is the whole difference between frost damage and none.'
+    },
+    {
+      title:'The One-Year Garden Plan',
+      blurb:'Draw twelve boxes and fill in what you would grow in your own space, month by month.',
+      time:'30 minutes', help:'Kid-led, grown-up for ideas', mess:'Tidy',
+      teks:'K.12(A)', teksNote:'planning around what a plant needs',
+      materials:['A big sheet of paper','Coloured pencils','A ruler','What you learned in The Texas Year'],
+      steps:[
+        ['Draw twelve boxes','One for each month. Write the month at the top of each.'],
+        ['Colour the weather','Blue for the cool months, orange for the hot ones, green in between. Use what you know about Texas.'],
+        ['Fill in the cool boxes','Lettuce, spinach, carrots, broccoli, kale. Draw them or write them.'],
+        ['Fill in the hot boxes','Okra, peppers, melons, southern peas.'],
+        ['Circle this month','What could go in the ground right now? Circle it and tell a grown-up.'],
+        ['Put it on the fridge','Come back to it when the month changes.']
+      ],
+      why:'A planting calendar handed to a child is a rule to obey. One they drew from what they worked out themselves is a plan they own \u2014 and the circled month turns it from a picture into something to do this week.'
+    }
+  ],
+
   activities:[
     {id:'seasonsort', type:'sort', title:'Cool or Warm?',
       teaches:'Sort Texas crops by the season they actually grow in',
+      teks:'K.10(B)',
       prompt:'Tap each crop, then tap the season it belongs to.',
       bins:[{id:'cool',label:'Cool season',e:'&#127810;'},{id:'warm',label:'Warm season',e:'&#9728;&#65039;'}],
       items:[
@@ -155,6 +208,7 @@ LESSONS.seasons = {
 
     {id:'seasonorder', type:'order', title:'A Season, Start to Finish',
       teaches:'Put the work of a growing season in order',
+      teks:'2.10(B)',
       prompt:'What does a gardener do first? Tap them in order.',
       items:[
         {e:'&#129508;',t:'Get the soil ready'},
@@ -164,8 +218,27 @@ LESSONS.seasons = {
         {e:'&#9851;&#65039;',t:'Clear and compost'}
       ]},
 
+    /* Hand-built for this lesson. The generic sorter can ask which
+       season a crop belongs to; it cannot let a child turn a dial and
+       watch lettuce bolt, and watching it is the lesson. */
+    {id:'texasyear', type:'custom', render:'texasYear', title:'The Texas Year',
+      teaches:'Find the months a crop actually goes in the ground in Texas',
+      teks:'K.10(B)',
+      prompt:'Tap a month and see what a Texas gardener sows then.'},
+
+    {id:'bolt', type:'custom', render:'bolt', title:'Too Hot for Lettuce',
+      teaches:'See for yourself what heat does to a cool-season crop',
+      teks:'3.12(A)',
+      prompt:'Drag the thermometer and watch what each crop does.'},
+
+    {id:'frost', type:'custom', render:'frost', title:'Frost Tonight',
+      teaches:'Decide what to protect when the forecast turns cold',
+      teks:'3.12(A)',
+      prompt:'A forecast comes in. Cover them, or leave them?'},
+
     {id:'seasonpick', type:'pick', title:'What Would You Plant?',
       teaches:'Choose a crop that suits the month you are actually in',
+      teks:'K.12(A)',
       questions:[
         {q:'It is February in Spring, Texas. Cool and bright.',
          opts:[{e:'&#129388;',t:'Lettuce',ok:1},{e:'&#127817;',t:'Watermelon'},{e:'&#127798;',t:'Okra'}],

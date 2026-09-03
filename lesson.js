@@ -229,7 +229,7 @@
      page, so the voice reads the lesson and not the button labels,
      and reads the build in the order a person would say it. */
   function spoken(stage){
-    var b = L.build || {}, n = (L.competencies||[]).length * 2;
+    var n = (L.competencies||[]).length * 2;
     if (stage === 1)
       return 'Before we start. A few picture questions, read out loud. '+
              'There is no pass or fail — it just marks where you are starting from. '+
@@ -244,7 +244,8 @@
                            : 'No session is scheduled yet.') +
              ' When you have the secret word, type it in the yellow box to open the rest of the lesson.';
     }
-    if (stage === 3)
+    if (stage === 3){
+      var b = buildList()[buildIdx] || {};
       return [b.title, b.blurb,
               'You will need: ' + (b.materials||[]).join(', ') + '.',
               'Here are the steps.']
@@ -253,6 +254,7 @@
         .concat(['Why it works. ' + b.why])
         .concat(L.safety ? ['Safety. ' + L.safety] : [])
         .join(' ');
+    }
     if (stage === 4)
       return 'Play and practise. Short games you can play as many times as you like. '+
              'There are ' + (L.activities||[]).length + '. ' +
@@ -322,9 +324,21 @@
   }
 
   /* ---------------- stage 3: the build ---------------- */
+  /* A lesson can offer several builds. Whichever is showing is the one
+     that counts for the gate; doing any one of them is enough, because
+     the point is hands in the soil, not a particular jar. */
+  var buildIdx = 0;
+  function buildList(){ return (L.builds && L.builds.length) ? L.builds : (L.build ? [L.build] : []); }
+
   function paintBuild(){
-    var b = L.build; if (!b) return;
+    var list = buildList(); if (!list.length) return;
+    var b = list[Math.min(buildIdx, list.length-1)];
     el('buildSlot').innerHTML =
+      (list.length > 1
+        ? '<div class="buildpick">'+ list.map(function(x,i){
+            return '<button class="bpick'+(i===buildIdx?' on':'')+'" data-b="'+i+'">'+
+                   esc(x.title)+'</button>'; }).join('') +'</div>'
+        : '')+
       '<div class="build">'+
         '<div class="build-hd">'+
           '<h3>'+esc(b.title)+'</h3><p>'+esc(b.blurb)+'</p>'+
@@ -340,6 +354,9 @@
           '<ol class="steps">'+ b.steps.map(function(s){
               return '<li><div><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></div></li>'; }).join('') +'</ol>'+
           '<div class="why"><b>Why it works</b>'+esc(b.why)+'</div>'+
+          (b.teks && window.TEKS && TEKS.se[b.teks]
+            ? '<p class="bteks"><b>'+esc(b.teks)+'</b> &middot; '+esc(b.teksNote||TEKS.se[b.teks].text)+'</p>'
+            : '')+
           (L.safety ? '<div class="safety"><b>Safety.</b> '+esc(L.safety)+'</div>' : '')+
           '<div style="margin-top:18px">'+
             (built()
@@ -349,6 +366,9 @@
         '</div>'+
       '</div>';
     if (el('builtBtn')) el('builtBtn').onclick = function(){ set(BUILD_KEY,'1'); paint(); };
+    [].forEach.call(el('buildSlot').querySelectorAll('.bpick'), function(btn){
+      btn.onclick = function(){ buildIdx = +btn.dataset.b; paintBuild(); paintRead(); };
+    });
 
 
   }
@@ -357,13 +377,18 @@
   function paintActivities(){
     el('actCards').innerHTML = (L.activities||[]).map(function(a){
       var done = global.TGProgress && TGProgress.done(SLUG+':'+a.id);
-      var art  = a.type==='order' ? '&#128207;' : a.type==='sort' ? '&#129388;' :
-                 a.type==='match' ? '&#128279;' : '&#129300;';
+      var art  = a.emoji ? a.emoji
+               : a.type==='order' ? '&#128207;' : a.type==='sort' ? '&#129388;'
+               : a.type==='match' ? '&#128279;' : a.type==='custom' ? '&#10024;'
+               : '&#129300;';
       return '<button class="card'+(done?' done':'')+'" data-a="'+esc(a.id)+'">'+
                '<span class="ce">'+art+'</span>'+
                '<b>'+esc(a.title)+'</b>'+
                '<span>'+esc(a.prompt || '')+'</span>'+
                '<span class="skill">&#127793; '+esc(a.teaches)+'</span>'+
+               (a.teks && window.TEKS && TEKS.se[a.teks]
+                 ? '<span class="acode">'+esc(TEKS.se[a.teks].grade)+' TEKS '+esc(a.teks)+'</span>'
+                 : '')+
              '</button>';
     }).join('');
 
