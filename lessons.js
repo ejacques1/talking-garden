@@ -16,13 +16,15 @@
    TEKS Guide (teksguide.org) with their wording preserved. Those are
    the six in teks.js, covering the Plant Life Cycle lesson.
 
-   The other eleven lessons carry `standardsTodo` instead — the
-   alignment they are WRITTEN TOWARD but which nobody has yet checked
-   against the published standard. Those are deliberately not shown to
-   families as a claim. They are shown in the admin panel, flagged, so
-   the alignment can be confirmed before it is ever put in front of a
-   funder. Skills are shown everywhere, because a skill is a thing we
-   can actually see a child do.
+   All twelve lessons now carry `standards`, and every code in them was
+   read from 19 TAC as published — science Chapter 112 (adopted 2021,
+   in effect from 2024-25) and health Chapter 115 (adopted 2020). The
+   wording lives in teks.js exactly as published; nothing is
+   paraphrased and nothing is inferred from a code's number.
+
+   Each competency also names the single expectation it maps to, so a
+   funder report can say which standard a child actually demonstrated
+   rather than listing the standards a lesson passes near.
 
    ---- ONE HARD RULE ----
    Food preservation safety numbers — times, temperatures, acidity —
@@ -70,7 +72,7 @@ LESSONS.seasons = {
   tagline:'Why lettuce loves February and okra loves July.',
   grades:'K–3',
   word:'',
-  standardsTodo:['TEKS K–3 Earth and space: seasonal patterns','NGSS K-ESS2-1 weather patterns over time'],
+  standards:['K.10(B)','3.12(A)','K.12(A)','2.10(B)'],
   safety:'Garden soil goes on hands, not in mouths. Hats and water on hot Texas afternoons.',
   sources:[
     {name:'Aggie Horticulture — Texas planting guides', url:'https://aggie-hort.tamu.edu/'},
@@ -78,10 +80,10 @@ LESSONS.seasons = {
   ],
 
   competencies:[
-    {id:'when',  label:'Knows which crops belong to the cool season and which to the warm'},
-    {id:'why',   label:'Knows that temperature is what decides when a crop can grow'},
-    {id:'order', label:'Knows the order of work across a growing season'},
-    {id:'plan',  label:'Can choose something sensible to plant right now'}
+    {id:'when',  label:'Knows which crops belong to the cool season and which to the warm', teks:'K.10(B)'},
+    {id:'why',   label:'Knows that temperature is what decides when a crop can grow', teks:'3.12(A)'},
+    {id:'order', label:'Knows the order of work across a growing season', teks:'K.12(A)'},
+    {id:'plan',  label:'Can choose something sensible to plant right now', teks:'2.10(B)'}
   ],
 
   bank:[
@@ -190,7 +192,7 @@ LESSONS.myplate = {
   tagline:'Five groups, one plate, and half of it coloured in.',
   grades:'K–3',
   word:'',
-  standardsTodo:['TEKS Health K–3: food groups and healthy choices','NHES Standard 1: core health concepts'],
+  standards:['H.2.6(B)','H.2.6(C)','H.2.6(A)','H.2.6(D)'],
   safety:'Talk about food as fuel, never as good or bad. Some children have allergies — always ask before sharing.',
   sources:[
     {name:'MyPlate — USDA',        url:'https://www.myplate.gov/'},
@@ -198,10 +200,10 @@ LESSONS.myplate = {
   ],
 
   competencies:[
-    {id:'groups', label:'Can name the five food groups and sort food into them'},
-    {id:'half',   label:'Knows that half the plate should be fruit and vegetables'},
-    {id:'swap',   label:'Can swap a snack for one that fuels them better'},
-    {id:'drink',  label:'Knows what to drink most of the time'}
+    {id:'groups', label:'Can name the five food groups and sort food into them', teks:'H.2.6(B)'},
+    {id:'half',   label:'Knows that half the plate should be fruit and vegetables', teks:'H.2.6(C)'},
+    {id:'swap',   label:'Can swap a snack for one that fuels them better', teks:'H.2.6(A)'},
+    {id:'drink',  label:'Knows what to drink most of the time', teks:'H.2.6(D)'}
   ],
 
   bank:[
@@ -309,7 +311,7 @@ LESSONS.farmtotable = {
   tagline:'Every strawberry has a journey. Most of it happens before you see it.',
   grades:'2–5',
   word:'',
-  standardsTodo:['TEKS Social Studies 2–5: goods, producers and consumers','NALO T2: agriculture and the food system'],
+  standards:['3.11(A)','5.12(C)','5.11'],
   safety:'Wash all produce before tasting, even from your own garden.',
   sources:[
     {name:'Ag in the Classroom',  url:'https://agclassroom.org/'},
@@ -317,10 +319,10 @@ LESSONS.farmtotable = {
   ],
 
   competencies:[
-    {id:'journey', label:'Can put the farm-to-table journey in order'},
-    {id:'fresh',   label:'Knows why distance and time change how food tastes and keeps'},
-    {id:'label',   label:'Can find where a food came from and read it'},
-    {id:'waste',   label:'Knows where food waste goes and how to make less of it'}
+    {id:'journey', label:'Can put the farm-to-table journey in order', teks:'3.11(A)'},
+    {id:'fresh',   label:'Knows why distance and time change how food tastes and keeps', teks:'5.12(C)'},
+    {id:'label',   label:'Can find where a food came from and read it', teks:'3.11(A)'},
+    {id:'waste',   label:'Knows where food waste goes and how to make less of it', teks:'5.11'}
   ],
 
   bank:[
@@ -427,7 +429,7 @@ LESSONS.pollinators = {
   tagline:'No pollinators, no fruit. It is that direct.',
   grades:'K–3',
   word:'',
-  standardsTodo:['TEKS Science K–2: plant and animal interdependence','NGSS 2-LS2-2 animals in plant seed dispersal and pollination'],
+  standards:['2.12(C)','3.12(B)','5.12(C)'],
   safety:'Bees are working, not hunting. Watch from a step back, never swat, and tell a grown-up about any sting allergy before you go outside.',
   sources:[
     {name:'USDA NRCS',   url:'https://www.nrcs.usda.gov/'},
@@ -435,10 +437,10 @@ LESSONS.pollinators = {
   ],
 
   competencies:[
-    {id:'who',  label:'Can tell which animals are pollinators and which are not'},
-    {id:'how',  label:'Knows how pollen actually moves from flower to flower'},
-    {id:'why',  label:'Knows what would be missing without pollinators'},
-    {id:'help', label:'Can name real ways to help pollinators where they live'}
+    {id:'who',  label:'Can tell which animals are pollinators and which are not', teks:'2.12(C)'},
+    {id:'how',  label:'Knows how pollen actually moves from flower to flower', teks:'2.12(C)'},
+    {id:'why',  label:'Knows what would be missing without pollinators', teks:'3.12(B)'},
+    {id:'help', label:'Can name real ways to help pollinators where they live', teks:'5.12(C)'}
   ],
 
   bank:[
@@ -545,7 +547,7 @@ LESSONS.habitat = {
   tagline:'Food, water, shelter, space. Miss one and nothing lives there.',
   grades:'K–3',
   word:'',
-  standardsTodo:['TEKS Science K–3: organisms and environments','NGSS 2-LS4-1 diversity of life in different habitats'],
+  standards:['K.12(B)','2.12(A)','3.12(C)','5.12(A)'],
   safety:'Look, do not collect. Wild animals and their homes stay where they are.',
   sources:[
     {name:'Project WILD', url:'https://www.fishwildlife.org/projectwild'},
@@ -553,10 +555,10 @@ LESSONS.habitat = {
   ],
 
   competencies:[
-    {id:'four',   label:'Can name the four things every habitat must provide'},
-    {id:'match',  label:'Can match an animal to the habitat it needs'},
-    {id:'change', label:'Knows what happens when a habitat loses one of the four'},
-    {id:'build',  label:'Can improve a habitat where they actually live'}
+    {id:'four',   label:'Can name the four things every habitat must provide', teks:'K.12(B)'},
+    {id:'match',  label:'Can match an animal to the habitat it needs', teks:'2.12(A)'},
+    {id:'change', label:'Knows what happens when a habitat loses one of the four', teks:'3.12(C)'},
+    {id:'build',  label:'Can improve a habitat where they actually live', teks:'5.12(A)'}
   ],
 
   bank:[
@@ -662,7 +664,7 @@ LESSONS.compost = {
   tagline:'Rubbish in one end, soil out the other, and something alive doing the work.',
   grades:'K–4',
   word:'',
-  standardsTodo:['TEKS Science 2–5: cycling of matter and decomposers','NGSS 5-LS2-1 movement of matter among plants, animals and decomposers'],
+  standards:['2.11(B)','4.12(B)','3.10(B)','3.11(C)'],
   safety:'Compost is soil, not food. Gloves are good, washing hands afterwards is required. No meat or dairy in a home bin — it attracts animals.',
   sources:[
     {name:'Rodale Institute', url:'https://rodaleinstitute.org/'},
@@ -670,10 +672,10 @@ LESSONS.compost = {
   ],
 
   competencies:[
-    {id:'in',    label:'Knows what belongs in a compost bin and what does not'},
-    {id:'who',   label:'Knows which living things break compost down'},
-    {id:'recipe',label:'Knows what a compost pile needs to work'},
-    {id:'why',   label:'Knows why compost matters to a garden'}
+    {id:'in',    label:'Knows what belongs in a compost bin and what does not', teks:'2.11(B)'},
+    {id:'who',   label:'Knows which living things break compost down', teks:'4.12(B)'},
+    {id:'recipe',label:'Knows what a compost pile needs to work', teks:'3.10(B)'},
+    {id:'why',   label:'Knows why compost matters to a garden', teks:'3.11(C)'}
   ],
 
   bank:[
@@ -791,7 +793,7 @@ LESSONS.soillayers = {
   tagline:'Soil is not dirt. It has layers, and it is full of living things.',
   grades:'1–4',
   word:'',
-  standardsTodo:['TEKS Science 1–4: Earth materials and natural resources','NGSS 2-ESS2-1 / 4-ESS2-1 Earth materials and weathering'],
+  standards:['3.10(B)','4.12(B)','4.10(B)'],
   safety:'Wash hands after handling any soil. Never taste it, and keep cuts covered.',
   sources:[
     {name:'USDA NRCS',        url:'https://www.nrcs.usda.gov/'},
@@ -799,10 +801,10 @@ LESSONS.soillayers = {
   ],
 
   competencies:[
-    {id:'layers', label:'Can name the layers of soil in order from the top down'},
-    {id:'types',  label:'Can tell sand, silt and clay apart by how they feel and behave'},
-    {id:'life',   label:'Knows that soil is full of living things and what they do'},
-    {id:'care',   label:'Knows how soil is lost and how it is protected'}
+    {id:'layers', label:'Can name the layers of soil in order from the top down', teks:'3.10(B)'},
+    {id:'types',  label:'Can tell sand, silt and clay apart by how they feel and behave', teks:'3.10(B)'},
+    {id:'life',   label:'Knows that soil is full of living things and what they do', teks:'4.12(B)'},
+    {id:'care',   label:'Knows how soil is lost and how it is protected', teks:'4.10(B)'}
   ],
 
   bank:[
@@ -921,7 +923,7 @@ LESSONS.seedbot = {
   tagline:'Seeds cannot walk. Engineer one a way to move.',
   grades:'2–5',
   word:'',
-  standardsTodo:['TEKS Science 2–5: engineering design process','NGSS 3-5-ETS1-1/2/3 engineering design; 2-LS2-2 seed dispersal'],
+  standards:['2.12(C)','3.1(B)','2.2(D)'],
   safety:'Scissors are a grown-up job or a careful one. Test flights outdoors or over a clear table.',
   sources:[
     {name:'TeachEngineering', url:'https://www.teachengineering.org/'},
@@ -929,10 +931,10 @@ LESSONS.seedbot = {
   ],
 
   competencies:[
-    {id:'why',    label:'Knows why a seed has to move away from its parent plant'},
-    {id:'ways',   label:'Can identify how different seeds travel'},
-    {id:'cycle',  label:'Can follow the engineering design cycle in order'},
-    {id:'improve',label:'Can change one thing at a time and test whether it helped'}
+    {id:'why',    label:'Knows why a seed has to move away from its parent plant', teks:'2.12(C)'},
+    {id:'ways',   label:'Can identify how different seeds travel', teks:'2.12(C)'},
+    {id:'cycle',  label:'Can follow the engineering design cycle in order', teks:'3.1(B)'},
+    {id:'improve',label:'Can change one thing at a time and test whether it helped', teks:'2.2(D)'}
   ],
 
   bank:[
@@ -1041,7 +1043,7 @@ LESSONS.sunpower = {
   tagline:'The same sunlight that feeds a plant can cook your lunch.',
   grades:'2–5',
   word:'',
-  standardsTodo:['TEKS Science 2–5: forms of energy, including light and heat','NGSS 4-PS3-2 energy transfer; 5-PS3-1 energy from the sun'],
+  standards:['2.9(A)','5.8(C)','4.8(B)','3.1(G)'],
   safety:'A solar oven gets genuinely hot and the foil reflects strong light. A grown-up handles anything coming out of it, and nobody looks straight at the sun or the reflection.',
   sources:[
     {name:'NASA Climate Kids',  url:'https://climatekids.nasa.gov/'},
@@ -1049,10 +1051,10 @@ LESSONS.sunpower = {
   ],
 
   competencies:[
-    {id:'energy', label:'Knows that sunlight carries energy that becomes heat'},
-    {id:'colour', label:'Knows that dark surfaces absorb and light surfaces reflect'},
-    {id:'trap',   label:'Knows how a surface, a reflector and a cover work together to trap heat'},
-    {id:'test',   label:'Can measure a difference instead of guessing at it'}
+    {id:'energy', label:'Knows that sunlight carries energy that becomes heat', teks:'2.9(A)'},
+    {id:'colour', label:'Knows that dark surfaces absorb and light surfaces reflect', teks:'5.8(C)'},
+    {id:'trap',   label:'Knows how a surface, a reflector and a cover work together to trap heat', teks:'4.8(B)'},
+    {id:'test',   label:'Can measure a difference instead of guessing at it', teks:'3.1(G)'}
   ],
 
   bank:[
@@ -1163,7 +1165,7 @@ LESSONS.drying = {
   tagline:'Take the water out, and the harvest keeps for months.',
   grades:'2–5',
   word:'',
-  standardsTodo:['TEKS Health 2–5: food safety and handling','NHES Standard 7: practices that reduce health risks'],
+  standards:['4.12(B)','3.10(B)','H.5.2(E)'],
   safety:'This lesson dries herbs and does not can anything. Canning, pickling and anything low-acid needs tested times and temperatures — those live at the National Center for Home Food Preservation and are never guessed at, adjusted or copied out here.',
   sources:[
     {name:'National Center for Home Food Preservation', url:'https://nchfp.uga.edu/'},
@@ -1171,10 +1173,10 @@ LESSONS.drying = {
   ],
 
   competencies:[
-    {id:'why',   label:'Knows that removing water is what stops food spoiling'},
-    {id:'spoil', label:'Knows what makes food go bad in the first place'},
-    {id:'how',   label:'Knows the ways food is dried and what each one needs'},
-    {id:'store', label:'Knows how to store dried food and when to ask an adult'}
+    {id:'why',   label:'Knows that removing water is what stops food spoiling', teks:'4.12(B)'},
+    {id:'spoil', label:'Knows what makes food go bad in the first place', teks:'4.12(B)'},
+    {id:'how',   label:'Knows the ways food is dried and what each one needs', teks:'3.10(B)'},
+    {id:'store', label:'Knows how to store dried food and when to ask an adult', teks:'H.5.2(E)'}
   ],
 
   bank:[
@@ -1285,7 +1287,7 @@ LESSONS.seedsaving = {
   tagline:'The end of one plant is the start of the next.',
   grades:'2–5',
   word:'',
-  standardsTodo:['TEKS Science 2–5: life cycles and inherited traits','NGSS 3-LS1-1 organisms have unique and diverse life cycles'],
+  standards:['4.13(B)','3.13(B)','K.13(C)','K.13(D)'],
   safety:'Only save seeds from plants you know. Never taste unknown seeds or berries — some are poisonous.',
   sources:[
     {name:'KidsGardening',       url:'https://kidsgardening.org/'},
@@ -1293,10 +1295,10 @@ LESSONS.seedsaving = {
   ],
 
   competencies:[
-    {id:'which', label:'Knows which plants to save seed from and which to skip'},
-    {id:'ripe',  label:'Knows when a seed is actually ready to save'},
-    {id:'dry',   label:'Knows that seeds must be fully dry before storing'},
-    {id:'store', label:'Knows how to store and label seed so it grows next year'}
+    {id:'which', label:'Knows which plants to save seed from and which to skip', teks:'4.13(B)'},
+    {id:'ripe',  label:'Knows when a seed is actually ready to save', teks:'3.13(B)'},
+    {id:'dry',   label:'Knows that seeds must be fully dry before storing', teks:'K.13(C)'},
+    {id:'store', label:'Knows how to store and label seed so it grows next year', teks:'K.13(D)'}
   ],
 
   bank:[

@@ -86,6 +86,7 @@
     if (L.grades) chips.push('Grades ' + L.grades);
     chips.push('Lesson ' + L.n + ' of ' + (global.LESSONS.forWorld(L.world).length));
     if (L.competencies) chips.push(L.competencies.length + ' skills');
+    if (L.standards && L.standards.length) chips.push('TEKS aligned');
     el('lChips').innerHTML = chips.map(function(c){ return '<span class="chip">'+esc(c)+'</span>'; }).join('');
   }
 
@@ -264,6 +265,16 @@
         ? 'You are ready. This one counts.'
         : 'Play ' + NEED_PLAY + ' game' + (NEED_PLAY===1?'':'s') + ' and do the build first — ' +
           'you have played ' + played + ' and ' + (built() ? 'done the build' : 'not done the build yet') + '.';
+
+    var sl = el('stdList');
+    if (sl && window.TEKS){
+      sl.innerHTML = (L.competencies||[]).map(function(c){
+        var se = TEKS.se[c.teks]; if (!se) return '';
+        return '<div class="stdrow"><b>'+esc(c.teks)+'</b>'+
+               '<span>'+esc(c.label)+'<em>'+esc(se.subject||'Science')+' &middot; '+esc(se.grade)+
+               ' &middot; '+esc(se.section)+'</em></span></div>';
+      }).join('');
+    }
 
     var post = TGQuiz.result(SLUG,'post', k && k.name);
     if (post){ el('postBtn').style.display='none'; el('certWrap').style.display='block'; paintCert(); }

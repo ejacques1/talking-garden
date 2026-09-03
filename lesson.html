@@ -138,6 +138,13 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .certskills li.kept::before{content:'\2705'}
 .certfoot{margin-top:18px;padding-top:14px;border-top:1px solid rgba(0,0,0,.1);font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .certbtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.stds{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.stds summary{font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer}
+.stds summary:hover{color:var(--wd)}
+.stdrow{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.stdrow:first-of-type{border-top:none}
+.stdrow b{color:var(--wd);font-family:var(--display);font-size:13px;white-space:nowrap}
+.stdrow em{display:block;font-style:normal;font-size:12.5px;color:var(--muted);margin-top:2px}
 
 /* overlay */
 .ovl{position:fixed;inset:0;background:rgba(22,40,58,.55);backdrop-filter:blur(3px);z-index:100;display:none;place-items:center;padding:18px}
@@ -285,6 +292,10 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
     </div>
     <p class="note" id="postGate"></p>
     <button class="btn btn-primary" id="postBtn">Take the after-check &rarr;</button>
+    <details class="stds">
+      <summary>Which Texas standards this checks</summary>
+      <div id="stdList"></div>
+    </details>
     <div id="certWrap" style="display:none;margin-top:20px"></div>
   </section>
 
@@ -302,6 +313,7 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 
 <script src="worlds.js"></script>
 <script src="lessons.js"></script>
+<script src="teks.js"></script>
 <script src="session.js"></script>
 <script src="audio.js"></script>
 <script src="quiz.js"></script>

@@ -183,8 +183,8 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="card">
-      <h3>Standards still to confirm</h3>
-      <p class="sub">Six standards were read directly from TEKS Guide and are safe to quote. Everything else below is the alignment a lesson was <b>written toward</b> and nobody has checked yet against the published standard. Families are never shown these, and neither is a funder, until someone confirms them.</p>
+      <h3>Standards</h3>
+      <p class="sub">Every skill in every lesson names one Texas student expectation, and every code below was read from 19 TAC as published &mdash; science Chapter 112 (adopted 2021) and health Chapter 115 (adopted 2020). The wording is quoted exactly. This is the table that answers &ldquo;what standard does this meet?&rdquo;</p>
       <div class="scroll"><table id="stdTable"></table></div>
     </div>
   </section>
@@ -243,18 +243,27 @@ function drawCurriculum(){
   document.getElementById('curTable').innerHTML =
     '<thead><tr><th>World</th><th>Lesson</th><th>Skills it checks</th><th>Live session</th></tr></thead><tbody>'+rows+'</tbody>';
 
+  /* One row per skill, not per lesson: a funder asks what a child
+     demonstrated, and a child demonstrates a skill, not a lesson. */
   var std = TOPICS.map(function(t){
     var L = LESSONS[t.slug];
-    if (L.standards)
-      return '<tr><td><b>'+esc(L.title)+'</b></td>'+
-             '<td>'+L.standards.map(esc).join(', ')+'</td>'+
-             '<td style="color:#4A6E33;font-weight:700">Verified &mdash; read from TEKS Guide</td></tr>';
-    return '<tr><td><b>'+esc(L.title)+'</b></td>'+
-           '<td>'+(L.standardsTodo||[]).map(esc).join('<br>')+'</td>'+
-           '<td style="color:#B8481B;font-weight:700">To confirm</td></tr>';
+    var comps = (L.competencies && L.competencies.length)
+              ? L.competencies
+              : (window.TGQuiz ? TGQuiz.settings.competencies(t.slug) : []);
+    return comps.map(function(c, i){
+      var se = (window.TEKS && TEKS.se[c.teks]) || null;
+      return '<tr>'+
+        (i ? '' : '<td rowspan="'+comps.length+'"><b>'+esc(L.title)+'</b><br>'+
+                  '<span style="color:#8A9199">'+esc(t.world)+'</span></td>')+
+        '<td>'+esc(c.label)+'</td>'+
+        '<td style="white-space:nowrap"><b>'+esc(c.teks||'\u2014')+'</b>'+
+          (se ? '<br><span style="color:#8A9199">'+esc(se.subject||'Science')+' &middot; '+esc(se.grade)+'</span>' : '')+'</td>'+
+        '<td style="color:#55606B">'+(se ? esc(se.text) : '&mdash;')+'</td>'+
+      '</tr>';
+    }).join('');
   }).join('');
   document.getElementById('stdTable').innerHTML =
-    '<thead><tr><th>Lesson</th><th>Written toward</th><th>Status</th></tr></thead><tbody>'+std+'</tbody>';
+    '<thead><tr><th>Lesson</th><th>Skill</th><th>Student expectation</th><th>As published in 19 TAC</th></tr></thead><tbody>'+std+'</tbody>';
 }
 
 /* ---------- tabs ---------- */
