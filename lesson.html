@@ -27,8 +27,12 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 /* nav */
 .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav-in{max-width:900px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:14px}
-.back{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:14.5px;color:var(--body);margin-right:auto}
-.back:hover{color:var(--w)}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.brand-mark{width:38px;height:auto;flex:none}
+.brand-txt{font-family:var(--display);font-weight:800;font-size:16px;color:var(--ink);line-height:1.15}
+.brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.crumb{display:inline-flex;gap:7px;font-size:14px;font-weight:700;color:var(--wd);text-decoration:none;margin-bottom:14px;position:relative;z-index:2}
+.crumb:hover{opacity:.75}
 .out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
 .out:hover{color:var(--red)}
 .who{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--body)}
@@ -49,20 +53,23 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 /* rail */
 .rail{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:47px;z-index:40}
 .rail-in{max-width:900px;margin:0 auto;padding:11px 22px;display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.rstep{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--faint);white-space:nowrap;background:none;border:none;font-family:var(--sans);cursor:pointer;padding:5px 9px;border-radius:999px}
-.rstep i{width:19px;height:19px;border-radius:50%;background:var(--line);color:#fff;display:grid;place-items:center;font-size:11px;font-style:normal;flex:none}
-.rstep.now{color:var(--wd);background:var(--wl)}.rstep.now i{background:var(--w)}
-.rstep.was{color:var(--green-d)}.rstep.was i{background:var(--green)}
+.rstep{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--muted);white-space:nowrap;background:var(--beige);border:1px solid var(--line);font-family:var(--sans);cursor:pointer;padding:9px 15px;border-radius:999px;flex:none}
+.rstep i{width:20px;height:20px;border-radius:50%;background:var(--line-d);color:#fff;display:grid;place-items:center;font-size:11px;font-style:normal;flex:none}
+.rstep.now{color:#7A5A0C;background:var(--yellow);border:1px solid #EBD9A8}.rstep.now i{background:var(--yellow-warm);color:#5A4208}
+.rstep.was{color:var(--green-d);background:var(--green-l);border-color:#CBDDC6}.rstep.was i{background:var(--green)}
 
 /* stages */
 .stage{background:#fff;border:1px solid var(--line);border-radius:var(--rl);padding:26px 28px;margin:20px 0;box-shadow:var(--shadow);position:relative}
 .stage.lock{opacity:.55}
 .stage.lock::after{content:'\1F512';position:absolute;top:20px;right:24px;font-size:19px;opacity:.5}
-.sn{display:flex;align-items:center;gap:11px;margin-bottom:5px}
+.sn{display:flex;align-items:flex-start;gap:12px;margin-bottom:5px}
+.sn .sk{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
 .sn i{width:27px;height:27px;border-radius:50%;background:var(--w);color:#fff;display:grid;place-items:center;font-size:13px;font-style:normal;font-weight:800;font-family:var(--display);flex:none}
 .stage h2{font-size:21px}
-.stage>p.lede{color:var(--muted);font-size:15px;margin:2px 0 16px 38px}
-@media(max-width:600px){.stage{padding:22px 20px}.stage>p.lede{margin-left:0}}
+.stage>p.lede{color:var(--muted);font-size:15px;margin:2px 0 14px 39px}
+.pillrow{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 17px 39px}
+.mini{font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--beige);border:1px solid var(--line);color:var(--muted)}
+@media(max-width:600px){.stage{padding:22px 20px}.stage>p.lede,.pillrow{margin-left:0}}
 .statusline{background:var(--green-l);border-radius:12px;padding:11px 15px;font-size:14.5px;font-weight:600;color:var(--green-d);display:flex;align-items:center;gap:9px}
 .note{background:var(--yellow);border-radius:12px;padding:13px 16px;font-size:14px;color:#5C5320;margin-top:14px}
 .safety{background:var(--red-l);border:1px solid #F2CDBA;border-radius:12px;padding:12px 16px;font-size:14px;color:#7A3D1C;margin-top:14px}
@@ -198,13 +205,19 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 
 <nav class="nav">
   <div class="nav-in">
-    <a class="back" href="dashboard.html">&larr; <span id="backTxt">All worlds</span></a>
+    <a class="brand" href="dashboard.html">
+      <img class="brand-mark" src="img/dewey-happy.png" alt="">
+      <span class="brand-txt">DewLab<span>Dew of Heaven Children&rsquo;s Garden</span></span>
+    </a>
     <span class="who"><span class="av" id="av">&#127803;</span><span id="whoName">—</span></span>
     <button class="out" id="outBtn">Log out</button>
   </div>
 </nav>
 
 <header class="lhead">
+  <div class="wrap">
+    <a class="crumb" href="dashboard.html" id="crumb">&larr; All worlds</a>
+  </div>
   <div class="wrap lhead-in">
     <img class="guide" id="guideImg" src="" alt="">
     <div>
@@ -221,15 +234,17 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 <main class="wrap">
 
   <section class="stage" id="s1">
-    <div class="sn"><i>1</i><h2>Before we start</h2></div>
+    <div class="sn"><i>1</i><div><div class="sk">Before the live session</div><h2>Before we start</h2></div></div>
     <p class="lede">A few picture questions, read out loud. There is no pass or fail — it just marks where you are starting from.</p>
+    <div class="pillrow" id="p1"></div>
     <button class="btn btn-primary" id="preBtn">Start the before-check &rarr;</button>
     <div class="statusline" id="preDone" style="display:none"></div>
   </section>
 
   <section class="stage" id="s2">
-    <div class="sn"><i>2</i><h2>Meet us live</h2></div>
+    <div class="sn"><i>2</i><div><div class="sk">With your guide</div><h2>Meet us live</h2></div></div>
     <p class="lede" id="s2lede">Join the live session with your guide. Somewhere in the middle they will say the secret word.</p>
+    <div class="pillrow" id="p2"></div>
     <div class="sess">
       <div><b id="sessTitle">Live session</b><span id="sessWhen">Date coming soon</span></div>
       <a class="btn btn-primary" id="joinBtn" href="#" target="_blank" rel="noopener">Join the session</a>
@@ -247,20 +262,23 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
   </section>
 
   <section class="stage lock" id="s3">
-    <div class="sn"><i>3</i><h2>Try it at home</h2></div>
+    <div class="sn"><i>3</i><div><div class="sk">Off the screen</div><h2>Try it at home</h2></div></div>
     <p class="lede">One hands-on build. Take your time — it does not have to happen today.</p>
+    <div class="pillrow" id="p3"></div>
     <div id="buildSlot"></div>
   </section>
 
   <section class="stage lock" id="s4">
-    <div class="sn"><i>4</i><h2>Play &amp; practise</h2></div>
+    <div class="sn"><i>4</i><div><div class="sk">As often as you like</div><h2>Play &amp; practise</h2></div></div>
     <p class="lede" id="s4lede">Short games. You can play them as many times as you like.</p>
+    <div class="pillrow" id="p4"></div>
     <div class="cards" id="actCards"></div>
   </section>
 
   <section class="stage lock" id="s5">
-    <div class="sn"><i>5</i><h2>Show what you grew</h2></div>
+    <div class="sn"><i>5</i><div><div class="sk">The one that counts</div><h2>Show what you grew</h2></div></div>
     <p class="lede">The same skills, different questions. This is the one that goes on the certificate.</p>
+    <div class="pillrow" id="p5"></div>
     <div class="result">
       <div class="rbox"><small>Before</small><b id="rBefore">—</b></div>
       <div class="rbox after"><small>After</small><b id="rAfter">—</b></div>

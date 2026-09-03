@@ -23,29 +23,34 @@
 <meta name="twitter:image" content="https://talking-garden.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
 <style>
+/* ------------------------------------------------------------------
+   This page was built before DewLab existed and carried its own
+   palette, its own typefaces and its own greys. Read next to any
+   other lesson it looked like a different product.
+
+   Rather than rewrite ninety rules, the old variable names are kept
+   and pointed at the DHCG brand tokens in brand.css. So --sage is
+   Grow's green, --terra is the brand red, and a future change to the
+   brand sheet reaches this page like it reaches every other one.
+------------------------------------------------------------------- */
 :root{
-  --cream:#F7F3EA; --paper:#FFFFFF; --paper2:#FCFAF3;
-  --ink:#1F2320; --body:#55584F; --muted:#7B7D72; --faint:#A8A99C;
-  /* Grow's colour from the DHCG brand sheet, so this lesson
-     matches the world it now belongs to. */
-  --sage:#639245; --sage-d:#4A6E33; --sage-l:#EAF1E5;
-  --soil:#6B5640; --terra:#C25A36; --terra-l:#FBE8E0;
-  --sun:#F2B233; --sun-l:#FDF1D6;
-  --sky:#3E90CC; --sky-l:#E2F0FA;
-  --grape:#7A5BC4; --grape-l:#EEE8FB;
-  --teal:#1F9B8E; --teal-l:#DEF3F1;
-  --line:#E8E1D2; --line-d:#D6CDB8;
-  --serif:'Fraunces',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --r:18px; --rl:26px;
-  --shadow:0 2px 4px rgba(31,35,32,.04), 0 10px 28px rgba(31,35,32,.07);
-  --shadow-lg:0 4px 8px rgba(31,35,32,.05), 0 22px 50px rgba(31,35,32,.11);
+  --cream:var(--beige);  --paper2:var(--beige);
+  --sage:var(--green);   --sage-d:var(--green-d);  --sage-l:var(--green-l);
+  --soil:#7A5230;
+  --terra:var(--red);    --terra-l:var(--red-l);
+  --sun:var(--yellow-warm); --sun-l:var(--yellow);
+  --sky:var(--blue);     --sky-l:var(--blue-l);
+  --grape:#8E5AA8;       --grape-l:#F0EAF5;
+  --teal:#4E7635;        --teal-l:var(--green-l);
+  --serif:var(--display);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper2);color:var(--body);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0;line-height:1.1;letter-spacing:-.02em;font-weight:700}
+body{margin:0;background:var(--beige);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--display);color:var(--ink);margin:0;line-height:1.14;letter-spacing:-.02em;font-weight:800}
 p{margin:0}
 a{color:inherit}
 img{max-width:100%;display:block}
@@ -75,10 +80,13 @@ img{max-width:100%;display:block}
 .thead::after{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.42);right:-90px;top:-120px}
 .crumb{font-size:14px;color:var(--sage-d);text-decoration:none;font-weight:600;display:inline-flex;gap:7px;margin-bottom:16px}
 .thead-in{display:flex;gap:22px;align-items:center;position:relative;z-index:2}
-.tbadge{width:92px;height:110px;border-radius:26px;background:#fff;display:grid;place-items:center;box-shadow:var(--shadow);flex:none;padding:6px}
+.tbadge{width:112px;display:grid;place-items:center;flex:none}
+.tbadge img{width:100%;height:auto}
+.tchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.tchip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;color:var(--body)}
 .thead h1{font-size:clamp(29px,4.4vw,42px);font-weight:900;margin-bottom:8px}
 .thead p{font-size:17px;color:#456141;max-width:36em}
-@media(max-width:600px){.thead-in{flex-direction:column;align-items:flex-start;gap:16px}.tbadge{width:70px;height:70px;font-size:36px;border-radius:20px}}
+@media(max-width:600px){.thead-in{flex-direction:column;align-items:flex-start;gap:16px}.tbadge{width:82px}}
 
 /* progress rail */
 .rail{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:63px;z-index:40}
@@ -94,7 +102,7 @@ img{max-width:100%;display:block}
 /* stage blocks */
 .stage{background:#fff;border:1px solid var(--line);border-radius:var(--rl);box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden;position:relative}
 .stage-hd{display:flex;gap:16px;align-items:flex-start;padding:26px 28px 0}
-.snum{width:42px;height:42px;border-radius:13px;background:var(--sage);color:#fff;font-family:var(--serif);font-weight:700;font-size:19px;display:grid;place-items:center;flex:none}
+.snum{width:42px;height:42px;border-radius:50%;background:var(--sage);color:#fff;font-family:var(--serif);font-weight:700;font-size:19px;display:grid;place-items:center;flex:none}
 .stage.lock .snum{background:var(--line-d)}
 .stage-hd h2{font-size:24px;margin-bottom:5px}
 .stage-hd .sk{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--terra);margin-bottom:7px}
@@ -272,7 +280,8 @@ img{max-width:100%;display:block}
 
 .cert{position:relative;background:radial-gradient(circle at 50% 0%,#FEFAF0,#FBF0D8 70%);border:2px solid #D9BE79;border-radius:22px;padding:34px 26px 26px;text-align:center;overflow:hidden;box-shadow:0 10px 30px rgba(122,82,48,.13)}
 .cert-ring{position:absolute;inset:9px;border:1px dashed #E0C88E;border-radius:16px;pointer-events:none}
-.certseal{position:relative;display:grid;place-items:center;margin-bottom:2px}
+.certseal{position:relative;display:grid;place-items:center;margin-bottom:2px;width:64px;margin-left:auto;margin-right:auto}
+.certseal img{width:100%;height:auto}
 .certkicker{position:relative;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#A08543;margin-bottom:16px}
 .certawarded{position:relative;font-size:13px;color:#96792A;letter-spacing:.04em}
 .certname{position:relative;font-family:var(--serif);font-size:clamp(30px,7vw,42px);font-weight:900;color:var(--ink);line-height:1.05;margin:4px 0 6px}
@@ -314,6 +323,7 @@ img{max-width:100%;display:block}
         <div style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-d);margin-bottom:7px">Grow &middot; with Root</div>
         <h1>The Plant Life Cycle</h1>
         <p>From a seed the size of a freckle to a sunflower taller than you. Follow the whole journey — then grow one yourself.</p>
+        <div class="tchips" id="tchips"></div>
       </div>
     </div>
   </div>
@@ -512,6 +522,8 @@ img{max-width:100%;display:block}
 <div class="resetbar"><button id="resetBtn">Reset this demo</button></div>
 <div class="proto"><i></i> Prototype — sample content</div>
 
+<script src="worlds.js"></script>
+<script src="lessons.js"></script>
 <script src="sunny.js"></script>
 <script src="session.js"></script>
 <script src="movie.js"></script>
@@ -661,10 +673,27 @@ document.getElementById('resetBtn').addEventListener('click',function(){
     (kids.length ? kids[0].name+' \u00b7 ' : '') + 'Plant Life Cycle \u00b7 completed August 2026';
   document.getElementById('outBtn').onclick = async function(){ await TG.signOut(); location.href='index.html'; };
   paint();
+  /* Root guides Grow, on every other lesson in the world, so he leads
+     here too. Sunny is not retired — he is the sprout the child grows
+     in the animation and the activities, which is a character in the
+     story rather than the guide of the world. Two different jobs. */
+  var W = (window.WORLDS||[]).filter(function(w){ return w.key==='grow'; })[0];
   var tb=document.getElementById('tbadge');
-  if(tb && window.Sunny) tb.innerHTML=Sunny.html('wave',74);
+  if(tb && W) tb.innerHTML = '<img src="'+W.img+'" alt="'+W.guide+', your guide in Grow">';
+
   var cs=document.getElementById('certSeal');
-  if(cs && window.Sunny) cs.innerHTML=Sunny.html('cheer',72);
+  if(cs && W) cs.innerHTML = '<img src="'+W.img+'" alt="">';
+
+  /* The chips the other eleven lessons carry, so the header reads the
+     same way whichever lesson a family opens. */
+  var ch=document.getElementById('tchips');
+  if(ch){
+    var comps = window.TGQuiz ? TGQuiz.settings.competencies('plant') : [];
+    ch.innerHTML = ['Grades K\u20132',
+                    'Lesson 1 of '+((window.LESSONS&&LESSONS.forWorld('grow').length)||2),
+                    comps.length+' skills']
+      .map(function(c){ return '<span class="tchip">'+c+'</span>'; }).join('');
+  }
 
   document.getElementById('boot').style.display='none';
   document.getElementById('app').style.display='block';

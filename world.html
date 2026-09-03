@@ -19,8 +19,12 @@ p{margin:0}a{color:inherit;text-decoration:none}img{max-width:100%;display:block
 .wrap{max-width:900px;margin:0 auto;padding:0 22px}
 .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav-in{max-width:900px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:14px}
-.back{font-weight:700;font-size:14.5px;color:var(--body);margin-right:auto}
-.back:hover{color:var(--w)}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto}
+.brand-mark{width:38px;height:auto;flex:none}
+.brand-txt{font-family:var(--display);font-weight:800;font-size:16px;color:var(--ink);line-height:1.15}
+.brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.crumb{display:inline-flex;gap:7px;font-size:14px;font-weight:700;color:var(--wd);margin-bottom:14px;position:relative;z-index:2}
+.crumb:hover{opacity:.75}
 .out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
 .hd{background:var(--wl);border-bottom:1px solid var(--line);padding:30px 0 32px;position:relative;overflow:hidden}
 .hd::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.45);right:-120px;top:-140px}
@@ -63,11 +67,16 @@ a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
 <div id="app" style="display:none">
 
 <nav class="nav"><div class="nav-in">
-  <a class="back" href="dashboard.html">&larr; All worlds</a>
+  <a class="brand" href="dashboard.html">
+    <img class="brand-mark" src="img/dewey-happy.png" alt="">
+    <span class="brand-txt">DewLab<span>Dew of Heaven Children&rsquo;s Garden</span></span>
+  </a>
   <button class="out" id="outBtn">Log out</button>
 </div></nav>
 
-<header class="hd"><div class="wrap hd-in">
+<header class="hd">
+  <div class="wrap"><a class="crumb" href="dashboard.html">&larr; All worlds</a></div>
+  <div class="wrap hd-in">
   <img id="gImg" src="" alt="">
   <div>
     <div class="eyebrow" id="gLine"></div>
@@ -160,8 +169,14 @@ a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
           '<p>'+esc(L.tagline||'')+'</p>'+
           '<div class="meta">'+
             (L.grades?'<span>Grades '+esc(L.grades)+'</span>':'')+
-            (L.competencies?'<span>'+L.competencies.length+' skills</span>':
-             L.standards?'<span>'+L.standards.length+' standards</span>':'')+
+            /* One word for one thing. The plant lesson keeps its skills
+               in quiz.js, so ask there rather than counting its
+               standards and calling them something different. */
+            (function(){
+              var c = (L.competencies && L.competencies.length) ? L.competencies
+                    : (window.TGQuiz ? TGQuiz.settings.competencies(L.slug) : []);
+              return c.length ? '<span>'+c.length+' skills</span>' : '';
+            })()+
             '<span>'+esc(when)+'</span>'+
           '</div>'+
         '</div>'+

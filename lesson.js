@@ -74,13 +74,41 @@
     el('eyebrow').textContent = (W.name||'') + (W.guide ? ' · with ' + W.guide : '');
     el('lTitle').textContent  = L.title;
     el('lTag').textContent    = L.tagline || '';
-    el('backTxt').textContent = W.name ? 'Back to ' + W.name : 'All worlds';
+    /* The crumb goes back to the world, not all the way home — a
+       family reading lesson 1 usually wants lesson 2 next. */
+    var cr = el('crumb');
+    if (cr){
+      cr.innerHTML = '&larr; ' + (W.name ? 'Back to ' + esc(W.name) : 'All worlds');
+      cr.href = W.key ? 'world.html?w=' + W.key : 'dashboard.html';
+    }
 
     var chips = [];
     if (L.grades) chips.push('Grades ' + L.grades);
     chips.push('Lesson ' + L.n + ' of ' + (global.LESSONS.forWorld(L.world).length));
     if (L.competencies) chips.push(L.competencies.length + ' skills');
     el('lChips').innerHTML = chips.map(function(c){ return '<span class="chip">'+esc(c)+'</span>'; }).join('');
+  }
+
+  /* The row of facts under each stage heading. The plant lesson has
+     always had these and they answer the question a parent asks first
+     — how long is this going to take? */
+  function paintPills(){
+    var n = (L.competencies||[]).length * 2;
+    var b = L.build || {};
+    var rows = {
+      p1:['&#9201; About four minutes', '&#128444;&#65039; '+n+' picture questions', '&#128218; Read aloud'],
+      p2:['&#9201; About 45 minutes', '&#128100; Live, not a recording', '&#128273; The secret word is said here'],
+      p3:['&#9201; '+(b.time||''), '&#128101; '+(b.help||''), '&#129529; '+(b.mess||'')],
+      p4:[(L.activities||[]).length+' games', '&#128260; Play them as often as you like',
+          '&#127793; Each one names the skill it builds'],
+      p5:['&#9201; About four minutes', '&#128200; The same skills, different questions',
+          '&#127942; Ends with a certificate']
+    };
+    Object.keys(rows).forEach(function(id){
+      var host = el(id); if (!host) return;
+      host.innerHTML = rows[id].filter(function(t){ return t && t.trim().slice(-1) !== ';'; })
+        .map(function(t){ return '<span class="mini">'+t+'</span>'; }).join('');
+    });
   }
 
   /* ---------------- stage 3: the build ---------------- */
@@ -254,6 +282,7 @@
       };
     });
 
+    paintPills();
     paintBuild();
     paintActivities();
   }
