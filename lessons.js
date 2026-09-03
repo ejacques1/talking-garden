@@ -150,6 +150,11 @@ LESSONS.seasons = {
      The run sheet is written against the four skills, and deliberately
      does NOT repeat the animation. The animation explains the idea;
      this is Ms. Nia showing the real thing in the real garden. */
+  /* The animated opener, drawn in code so it exists before anything is
+     filmed. Root explains the idea; Ms. Nia's session shows the real
+     thing. They deliberately do not cover the same ground. */
+  movie:{ render:'seasons', minutes:1, guide:'Root' },
+
   session:{
     minutes:5,
     word:'',                 /* set per recording in the admin panel */

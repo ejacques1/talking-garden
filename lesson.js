@@ -155,13 +155,37 @@
        most useful one: the live session if one is coming, otherwise
        the recording. */
     var haveLive = !!TGSession.next(SLUG);
-    var tRec = el('tabRecorded'), tLive = el('tabLive'), tPast = el('tabPast');
+    var mv = L.movie && global.TGMovies && global.TGMovies[L.movie.render];
+    var tMov = el('tabMovie'), tRec = el('tabRecorded'), tLive = el('tabLive');
+    if (tMov){
+      tMov.style.display = mv ? '' : 'none';
+      if (mv) tMov.textContent = (L.movie.guide || (W && W.guide) || 'Your guide') + ' explains';
+    }
     if (tRec)  tRec.style.display  = rec ? '' : 'none';
-    if (tLive) tLive.style.display = (haveLive || !rec) ? '' : 'none';
-    if (mode === null) mode = haveLive ? 'live' : (rec ? 'recorded' : 'live');
+    if (tLive) tLive.style.display = (haveLive || (!rec && !mv)) ? '' : 'none';
+    /* Open on the animation when there is one — it is the shortest way
+       in, and it is what the rest of the lesson builds on. */
+    if (mode === null) mode = mv ? 'movie' : (haveLive ? 'live' : (rec ? 'recorded' : 'live'));
     [].forEach.call(document.querySelectorAll('.stog'), function(b){
       b.className = 'stog' + (b.dataset.mode === mode ? ' on' : '');
     });
+
+    /* ---- the animation ---- */
+    if (mode === 'movie'){
+      el('joinBtn').style.display = 'none';
+      var g = L.movie.guide || (W && W.guide) || 'your guide';
+      el('sessTitle').textContent = L.title + ' — ' + g + ' explains';
+      if (!preDone()){
+        slot.innerHTML = '<div class="slotmsg"><div class="big">&#128274;</div>'+
+          '<b>Finish the before-check first</b>'+
+          '<span>Then '+esc(g)+' will show you how it works. We ask first so we can see what you learn.</span></div>';
+        el('sessWhen').textContent = 'Opens once you have done the before-check';
+        return;
+      }
+      mv.mount(slot, g);
+      el('sessWhen').textContent = 'A short animation · narrated · about a minute';
+      return;
+    }
 
     /* ---- the recorded session ---- */
     if (mode === 'recorded'){
