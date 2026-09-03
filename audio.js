@@ -27,21 +27,92 @@
     if (!v) stop();
   }
 
-  /* Prefer a natural, English voice. Falls back to whatever exists. */
-  function pickVoice(){
-    if (!supported) return null;
-    var vs = speechSynthesis.getVoices();
-    if (!vs.length) return null;
-    var prefer = ['Samantha','Google US English','Microsoft Aria','Karen','Moira'];
-    for (var i=0;i<prefer.length;i++){
-      var hit = vs.filter(function(v){ return v.name.indexOf(prefer[i]) > -1; })[0];
-      if (hit) return hit;
-    }
-    return vs.filter(function(v){ return /^en/i.test(v.lang); })[0] || vs[0];
+  /* ---------------- choosing a voice ----------------
+     Browsers ship anything from genuinely good neural voices to the
+     1980s novelty ones still bundled with macOS. Left to itself the
+     browser often picks the worst available, which is what made this
+     sound cheap.
+
+     So: score every voice and take the best. Modern neural voices
+     announce themselves in their name — Natural, Neural, Premium,
+     Enhanced, Online — and those are worth a lot. The novelty voices
+     (Zarvox, Bubbles, Bad News and friends) are actively excluded,
+     because one of them turning up in front of a five-year-old is
+     worse than no sound at all. */
+
+  var VOICE_KEY = 'dl_voice';
+
+  /* macOS ships these as jokes. Never speak to a child with one. */
+  var NOVELTY = /albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|junior|ralph|fred|kathy|princess|hysterical|pipe organ|grandma|grandpa|rocko|shelley|sandy|eddy|flo|reed|rishi/i;
+
+  function scoreVoice(v){
+    var n = (v.name||'') + ' ' + (v.voiceURI||'');
+    var lang = (v.lang||'').toLowerCase();
+
+    if (NOVELTY.test(n)) return -1;
+    if (!/^en/.test(lang)) return -1;
+
+    var s = 0;
+    /* The generation of voice matters more than anything else. */
+    if (/natural|neural/i.test(n))   s += 60;
+    if (/premium|enhanced/i.test(n)) s += 45;
+    if (/online/i.test(n))           s += 25;   /* Microsoft's cloud voices */
+    if (/google/i.test(n))           s += 35;
+    if (/siri/i.test(n))             s += 30;
+    if (/compact/i.test(n))          s -= 30;   /* the low-quality fallbacks */
+
+    /* Named voices that are reliably decent where they exist. */
+    if (/samantha|ava|allison|zoe|aria|jenny|serena|karen|moira|nicky|evan/i.test(n)) s += 18;
+
+    /* Match the audience: American English first, then other English. */
+    if (lang === 'en-us') s += 14;
+    else if (/^en-(gb|au|ca)/.test(lang)) s += 6;
+
+    /* A local voice always works; a network one can fail offline. Only
+       a tie-breaker, because the network ones usually sound better. */
+    if (v.localService) s += 3;
+
+    return s;
   }
+
+  function allVoices(){
+    if (!supported) return [];
+    var vs = [];
+    try { vs = speechSynthesis.getVoices() || []; } catch(e){}
+    return vs;
+  }
+
+  function pickVoice(){
+    var vs = allVoices();
+    if (!vs.length) return null;
+
+    /* An explicit choice always wins. */
+    try {
+      var saved = localStorage.getItem(VOICE_KEY);
+      if (saved){
+        var hit = vs.filter(function(v){ return v.voiceURI === saved || v.name === saved; })[0];
+        if (hit) return hit;
+      }
+    } catch(e){}
+
+    var best = null, bestScore = -1;
+    vs.forEach(function(v){
+      var sc = scoreVoice(v);
+      if (sc > bestScore){ bestScore = sc; best = v; }
+    });
+    /* Everything scored below zero means only novelty or non-English
+       voices exist. Speaking in one of those is worse than silence. */
+    return bestScore >= 0 ? best : null;
+  }
+
+  function refreshVoice(){ voice = pickVoice(); return voice; }
+
   if (supported){
-    pickVoice();
-    speechSynthesis.onvoiceschanged = function(){ voice = pickVoice(); };
+    refreshVoice();                       /* often empty on first call */
+    try { speechSynthesis.onvoiceschanged = refreshVoice; } catch(e){}
+    /* Some browsers never fire voiceschanged. Look again shortly. */
+    setTimeout(refreshVoice, 400);
+    setTimeout(refreshVoice, 1600);
   }
 
   function stop(){ if (supported) try { speechSynthesis.cancel(); } catch(e){} }
@@ -71,6 +142,23 @@
 
   global.TGAudio = {
     supported: supported,
+
+    /* Every usable voice on this device, best first — for a picker. */
+    voices: function(){
+      return allVoices()
+        .map(function(v){ return { v:v, s:scoreVoice(v) }; })
+        .filter(function(x){ return x.s >= 0; })
+        .sort(function(a,b){ return b.s - a.s; })
+        .map(function(x){ return { name:x.v.name, lang:x.v.lang, uri:x.v.voiceURI, score:x.s }; });
+    },
+    voiceName: function(){ return voice ? voice.name : null; },
+    setVoice: function(uriOrName){
+      try {
+        if (uriOrName) localStorage.setItem(VOICE_KEY, uriOrName);
+        else localStorage.removeItem(VOICE_KEY);
+      } catch(e){}
+      return refreshVoice();
+    },
     enabled: enabled,
     setEnabled: setEnabled,
     stop: stop,

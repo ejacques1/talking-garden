@@ -270,6 +270,17 @@ tr:last-child td{border-bottom:none}
       </div>
       <div id="recSheet"></div>
     </div>
+
+    <div class="card">
+      <h3>The read-aloud voice</h3>
+      <p class="sub">Until a lesson has your own recording, the site reads it with the voice built into whatever device the family is using. This picks the best one available and lets you hear it. <b>It only changes this browser</b> &mdash; you cannot set the voice for families from here.</p>
+      <div class="row" style="margin-top:0">
+        <select id="voicePick" style="max-width:320px"></select>
+        <button class="btn btn-ghost" id="voiceTry">Hear it</button>
+        <button class="btn btn-ghost" id="voiceAuto">Use the best one</button>
+      </div>
+      <p class="demo" id="voiceNote" style="margin-top:12px"></p>
+    </div>
   </section>
 </div>
 </div>
@@ -277,6 +288,7 @@ tr:last-child td{border-bottom:none}
 <script src="worlds.js"></script>
 <script src="lessons.js"></script>
 <script src="content.js"></script>
+<script src="audio.js"></script>
 <script src="session.js"></script>
 <script src="teks.js"></script>
 <script src="quiz.js"></script>
@@ -676,6 +688,52 @@ function drawRecord(){
   };
 }
 
+/* ---------- the read-aloud voice ----------
+   Browsers ship anything from good neural voices to the 1980s novelty
+   ones. Left alone the browser often picks badly, which is most of why
+   the read-aloud sounded cheap. This shows what is actually available
+   here, best first, and lets you hear one before choosing it. */
+function drawVoices(){
+  var sel = document.getElementById('voicePick');
+  if (!sel || !window.TGAudio) return;
+  var list = TGAudio.voices();
+  if (!list.length){
+    sel.innerHTML = '<option>No English voices found on this device</option>';
+    return;
+  }
+  var cur = TGAudio.voiceName();
+  sel.innerHTML = list.map(function(v){
+    return '<option value="'+esc(v.uri)+'"'+(v.name===cur?' selected':'')+'>'+
+           esc(v.name)+' · '+esc(v.lang)+'</option>'; }).join('');
+
+  var best = list[0];
+  var note = document.getElementById('voiceNote');
+  /* A device with only the low-quality built-ins is the common case,
+     and downloading a better one is free and takes two minutes. Say so
+     rather than leaving it sounding robotic. */
+  note.innerHTML = best.score >= 45
+    ? 'This device has a good natural voice available.'
+    : 'These are all basic built-in voices. On a Mac you can download a much better one free: '+
+      '<b>System Settings &rarr; Accessibility &rarr; Spoken Content &rarr; System Voice &rarr; Manage Voices</b>, '+
+      'then pick an English voice marked <b>Premium</b> or <b>Enhanced</b>. It will appear in this list afterwards.';
+}
+
+function wireVoices(){
+  var sel = document.getElementById('voicePick');
+  if (!sel || !window.TGAudio) return;
+  sel.onchange = function(){ TGAudio.setVoice(sel.value); };
+  document.getElementById('voiceTry').onclick = function(){
+    TGAudio.setEnabled(true);
+    TGAudio.setVoice(sel.value);
+    TGAudio.say('Hi, I am Root. Every seed has weather it likes. Lettuce likes it cool.');
+  };
+  document.getElementById('voiceAuto').onclick = function(){
+    TGAudio.setVoice(null); drawVoices();
+    TGAudio.setEnabled(true);
+    TGAudio.say('This is the best voice on this device.');
+  };
+}
+
 /* ---------- tabs ---------- */
 [].forEach.call(document.querySelectorAll('.tab'), function(b){
   b.onclick=function(){
@@ -688,7 +746,7 @@ function drawRecord(){
     if (b.dataset.p==='curriculum') drawCurriculum();
     if (b.dataset.p==='write') drawWrite();
     document.getElementById('p-record').classList.toggle('hide', b.dataset.p!=='record');
-    if (b.dataset.p==='record') drawRecord();
+    if (b.dataset.p==='record'){ drawRecord(); drawVoices(); }
   };
 });
 
@@ -952,6 +1010,7 @@ function drawSessions(){
 
   if (window.TGContent) await TGContent.load();
   wireEditor();
+  wireVoices();
   await TGSession.loadAll();
   prefillFromLast();
   drawSessions();
