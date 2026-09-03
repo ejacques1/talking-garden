@@ -40,7 +40,13 @@
   function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
   function preDone(){ return get(PRE_KEY) === '1'; }
-  function built(){   return get(BUILD_KEY) === '1'; }
+  function built(){
+    if (get(BUILD_KEY) === '1') return true;
+    /* Any one of the builds is enough — the point is hands in the
+       soil, not a particular jar. */
+    return buildList().some(function(_, i){
+      return global.TGProgress && TGProgress.done(SLUG+':build'+i); });
+  }
   function playedCount(){
     return (L.activities||[]).filter(function(a){
       return global.TGProgress && TGProgress.done(SLUG+':'+a.id); }).length;
@@ -245,7 +251,7 @@
              ' When you have the secret word, type it in the yellow box to open the rest of the lesson.';
     }
     if (stage === 3){
-      var b = buildList()[buildIdx] || {};
+      var b = curBuild || buildList()[0] || {};
       return [b.title, b.blurb,
               'You will need: ' + (b.materials||[]).join(', ') + '.',
               'Here are the steps.']
@@ -327,50 +333,121 @@
   /* A lesson can offer several builds. Whichever is showing is the one
      that counts for the gate; doing any one of them is enough, because
      the point is hands in the soil, not a particular jar. */
-  var buildIdx = 0;
   function buildList(){ return (L.builds && L.builds.length) ? L.builds : (L.build ? [L.build] : []); }
 
   function paintBuild(){
     var list = buildList(); if (!list.length) return;
-    var b = list[Math.min(buildIdx, list.length-1)];
+
+    /* Cards, not a document. Seven steps laid out at once is something
+       to read; one step at a time is something to do — which is what
+       the plant lesson has always done and what this was missing. */
     el('buildSlot').innerHTML =
-      (list.length > 1
-        ? '<div class="buildpick">'+ list.map(function(x,i){
-            return '<button class="bpick'+(i===buildIdx?' on':'')+'" data-b="'+i+'">'+
-                   esc(x.title)+'</button>'; }).join('') +'</div>'
-        : '')+
-      '<div class="build">'+
-        '<div class="build-hd">'+
-          '<h3>'+esc(b.title)+'</h3><p>'+esc(b.blurb)+'</p>'+
-          '<div class="meta">'+
-            ['&#9201; '+esc(b.time), '&#128101; '+esc(b.help), '&#129529; '+esc(b.mess)]
-              .map(function(m){ return '<span>'+m+'</span>'; }).join('')+
-          '</div>'+
-        '</div>'+
-        '<div class="build-bd">'+
-          '<h4>What you need</h4>'+
-          '<ul class="mats">'+ b.materials.map(function(m){ return '<li>'+esc(m)+'</li>'; }).join('') +'</ul>'+
-          '<h4>How to do it</h4>'+
-          '<ol class="steps">'+ b.steps.map(function(s){
-              return '<li><div><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></div></li>'; }).join('') +'</ol>'+
-          '<div class="why"><b>Why it works</b>'+esc(b.why)+'</div>'+
+      '<div class="cards">'+ list.map(function(b, i){
+        var done = global.TGProgress && TGProgress.done(SLUG+':build'+i);
+        return '<button class="card'+(done?' done':'')+'" data-b="'+i+'">'+
+          '<span class="ce">'+(b.emoji || '&#128736;&#65039;')+'</span>'+
+          '<b>'+esc(b.title)+'</b>'+
+          '<span>'+esc(b.blurb)+'</span>'+
           (b.teks && window.TEKS && TEKS.se[b.teks]
-            ? '<p class="bteks"><b>'+esc(b.teks)+'</b> &middot; '+esc(b.teksNote||TEKS.se[b.teks].text)+'</p>'
-            : '')+
-          (L.safety ? '<div class="safety"><b>Safety.</b> '+esc(L.safety)+'</div>' : '')+
-          '<div style="margin-top:18px">'+
-            (built()
-              ? '<div class="statusline">&#9989; You made it. Nice work.</div>'
-              : '<button class="btn btn-primary" id="builtBtn">We made it &#127881;</button>')+
-          '</div>'+
-        '</div>'+
-      '</div>';
-    if (el('builtBtn')) el('builtBtn').onclick = function(){ set(BUILD_KEY,'1'); paint(); };
-    [].forEach.call(el('buildSlot').querySelectorAll('.bpick'), function(btn){
-      btn.onclick = function(){ buildIdx = +btn.dataset.b; paintBuild(); paintRead(); };
+            ? '<span class="skill">&#127793; '+esc(b.teks)+' &middot; '+esc(b.teksNote||'')+'</span>' : '')+
+        '</button>';
+      }).join('') +'</div>'+
+      (L.safety ? '<div class="safety"><b>Safety.</b> '+esc(L.safety)+'</div>' : '');
+
+    [].forEach.call(el('buildSlot').querySelectorAll('.card'), function(btn){
+      btn.onclick = function(){
+        if (!TG.isUnlocked(SLUG)) return;
+        openBuild(+btn.dataset.b);
+      };
     });
+  }
 
+  /* ---------------- build mode ----------------
+     Ported from the plant lesson, which had it from the start. */
+  var curBuild = null, buildStep = 0, spokeKey = null;
 
+  /* The build data stores "Kid-led" as a label for the card. On its
+     own in a sentence it reads like a form field, so say it properly. */
+  function helpLine(h){
+    var t = String(h||'').toLowerCase();
+    if (t.indexOf('kid') === 0)      return 'Kids can lead this one start to finish.';
+    if (t.indexOf('grown-up') === 0) return 'A grown-up is needed for one part: ' +
+                                             h.replace(/^Grown-up\s*/i,'').replace(/^./, function(c){ return c.toLowerCase(); }) + '.';
+    return h ? h + '.' : '';
+  }
+
+  function openBuild(i){
+    curBuild = buildList()[i]; if (!curBuild) return;
+    curBuild.__i = i;
+    buildStep = 0; spokeKey = null;
+    el('playTitle').textContent = curBuild.title;
+    el('ovl').classList.add('on');
+    document.body.style.overflow = 'hidden';
+    drawBuild();
+  }
+
+  function drawBuild(){
+    var p = curBuild, body = el('playBd');
+
+    if (buildStep === 0){
+      body.innerHTML =
+        '<div class="q" style="text-align:center">'+(p.emoji||'&#128736;&#65039;')+' '+esc(p.title)+'</div>'+
+        '<div class="qs" style="text-align:center">'+esc(p.blurb)+'</div>'+
+        '<div class="bmeta">'+
+          ['&#9201; '+esc(p.time), '&#128101; '+esc(p.help), '&#129529; '+esc(p.mess)]
+            .map(function(m){ return '<span class="mini">'+m+'</span>'; }).join('')+
+        '</div>'+
+        '<div class="blist"><b>What you need</b><ul>'+
+          (p.materials||[]).map(function(m){ return '<li>'+esc(m)+'</li>'; }).join('')+
+        '</ul></div>'+
+        '<div class="say">'+esc(helpLine(p.help))+'</div>'+
+        '<div class="brow"><button class="btn btn-primary" id="bNext" style="width:auto">Start building &rarr;</button></div>';
+
+    } else if (buildStep <= p.steps.length){
+      var st = p.steps[buildStep-1];
+      /* Read each step once as it appears. Guarded by a key because
+         redrawing on Back would otherwise say it all over again. */
+      if (global.TGAudio && spokeKey !== 'b'+p.__i+'_'+buildStep){
+        spokeKey = 'b'+p.__i+'_'+buildStep;
+        TGAudio.say(st[0] + '. ' + st[1]);
+      }
+      body.innerHTML =
+        '<div class="bprog">'+ p.steps.map(function(x,i){
+          return '<i class="'+(i<buildStep?'on':'')+'"></i>'; }).join('') +'</div>'+
+        '<div class="qs" style="margin-bottom:4px">Step '+buildStep+' of '+p.steps.length+'</div>'+
+        '<div class="q">'+esc(st[0])+'</div>'+
+        '<p style="margin-top:10px;font-size:15px">'+esc(st[1])+'</p>'+
+        '<div class="brow">'+
+          '<button class="btn btn-ghost" id="bBack" style="width:auto">&larr; Back</button>'+
+          '<button class="btn btn-primary" id="bNext" style="width:auto">'+
+            (buildStep === p.steps.length ? 'Finish' : 'Next step &rarr;')+'</button>'+
+        '</div>';
+
+    } else {
+      (async function(){
+        var k = child();
+        await TGProgress.mark(k && k.id, SLUG, SLUG+':build'+p.__i);
+        set(BUILD_KEY,'1');
+        paint();
+      })();
+      body.innerHTML =
+        '<div class="win"><div class="m">&#127881;</div><h3>You built it!</h3>'+
+        '<div class="blist" style="text-align:left"><b>Why it works</b>'+
+          '<p style="font-size:14.5px;margin-top:6px">'+esc(p.why)+'</p></div>'+
+        (p.teks && window.TEKS && TEKS.se[p.teks]
+          ? '<p style="font-size:13px;color:var(--muted);margin:12px 0 16px">You practised: '+
+            esc(TEKS.se[p.teks].text)+'</p>' : '')+
+        '<button class="btn btn-primary" id="bDone" style="width:auto">Back to the lesson</button></div>';
+      el('bDone').onclick = function(){
+        TGPlay.close();
+        el('s4').scrollIntoView({ behavior:'smooth', block:'start' });
+      };
+      return;
+    }
+
+    var n = el('bNext'), bk = el('bBack');
+    if (n)  n.onclick  = function(){ buildStep++; drawBuild(); };
+    if (bk) bk.onclick = function(){ buildStep--; spokeKey = null; drawBuild(); };
   }
 
   /* ---------------- stage 4: the activities ---------------- */

@@ -38,7 +38,12 @@
 ------------------------------------------------------------------- */
 :root{
   --cream:var(--beige);  --paper2:var(--beige);
-  --sage:var(--green);   --sage-d:var(--green-d);  --sage-l:var(--green-l);
+  /* Blue leads here too. This page was pointed at green, which is on
+     the DHCG sheet but listed as a highlight at 16% — not as the
+     colour of everything. Green is kept for the "done" states below,
+     which is what a highlight is for. */
+  --sage:var(--blue);    --sage-d:var(--blue-d);   --sage-l:var(--blue-l);
+  --done:var(--green);   --done-d:var(--green-d);  --done-l:var(--green-l);
   --soil:#7A5230;
   --terra:var(--red);    --terra-l:var(--red-l);
   --sun:var(--yellow-warm); --sun-l:var(--yellow);
@@ -94,8 +99,8 @@ img{max-width:100%;display:block}
 .rail-in::-webkit-scrollbar{display:none}
 .rpill{display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:var(--paper2);border:1px solid var(--line);font-size:13.5px;font-weight:600;color:var(--muted);white-space:nowrap;text-decoration:none;flex:none}
 .rpill i{width:20px;height:20px;border-radius:50%;background:var(--line-d);color:#fff;font-size:11px;display:grid;place-items:center;font-style:normal;flex:none}
-.rpill.done{background:var(--sage-l);border-color:#CBDDC6;color:var(--sage-d)}
-.rpill.done i{background:var(--sage)}
+.rpill.done{background:var(--done-l);border-color:#CBDDC6;color:var(--done-d)}
+.rpill.done i{background:var(--done)}
 .rpill.now{background:var(--sun-l);border-color:#EBD9A8;color:#7A5A0C}
 .rpill.now i{background:var(--sun);color:#5A4208}
 
@@ -267,7 +272,7 @@ img{max-width:100%;display:block}
 .brow{display:flex;gap:9px;justify-content:center;margin-top:18px;flex-wrap:wrap}
 .bprog{display:flex;gap:4px;margin-bottom:14px}
 .bprog i{flex:1;height:6px;border-radius:99px;background:var(--line);display:block}
-.bprog i.on{background:var(--sage)}
+.bprog i.on{background:var(--done)}
 
 .sndbtn{background:none;border:none;font-size:19px;cursor:pointer;padding:2px 6px;line-height:1;opacity:.8}
 .sndbtn:hover{opacity:1}
