@@ -70,6 +70,39 @@ section:nth-of-type(even) .stage{background:#fff}
 
 footer{background:var(--ink);color:rgba(255,255,255,.62);padding:30px 0;font-size:14px;text-align:center}
 
+/* ---- the twelve, in full ---- */
+.wgroup{margin-bottom:34px}
+.wgroup-hd{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.wgroup-hd img{width:56px;height:auto;flex:none}
+.wgroup-hd b{font-family:var(--display);font-size:20px;font-weight:800;color:var(--ink);display:block;line-height:1.2}
+.wgroup-hd span{font-size:13.5px;color:var(--muted)}
+.wgroup-hd i{width:11px;height:11px;border-radius:50%;flex:none}
+.lcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:12px;break-inside:avoid}
+.lcard h3{font-size:19px;margin-bottom:4px}
+.lcard .tag{font-size:15px;color:var(--body);margin-bottom:12px}
+.lmeta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.lmeta span{background:var(--beige);border-radius:999px;padding:4px 11px;font-size:12px;font-weight:700;color:var(--muted)}
+.lsec{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.lsec h4{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;font-weight:800}
+.skill{display:grid;grid-template-columns:1fr auto;gap:12px;padding:8px 0;border-top:1px dashed var(--line);align-items:start}
+.skill:first-of-type{border-top:none}
+.skill b{font-size:15px;font-weight:700;color:var(--ink)}
+.skill em{display:block;font-style:normal;font-size:13px;color:var(--muted);margin-top:3px;max-width:44em}
+.skill .code{font-family:var(--display);font-size:12.5px;font-weight:800;color:var(--blue-d);background:var(--blue-l);border-radius:8px;padding:4px 9px;white-space:nowrap}
+.lbuild{background:var(--beige);border-radius:13px;padding:14px 17px;font-size:14.5px}
+.lbuild b{font-family:var(--display);font-size:15.5px;color:var(--ink);display:block;margin-bottom:3px}
+.lbuild .mats{font-size:13.5px;color:var(--muted);margin-top:8px}
+.lacts{display:flex;flex-wrap:wrap;gap:7px}
+.lacts span{background:var(--green-l);color:var(--green-d);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:700}
+.lsafe{font-size:13.5px;color:#7A3D1C;background:var(--red-l);border-radius:11px;padding:11px 14px;margin-top:14px}
+.lsrc{font-size:13px;color:var(--muted);margin-top:12px}
+.lsrc a{color:var(--blue-d)}
+@media print{
+  .hero::before,.hero::after{display:none}
+  section{padding:16px 0;break-inside:auto}
+  .lcard{border-color:#ccc;box-shadow:none}
+}
+
 .split a{color:var(--blue-d);text-decoration:none;border-bottom:1px solid rgba(0,113,188,.28)}
 .split a:hover{border-bottom-color:var(--blue)}
 .tier{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:99px;white-space:nowrap}
@@ -166,6 +199,14 @@ footer{background:var(--ink);color:rgba(255,255,255,.62);padding:30px 0;font-siz
     </div>
   </section>
 
+<section id="lessons">
+  <div class="wrap">
+    <h2>The twelve, in full</h2>
+    <p class="sub">Every lesson as it is actually written &mdash; the skills it checks, the Texas standard behind each one, and what a family makes at home.</p>
+    <div id="fullLessons"></div>
+  </div>
+</section>
+
 <section>
   <div class="wrap">
     <h2>What it aligns to</h2>
@@ -245,5 +286,76 @@ footer{background:var(--ink);color:rgba(255,255,255,.62);padding:30px 0;font-siz
   Dew of Heaven Children&rsquo;s Garden &middot; Spring, Texas &middot; Explore boldly. Grow strong. Live green. Thrive together. Be well.
 </footer>
 
+<script src="../../worlds.js"></script>
+<script src="../../lessons.js"></script>
+<script src="../../teks.js"></script>
+<script>
+/* The curriculum document reads from the same files the platform runs
+   on. It cannot drift from what a child actually gets, because there
+   is nothing here to keep in step — if a lesson changes, this changes. */
+(function(){
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  var TYPE = { order:'Put in order', sort:'Sort into groups', match:'Match the pairs', pick:'Work it out' };
+
+  document.getElementById('fullLessons').innerHTML = WORLDS.map(function(w){
+    var lessons = LESSONS.forWorld(w.key);
+    return '<div class="wgroup">'+
+      '<div class="wgroup-hd">'+
+        '<img src="../../'+w.img+'" alt="">'+
+        '<i style="background:'+w.color+'"></i>'+
+        '<div><b>'+esc(w.name)+'</b><span>'+esc(w.subject)+' &middot; with '+esc(w.guide)+'</span></div>'+
+      '</div>'+
+      lessons.map(function(L){
+        /* The plant lesson keeps its skills in quiz.js, so name them here
+           rather than leaving the one original lesson looking empty. */
+        var comps = (L.competencies && L.competencies.length) ? L.competencies : [
+          { label:'Knows the order of a plant\u2019s life cycle', teks:'K.13(C)' },
+          { label:'Knows what a plant depends on to grow', teks:'K.12(A)' },
+          { label:'Knows plant parts and what each one does', teks:'2.13(A)' },
+          { label:'Can tell which plant part a food comes from', teks:'2.13(A)' }
+        ];
+        var b = L.build;
+        return '<div class="lcard">'+
+          '<h3>'+esc(L.title)+'</h3>'+
+          '<p class="tag">'+esc(L.tagline||'')+'</p>'+
+          '<div class="lmeta">'+
+            '<span>Grades '+esc(L.grades||'')+'</span>'+
+            '<span>'+comps.length+' skills</span>'+
+            '<span>'+((L.bank&&L.bank.length)||16)+' questions</span>'+
+            '<span>'+((L.activities&&L.activities.length)||6)+' activities</span>'+
+          '</div>'+
+
+          '<div class="lsec"><h4>What a child can do afterwards</h4>'+
+            comps.map(function(c){
+              var se = window.TEKS && TEKS.se[c.teks];
+              return '<div class="skill"><div><b>'+esc(c.label)+'</b>'+
+                (se ? '<em>'+esc(se.text)+'</em>' : '')+'</div>'+
+                '<span class="code">'+esc(c.teks||'')+'</span></div>';
+            }).join('')+
+          '</div>'+
+
+          (b ? '<div class="lsec"><h4>What they make at home</h4>'+
+            '<div class="lbuild"><b>'+esc(b.title)+'</b>'+esc(b.blurb||'')+
+              '<div class="mats">'+esc(b.time||'')+' &middot; '+esc(b.help||'')+
+              ' &middot; needs '+esc((b.materials||[]).slice(0,4).join(', '))+
+              ((b.materials||[]).length>4 ? ' and '+((b.materials.length)-4)+' more' : '')+'</div>'+
+            '</div></div>' : '')+
+
+          (L.activities ? '<div class="lsec"><h4>How they practise</h4><div class="lacts">'+
+            L.activities.map(function(a){
+              return '<span>'+esc(a.title)+' &middot; '+esc(TYPE[a.type]||a.type)+'</span>'; }).join('')+
+          '</div></div>' : '')+
+
+          (L.safety ? '<div class="lsafe"><b>Safety.</b> '+esc(L.safety)+'</div>' : '')+
+          (L.sources ? '<p class="lsrc">Written from '+L.sources.map(function(x){
+            return '<a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.name)+'</a>'; }).join(' &middot; ')+'</p>' : '')+
+        '</div>';
+      }).join('')+
+    '</div>';
+  }).join('');
+})();
+</script>
 </body>
 </html>
