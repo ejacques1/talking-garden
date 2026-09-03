@@ -186,7 +186,31 @@
       return true;
     },
 
+    /* Staff can switch between what they see and what a family sees.
+       Kept per browser rather than on the account, because it is a way
+       of looking at the site for a minute, not a setting about a
+       person — and Ms. Nia checking the family view on her laptop
+       should not change what Kiara sees on hers. */
+    viewAsFamily(){
+      try { return localStorage.getItem('dl_view_family') === '1'; }
+      catch (e) { return false; }
+    },
+    setViewAsFamily(on){
+      try { on ? localStorage.setItem('dl_view_family','1')
+               : localStorage.removeItem('dl_view_family'); } catch (e) {}
+    },
+
     isUnlocked(topic) {
+      /* An admin sees every lesson open. Ms. Nia and Kiara have to be
+         able to walk the whole thing to plan a term, show a funder, or
+         check a lesson before it runs — and the gate exists to stop a
+         family wandering into a workshop that has not happened, not to
+         stop the people running it from looking at their own work.
+
+         This reads a flag rather than calling isAdmin(), because
+         isAdmin() is async and this is called during painting. Pages
+         set it once at boot. */
+      if (global.__tg_admin === true && !TG.viewAsFamily()) return true;
       var s = TG.session();
       return !!(s && s.profile && s.profile.unlocked.indexOf(topic) > -1);
     },
@@ -194,7 +218,7 @@
     /* Is this account an admin? Demo mode grants it so the panel can be
        walked through before the Supabase role is set up. */
     async isAdmin() {
-      if (demo()) return true;
+      if (demo()) { global.__tg_admin = true; return true; }
       var sess = TG.session() || await TG.sessionAsync();
       if (!sess) return false;
       if (global.__tg_admin != null) return global.__tg_admin;

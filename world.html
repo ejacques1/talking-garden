@@ -66,6 +66,7 @@ a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
 <div id="boot" style="display:grid;place-items:center;min-height:70vh;color:var(--faint)">Opening the world…</div>
 <div id="app" style="display:none">
 
+<div id="adminBar" style="display:none;background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:9px 20px;display:none;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap"><span id="adminBarTxt"></span><button id="viewToggle" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer"></button><a href="admin.html" style="color:var(--yellow-warm)">Admin &rarr;</a></div>
 <nav class="nav"><div class="nav-in">
   <a class="brand" href="dashboard.html">
     <img class="brand-mark" src="img/dewey-happy.png" alt="">
@@ -122,8 +123,26 @@ a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
     return '#'+[r,g,b].map(function(v){return ('0'+v.toString(16)).slice(-2)}).join('');
   }
 
+
+/* The staff/family switch. Reloads rather than repainting, because
+   the lock state is read in a dozen places while a page draws and a
+   half-switched page is worse than a slower one. */
+function wireViewToggle(){
+  var bar = document.getElementById('adminBar');
+  if (!bar) return;
+  bar.style.display = 'flex';
+  var fam = TG.viewAsFamily();
+  document.getElementById('adminBarTxt').textContent = fam
+    ? 'You are seeing exactly what a family sees. Locked worlds are locked for you too.'
+    : 'You are seeing this as DewLab staff, so every lesson is open.';
+  var btn = document.getElementById('viewToggle');
+  btn.textContent = fam ? 'Back to staff view' : 'See it as a family';
+  btn.onclick = function(){ TG.setViewAsFamily(!fam); location.reload(); };
+}
+
   (async function(){
     var s = await TG.requireAuth(); if(!s) return;
+    var admin = await TG.isAdmin();
     if (window.TGContent) await TGContent.load();
     await TGSession.loadAll();
 
@@ -159,7 +178,7 @@ a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
       else if (last)       { tag='Catch up'; cls='tag-live'; }
       else                 { tag='Soon';     cls='tag-soon'; }
 
-      var enterable = unlocked || sessions.length > 0;
+      var enterable = unlocked || sessions.length > 0;   /* admins: unlocked is always true */
       var when = next ? 'Live ' + TGSession.short(next)
                : last ? 'Last session ' + TGSession.short(last)
                : 'No session scheduled yet';
@@ -200,6 +219,7 @@ a.lsn:hover{border-color:var(--w);transform:translateY(-2px)}
           return '<a href="'+u+'" target="_blank" rel="noopener">'+esc(srcs[u])+'</a>'; }).join(' · ')
       : '';
 
+    if (admin) wireViewToggle();
     el('outBtn').onclick = async function(){ await TG.signOut(); location.href='login.html'; };
     el('boot').style.display='none'; el('app').style.display='';
   })();

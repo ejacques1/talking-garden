@@ -315,6 +315,23 @@
     }
   }
 
+
+/* The staff/family switch. Reloads rather than repainting, because
+   the lock state is read in a dozen places while a page draws and a
+   half-switched page is worse than a slower one. */
+  function wireViewToggle(){
+  var bar = document.getElementById('adminBar');
+  if (!bar) return;
+  bar.style.display = 'flex';
+  var fam = TG.viewAsFamily();
+  document.getElementById('adminBarTxt').textContent = fam
+    ? 'You are seeing exactly what a family sees. Locked worlds are locked for you too.'
+    : 'You are seeing this as DewLab staff, so every lesson is open.';
+  var btn = document.getElementById('viewToggle');
+  btn.textContent = fam ? 'Back to staff view' : 'See it as a family';
+  btn.onclick = function(){ TG.setViewAsFamily(!fam); location.reload(); };
+}
+
   /* ---------------- boot ---------------- */
   (async function(){
     var s = await TG.requireAuth();
@@ -323,6 +340,10 @@
     /* Anything DHCG has edited in the admin panel covers the shipped
        lesson. Done before the first paint so a family never sees the
        old wording flash and then change. */
+    /* Resolve the admin flag before painting, so an admin never sees
+       the page draw locked and then unlock a moment later. */
+    var admin = await TG.isAdmin();
+
     if (global.TGContent){
       await TGContent.load();
       var edited = global.LESSONS[SLUG];
@@ -362,6 +383,8 @@
     };
 
     if (global.TGAudio && TGAudio.button) el('sndSlot').appendChild(TGAudio.button());
+
+    if (admin) wireViewToggle();
 
     paint();
     el('boot').style.display = 'none';

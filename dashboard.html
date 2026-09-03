@@ -126,6 +126,7 @@ section{padding:44px 0 0}
 <div id="boot" class="boot">Opening your garden…</div>
 
 <div id="app" style="display:none">
+<div id="adminBar" style="display:none;background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:9px 20px;display:none;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap"><span id="adminBarTxt"></span><button id="viewToggle" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer"></button><a href="admin.html" style="color:var(--yellow-warm)">Admin &rarr;</a></div>
 
 <nav class="nav">
   <div class="nav-in">
@@ -274,6 +275,23 @@ function drawNext(){
     '<a class="btn btn-white" href="'+((L&&L.page)||('lesson.html?t='+encodeURIComponent(nx.topic)))+'">Get ready &rarr;</a>';
 }
 
+
+/* The staff/family switch. Reloads rather than repainting, because
+   the lock state is read in a dozen places while a page draws and a
+   half-switched page is worse than a slower one. */
+function wireViewToggle(){
+  var bar = document.getElementById('adminBar');
+  if (!bar) return;
+  bar.style.display = 'flex';
+  var fam = TG.viewAsFamily();
+  document.getElementById('adminBarTxt').textContent = fam
+    ? 'You are seeing exactly what a family sees. Locked worlds are locked for you too.'
+    : 'You are seeing this as DewLab staff, so every lesson is open.';
+  var btn = document.getElementById('viewToggle');
+  btn.textContent = fam ? 'Back to staff view' : 'See it as a family';
+  btn.onclick = function(){ TG.setViewAsFamily(!fam); location.reload(); };
+}
+
 function drawTopics(){
   var kids = (TG.session()||{}).profile;
   var kidName = kids && kids.children && kids.children[0] && kids.children[0].name;
@@ -329,7 +347,12 @@ function drawBadges(got){
 
   var p = s.profile;
   var kids = p.children || [];
-  var first = (p.parentName||'').trim().split(' ')[0] || 'friend';
+  /* "Ms. Nia" greeted as "Ms." — a title is not a first name. Take the
+     next word when the first one is one. */
+  var parts = (p.parentName||'').trim().split(/\s+/).filter(Boolean);
+  var TITLES = ['ms','ms.','mrs','mrs.','mr','mr.','dr','dr.','miss','mx','mx.','pastor','rev','rev.'];
+  if (parts.length > 1 && TITLES.indexOf(parts[0].toLowerCase()) > -1) parts.shift();
+  var first = parts[0] || 'friend';
 
   document.getElementById('acctName').textContent = p.parentName || p.email;
   document.getElementById('avatar').textContent = (first[0]||'🌻').toUpperCase();
@@ -355,9 +378,13 @@ function drawBadges(got){
 
   /* Only Ms. Nia and Kiara should ever see this; everyone else never
      learns the page exists. */
-  TG.isAdmin().then(function(ok){
-    if(ok) document.getElementById('adminLink').style.display='inline-flex';
-  });
+  /* Awaited, not fired and forgotten: isUnlocked() reads the admin
+     flag while painting, so it has to be settled before drawTopics. */
+  var admin = await TG.isAdmin();
+  if (admin){
+    document.getElementById('adminLink').style.display='inline-flex';
+    wireViewToggle();
+  }
 
   if (window.TGContent) await TGContent.load();
   await TGSession.loadAll();
