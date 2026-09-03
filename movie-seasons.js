@@ -75,26 +75,11 @@
     'transition:transform .5s cubic-bezier(.2,.8,.3,1);pointer-events:none}'+
   '.rtm-guide img{width:100%;height:auto;display:block;'+
     'filter:drop-shadow(0 6px 10px rgba(20,30,20,.28))}'+
-  /* Two movements layered, because one alone reads wrong.
-
-     The OUTER element does the slow sway — a person shifting their
-     weight while they talk. The INNER one does a fast squash and
-     stretch, which is what sells speech: the head dips very slightly
-     on each syllable-ish beat. His mouth is painted into the artwork
-     and cannot open, so this carries it instead.
-
-     Both are small on purpose. Anything bigger and he looks like he is
-     bouncing rather than speaking. */
-  '.rtm-guide.talk{animation:rtmSway 2.6s ease-in-out infinite}'+
-  '.rtm-guide.talk img{animation:rtmTalk .26s ease-in-out infinite;transform-origin:50% 100%}'+
-  '@keyframes rtmSway{0%,100%{transform:translateY(0) rotate(-1.2deg)}'+
-    '50%{transform:translateY(-4px) rotate(1.2deg)}}'+
-  '@keyframes rtmTalk{0%,100%{transform:scaleY(1) scaleX(1)}'+
-    '50%{transform:scaleY(.975) scaleX(1.012)}}'+
-  /* Between sentences he pauses, the way a person does. */
-  '.rtm-guide.talk.breath img{animation-play-state:paused}'+
-  '@media(prefers-reduced-motion:reduce){'+
-    '.rtm-guide.talk,.rtm-guide.talk img{animation:none}}'+
+  /* No movement. An earlier version swayed and squashed him to
+     suggest speech, but his mouth is painted into the artwork so all
+     it did was bob his whole body — which reads as bouncing, not
+     talking. He stands still until there is a mouth-open frame to
+     swap to. */
   /* A speech tail, so it reads as him saying the caption rather than
      him standing next to a subtitle. */
   '.rtm-cap{padding-left:29%!important}'+
@@ -222,7 +207,6 @@
       if (!playing) return;
       if (i >= SCENES.length - 1){
         playing = false;
-        if (guide) guide.classList.remove('talk');
         return;
       }
       i++; paint(); narrate();
@@ -230,13 +214,6 @@
 
     function narrate(){
       var sc = SCENES[i];
-      /* Take a breath at the start of each scene, then talk. Without
-         the pause the movement never stops and stops reading as
-         speech at all. */
-      if (guide){
-        guide.classList.add('breath');
-        setTimeout(function(){ if (playing && guide) guide.classList.remove('breath'); }, 260);
-      }
       if (global.TGAudio && TGAudio.supported && TGAudio.enabled())
         TGAudio.sayThen(sc.say, advance, sc.t * 60);
       else
@@ -246,7 +223,6 @@
     function play(){
       start.style.display = 'none';
       playing = true; i = 0;
-      if (guide) guide.classList.add('talk');
       paint(); narrate();
     }
 
@@ -262,14 +238,6 @@
       advance();
     };
 
-    /* If a child mutes the sound mid-film he should stop mouthing at
-       nothing. Checked on a timer because muting happens outside this
-       player, in the speaker button up in the modal header. */
-    setInterval(function(){
-      if (!guide) return;
-      var silent = global.TGAudio && TGAudio.supported && !TGAudio.enabled();
-      guide.classList.toggle('breath', playing && silent);
-    }, 400);
 
     paint();
   }

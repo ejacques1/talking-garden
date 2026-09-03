@@ -606,7 +606,44 @@ LESSONS.pollinators = {
       opts:[{e:'&#128064;',t:'Watch it quietly and leave it to work',ok:1},{e:'&#129529;',t:'Spray it'},{e:'&#128584;',t:'Grab it'},{e:'&#128266;',t:'Shout at it'}]}
   ],
 
-  build:{
+  movie:{ render:'pollinators', minutes:1, guide:'Buzz' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['Somewhere with flowers a bee is actually visiting',
+         'A flower you can open or split, to show the pollen',
+         'A shallow dish and a handful of pebbles',
+         'A fruit that needed pollinating — an apple, a squash, a strawberry'],
+    runsheet:[
+      ['0:00','Hello, and stand near a flower',
+       'Say who you are and where you are. "Today we are watching who visits these flowers, and why it matters to your dinner."'],
+      ['0:30','Wait, and watch one visitor',
+       'Stay quiet and let the camera find a bee or a butterfly actually working. Do not narrate over it — let them watch. Whisper what it is doing.',
+       '2.12(C)'],
+      ['1:30','Show the pollen',
+       'Open a flower or tip one so the yellow shows. "This is pollen. It is stuck all over that bee right now and it has no idea."',
+       '2.12(C)'],
+      ['2:30','Hold up the fruit',
+       'Hold an apple or a squash. "This only exists because something carried pollen from one flower to another. No visit, no fruit."',
+       '3.12(B)'],
+      ['3:20','Make a bee bath on camera',
+       'Dish, pebbles, water partway up. Thirty seconds. "Bees drown in open water. The stones are the landing pad."',
+       '5.12(C)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','What to look for this week',
+       'Ask them to watch one flower for two minutes and count the visitors. Point them at the build.'],
+      ['4:45','Goodbye','Wave.']
+    ],
+    dont:[
+      'Do not explain how pollination works from scratch — the animation does it. Show the real thing instead.',
+      'Do not chase a bee to get a better shot. Let it work.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Bee Bath',
     blurb:'Ten minutes of work that gives every pollinator in your garden somewhere safe to drink.',
     time:'10 minutes',
@@ -620,11 +657,51 @@ LESSONS.pollinators = {
       ['Place it','Put it near flowers, somewhere you can see it. Low down is fine.'],
       ['Top it up','Check it every day or two, especially in summer. Watch who comes.']
     ],
-    why:'Bees drown easily. Open water is a hazard to them; stones turn the same dish into a safe landing pad. It is the smallest possible change that makes a real difference to something living nearby — which is what stewardship actually looks like.'
-  },
+    why:'Bees drown easily. Open water is a hazard to them; stones turn the same dish into a safe landing pad. It is the smallest possible change that makes a real difference to something living nearby — which is what stewardship actually looks like.',
+    teks:'5.12(C)', teksNote:'a small change that helps an ecosystem'
+   },
+   {
+    title:'The Two-Minute Flower Watch',
+    blurb:'Sit with one flower for two minutes and count who comes. Do it three days running.',
+    time:'2 minutes a day, for three days', help:'Kid-led', mess:'Tidy',
+    teks:'2.12(C)', teksNote:'seeing pollination happen, not being told about it',
+    materials:['One flower you can sit near','A timer','Paper and a pencil','Three days'],
+    steps:[
+      ['Pick your flower','Choose one that is open and in the sun. Sit close, but not so close you cast a shadow on it.'],
+      ['Start the timer','Two minutes. Do not move. Bees will not come near someone waving.'],
+      ['Tally every visitor','A mark for each one. Note if it was a bee, a butterfly, a fly or something you cannot name.'],
+      ['Do it again tomorrow','Same flower, same time of day. That is what makes the three days comparable.'],
+      ['Compare','Which day had the most? Was it hotter, sunnier, calmer? Say what you think and why.']
+    ],
+    why:'Counting turns a bee from background noise into data. Three days at the same time of day is a fair test, and the child will notice the weather pattern themselves — a far better way to meet the idea than being handed it.'
+   },
+   {
+    title:'Plant a Pollinator Patch',
+    blurb:'One pot, three kinds of flower, chosen so something is always in bloom.',
+    time:'30 minutes to plant', help:'Kid-led, grown-up buys the seed', mess:'Messy',
+    teks:'5.12(C)', teksNote:'feeding pollinators across the whole season',
+    materials:['A pot or a patch of ground','Potting soil','Seed for three flowers that bloom at different times','Water','A label'],
+    steps:[
+      ['Pick three, not one','Ask for three kinds that flower at different times of year. That is the whole point.'],
+      ['Fill and sow','Fill the pot, scatter the seed, cover it as thinly as the packet says.'],
+      ['Somewhere sunny','Most pollinator flowers want full sun. Put it where you will walk past it.'],
+      ['Water and wait','Keep it damp until things come up, then only when it is dry.'],
+      ['Watch who arrives','Different flowers bring different visitors. See if you can spot the difference.']
+    ],
+    why:'One flowering plant feeds pollinators for a few weeks. Three, chosen to bloom in turn, feeds them for a season — and the gap between those two facts is the difference between a nice gesture and actual help.'
+   }
+  ],
 
   activities:[
-    {id:'pollwho', type:'sort', title:'Pollinator or Not?',
+    {id:'pollrun', type:'custom', render:'pollenRun', title:'Pollen Run', teks:'2.12(C)',
+      teaches:'Move pollen yourself and see why it has to be the same kind of flower',
+      prompt:'Fly the bee. Pick up pollen, then find another flower like it.'},
+
+    {id:'nobees', type:'custom', render:'noBees', title:'The Garden With No Bees', teks:'3.12(B)',
+      teaches:'See what a garden loses when the pollinators go',
+      prompt:'Same garden. Turn the pollinators off, and see what is left.'},
+
+    {id:'pollwho', type:'sort', title:'Pollinator or Not?', teks:'2.12(C)',
       teaches:'Tell pollinators apart from other animals',
       prompt:'Does this animal move pollen between flowers?',
       bins:[{id:'yes',label:'Pollinator',e:'&#127804;'},{id:'no',label:'Not a pollinator',e:'&#10060;'}],
@@ -635,7 +712,7 @@ LESSONS.pollinators = {
         {e:'&#129713;',t:'Earthworm',bin:'no'},{e:'&#128034;',t:'Tortoise',bin:'no'}
       ]},
 
-    {id:'pollorder', type:'order', title:'From Flower to Fruit',
+    {id:'pollorder', type:'order', title:'From Flower to Fruit', teks:'2.12(C)',
       teaches:'Sequence what happens between a bee landing and an apple growing',
       prompt:'Tap them in order, from the bee arriving to the fruit appearing.',
       items:[
@@ -647,7 +724,7 @@ LESSONS.pollinators = {
         {e:'&#127822;',t:'Fruit grows around it'}
       ]},
 
-    {id:'pollhelp', type:'pick', title:'Help the Pollinators',
+    {id:'pollhelp', type:'pick', title:'Help the Pollinators', teks:'5.12(C)',
       teaches:'Choose actions that genuinely help pollinators',
       questions:[
         {q:'Your family wants to help bees in the back garden.',
@@ -724,7 +801,44 @@ LESSONS.habitat = {
       opts:[{e:'&#128167;',t:'Water they can drink and bathe in',ok:1},{e:'&#128250;',t:'A television'},{e:'&#128266;',t:'Loud music'},{e:'&#128054;',t:'A dog off the lead'}]}
   ],
 
-  build:{
+  movie:{ render:'habitat', minutes:1, guide:'Buzz' },
+
+  session:{
+    minutes:5, word:'',
+    kit:['Somewhere outdoors you can walk while filming',
+         'A spot that clearly HAS all four — a pond edge, a hedge, a wild corner',
+         'A spot that clearly does not — a path, a lawn, a car park',
+         'A shallow dish and some pebbles'],
+    runsheet:[
+      ['0:00','Hello, and say the four',
+       'Say who you are and where you are. Then count them on your fingers: food, water, shelter, space. Make them say it back.'],
+      ['0:40','Walk to a good habitat and point at each one',
+       'Stand somewhere alive — a hedge, a pond edge, a wild corner. Point at the actual food. The actual water. The actual shelter. Do not list them; point at them.',
+       'K.12(B)'],
+      ['1:50','Now walk to a bad one',
+       'Mown lawn, a path, concrete. Same four questions, out loud, and the answer is no each time. "Nothing lives here. Not because it is ugly — because there is nothing to eat and nowhere to hide."',
+       '2.12(A)'],
+      ['2:50','Take one away',
+       'Back at the good spot: "If the water dried up tomorrow, would they stay?" Let the question sit for a second before you answer it.',
+       '3.12(C)'],
+      ['3:30','Put the dish down on camera',
+       'Dish, pebbles, water. Set it down somewhere real. "That is the missing one, in most gardens, and it took me twenty seconds."',
+       '5.12(A)'],
+      ['4:00','THE SECRET WORD',
+       'Say it clearly, twice. Not at the end.'],
+      ['4:20','Send them outside',
+       'Ask them to go and find the four where they live, and to notice which one is missing. Point them at the build.'],
+      ['4:45','Goodbye','Wave.']
+    ],
+    dont:[
+      'Do not define habitat from scratch — the animation does it. Walk them to one instead.',
+      'Do not use a rainforest or a coral reef as your example. Use the six metres outside your own door.',
+      'Do not save the secret word for the last ten seconds.'
+    ]
+  },
+
+  builds:[
+   {
     title:'The Four-Corner Habitat Survey',
     blurb:'Go outside and check whether the place you live actually gives animals all four things.',
     time:'25 minutes',
@@ -738,11 +852,48 @@ LESSONS.habitat = {
       ['Fix one thing','Decide on one thing you could add this week to fill that gap.'],
       ['Do it, then look again','Add it. Come back in a few days and see whether anything found it.']
     ],
-    why:'Every habitat lesson risks becoming a poster about the rainforest. This one makes a child audit the six metres outside their own door — and the missing box is nearly always water, which happens to be the easiest of the four to add.'
-  },
+    why:'Every habitat lesson risks becoming a poster about the rainforest. This one makes a child audit the six metres outside their own door — and the missing box is nearly always water, which happens to be the easiest of the four to add.',
+    teks:'K.12(B)', teksNote:'the four needs, checked where they actually live'
+   },
+   {
+    title:'The Twenty-Second Water Stop',
+    blurb:'The fastest habitat improvement there is. A dish, some stones, some water.',
+    time:'Under 5 minutes', help:'Kid-led', mess:'Tidy',
+    teks:'5.12(A)', teksNote:'adding the need that is usually missing',
+    materials:['A shallow dish or plant saucer','A handful of pebbles','Water','Somewhere low and near plants'],
+    steps:[
+      ['Find the dish','Anything shallow. A plant pot saucer is ideal.'],
+      ['Stones in','Enough that some poke out above where the water will sit. Those are the landing pads.'],
+      ['Water to halfway up the stones','Not over them. Anything that lands must be able to stand, not swim.'],
+      ['Put it somewhere low','Near plants, out of the wind, where you will see it from a window.'],
+      ['Check it every day','Top it up. Note the first day something uses it.']
+    ],
+    why:'Of the four needs, water is the one most gardens are missing and the one you can add in under a minute. It is the shortest possible distance between learning something and changing something.'
+   },
+   {
+    title:'Build a Log Pile',
+    blurb:'A heap of sticks in a shady corner, and a list of who moves in.',
+    time:'20 minutes, then weeks of checking', help:'Grown-up for anything heavy', mess:'Messy',
+    teks:'2.12(A)', teksNote:'shelter, made rather than described',
+    materials:['Fallen branches, logs or thick sticks','A shady corner nobody walks through','Gloves','Paper for a list'],
+    steps:[
+      ['Pick the dullest corner you have','Shady, damp, out of the way. The spot nobody uses is the best one.'],
+      ['Biggest at the bottom','Lay the thickest pieces down first, with gaps between them. The gaps are the point.'],
+      ['Build up, keep the gaps','Smaller pieces on top. Do not pack it tight — you are making corridors, not a wall.'],
+      ['Leave it completely alone','For two weeks. Do not poke it.'],
+      ['Then look, gently','Lift ONE piece, look, put it straight back. Write down what you saw.'],
+      ['Keep the list going','Check once a week. The list gets longer as the wood softens.']
+    ],
+    why:'Shelter is the hardest of the four to picture, because it is mostly gaps. A log pile is nothing but gaps, and the two-week wait is doing real work — it is the difference between a heap of sticks and somewhere something chose to live.'
+   }
+  ],
 
   activities:[
-    {id:'habfour', type:'sort', title:'Does It Belong in a Habitat?',
+    {id:'buildhome', type:'custom', render:'buildHome', title:'Build a Home', teks:'K.12(B)',
+      teaches:'Add things to an empty yard until all four needs are met',
+      prompt:'An empty yard. Add things until something can live there.'},
+
+    {id:'habfour', type:'sort', title:'Does It Belong in a Habitat?', teks:'K.12(B)',
       teaches:'Separate the four real needs from things that only sound important',
       prompt:'Is this one of the four things every habitat must provide?',
       bins:[{id:'yes',label:'One of the four',e:'&#9989;'},{id:'no',label:'Not one of the four',e:'&#10060;'}],
@@ -753,7 +904,7 @@ LESSONS.habitat = {
         {e:'&#128250;',t:'Television',bin:'no'},{e:'&#128663;',t:'A car',bin:'no'}
       ]},
 
-    {id:'habmatch', type:'match', title:'Who Lives Where',
+    {id:'habmatch', type:'match', title:'Who Lives Where', teks:'2.12(A)',
       teaches:'Match an animal to the habitat that meets its needs',
       prompt:'Tap an animal, then tap the home it needs.',
       pairs:[
@@ -764,7 +915,7 @@ LESSONS.habitat = {
         {a:{e:'&#128031;',t:'Fish'},        b:{t:'A creek'}}
       ]},
 
-    {id:'habfix', type:'pick', title:'Fix the Habitat',
+    {id:'habfix', type:'pick', title:'Fix the Habitat', teks:'3.12(C)',
       teaches:'Work out which of the four is missing and add it',
       questions:[
         {q:'A yard has grass, flowers and plenty of room — but nothing to drink.',

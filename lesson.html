@@ -214,6 +214,47 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .crow .cl em{display:block;font-style:normal;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:1px}
 .crow.notyet .cl{color:var(--muted)}
 
+/* ---- Protect's hand-built activities ---- */
+.meadow{position:relative;height:210px;background:linear-gradient(#E7F0FA,#EFF6E7 60%);border-radius:16px;margin-bottom:13px;overflow:hidden}
+.bloom{position:absolute;transform:translate(-50%,-50%);background:none;border:2px solid transparent;border-radius:50%;
+  font-size:31px;line-height:1;cursor:pointer;padding:4px;transition:.15s}
+.bloom:hover{transform:translate(-50%,-50%) scale(1.13)}
+.bloom.here{border-color:var(--yellow-warm);background:rgba(255,255,255,.7)}
+.bloom.fruited{border-color:var(--green)}
+.beeflag{position:absolute;left:10px;bottom:9px;background:rgba(255,255,255,.94);border-radius:99px;
+  padding:6px 13px;font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px}
+.beeflag i{font-style:normal;font-size:12px;font-weight:600;color:var(--muted)}
+.beeflag.loaded{background:var(--yellow)}
+.beeflag.loaded i{color:#6B5B14}
+
+.orchard{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px;padding:14px;
+  border-radius:16px;background:linear-gradient(#E4F1FA,#EAF4E6 62%);transition:background .5s}
+.orchard.empty{background:linear-gradient(#EDEDEA,#E8EAE4 62%)}
+.tree{position:relative;background:#fff;border-radius:13px;padding:15px 6px;text-align:center}
+.crown{font-size:31px;line-height:1}
+.bz{position:absolute;font-size:14px;animation:bzz 2.4s ease-in-out infinite}
+.bz.b0{top:6px;right:9px}.bz.b1{top:9px;left:8px;animation-delay:.4s}.bz.b2{bottom:8px;right:11px;animation-delay:.8s}
+.bz.b3{top:7px;right:14px;animation-delay:1.2s}.bz.b4{bottom:9px;left:9px;animation-delay:.6s}.bz.b5{top:10px;left:12px;animation-delay:1.6s}
+@keyframes bzz{0%,100%{transform:translate(0,0)}50%{transform:translate(4px,-5px)}}
+.switchrow{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px}
+.swbtn{flex:1;min-width:150px;font-family:var(--sans);font-size:14px;font-weight:700;padding:12px;
+  border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.swbtn.on{border-color:var(--w);background:var(--wl);color:var(--wd)}
+
+.yard{position:relative;min-height:132px;border-radius:16px;background:#E9E7E0;border:2px dashed var(--line-d);
+  margin-bottom:12px;padding:14px;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;transition:.4s}
+.yard.alive{background:linear-gradient(#E4F1FA,#EAF1E5 62%);border-style:solid;border-color:var(--green)}
+.yard.sprayed{background:#FBE7DE;border-color:var(--red)}
+.yard .thing{font-size:30px;line-height:1}
+.yardhint{color:var(--faint);font-size:14px;font-weight:600}
+.visitor{position:absolute;font-size:24px;animation:bzz 2.6s ease-in-out infinite}
+.visitor.v1{top:12px;right:16px}.visitor.v2{bottom:14px;right:44px;animation-delay:.5s}
+.visitor.v3{top:16px;right:56px;animation-delay:1s}
+.needrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+.need{background:var(--beige);border:1px solid var(--line);border-radius:99px;padding:6px 13px;
+  font-size:13px;font-weight:700;color:var(--muted)}
+.need.got{background:var(--green-l);border-color:#CBDDC6;color:var(--green-d)}
+
 /* ---- hand-built activities that a lesson brings with it ---- */
 .yearGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:11px}
 @media(max-width:420px){.yearGrid{grid-template-columns:repeat(4,1fr)}}
@@ -421,7 +462,9 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 <script src="auth.js"></script>
 <script src="play.js"></script>
 <script src="act-seasons.js"></script>
+<script src="act-protect.js"></script>
 <script src="movie-seasons.js"></script>
+<script src="movie-protect.js"></script>
 <script src="lesson.js"></script>
 </body>
 </html>
