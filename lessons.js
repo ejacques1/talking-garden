@@ -50,6 +50,10 @@ LESSONS.plant = {
   grades:'K–2',
   word:'sunflower',
   legacy:true,                 /* content still served by quiz.js + projects.js */
+  /* Root's film, made in HeyGen. Sunny's code-drawn animation stays
+     behind it — this lesson predates the rebrand and Sunny is still
+     the character inside its activities. */
+  movie:{ url:'film/plant.mp4', guide:'Root', minutes:1 },
   page:'topic.html?t=plant',
   standards:['K.13(C)','K.12(A)','2.13(A)','K.13(D)'],
   safety:'Potting soil is for planting, not for tasting. Wash hands after.',

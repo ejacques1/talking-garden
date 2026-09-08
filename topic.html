@@ -1203,14 +1203,39 @@ function paintVideo(){
       slot.innerHTML = '<img src="img/wide2.jpg" alt=""><div class="slotmsg">'+
         (window.Sunny?'<div style="display:grid;place-items:center;margin-bottom:2px">'+Sunny.html('sleepy',62)+'</div>':'<div class="big">&#128274;</div>')+
         '<b>Finish the before-check first</b>'+
-        '<span>Then Sunny will show you how a plant grows. We ask first so we can see what you learn.</span></div>';
+        '<span>Then '+(((window.LESSONS||{}).plant||{}).movie ? 'Root' : 'Sunny')+' will show you how a plant grows. We ask first so we can see what you learn.</span></div>';
       title.textContent='Plant Life Cycle — Sunny explains';
       when.textContent='Unlocks when you have done the before-check';
       return;
     }
+    var tabBtn = document.getElementById('tabMovie');
+
+    /* A finished film shipped with the site wins over everything else.
+       This lesson is the oldest one and its opener was Sunny's drawn
+       animation; Root's real film replaces it now that one exists. */
+    var L = (window.LESSONS||{}).plant;
+    var film = L && L.movie && L.movie.url;
+    if (film && /\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(film)){
+      var g = (L.movie.guide) || 'Root';
+      slot.innerHTML = '<video src="'+film+'" controls playsinline '+
+                       'style="width:100%;height:100%;display:block;background:#000"></video>';
+      title.textContent = 'The Plant Life Cycle \u2014 ' + g + ' explains';
+      when.innerHTML = 'Watch it as often as you like' +
+        (window.TGMovie ? ' &middot; <a href="#" id="flipVersion" style="color:var(--sage-d);font-weight:700">see the simple version</a>' : '');
+      if(tabBtn) tabBtn.textContent = g + ' explains';
+      var fv = document.getElementById('flipVersion');
+      if (fv) fv.onclick = function(e){
+        e.preventDefault();
+        TGMovie.mount(slot);
+        when.innerHTML = 'The simple version, drawn in code &middot; <a href="#" id="flipBack" style="color:var(--sage-d);font-weight:700">see the film</a>';
+        var fb = document.getElementById('flipBack');
+        if (fb) fb.onclick = function(e2){ e2.preventDefault(); paintVideo(); };
+      };
+      return;
+    }
+
     var mv = (upcoming && upcoming.movie_url) || (history[0] && history[0].movie_url);
     var emb = embedUrl(mv);
-    var tabBtn = document.getElementById('tabMovie');
     if(emb){
       /* A real film is here, so call it one. */
       slot.innerHTML='<iframe src="'+emb+'" allowfullscreen title="Garden film"></iframe>';
