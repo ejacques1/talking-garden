@@ -192,7 +192,10 @@ LESSONS.seasons = {
   /* The animated opener, drawn in code so it exists before anything is
      filmed. Root explains the idea; Ms. Nia's session shows the real
      thing. They deliberately do not cover the same ground. */
-  movie:{ render:'seasons', minutes:1, guide:'Root' },
+  /* The real film, made in HeyGen with Root as the avatar. The
+     code-drawn version stays behind it, reachable from the link
+     under the player, so the two can be compared. */
+  movie:{ render:'seasons', minutes:1, guide:'Root', url:'film/seasons.mp4' },
 
   session:{
     minutes:5,
