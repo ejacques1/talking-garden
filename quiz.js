@@ -172,7 +172,7 @@
           var had = !!before[c.id], has = !!per[c.id];
           var state = has && !had ? 'gained' : (has ? 'kept' : 'notyet');
           var icon  = state==='gained' ? '&#11088;' : (state==='kept' ? '&#9989;' : '&#8226;');
-          var note  = state==='gained' ? 'New!' : (state==='kept' ? 'Already knew it' : 'Keep practising');
+          var note  = state==='gained' ? 'New!' : (state==='kept' ? 'Already knew it' : 'Keep practicing');
           return '<div class="crow '+state+'"><span class="ci">'+icon+'</span>'+
                  '<span class="cl">'+c.label+'<em>'+(c.teks?c.teks+' &middot; ':'')+note+'</em></span></div>';
         }).join('');

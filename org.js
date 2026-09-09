@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------
    Who this belongs to
    ------------------------------------------------------------------
-   One place for the organisation's own details, so a name never has
+   One place for the organization's own details, so a name never has
    to be hunted for across pages. The certificate signature lives here
    because it was hard-coded as "Ms. Nia" and appeared on a child's
    certificate over the wrong person's title.

@@ -158,7 +158,7 @@
   ================================================================ */
   var NIGHTS = [
     { low:28, crop:'Tomatoes', e:'&#127813;', warm:false,
-      right:'cover', why:'Tomatoes are a warm-season crop with no defence against frost. A sheet holds enough warmth to get them through one cold night.' },
+      right:'cover', why:'Tomatoes are a warm-season crop with no defense against frost. A sheet holds enough warmth to get them through one cold night.' },
     { low:52, crop:'Tomatoes', e:'&#127813;', warm:false,
       right:'leave', why:'Fifty-two is chilly but nowhere near freezing. Covering every cool night just makes work and blocks the light in the morning.' },
     { low:30, crop:'Kale', e:'&#129388;', warm:true,

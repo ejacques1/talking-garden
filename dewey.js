@@ -16,7 +16,7 @@
    Dewey.el(expression, size)    -> an element
    Dewey.say(text, expression)   -> Dewey with a speech bubble
 
-   The images are raster, so Dewey does not change colour or animate
+   The images are raster, so Dewey does not change color or animate
    his features. He does breathe gently, and waves on arrival, which
    is enough life for a page. Anything more would need the vector
    version, which never matched the illustration.

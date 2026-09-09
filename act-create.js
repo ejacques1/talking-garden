@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------
    Hand-built activities for the Create world
    ------------------------------------------------------------------
-   Design a Seed Traveller, and Catching the Sun. Both are engineering
+   Design a Seed Traveler, and Catching the Sun. Both are engineering
    lessons, so both let a child change ONE thing and measure what
    happened — which is the actual content.
 ------------------------------------------------------------------- */

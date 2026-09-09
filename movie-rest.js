@@ -37,7 +37,7 @@
           at(133,92,'&#129388;',20), at(133,120,'&#127822;',20),
           at(188,92,'&#127838;',20), at(188,120,'&#129385;',20)]); } },
       { cap:'A treat is not a mistake.',
-        say:'And a biscuit is not a crime. Most days need fuel. Some days have a biscuit in them too. Both things are true.',
+        say:'And a cookie is not a crime. Most days need fuel. Some days have a cookie in them too. Both things are true.',
         draw:function(){ return plate(160,100,52,[at(160,110,'&#127850;',30)]); } },
       { cap:'Draw the meal you really ate. Then add one thing.',
         say:'So do not aim for a perfect plate. Draw the one you actually ate this week, and add one fruit or one vegetable next time. One.',
@@ -59,7 +59,7 @@
         say:'Then it travels. A tomato from a Texas farm might drive for two hours. A banana spends two weeks on a ship.',
         draw:function(){ return at(96,100,'&#128666;',30)+at(160,100,'&#128674;',30)+at(224,100,'&#9992;&#65039;',30); } },
       { cap:'That is why some fruit is picked green.',
-        say:'And that is the bit worth knowing. Fruit that has to travel gets picked before it is ripe, so it survives the trip. That is why a shop tomato tastes different from yours.',
+        say:'And that is the bit worth knowing. Fruit that has to travel gets picked before it is ripe, so it survives the trip. That is why a store tomato tastes different from yours.',
         draw:function(){ return at(120,102,'&#127823;',36)+at(200,102,'&#127813;',36)+
           '<text x="120" y="140" font-size="11" text-anchor="middle" font-family="Nunito" font-weight="800" fill="#16283A">picked green</text>'+
           '<text x="200" y="140" font-size="11" text-anchor="middle" font-family="Nunito" font-weight="800" fill="#16283A">picked ripe</text>'; } },
@@ -67,11 +67,11 @@
         say:'Every step costs fuel, and water, and somebody’s work. Which is why throwing food away wastes far more than the food.',
         draw:function(){ return at(160,100,'&#128465;&#65039;',40)+at(112,86,'&#128167;',18)+at(208,86,'&#128666;',18)+at(160,60,'&#9203;',18); } },
       { cap:'The shortest journey is from your own garden.',
-        say:'And the shortest journey in the world is from your garden to your plate. No lorry, no ship, no picking it early. Three metres.',
+        say:'And the shortest journey in the world is from your garden to your plate. No truck, no ship, no picking it early. Ten feet.',
         draw:function(){ return at(112,104,'&#127793;',34)+at(160,104,'&#10145;&#65039;',24)+at(210,104,'&#127869;&#65039;',34); } }
     ]},
 
-    /* ---------------- Design a Seed Traveller ---------------- */
+    /* ---------------- Design a Seed Traveler ---------------- */
     seedbot: { guide:'Tinker', img:'img/guide-tinker.png',
       sky:'linear-gradient(#E4F1FA,#EFF4E6 62%)', scenes:[
       { cap:'A seed has a problem. It cannot walk.',
@@ -176,7 +176,7 @@
           '<text x="160" y="108" font-size="12" text-anchor="middle" font-family="Nunito" font-weight="800" fill="#16283A">SUNFLOWER</text>'+
           '<text x="160" y="124" font-size="11" text-anchor="middle" font-family="Nunito" fill="#7A8892">saved this year</text>'; } },
       { cap:'And next spring, you do not buy anything.',
-        say:'And that is the whole point. Next spring you open a drawer instead of a shop, and the garden starts again from a plant you chose yourself.',
+        say:'And that is the whole point. Next spring you open a drawer instead of a store, and the garden starts again from a plant you chose yourself.',
         draw:function(){ return at(112,100,'&#129379;',30)+at(160,100,'&#10145;&#65039;',22)+at(210,100,'&#127793;',32); } }
     ]}
   };

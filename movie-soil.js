@@ -12,7 +12,7 @@
   /* ---- What Compost Eats ---- */
   var COMPOST = [
     { cap:'This is a banana peel. Watch it.',
-      say:'Hi, I am Wiggles. This is a banana peel. Most people call it rubbish. Give me twelve weeks and I will show you what it really is.',
+      say:'Hi, I am Wiggles. This is a banana peel. Most people call it trash. Give me twelve weeks and I will show you what it really is.',
       draw:function(){ return at(160,110,'&#127820;',44); } },
     { cap:'Something alive comes to eat it.',
       say:'The moment it lands, things arrive. Bacteria you cannot see. Fungi. Then bugs, and then me.',
@@ -27,7 +27,7 @@
     { cap:'And what is left is soil.',
       say:'What you are left with is dark, crumbly, and smells like a forest floor. That is compost, and plants grow better in it than in anything you can buy.',
       draw:function(){ return band(96,44,'#5C4025')+at(160,128,'&#129704;',26); } },
-    { cap:'Rubbish in one end. Soil out the other.',
+    { cap:'Trash in one end. Soil out the other.',
       say:'So nothing was thrown away. It went round. That peel is going to be a tomato, and it never left your garden.',
       draw:function(){ return band(112,32,'#5C4025')+at(160,100,'&#127813;',30)+at(160,66,'&#9851;',22); } }
   ];

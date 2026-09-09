@@ -278,10 +278,10 @@ LESSONS.seasons = {
       blurb:'Draw twelve boxes and fill in what you would grow in your own space, month by month.',
       time:'30 minutes', help:'Kid-led, grown-up for ideas', mess:'Tidy',
       teks:'K.12(A)', teksNote:'planning around what a plant needs',
-      materials:['A big sheet of paper','Coloured pencils','A ruler','What you learned in The Texas Year'],
+      materials:['A big sheet of paper','Colored pencils','A ruler','What you learned in The Texas Year'],
       steps:[
         ['Draw twelve boxes','One for each month. Write the month at the top of each.'],
-        ['Colour the weather','Blue for the cool months, orange for the hot ones, green in between. Use what you know about Texas.'],
+        ['Color the weather','Blue for the cool months, orange for the hot ones, green in between. Use what you know about Texas.'],
         ['Fill in the cool boxes','Lettuce, spinach, carrots, broccoli, kale. Draw them or write them.'],
         ['Fill in the hot boxes','Okra, peppers, melons, southern peas.'],
         ['Circle this month','What could go in the ground right now? Circle it and tell a grown-up.'],
@@ -346,7 +346,7 @@ LESSONS.seasons = {
          why:'Okra was built for this. Broccoli in June would bolt — shoot up tall and turn bitter — before it ever made a head.'},
         {q:'A frost is forecast for tonight and your tomatoes are outside.',
          opts:[{e:'&#128737;',t:'Cover them tonight',ok:1},{e:'&#128167;',t:'Water them more'},{e:'&#128564;',t:'Do nothing'}],
-         why:'Tomatoes are a warm-season crop with no defence against frost. A sheet over them holds enough warmth to get through one cold night.'}
+         why:'Tomatoes are a warm-season crop with no defense against frost. A sheet over them holds enough warmth to get through one cold night.'}
       ]}
   ]
 };
@@ -360,7 +360,7 @@ LESSONS.seasons = {
 LESSONS.myplate = {
   slug:'myplate', world:'nourish', n:1,
   title:'Build a Plate',
-  tagline:'Five groups, one plate, and half of it coloured in.',
+  tagline:'Five groups, one plate, and half of it colored in.',
   grades:'K–3',
   word:'',
   standards:['H.2.6(B)','H.2.6(C)','H.2.6(A)','H.2.6(D)'],
@@ -393,26 +393,26 @@ LESSONS.myplate = {
       opts:[{e:'&#129388;',t:'Fruit and vegetables',ok:1},{e:'&#127838;',t:'More bread'},{e:'&#129472;',t:'More cheese'},{e:'&#127850;',t:'A cookie'}]},
     {c:'half', q:'Which plate looks most like MyPlate?',
       opts:[{e:'&#129367;',t:'Salad, chicken, rice and an orange',ok:1},{e:'&#127839;',t:'Chips and a soda'},{e:'&#127850;',t:'Three cookies'},{e:'&#127838;',t:'Four slices of toast'}]},
-    {c:'half', q:'Why does MyPlate want lots of colours?',
-      opts:[{e:'&#127752;',t:'Different colours bring different nutrients',ok:1},{e:'&#127912;',t:'It looks pretty'},{e:'&#128247;',t:'For photos'},{e:'&#127917;',t:'No reason'}]},
+    {c:'half', q:'Why does MyPlate want lots of colors?',
+      opts:[{e:'&#127752;',t:'Different colors bring different nutrients',ok:1},{e:'&#127912;',t:'It looks pretty'},{e:'&#128247;',t:'For photos'},{e:'&#127917;',t:'No reason'}]},
 
-    {c:'swap', q:'A better swap for a bag of sweets is…',
-      opts:[{e:'&#127815;',t:'A piece of fruit',ok:1},{e:'&#127853;',t:'A bigger bag of sweets'},{e:'&#127848;',t:'Ice cream'},{e:'&#127856;',t:'Cake'}]},
-    {c:'swap', q:'Instead of crisps with lunch, you could have…',
-      opts:[{e:'&#129365;',t:'Carrot sticks',ok:1},{e:'&#127839;',t:'A second bag of crisps'},{e:'&#127850;',t:'Biscuits'},{e:'&#127853;',t:'A lollipop'}]},
+    {c:'swap', q:'A better swap for a bag of candy is…',
+      opts:[{e:'&#127815;',t:'A piece of fruit',ok:1},{e:'&#127853;',t:'A bigger bag of candy'},{e:'&#127848;',t:'Ice cream'},{e:'&#127856;',t:'Cake'}]},
+    {c:'swap', q:'Instead of chips with lunch, you could have…',
+      opts:[{e:'&#129365;',t:'Carrot sticks',ok:1},{e:'&#127839;',t:'A second bag of chips'},{e:'&#127850;',t:'Cookies'},{e:'&#127853;',t:'A lollipop'}]},
     {c:'swap', q:'Does having a treat sometimes mean you ate badly?',
       opts:[{e:'&#128522;',t:'No — treats fit, most days just need fuel too',ok:1},{e:'&#128557;',t:'Yes, always'},{e:'&#128683;',t:'You should never have treats'},{e:'&#129300;',t:'Nobody knows'}]},
     {c:'swap', q:'Which snack keeps you going longest at the park?',
-      opts:[{e:'&#129365;',t:'Apple slices and peanut butter',ok:1},{e:'&#127853;',t:'A lollipop'},{e:'&#129380;',t:'A fizzy drink'},{e:'&#127856;',t:'A slice of cake'}]},
+      opts:[{e:'&#129365;',t:'Apple slices and peanut butter',ok:1},{e:'&#127853;',t:'A lollipop'},{e:'&#129380;',t:'A soda'},{e:'&#127856;',t:'A slice of cake'}]},
 
     {c:'drink', q:'What should you drink most of the time?',
       opts:[{e:'&#128167;',t:'Water',ok:1},{e:'&#129380;',t:'Fizzy drinks'},{e:'&#129475;',t:'Sweet juice all day'},{e:'&#9749;',t:'Coffee'}]},
     {c:'drink', q:'You have been running outside in the Texas heat. What do you reach for?',
-      opts:[{e:'&#128167;',t:'Water',ok:1},{e:'&#127848;',t:'A milkshake'},{e:'&#129380;',t:'A fizzy drink'},{e:'&#127853;',t:'Sweets'}]},
+      opts:[{e:'&#128167;',t:'Water',ok:1},{e:'&#127848;',t:'A milkshake'},{e:'&#129380;',t:'A soda'},{e:'&#127853;',t:'Candy'}]},
     {c:'drink', q:'Milk mostly gives you…',
       opts:[{e:'&#129460;',t:'Calcium for your bones',ok:1},{e:'&#127853;',t:'Sugar and nothing else'},{e:'&#128293;',t:'Spice'},{e:'&#127913;',t:'Magic'}]},
     {c:'drink', q:'How do you know your body wants water?',
-      opts:[{e:'&#128069;',t:'You feel thirsty or your mouth is dry',ok:1},{e:'&#128064;',t:'Your eyes change colour'},{e:'&#128066;',t:'Your ears ring'},{e:'&#129504;',t:'You cannot tell'}]}
+      opts:[{e:'&#128069;',t:'You feel thirsty or your mouth is dry',ok:1},{e:'&#128064;',t:'Your eyes change color'},{e:'&#128066;',t:'Your ears ring'},{e:'&#129504;',t:'You cannot tell'}]}
   ],
 
   movie:{ render:'myplate', minutes:1, guide:'Chef Sprout', url:'film/myplate.mp4' },
@@ -422,7 +422,7 @@ LESSONS.myplate = {
     kit:['A plate, and a real meal you can put on it',
          'Foods from all five groups, out on the counter',
          'One meal that is honestly NOT balanced — toast and cheese is perfect',
-         'A glass of water and a fizzy drink, side by side'],
+         'A glass of water and a soda, side by side'],
     runsheet:[
       ['0:00','Hello, holding an empty plate',
        'Say who you are. Hold up the empty plate. "I am going to build lunch, and you are going to tell me what I got wrong."'],
@@ -436,7 +436,7 @@ LESSONS.myplate = {
        'Point at each thing on the finished plate and name its group. Five groups, one plate, no lists.',
        'H.2.6(A)'],
       ['3:15','The two drinks',
-       'Hold up water and a fizzy drink. Do not tell them which is better — ask which one they think their body wants after running around.',
+       'Hold up water and a soda. Do not tell them which is better — ask which one they think their body wants after running around.',
        'H.2.6(D)'],
       ['4:00','THE SECRET WORD',
        'Say it clearly, twice. Not at the end.'],
@@ -455,15 +455,15 @@ LESSONS.myplate = {
   builds:[
    {
     title:'Your Real Plate, Drawn',
-    blurb:'Draw one meal you actually ate this week, then colour in how much of it was fruit and vegetables.',
+    blurb:'Draw one meal you actually ate this week, then color in how much of it was fruit and vegetables.',
     time:'20 minutes',
     help:'Kid-led',
     mess:'Tidy',
-    materials:['Paper','A round object to draw around (a bowl works)','Coloured pencils','One real meal you remember'],
+    materials:['Paper','A round object to draw around (a bowl works)','Colored pencils','One real meal you remember'],
     steps:[
       ['Draw the plate','Trace around a bowl. Draw a line down the middle, then split one half in two — that is the MyPlate shape.'],
       ['Draw what you actually ate','Not a perfect meal. A real one, from this week. Be honest — it works better that way.'],
-      ['Colour the fruit and veg green','Now look. Did the green reach halfway across?'],
+      ['Color the fruit and veg green','Now look. Did the green reach halfway across?'],
       ['Add one thing','Draw one fruit or vegetable you would happily add next time. Just one.'],
       ['Show a grown-up','Tell them which one you added and why you picked that one.']
     ],
@@ -478,7 +478,7 @@ LESSONS.myplate = {
     materials:['A shelf or a low drawer','A bowl','Fruit that needs no preparation','Carrot or cucumber sticks in a tub','A pen and paper'],
     steps:[
       ['Pick the shelf you actually reach for','The one at eye level, or the one nearest the door. Be honest about which it is.'],
-      ['Put the fruit bowl there','Front and centre. Nothing in front of it.'],
+      ['Put the fruit bowl there','Front and center. Nothing in front of it.'],
       ['Cut a tub of sticks','Carrots, cucumber, peppers. A tub of ready ones, in the fridge at the front.'],
       ['Move the rest up or back','Not gone. Just not first.'],
       ['Count for a week','Tally what you actually grabbed. See if the shelf changed anything.']
@@ -487,18 +487,18 @@ LESSONS.myplate = {
    },
    {
     title:'The Rainbow Week',
-    blurb:'Get every colour on your plate across seven days, and colour in the chart.',
+    blurb:'Get every color on your plate across seven days, and color in the chart.',
     time:'5 minutes a day', help:'Kid-led', mess:'Tidy',
-    teks:'H.2.6(A)', teksNote:'why different colours matter',
-    materials:['Paper','Coloured pencils','Seven days'],
+    teks:'H.2.6(A)', teksNote:'why different colors matter',
+    materials:['Paper','Colored pencils','Seven days'],
     steps:[
-      ['Draw seven rows and six colour boxes','Red, orange, yellow, green, blue-purple, white.'],
-      ['Colour a box when you eat that colour','It has to be a fruit or a vegetable. Ketchup is not red.'],
-      ['Find the gaps by Wednesday','Which colour is empty? Blue-purple usually is.'],
-      ['Go hunting for the missing one','Blueberries, red cabbage, aubergine, plums.'],
-      ['Look at the whole week','Which colour was easiest? Which did you have to try for?']
+      ['Draw seven rows and six color boxes','Red, orange, yellow, green, blue-purple, white.'],
+      ['Color a box when you eat that color','It has to be a fruit or a vegetable. Ketchup is not red.'],
+      ['Find the gaps by Wednesday','Which color is empty? Blue-purple usually is.'],
+      ['Go hunting for the missing one','Blueberries, red cabbage, eggplant, plums.'],
+      ['Look at the whole week','Which color was easiest? Which did you have to try for?']
     ],
-    why:'Different colours in fruit and veg come from different compounds, so eating a range is not decoration — it is the point. A chart with a visible gap is a far better prompt than a rule, because the child spots the gap themselves.'
+    why:'Different colors in fruit and veg come from different compounds, so eating a range is not decoration — it is the point. A chart with a visible gap is a far better prompt than a rule, because the child spots the gap themselves.'
    }
   ],
 
@@ -540,8 +540,8 @@ LESSONS.myplate = {
       prompt:'Tap a snack, then tap a swap that would keep you going longer.',
       pairs:[
         {a:{e:'&#127853;',t:'Lollipop'},        b:{t:'An apple'}},
-        {a:{e:'&#127839;',t:'Bag of crisps'},   b:{t:'Carrot sticks'}},
-        {a:{e:'&#129380;',t:'Fizzy drink'},     b:{t:'Water'}},
+        {a:{e:'&#127839;',t:'Bag of chips'},   b:{t:'Carrot sticks'}},
+        {a:{e:'&#129380;',t:'Soda'},     b:{t:'Water'}},
         {a:{e:'&#127856;',t:'Slice of cake'},   b:{t:'Yoghurt and berries'}}
       ]}
   ]
@@ -572,31 +572,31 @@ LESSONS.farmtotable = {
 
   bank:[
     {c:'journey', q:'Where does the journey of a tomato begin?',
-      opts:[{e:'&#127793;',t:'A seed on a farm',ok:1},{e:'&#128722;',t:'The shop shelf'},{e:'&#128666;',t:'A lorry'},{e:'&#127869;',t:'Your plate'}]},
+      opts:[{e:'&#127793;',t:'A seed on a farm',ok:1},{e:'&#128722;',t:'The store shelf'},{e:'&#128666;',t:'A truck'},{e:'&#127869;',t:'Your plate'}]},
     {c:'journey', q:'What happens right after a crop is harvested?',
       opts:[{e:'&#128230;',t:'It is packed and cooled',ok:1},{e:'&#127869;',t:'It is eaten immediately'},{e:'&#128465;',t:'It is thrown away'},{e:'&#127795;',t:'It is planted again'}]},
     {c:'journey', q:'How does most food travel a long way?',
-      opts:[{e:'&#128666;',t:'By lorry, train or ship',ok:1},{e:'&#128694;',t:'People carry it'},{e:'&#128052;',t:'Animals bring it'},{e:'&#127755;',t:'It appears'}]},
+      opts:[{e:'&#128666;',t:'By truck, train or ship',ok:1},{e:'&#128694;',t:'People carry it'},{e:'&#128052;',t:'Animals bring it'},{e:'&#127755;',t:'It appears'}]},
     {c:'journey', q:'Who is the last person in the food journey?',
       opts:[{e:'&#129490;',t:'The person eating it — you',ok:1},{e:'&#128668;',t:'The farmer'},{e:'&#128666;',t:'The driver'},{e:'&#128722;',t:'The shopkeeper'}]},
 
-    {c:'fresh', q:'A strawberry picked this morning nearby, versus one that travelled four days. Which usually tastes better?',
-      opts:[{e:'&#127827;',t:'The one picked this morning',ok:1},{e:'&#128666;',t:'The one that travelled'},{e:'&#129335;',t:'No difference ever'},{e:'&#128683;',t:'Both taste bad'}]},
+    {c:'fresh', q:'A strawberry picked this morning nearby, versus one that traveled four days. Which usually tastes better?',
+      opts:[{e:'&#127827;',t:'The one picked this morning',ok:1},{e:'&#128666;',t:'The one that traveled'},{e:'&#129335;',t:'No difference ever'},{e:'&#128683;',t:'Both taste bad'}]},
     {c:'fresh', q:'Why are some fruits picked before they are ripe?',
       opts:[{e:'&#128666;',t:'So they survive the journey',ok:1},{e:'&#127917;',t:'For fun'},{e:'&#128176;',t:'They cost more that way'},{e:'&#128027;',t:'Bugs like them green'}]},
     {c:'fresh', q:'What does "in season" mean?',
       opts:[{e:'&#128197;',t:'It is the time of year that food naturally grows near you',ok:1},{e:'&#127881;',t:'It is on sale'},{e:'&#128250;',t:'It is on television'},{e:'&#10052;&#65039;',t:'It is frozen'}]},
     {c:'fresh', q:'Food from your own garden skips which part of the journey?',
-      opts:[{e:'&#128666;',t:'Nearly all the travelling',ok:1},{e:'&#127793;',t:'The growing'},{e:'&#128167;',t:'The watering'},{e:'&#129530;',t:'The picking'}]},
+      opts:[{e:'&#128666;',t:'Nearly all the traveling',ok:1},{e:'&#127793;',t:'The growing'},{e:'&#128167;',t:'The watering'},{e:'&#129530;',t:'The picking'}]},
 
     {c:'label', q:'Where would you look to find out where a food came from?',
-      opts:[{e:'&#127991;&#65039;',t:'The label or sticker on the package',ok:1},{e:'&#128064;',t:'Its colour'},{e:'&#128067;',t:'Its smell'},{e:'&#128176;',t:'Its price'}]},
+      opts:[{e:'&#127991;&#65039;',t:'The label or sticker on the package',ok:1},{e:'&#128064;',t:'Its color'},{e:'&#128067;',t:'Its smell'},{e:'&#128176;',t:'Its price'}]},
     {c:'label', q:'A bag of apples says "Product of Washington". What does that tell you?',
       opts:[{e:'&#128506;&#65039;',t:'They were grown in Washington state',ok:1},{e:'&#128722;',t:'They were sold there'},{e:'&#128100;',t:'A person named Washington grew them'},{e:'&#128290;',t:'Nothing useful'}]},
-    {c:'label', q:'Which food most likely travelled the shortest distance to a Texas kitchen?',
+    {c:'label', q:'Which food most likely traveled the shortest distance to a Texas kitchen?',
       opts:[{e:'&#127817;',t:'A watermelon from a Texas farm',ok:1},{e:'&#127821;',t:'A pineapple from Costa Rica'},{e:'&#129389;',t:'A mango from India'},{e:'&#127820;',t:'A banana from Ecuador'}]},
     {c:'label', q:'What is a farmers market?',
-      opts:[{e:'&#128668;',t:'A place growers sell straight to people',ok:1},{e:'&#127981;',t:'A factory'},{e:'&#128666;',t:'A lorry park'},{e:'&#127968;',t:'A house'}]},
+      opts:[{e:'&#128668;',t:'A place growers sell straight to people',ok:1},{e:'&#127981;',t:'A factory'},{e:'&#128666;',t:'A truck park'},{e:'&#127968;',t:'A house'}]},
 
     {c:'waste', q:'What is the best thing to do with vegetable peelings?',
       opts:[{e:'&#9851;&#65039;',t:'Compost them',ok:1},{e:'&#128465;&#65039;',t:'Bin them'},{e:'&#128293;',t:'Burn them'},{e:'&#128167;',t:'Wash them down the sink'}]},
@@ -605,7 +605,7 @@ LESSONS.farmtotable = {
     {c:'waste', q:'One easy way to waste less at home is…',
       opts:[{e:'&#129379;',t:'Take a smaller helping and go back for more',ok:1},{e:'&#127869;',t:'Fill the plate as high as it goes'},{e:'&#128465;&#65039;',t:'Bin whatever is left'},{e:'&#128722;',t:'Buy twice as much'}]},
     {c:'waste', q:'Slightly soft fruit is usually…',
-      opts:[{e:'&#129379;',t:'Still fine — good for smoothies or baking',ok:1},{e:'&#128465;&#65039;',t:'Always rubbish'},{e:'&#9760;&#65039;',t:'Dangerous'},{e:'&#128027;',t:'Full of insects'}]}
+      opts:[{e:'&#129379;',t:'Still fine — good for smoothies or baking',ok:1},{e:'&#128465;&#65039;',t:'Always trash'},{e:'&#9760;&#65039;',t:'Dangerous'},{e:'&#128027;',t:'Full of insects'}]}
   ],
 
   movie:{ render:'farmtotable', minutes:1, guide:'Chef Sprout', url:'film/farmtotable.mp4' },
@@ -626,7 +626,7 @@ LESSONS.farmtotable = {
        'Cut them and hold the two halves to the camera. Let them see the difference. Say why — one was picked ripe because it only had to travel an hour.',
        '3.11(A)'],
       ['2:40','Show the scrap tub',
-       'Hold up a day of peelings. "Every one of these took water, and work, and a lorry. Throwing it away wastes all of that too, not just the food."',
+       'Hold up a day of peelings. "Every one of these took water, and work, and a truck. Throwing it away wastes all of that too, not just the food."',
        '5.11'],
       ['3:20','Tip the scraps into the compost',
        'Do it on camera. "Or it goes back into the soil and grows the next one. That is the difference."',
@@ -640,7 +640,7 @@ LESSONS.farmtotable = {
     ],
     dont:[
       'Do not explain the journey step by step — the animation does that. Hold the two fruits up instead.',
-      'Do not make far-travelled food the villain. Bananas do not grow in Texas, and that is fine.',
+      'Do not make far-traveled food the villain. Bananas do not grow in Texas, and that is fine.',
       'Do not save the secret word for the last ten seconds.'
     ]
   },
@@ -648,16 +648,16 @@ LESSONS.farmtotable = {
   builds:[
    {
     title:'The Kitchen Map',
-    blurb:'Find out how far five foods in your kitchen travelled, and put them on a map.',
+    blurb:'Find out how far five foods in your kitchen traveled, and put them on a map.',
     time:'30 minutes',
     help:'Grown-up helps read labels',
     mess:'Tidy',
-    materials:['Five foods from your kitchen with labels','Paper','Coloured pencils','A map or a grown-up with a phone'],
+    materials:['Five foods from your kitchen with labels','Paper','Colored pencils','A map or a grown-up with a phone'],
     steps:[
       ['Pick five','Choose five foods with a country or state printed somewhere on them.'],
       ['Write the places','List each food and where it says it came from.'],
       ['Draw a rough map','It does not need to be accurate. Put your house in the middle.'],
-      ['Draw the lines','Draw a line from each place to your house. Longest line wins the prize for furthest traveller.'],
+      ['Draw the lines','Draw a line from each place to your house. Longest line wins the prize for furthest traveler.'],
       ['Find the closest','Which one came from nearest? Could anything on your list have been grown in Texas?']
     ],
     why:'The lines are the point. Once a child has drawn one from Ecuador to their own kitchen, "where food comes from" stops being an abstract idea and becomes a distance they can see.',
@@ -680,18 +680,18 @@ LESSONS.farmtotable = {
    },
    {
     title:'Grow the Shortest Journey',
-    blurb:'Plant one thing you would otherwise buy, and race it against the shop.',
+    blurb:'Plant one thing you would otherwise buy, and race it against the store.',
     time:'20 minutes to plant', help:'Kid-led', mess:'A little messy',
     teks:'3.11(A)', teksNote:'the shortest possible food journey',
     materials:['A pot','Potting soil','Seed or a cutting of something you buy often','Water','A label'],
     steps:[
       ['Pick something you actually buy','Salad leaves, basil, spring onions. Something that turns up in your kitchen anyway.'],
       ['Plant it and write the date','Label it with what it is and when you started.'],
-      ['Keep buying the shop one too','You need something to compare it with.'],
+      ['Keep buying the store one too','You need something to compare it with.'],
       ['Wait until you can pick your own','Then put the two side by side. Taste both.'],
-      ['Work out the two journeys','How far did the shop one travel? How far did yours? Say both numbers out loud.']
+      ['Work out the two journeys','How far did the store one travel? How far did yours? Say both numbers out loud.']
     ],
-    why:'Three metres against three hundred miles is a comparison a child can hold in their head, and tasting both at once makes the point without anyone having to argue it.'
+    why:'Ten feet against three hundred miles is a comparison a child can hold in their head, and tasting both at once makes the point without anyone having to argue it.'
    }
   ],
 
@@ -707,15 +707,15 @@ LESSONS.farmtotable = {
         {e:'&#127793;',t:'Planted on a farm'},
         {e:'&#129530;',t:'Harvested'},
         {e:'&#128230;',t:'Packed and cooled'},
-        {e:'&#128666;',t:'Driven to the shop'},
+        {e:'&#128666;',t:'Driven to the store'},
         {e:'&#128722;',t:'Bought'},
         {e:'&#127869;',t:'Eaten'}
       ]},
 
     {id:'ftnear', type:'sort', title:'Near or Far?', teks:'3.11(A)',
-      teaches:'Judge which foods travelled a long way to reach Texas',
+      teaches:'Judge which foods traveled a long way to reach Texas',
       prompt:'Could this have been grown near Spring, Texas — or did it travel?',
-      bins:[{id:'near',label:'Could be grown near you',e:'&#127968;'},{id:'far',label:'Travelled a long way',e:'&#9992;&#65039;'}],
+      bins:[{id:'near',label:'Could be grown near you',e:'&#127968;'},{id:'far',label:'Traveled a long way',e:'&#9992;&#65039;'}],
       items:[
         {e:'&#127817;',t:'Watermelon',bin:'near'},{e:'&#129362;',t:'Okra',bin:'near'},
         {e:'&#127813;',t:'Tomatoes',bin:'near'},{e:'&#127827;',t:'Strawberries',bin:'near'},
@@ -923,7 +923,7 @@ LESSONS.pollinators = {
       questions:[
         {q:'Your family wants to help bees in the back garden.',
          opts:[{e:'&#127804;',t:'Plant flowers that bloom at different times',ok:1},{e:'&#129529;',t:'Spray for insects'},{e:'&#129529;',t:'Pave it'}],
-         why:'Bees need food across the whole season, not one big week of it. Different bloom times keep the kitchen open from spring through autumn.'},
+         why:'Bees need food across the whole season, not one big week of it. Different bloom times keep the kitchen open from spring through fall.'},
         {q:'A bee is drinking at your bee bath and you want a closer look.',
          opts:[{e:'&#128064;',t:'Crouch down and watch',ok:1},{e:'&#128584;',t:'Pick it up'},{e:'&#128168;',t:'Blow on it'}],
          why:'A bee that is drinking is not interested in you at all. Watching costs it nothing; handling it is how people and bees both get hurt.'},
@@ -986,7 +986,7 @@ LESSONS.habitat = {
       opts:[{e:'&#10060;',t:'Most cannot — all four are needed',ok:1},{e:'&#9989;',t:'Yes, three is plenty'},{e:'&#129300;',t:'Only in summer'},{e:'&#128683;',t:'It makes no difference'}]},
 
     {c:'build', q:'What could you add to a bare yard to start a habitat?',
-      opts:[{e:'&#127804;',t:'Flowering plants and a water dish',ok:1},{e:'&#129521;',t:'More concrete'},{e:'&#129529;',t:'Bug spray'},{e:'&#128465;&#65039;',t:'Rubbish'}]},
+      opts:[{e:'&#127804;',t:'Flowering plants and a water dish',ok:1},{e:'&#129521;',t:'More concrete'},{e:'&#129529;',t:'Bug spray'},{e:'&#128465;&#65039;',t:'Trash'}]},
     {c:'build', q:'A pile of logs or sticks in a corner gives animals…',
       opts:[{e:'&#127968;',t:'Shelter',ok:1},{e:'&#128167;',t:'Water'},{e:'&#9728;&#65039;',t:'Sunlight'},{e:'&#128266;',t:'Noise'}]},
     {c:'build', q:'Why leave a corner of the garden a bit wild?',
@@ -1001,7 +1001,7 @@ LESSONS.habitat = {
     minutes:5, word:'',
     kit:['Somewhere outdoors you can walk while filming',
          'A spot that clearly HAS all four — a pond edge, a hedge, a wild corner',
-         'A spot that clearly does not — a path, a lawn, a car park',
+         'A spot that clearly does not — a path, a lawn, a parking lot',
          'A shallow dish and some pebbles'],
     runsheet:[
       ['0:00','Hello, and say the four',
@@ -1026,7 +1026,7 @@ LESSONS.habitat = {
     ],
     dont:[
       'Do not define habitat from scratch — the animation does it. Walk them to one instead.',
-      'Do not use a rainforest or a coral reef as your example. Use the six metres outside your own door.',
+      'Do not use a rainforest or a coral reef as your example. Use the twenty feet outside your own door.',
       'Do not save the secret word for the last ten seconds.'
     ]
   },
@@ -1046,7 +1046,7 @@ LESSONS.habitat = {
       ['Fix one thing','Decide on one thing you could add this week to fill that gap.'],
       ['Do it, then look again','Add it. Come back in a few days and see whether anything found it.']
     ],
-    why:'Every habitat lesson risks becoming a poster about the rainforest. This one makes a child audit the six metres outside their own door — and the missing box is nearly always water, which happens to be the easiest of the four to add.',
+    why:'Every habitat lesson risks becoming a poster about the rainforest. This one makes a child audit the twenty feet outside their own door — and the missing box is nearly always water, which happens to be the easiest of the four to add.',
     teks:'K.12(B)', teksNote:'the four needs, checked where they actually live'
    },
    {
@@ -1131,7 +1131,7 @@ LESSONS.habitat = {
 LESSONS.compost = {
   slug:'compost', world:'soil', n:1,
   title:'What Compost Eats',
-  tagline:'Rubbish in one end, soil out the other, and something alive doing the work.',
+  tagline:'Trash in one end, soil out the other, and something alive doing the work.',
   grades:'K–4',
   word:'',
   standards:['2.11(B)','4.12(B)','3.10(B)','3.11(C)'],
@@ -1156,7 +1156,7 @@ LESSONS.compost = {
     {c:'in', q:'Grass clippings in the compost are…',
       opts:[{e:'&#9989;',t:'Fine, mixed with dry brown material',ok:1},{e:'&#10060;',t:'Never allowed'},{e:'&#128293;',t:'Dangerous'},{e:'&#9760;',t:'Poisonous'}]},
     {c:'in', q:'Why not compost plastic?',
-      opts:[{e:'&#10060;',t:'Nothing alive can break it down',ok:1},{e:'&#128176;',t:'It costs too much'},{e:'&#127912;',t:'It is the wrong colour'},{e:'&#128266;',t:'It is too noisy'}]},
+      opts:[{e:'&#10060;',t:'Nothing alive can break it down',ok:1},{e:'&#128176;',t:'It costs too much'},{e:'&#127912;',t:'It is the wrong color'},{e:'&#128266;',t:'It is too noisy'}]},
 
     {c:'who', q:'Who does most of the work in a compost pile?',
       opts:[{e:'&#129440;',t:'Tiny living things — microbes, worms and bugs',ok:1},{e:'&#129302;',t:'Robots'},{e:'&#127913;',t:'Magic'},{e:'&#128293;',t:'Fire'}]},
@@ -1170,7 +1170,7 @@ LESSONS.compost = {
     {c:'recipe', q:'A compost pile needs greens, browns, air and…',
       opts:[{e:'&#128167;',t:'Water',ok:1},{e:'&#127853;',t:'Sugar'},{e:'&#129371;',t:'Milk'},{e:'&#128176;',t:'Money'}]},
     {c:'recipe', q:'"Browns" in compost means…',
-      opts:[{e:'&#127810;',t:'Dry things — leaves, cardboard, straw',ok:1},{e:'&#127851;',t:'Chocolate'},{e:'&#9749;',t:'Coffee only'},{e:'&#128683;',t:'Anything brown-coloured'}]},
+      opts:[{e:'&#127810;',t:'Dry things — leaves, cardboard, straw',ok:1},{e:'&#127851;',t:'Chocolate'},{e:'&#9749;',t:'Coffee only'},{e:'&#128683;',t:'Anything brown-colored'}]},
     {c:'recipe', q:'Why turn a compost pile?',
       opts:[{e:'&#128168;',t:'To get air into the middle',ok:1},{e:'&#127917;',t:'For exercise'},{e:'&#128064;',t:'To look at it'},{e:'&#128266;',t:'To wake it up'}]},
     {c:'recipe', q:'Your compost smells bad and is soggy. What does it need?',
@@ -1179,9 +1179,9 @@ LESSONS.compost = {
     {c:'why', q:'What does finished compost do for a garden?',
       opts:[{e:'&#129704;',t:'Feeds the soil so plants grow better',ok:1},{e:'&#128293;',t:'Keeps it warm'},{e:'&#128027;',t:'Kills every insect'},{e:'&#127912;',t:'Only makes it look nice'}]},
     {c:'why', q:'Composting keeps waste out of…',
-      opts:[{e:'&#128465;&#65039;',t:'Landfill',ok:1},{e:'&#127754;',t:'The ocean only'},{e:'&#127968;',t:'Your house'},{e:'&#128666;',t:'Lorries'}]},
+      opts:[{e:'&#128465;&#65039;',t:'Landfill',ok:1},{e:'&#127754;',t:'The ocean only'},{e:'&#127968;',t:'Your house'},{e:'&#128666;',t:'Trucks'}]},
     {c:'why', q:'Finished compost looks and smells like…',
-      opts:[{e:'&#129704;',t:'Dark crumbly earth that smells like a forest',ok:1},{e:'&#127820;',t:'The banana peel you put in'},{e:'&#128683;',t:'Rubbish'},{e:'&#129482;',t:'Ice'}]},
+      opts:[{e:'&#129704;',t:'Dark crumbly earth that smells like a forest',ok:1},{e:'&#127820;',t:'The banana peel you put in'},{e:'&#128683;',t:'Trash'},{e:'&#129482;',t:'Ice'}]},
     {c:'why', q:'Composting is an example of…',
       opts:[{e:'&#9851;&#65039;',t:'A cycle — things going round again',ok:1},{e:'&#10145;&#65039;',t:'A one-way trip'},{e:'&#128683;',t:'Waste'},{e:'&#128176;',t:'Shopping'}]}
   ],
@@ -1197,7 +1197,7 @@ LESSONS.compost = {
          'A soil thermometer if you have one'],
     runsheet:[
       ['0:00','Hello, standing at the bin',
-       'Say who you are and where you are. Lift the lid. "Everything in here was rubbish last month."'],
+       'Say who you are and where you are. Lift the lid. "Everything in here was trash last month."'],
       ['0:35','Put today\u2019s scraps in',
        'Add the fresh scraps on camera and name each one. Then hold up the cheese or the bone: "Not this. This brings animals."',
        '2.11(B)'],
@@ -1367,10 +1367,10 @@ LESSONS.soillayers = {
       opts:[{e:'&#127958;&#65039;',t:'Sand',ok:1},{e:'&#129003;',t:'Clay'},{e:'&#129000;',t:'Silt'},{e:'&#127810;',t:'Compost'}]},
     {c:'types', q:'Which soil is sticky and holds water the longest?',
       opts:[{e:'&#129003;',t:'Clay',ok:1},{e:'&#127958;&#65039;',t:'Sand'},{e:'&#127810;',t:'Leaf litter'},{e:'&#129704;',t:'Gravel'}]},
-    {c:'types', q:'You squeeze wet soil and it holds its shape like modelling clay. It is probably…',
+    {c:'types', q:'You squeeze wet soil and it holds its shape like modeling clay. It is probably…',
       opts:[{e:'&#129003;',t:'Clay',ok:1},{e:'&#127958;&#65039;',t:'Sand'},{e:'&#128167;',t:'Water'},{e:'&#129704;',t:'Rock'}]},
     {c:'types', q:'Why do gardeners add compost to sandy soil?',
-      opts:[{e:'&#128167;',t:'It helps the soil hold on to water and food',ok:1},{e:'&#127912;',t:'To change the colour'},{e:'&#128293;',t:'To warm it'},{e:'&#128266;',t:'No reason'}]},
+      opts:[{e:'&#128167;',t:'It helps the soil hold on to water and food',ok:1},{e:'&#127912;',t:'To change the color'},{e:'&#128293;',t:'To warm it'},{e:'&#128266;',t:'No reason'}]},
 
     {c:'life', q:'A handful of healthy soil contains…',
       opts:[{e:'&#129440;',t:'Millions of living things',ok:1},{e:'&#128683;',t:'Nothing alive'},{e:'&#129704;',t:'Only rock'},{e:'&#128167;',t:'Only water'}]},
@@ -1401,7 +1401,7 @@ LESSONS.soillayers = {
          'A handful of sand and a handful of clay soil, if you have both'],
     runsheet:[
       ['0:00','Hello, and dig the hole',
-       'Say who you are. Then dig, on camera, without narrating. Let them watch the colour change as you go down.'],
+       'Say who you are. Then dig, on camera, without narrating. Let them watch the color change as you go down.'],
       ['0:50','Point at the layers in your own hole',
        'Run a finger down the side. "Dark here. Paler here. That is not one thing called dirt — that is layers."',
        '3.10(B)'],
@@ -1540,7 +1540,7 @@ LESSONS.soillayers = {
 ================================================================== */
 LESSONS.seedbot = {
   slug:'seedbot', world:'create', n:1,
-  title:'Design a Seed Traveller',
+  title:'Design a Seed Traveler',
   tagline:'Seeds cannot walk. Engineer one a way to move.',
   grades:'2–5',
   word:'',
@@ -1586,7 +1586,7 @@ LESSONS.seedbot = {
     {c:'cycle', q:'What is a prototype?',
       opts:[{e:'&#128736;&#65039;',t:'A first try you expect to change',ok:1},{e:'&#127942;',t:'The finished perfect version'},{e:'&#128220;',t:'A drawing only'},{e:'&#128683;',t:'A mistake'}]},
 
-    {c:'improve', q:'Your seed traveller falls too fast. What do you change?',
+    {c:'improve', q:'Your seed traveler falls too fast. What do you change?',
       opts:[{e:'&#129718;',t:'Make the wings bigger to catch more air',ok:1},{e:'&#129704;',t:'Add weight'},{e:'&#9986;&#65039;',t:'Cut the wings off'},{e:'&#128683;',t:'Nothing'}]},
     {c:'improve', q:'Why change only one thing between tests?',
       opts:[{e:'&#128269;',t:'So you know which change made the difference',ok:1},{e:'&#8987;',t:'To save time'},{e:'&#128176;',t:'To save money'},{e:'&#127917;',t:'For fun'}]},
@@ -1658,7 +1658,7 @@ LESSONS.seedbot = {
     blurb:'Walk through long grass in an old sock and see what hitched a ride.',
     time:'20 minutes', help:'Grown-up picks where to walk', mess:'A little messy',
     teks:'2.12(C)', teksNote:'seeds that travel on animals',
-    materials:['An old thick sock, light coloured','Somewhere with long grass or weeds','A tray','A magnifier if you have one','A pot of soil'],
+    materials:['An old thick sock, light colored','Somewhere with long grass or weeds','A tray','A magnifier if you have one','A pot of soil'],
     steps:[
       ['Sock over your shoe','Pull it right over the outside of your shoe. Fluffy side out.'],
       ['Walk through the rough stuff','Long grass, weedy edges, the bit nobody mows. Five minutes.'],
@@ -1670,7 +1670,7 @@ LESSONS.seedbot = {
    },
    {
     title:'The Best of Five',
-    blurb:'Build five seed travellers, keep every one, and chart the times.',
+    blurb:'Build five seed travelers, keep every one, and chart the times.',
     time:'45 minutes', help:'Grown-up cuts if needed', mess:'Tidy',
     teks:'2.2(D)', teksNote:'changing one thing and measuring it',
     materials:['Paper','Scissors','Paperclips','Sticky tape','A stopwatch','Paper for a chart'],
@@ -1749,7 +1749,7 @@ LESSONS.sunpower = {
 
   competencies:[
     {id:'energy', label:'Knows that sunlight carries energy that becomes heat', teks:'2.9(A)'},
-    {id:'colour', label:'Knows that dark surfaces absorb and light surfaces reflect', teks:'5.8(C)'},
+    {id:'color', label:'Knows that dark surfaces absorb and light surfaces reflect', teks:'5.8(C)'},
     {id:'trap',   label:'Knows how a surface, a reflector and a cover work together to trap heat', teks:'4.8(B)'},
     {id:'test',   label:'Can measure a difference instead of guessing at it', teks:'3.1(G)'}
   ],
@@ -1764,18 +1764,18 @@ LESSONS.sunpower = {
     {c:'energy', q:'A solar panel turns sunlight into…',
       opts:[{e:'&#9889;',t:'Electricity',ok:1},{e:'&#128167;',t:'Water'},{e:'&#128168;',t:'Wind'},{e:'&#127822;',t:'Food'}]},
 
-    {c:'colour', q:'On a hot day, which shirt gets warmer in the sun?',
+    {c:'color', q:'On a hot day, which shirt gets warmer in the sun?',
       opts:[{e:'&#11035;',t:'A black one',ok:1},{e:'&#11036;',t:'A white one'},{e:'&#129335;',t:'They are identical'},{e:'&#128302;',t:'Nobody can tell'}]},
-    {c:'colour', q:'Why do dark colours get hotter?',
+    {c:'color', q:'Why do dark colors get hotter?',
       opts:[{e:'&#127759;',t:'They absorb more light instead of reflecting it',ok:1},{e:'&#128293;',t:'They make their own heat'},{e:'&#127912;',t:'The paint is hot'},{e:'&#128266;',t:'They vibrate'}]},
-    {c:'colour', q:'What does shiny foil do to sunlight?',
+    {c:'color', q:'What does shiny foil do to sunlight?',
       opts:[{e:'&#128161;',t:'Bounces it — you can aim it where you want',ok:1},{e:'&#128293;',t:'Absorbs all of it'},{e:'&#128167;',t:'Turns it into water'},{e:'&#128683;',t:'Nothing'}]},
-    {c:'colour', q:'Why are lots of houses in hot places painted white?',
+    {c:'color', q:'Why are lots of houses in hot places painted white?',
       opts:[{e:'&#11036;',t:'White reflects sunlight and stays cooler',ok:1},{e:'&#127912;',t:'It is the cheapest paint'},{e:'&#128064;',t:'It looks clean'},{e:'&#128683;',t:'No reason'}]},
 
     {c:'trap', q:'A clear lid on a solar oven is there to…',
       opts:[{e:'&#127777;&#65039;',t:'Let light in and stop the heat escaping',ok:1},{e:'&#128167;',t:'Keep rain out only'},{e:'&#128027;',t:'Keep bugs out only'},{e:'&#127912;',t:'Look nice'}]},
-    {c:'trap', q:'Which inside colour makes a solar oven work best?',
+    {c:'trap', q:'Which inside color makes a solar oven work best?',
       opts:[{e:'&#11035;',t:'Black on the bottom to absorb heat',ok:1},{e:'&#11036;',t:'White everywhere'},{e:'&#10024;',t:'Clear everywhere'},{e:'&#127752;',t:'It makes no difference'}]},
     {c:'trap', q:'What is the reflector flap for?',
       opts:[{e:'&#128161;',t:'Bouncing extra sunlight into the box',ok:1},{e:'&#128168;',t:'Keeping wind out'},{e:'&#127912;',t:'Decoration'},{e:'&#128737;&#65039;',t:'Protection'}]},
@@ -1812,7 +1812,7 @@ LESSONS.sunpower = {
        'Catch the sun with foil and move the bright patch across a wall. "It does not soak it up. It throws it. Which means I can aim it."',
        '5.8(C)'],
       ['2:00','Come back to the two thermometers',
-       'Read both out loud. Let the gap speak. "Same sun. Same minute. Different colour."',
+       'Read both out loud. Let the gap speak. "Same sun. Same minute. Different color."',
        '4.8(B)'],
       ['2:50','Show the oven and name the three parts',
        'Point at the black bottom, the foil flap, the clear lid. One sentence each on what it is doing.',
@@ -1838,11 +1838,11 @@ LESSONS.sunpower = {
     time:'45 minutes to build, an hour in the sun',
     help:'Grown-up cuts the flap and handles anything hot',
     mess:'Tidy',
-    materials:['A clean pizza box','Aluminium foil','Cling film or a clear plastic sheet','Black paper','Sticky tape','A ruler and a marker','A thermometer if you have one','Something to melt — chocolate on a cracker works'],
+    materials:['A clean pizza box','Aluminium foil','Plastic wrap or a clear plastic sheet','Black paper','Sticky tape','A ruler and a marker','A thermometer if you have one','Something to melt — chocolate on a cracker works'],
     steps:[
       ['Cut the flap','Draw a square on the lid, about an inch in from each edge. A grown-up cuts three sides and folds it up. That is your reflector.'],
       ['Foil the flap','Cover the underside of the flap with foil, shiny side out. Smooth it flat — wrinkles scatter the light.'],
-      ['Seal the window','Tape cling film tightly across the hole you just made. This is the lid that lets light in and holds heat.'],
+      ['Seal the window','Tape plastic wrap tightly across the hole you just made. This is the lid that lets light in and holds heat.'],
       ['Line the inside','Foil around the inside walls, black paper flat on the bottom. Foil bounces light down, black soaks it up.'],
       ['Aim it','Outside, in full sun. Prop the flap with a stick or a ruler until it throws the brightest patch into the box.'],
       ['Cook and measure','Put your snack in on a plate. Note the time and the temperature. Check every ten minutes and write down what you see.']
@@ -1862,7 +1862,7 @@ LESSONS.sunpower = {
       ['Write the starting numbers','They should be about the same. If they are not, wait.'],
       ['Read them every five minutes','Four readings. Write all of them down.'],
       ['Work out the gap','How many degrees apart at the end? That gap is the whole experiment.'],
-      ['Try a third colour','Red, blue, silver foil. Where does it sit between the two?']
+      ['Try a third color','Red, blue, silver foil. Where does it sit between the two?']
     ],
     why:'One thermometer proves nothing — two, side by side in the same sun, prove everything. And reading them four times rather than once shows the gap growing, which is more convincing than a single number.'
    },
@@ -1871,12 +1871,12 @@ LESSONS.sunpower = {
     blurb:'Track where the shade falls across one day and work out where to sit in August.',
     time:'10 minutes, four times in a day', help:'Kid-led', mess:'Tidy',
     teks:'4.11(A)', teksNote:'using the sun rather than fighting it',
-    materials:['Paper','Coloured pencils','Chalk if you are outside','Four moments in one day'],
+    materials:['Paper','Colored pencils','Chalk if you are outside','Four moments in one day'],
     steps:[
       ['Draw your yard or balcony','Rough is fine. Mark the house, the fence, any trees.'],
-      ['Go out at nine and shade in the shadows','Use one colour. Write the time.'],
-      ['Again at noon','Different colour. Same drawing.'],
-      ['Again at three, and again at six','Two more colours.'],
+      ['Go out at nine and shade in the shadows','Use one color. Write the time.'],
+      ['Again at noon','Different color. Same drawing.'],
+      ['Again at three, and again at six','Two more colors.'],
       ['Find the spot that was never sunny','And the spot that was always sunny.'],
       ['Say what you would put in each','Lettuce in one. Peppers in the other. A chair in the third.']
     ],
@@ -1915,10 +1915,10 @@ LESSONS.sunpower = {
       questions:[
         {q:'You test the black-bottom box in the morning and the white-bottom box after lunch.',
          opts:[{e:'&#10060;',t:'Not fair — the sun changed between the two',ok:1},{e:'&#9989;',t:'Perfectly fair'},{e:'&#129300;',t:'It does not matter'}],
-         why:'The sun is higher and stronger at midday. Any difference you measure might be the time of day rather than the colour — so the test cannot answer the question you asked.'},
+         why:'The sun is higher and stronger at midday. Any difference you measure might be the time of day rather than the color — so the test cannot answer the question you asked.'},
         {q:'One box is in full sun, the other is half in the shade of a tree.',
          opts:[{e:'&#10060;',t:'Not fair — they are not getting the same light',ok:1},{e:'&#9989;',t:'Fair enough'},{e:'&#127796;',t:'Shade helps'}],
-         why:'You set out to test the colour, but you have accidentally tested shade instead. Everything except the one thing being tested has to match.'},
+         why:'You set out to test the color, but you have accidentally tested shade instead. Everything except the one thing being tested has to match.'},
         {q:'Both boxes are identical except one has black paper inside. Same spot, same time.',
          opts:[{e:'&#9989;',t:'That is a fair test',ok:1},{e:'&#10060;',t:'Still unfair'},{e:'&#129300;',t:'Impossible to say'}],
          why:'One difference, everything else matched. Whatever gap shows up on the thermometers can only be down to the black paper.'}
@@ -1956,7 +1956,7 @@ LESSONS.drying = {
 
   bank:[
     {c:'why', q:'Drying food works because it removes…',
-      opts:[{e:'&#128167;',t:'Water',ok:1},{e:'&#127752;',t:'Colour'},{e:'&#128293;',t:'Heat'},{e:'&#128168;',t:'Air'}]},
+      opts:[{e:'&#128167;',t:'Water',ok:1},{e:'&#127752;',t:'Color'},{e:'&#128293;',t:'Heat'},{e:'&#128168;',t:'Air'}]},
     {c:'why', q:'Why does taking the water out help?',
       opts:[{e:'&#129440;',t:'The tiny things that spoil food need water to grow',ok:1},{e:'&#128176;',t:'It makes it cheaper'},{e:'&#127912;',t:'It looks better'},{e:'&#9878;&#65039;',t:'It weighs less'}]},
     {c:'why', q:'Dried herbs keep for months because…',
@@ -1970,7 +1970,7 @@ LESSONS.drying = {
       opts:[{e:'&#127777;&#65039;',t:'Warmth',ok:1},{e:'&#128266;',t:'Noise'},{e:'&#127925;',t:'Music'},{e:'&#128161;',t:'Bright light'}]},
     {c:'spoil', q:'Why does the fridge slow food going bad?',
       opts:[{e:'&#129482;',t:'Cold slows the tiny things down',ok:1},{e:'&#128293;',t:'It dries the food'},{e:'&#129529;',t:'It cleans the food'},{e:'&#128274;',t:'It seals the food'}]},
-    {c:'spoil', q:'You find fuzzy grey patches on bread. What do you do?',
+    {c:'spoil', q:'You find fuzzy gray patches on bread. What do you do?',
       opts:[{e:'&#128465;&#65039;',t:'Throw it out and tell a grown-up',ok:1},{e:'&#9986;&#65039;',t:'Cut that bit off and eat the rest'},{e:'&#128167;',t:'Wash it'},{e:'&#128293;',t:'Toast it'}]},
 
     {c:'how', q:'Which of these is a way to dry food?',
@@ -2062,10 +2062,10 @@ LESSONS.drying = {
       ['Label them one, two, three','Write where each one is going.'],
       ['Hang them in the three spots','Airy and shaded. Sunny windowsill. Closed cupboard with no airflow.'],
       ['Check every day','Which is crumbling first? Does any of them smell wrong?'],
-      ['Call it after a week','Which spot won? Which one went mouldy or lost its colour?'],
+      ['Call it after a week','Which spot won? Which one went mouldy or lost its color?'],
       ['Say why','It is not about heat. It is about moving air taking the water away.']
     ],
-    why:'People assume drying is about heat, so the sunny windowsill should win. It usually does not — the sun bleaches the colour and the flavour out while the still air holds the moisture in. Three bunches settle that better than any explanation.'
+    why:'People assume drying is about heat, so the sunny windowsill should win. It usually does not — the sun bleaches the color and the flavour out while the still air holds the moisture in. Three bunches settle that better than any explanation.'
    },
    {
     title:'The Water Weight',
@@ -2171,7 +2171,7 @@ LESSONS.seedsaving = {
     {c:'ripe', q:'What happens if you save seed too early?',
       opts:[{e:'&#128533;',t:'It is not finished, and often will not grow',ok:1},{e:'&#128027;',t:'It grows twice as fast'},{e:'&#9989;',t:'It is better that way'},{e:'&#128683;',t:'Nothing'}]},
     {c:'ripe', q:'Seeds get their food store for sprouting…',
-      opts:[{e:'&#127793;',t:'While still on the parent plant',ok:1},{e:'&#129387;',t:'In the jar'},{e:'&#129530;',t:'After planting'},{e:'&#128722;',t:'At the shop'}]},
+      opts:[{e:'&#127793;',t:'While still on the parent plant',ok:1},{e:'&#129387;',t:'In the jar'},{e:'&#129530;',t:'After planting'},{e:'&#128722;',t:'At the store'}]},
 
     {c:'dry', q:'Before storing, a seed must be…',
       opts:[{e:'&#127806;',t:'Completely dry',ok:1},{e:'&#128167;',t:'Damp'},{e:'&#10052;&#65039;',t:'Frozen wet'},{e:'&#128293;',t:'Warm and moist'}]},
@@ -2180,7 +2180,7 @@ LESSONS.seedsaving = {
     {c:'dry', q:'The best way to dry seeds is…',
       opts:[{e:'&#128168;',t:'Spread out in a single layer somewhere airy',ok:1},{e:'&#128293;',t:'In a hot oven'},{e:'&#9728;&#65039;',t:'In blazing direct sun all day'},{e:'&#128167;',t:'In a bowl of water'}]},
     {c:'dry', q:'How can you tell a bean seed is dry enough?',
-      opts:[{e:'&#129295;',t:'It is hard and does not dent when you press a nail in',ok:1},{e:'&#127912;',t:'It changed colour'},{e:'&#9878;&#65039;',t:'It floats'},{e:'&#128064;',t:'You cannot tell'}]},
+      opts:[{e:'&#129295;',t:'It is hard and does not dent when you press a nail in',ok:1},{e:'&#127912;',t:'It changed color'},{e:'&#9878;&#65039;',t:'It floats'},{e:'&#128064;',t:'You cannot tell'}]},
 
     {c:'store', q:'Where should saved seeds be kept?',
       opts:[{e:'&#129482;',t:'Somewhere cool, dark and dry',ok:1},{e:'&#9728;&#65039;',t:'A sunny windowsill'},{e:'&#128703;',t:'The bathroom'},{e:'&#128293;',t:'Next to the oven'}]},
@@ -2323,9 +2323,9 @@ LESSONS.seedsaving = {
         {q:'Seeds that felt slightly soft, put straight into a sealed bag.',
          opts:[{e:'&#9888;&#65039;',t:'Not dry enough — mould is coming',ok:1},{e:'&#9989;',t:'Fine'},{e:'&#128167;',t:'Add water'}],
          why:'Soft means water still inside. Sealed in a bag, that water has nowhere to go, and mould gets the seed before you do.'},
-        {q:'Hard dry seeds in a labelled envelope in a cool dark drawer.',
+        {q:'Hard dry seeds in a labeled envelope in a cool dark drawer.',
          opts:[{e:'&#9989;',t:'That is exactly right',ok:1},{e:'&#10060;',t:'Wrong'},{e:'&#129482;',t:'Should be frozen wet'}],
-         why:'Dry, dark, cool and labelled. The seed stays asleep, and next spring you know what it is and how old it is.'}
+         why:'Dry, dark, cool and labeled. The seed stays asleep, and next spring you know what it is and how old it is.'}
       ]}
   ]
 };

@@ -99,8 +99,8 @@
   /* ================= sort ================= */
   function renderSort(){
     var a = st.act;
-    if (!st.queue){ st.queue = shuffle(a.items); st.at = 0; st.wrong = 0; }
-    var item = st.queue[st.at];
+    if (!st.line){ st.line = shuffle(a.items); st.at = 0; st.wrong = 0; }
+    var item = st.line[st.at];
 
     el('playBd').innerHTML =
       '<div class="q">'+esc(a.title)+'</div>'+
@@ -122,7 +122,7 @@
         if (b.dataset.b === item.bin){
           b.classList.add('sel');
           st.at++;
-          if (st.at >= st.queue.length){ finish('All sorted!','&#127881;'); return; }
+          if (st.at >= st.line.length){ finish('All sorted!','&#127881;'); return; }
           setTimeout(renderSort, 240);
         } else {
           st.wrong++;

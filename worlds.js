@@ -2,10 +2,10 @@
    The six DewLab worlds, straight from DHCG's guide sheet.
 
    ONE COLOUR, SIX GUIDES.
-   An earlier version gave every world its own colour and themed the
+   An earlier version gave every world its own color and themed the
    whole page in it, so Grow was green from top to bottom. That was
    wrong twice over: the DHCG brand sheet lists green as a highlight,
-   not a ground, and three of the six colours were not on that sheet
+   not a ground, and three of the six colors were not on that sheet
    at all — they were invented here.
 
    So every world is now brand blue, and the guide character is what
@@ -34,7 +34,7 @@ var WORLDS = [
 
   { key:'create', img:'img/guide-tinker.png',   guide:'Tinker',      subject:'STEAM & Innovation',
     name:'Create', color:'#0071BC',
-    blurb:'Imagine, build and innovate. Science, technology, engineering, art and maths in action.',
+    blurb:'Imagine, build and innovate. Science, technology, engineering, art and math in action.',
     topics:['Experiments','Engineering & design','Simple machines','Problem solving'] },
 
   { key:'nourish', img:'img/guide-chefsprout.png',  guide:'Chef Sprout', subject:'Food, Health & Nutrition',

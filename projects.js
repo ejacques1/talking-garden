@@ -21,7 +21,7 @@
 ------------------------------------------------------------------- */
 
 var TRACKS=[
-  {key:'kitchen', emoji:'🍓', name:'Garden to Kitchen', based:'Continues: Strawberry Full Circle · Berry Sweet Jam Fest · Freeze-Ahead Fries · Juice Shop · Nutty Pie Bake-Off · Gobble Good Lunch'},
+  {key:'kitchen', emoji:'🍓', name:'Garden to Kitchen', based:'Continues: Strawberry Full Circle · Berry Sweet Jam Fest · Freeze-Ahead Fries · Juice Store · Nutty Pie Bake-Off · Gobble Good Lunch'},
   {key:'worm', emoji:'🪱', name:'Worm World', based:'Continues: Worm Farm Kickoff · Worm Exploration · Wiggle Worm Cast Harvest'},
   {key:'grow', emoji:'🌱', name:'Grow It', based:'Continues: Fun Fall Planting · Fall Garden Care · MLK Garden Day · Filling the Beds · Fall Harvest'},
   {key:'explore', emoji:'🦋', name:'Garden Explorers', based:'Continues: Cockrell Butterfly Center · Farm Visit · Garden Center Finds · Masterful Garden Visit'},

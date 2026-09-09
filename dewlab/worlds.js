@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------
    The six DewLab worlds, straight from DHCG's guide sheet.
-   Colours are taken from their own chart, kept inside the brand
+   Colors are taken from their own chart, kept inside the brand
    palette so the six read as one family rather than six brands.
 ------------------------------------------------------------------- */
 var WORLDS = [
@@ -21,7 +21,7 @@ var WORLDS = [
 
   { key:'create',   guide:'Tinker',      subject:'STEAM & Innovation',
     name:'Create', color:'#0071BC',
-    blurb:'Imagine, build and innovate. Science, technology, engineering, art and maths in action.',
+    blurb:'Imagine, build and innovate. Science, technology, engineering, art and math in action.',
     topics:['Experiments','Engineering & design','Simple machines','Problem solving'] },
 
   { key:'nourish',  guide:'Chef Sprout', subject:'Food, Health & Nutrition',

@@ -141,7 +141,7 @@
                 : j.days ? 'Short journey, so it could be picked ripe.'
                 : 'No journey at all. Nothing was picked early, and nothing was refrigerated.')+
              '</div>'
-           : '<div class="say" id="pSay">Three foods. One travelled 3,000 miles and one travelled three metres.</div>')+
+           : '<div class="say" id="pSay">Three foods. One traveled 3,000 miles and one traveled ten feet.</div>')+
         '<div class="pbar"><i style="width:'+(Object.keys(seen).length/3*100)+'%"></i></div>';
 
       [].forEach.call(body.querySelectorAll('.pickf'), function(b){

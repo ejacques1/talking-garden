@@ -64,7 +64,7 @@
   /* ================================================================
      READY OR NOT
      Judge four seeds by what they look like, then find out. Ripeness
-     is a judgement a child has to practise, not a fact to memorise.
+     is a judgement a child has to practice, not a fact to memorise.
   ================================================================ */
   var SEEDS = [
     { e:'&#127806;', t:'Bean pod, brown and rattling', ready:true,

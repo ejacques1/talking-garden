@@ -56,7 +56,7 @@
     return k[0] || null;
   }
 
-  /* ---------------- shading the page in the world's colour --------- */
+  /* ---------------- shading the page in the world's color --------- */
   function shade(hex, amt){
     var n = parseInt(String(hex).replace('#',''),16);
     var r = (n>>16)&255, g = (n>>8)&255, b = n&255;
@@ -396,7 +396,7 @@
         .join(' ');
     }
     if (stage === 3)
-      return 'Play and practise. Short games you can play as many times as you like. '+
+      return 'Play and practice. Short games you can play as many times as you like. '+
              'There are ' + (L.activities||[]).length + '. ' +
              (L.activities||[]).map(function(a){ return a.title + '. ' + a.teaches + '.'; }).join(' ');
     return 'Show what you grew. The same skills, different questions. '+
@@ -645,7 +645,7 @@
             return '<li>'+esc(c.label)+'</li>';
           }).join('')+
         '</ul>'+
-        /* Signed by the organisation, not by whoever happened to run
+        /* Signed by the organization, not by whoever happened to run
            the session. No grade band and no standards code: a fourth
            grader was handed a certificate saying Kindergarten, which
            is the opposite of what this is for. */
@@ -710,8 +710,8 @@
       g.strokeStyle = blue; g.lineWidth = 14;
       g.strokeRect(7,7,W2-14,H2-14);
 
-      function line(text, y, size, weight, colour, font){
-        g.fillStyle = colour; g.textAlign = 'center';
+      function line(text, y, size, weight, color, font){
+        g.fillStyle = color; g.textAlign = 'center';
         g.font = weight+' '+size+'px '+(font||'Montserrat, system-ui, sans-serif');
         g.fillText(text, W2/2, y);
       }
