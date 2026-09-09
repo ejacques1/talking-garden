@@ -721,8 +721,7 @@ document.getElementById('resetBtn').addEventListener('click',function(){
   var ch=document.getElementById('tchips');
   if(ch){
     var comps = window.TGQuiz ? TGQuiz.settings.competencies('plant') : [];
-    ch.innerHTML = ['Grades K\u20132',
-                    'Lesson 1 of '+((window.LESSONS&&LESSONS.forWorld('grow').length)||2),
+    ch.innerHTML = ['Lesson 1 of '+((window.LESSONS&&LESSONS.forWorld('grow').length)||2),
                     comps.length+' skills']
       .map(function(c){ return '<span class="tchip">'+c+'</span>'; }).join('');
   }

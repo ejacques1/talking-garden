@@ -92,7 +92,9 @@
     }
 
     var chips = [];
-    if (L.grades) chips.push('Grades ' + L.grades);
+    /* No grade band in front of a child — see the certificate. The
+       band is still on the record, in the admin and on the curriculum
+       page, where the people who need it look. */
     chips.push('Lesson ' + L.n + ' of ' + (global.LESSONS.forWorld(L.world).length));
     if (L.competencies) chips.push(L.competencies.length + ' skills');
     if (L.standards && L.standards.length) chips.push('TEKS aligned');
