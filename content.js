@@ -108,6 +108,30 @@
            'A recording needs a secret word, or families cannot unlock the rest of the lesson.');
     }
 
+    /* ---- TEKS codes are checked against the real table ----
+       This is the check that matters most. A model asked for a lesson
+       will produce a confident, plausible, non-existent code every
+       time, and a fabricated standard on a funder report is worse
+       than no standard at all. So every code a lesson claims must
+       already exist in teks.js, which was read from 19 TAC as
+       published. No code, no publish. */
+    var SE = (global.TEKS && global.TEKS.se) || null;
+    if (SE){
+      comps.forEach(function(c){
+        var nm = c.label || c.id || 'a skill';
+        need(c.teks, 'Skill "'+nm+'" has no TEKS code. Every skill needs one.');
+        if (c.teks) need(SE[c.teks],
+          '"'+c.teks+'" is not a real TEKS student expectation. Check it against the Curriculum tab — a made-up code is worse than none.');
+      });
+      (L.activities||[]).forEach(function(a){
+        if (a.teks && !SE[a.teks])
+          out.push('Activity "'+(a.title||a.id)+'" claims "'+a.teks+'", which is not a real TEKS student expectation.');
+      });
+      (L.standards||[]).forEach(function(code){
+        if (!SE[code]) out.push('"'+code+'" is listed as a standard but is not a real TEKS student expectation.');
+      });
+    }
+
     var acts = L.activities || [];
     need(acts.length >= 2, 'A lesson needs at least two activities.');
     acts.forEach(function(a){
@@ -215,6 +239,20 @@
         if (!r.data || !r.data.length)
           return { ok:false, problems:['The database accepted the request but saved nothing — usually means this account is not an admin.'] };
         await c.from('lesson_history').insert({ slug:L.slug, data:L });
+
+        /* attendance.topic_slug has a foreign key to `topics`. Without a
+           row there, typing the garden word is refused by the database
+           with no visible error and the lesson never unlocks — which is
+           exactly what happened to the eleven lessons written after the
+           first. A lesson saved here registers itself, so a new one can
+           be opened the day it is written. */
+        try{
+          await c.from('topics').upsert({
+            slug: L.slug, name: L.title, blurb: L.tagline || '',
+            published: !!publish
+          }, { onConflict:'slug' });
+        }catch(e){ /* the lesson still saved; unlocking is repaired by re-saving */ }
+
         global.LESSONS[L.slug] = L; L.edited = true;
         return { ok:true };
       }catch(e){

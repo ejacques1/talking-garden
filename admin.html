@@ -200,6 +200,10 @@ tr:last-child td{border-bottom:none}
       <h3>Lessons</h3>
       <p class="sub">The twelve that ship with DewLab, plus anything you have changed. An edit sits on top of the original &mdash; the original is never deleted, so &ldquo;start again&rdquo; always works.</p>
       <div class="scroll"><table id="writeTable"></table></div>
+      <div class="row" style="margin-top:18px">
+        <button class="btn btn-primary" id="newLesson">Write a new lesson</button>
+        <span class="demo" style="align-self:center">Starts an empty lesson. Copy the prompt, give it to ChatGPT or Claude with your material, and paste the answer back.</span>
+      </div>
     </div>
 
     <div class="card hide" id="editCard">
@@ -394,7 +398,7 @@ var SYSTEM_PROMPT = [
 '  "grades": "K–3",',
 '  "safety": "the real risk in this lesson, in one or two sentences",',
 '  "sources": [{"name":"...","url":"..."}],',
-'  "competencies": [{"id":"short","label":"Knows / Can ... — what a child can do afterwards"}],',
+'  "competencies": [{"id":"short","label":"Knows / Can ... — what a child can do afterwards","teks":"3.10(B)"}],',
 '  "bank": [{"c":"skill id","q":"the question","opts":[{"e":"&#127793;","t":"answer","ok":1},{"e":"&#128167;","t":"wrong"},{"e":"&#9728;&#65039;","t":"wrong"}]}],',
 '  "build": {"title":"...","blurb":"...","time":"...","help":"...","mess":"...",',
 '            "materials":["..."],"steps":[["Heading","What to do"]],"why":"why it works"},',
@@ -411,6 +415,11 @@ var SYSTEM_PROMPT = [
 '}',
 '',
 'RULES',
+'0. EVERY competency must carry a "teks" code, and it must be one of the codes',
+'   listed under VALID TEKS CODES below. Do not invent a code, do not guess one,',
+'   and do not use a code that looks right but is not on the list. If nothing on',
+'   the list fits the skill, change the skill to one that does. A made-up code',
+'   reaches a funder report and is worse than no code at all.',
 '1. Exactly four competencies, and at least FOUR questions per competency.',
 '   The before-check and after-check draw different questions for the same',
 '   skill, so fewer than four means the after-check repeats the before-check.',
@@ -454,18 +463,40 @@ function drawWrite(){
   [].forEach.call(document.querySelectorAll('.editBtn'), function(b){
     b.onclick = function(){ openEditor(b.dataset.s); };
   });
+
+  var nb = document.getElementById('newLesson');
+  if (nb) nb.onclick = function(){
+    openEditor(null);
+    /* Land on "Paste a whole lesson" — writing one by hand in the form
+       is possible but nobody starts a lesson that way. */
+    var tab = document.querySelector('[data-e="paste"]');
+    if (tab) tab.click();
+    document.getElementById('editCard').scrollIntoView({block:'start'});
+  };
 }
 
 function lines(a){ return (a||[]).join('\n'); }
 function unlines(v){ return String(v||'').split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
 
+/* An empty lesson, shaped correctly so the editor has something to
+   draw. It will not pass validation as it stands — that is the point.
+   She fills it in, or pastes one over the top of it. */
+function blankLesson(){
+  return { slug:'', world:'grow', n:1, title:'', tagline:'', grades:'',
+           safety:'', sources:[], competencies:[], bank:[], activities:[],
+           builds:[{ title:'', blurb:'', materials:[], steps:[], why:'' }],
+           isNew:true };
+}
+
 function openEditor(slug){
-  editing = JSON.parse(JSON.stringify(LESSONS[slug]));
+  editing = slug === null ? blankLesson()
+                          : JSON.parse(JSON.stringify(LESSONS[slug]));
   delete editing.edited;
   var L = editing;
 
   document.getElementById('editCard').classList.remove('hide');
-  document.getElementById('editTitle').textContent = 'Editing: ' + L.title;
+  document.getElementById('editTitle').textContent =
+    L.isNew ? 'A new lesson' : ('Editing: ' + L.title);
   document.getElementById('editSub').textContent =
     'Changes are checked before they save. Nothing reaches a family until "Show it to families" is ticked.';
 
@@ -560,6 +591,26 @@ async function drawHistory(slug){
   });
 }
 
+/* The prompt she copies carries the REAL list of codes, read out of
+   teks.js at the moment she clicks. Emailing her a document instead
+   would go stale the first time the table changes, and a stale list
+   produces lessons the validator then rejects — which feels like the
+   tool is broken rather than the prompt being old. */
+function fullPrompt(){
+  var se = (window.TEKS && window.TEKS.se) || {};
+  var codes = Object.keys(se).sort();
+  if (!codes.length) return SYSTEM_PROMPT;
+  var lines = ['', 'VALID TEKS CODES — use only these, exactly as written:'];
+  codes.forEach(function(c){
+    lines.push('  ' + c + '  (' + se[c].grade + ', ' + (se[c].subject||'Science') + ')  ' +
+               String(se[c].text||'').slice(0,110));
+  });
+  lines.push('');
+  lines.push('If none of these fits the skill you want to teach, change the skill.');
+  lines.push('Do not invent a code.');
+  return SYSTEM_PROMPT + lines.join('\n');
+}
+
 /* ---------- editor controls ---------- */
 function wireEditor(){
   [].forEach.call(document.querySelectorAll('[data-e]'), function(b){
@@ -572,11 +623,12 @@ function wireEditor(){
   });
 
   document.getElementById('copyPrompt').onclick = async function(){
-    try{ await navigator.clipboard.writeText(SYSTEM_PROMPT); this.textContent='Copied — paste it into ChatGPT or Claude'; }
+    var text = fullPrompt();
+    try{ await navigator.clipboard.writeText(text); this.textContent='Copied — paste it into ChatGPT or Claude'; }
     catch(e){
       /* Clipboard is blocked in some browsers. Show it instead of
          failing silently, so the prompt is still gettable. */
-      document.getElementById('pasteBox').value = SYSTEM_PROMPT;
+      document.getElementById('pasteBox').value = text;
       this.textContent='Put it in the box below — copy it from there';
     }
     var b=this; setTimeout(function(){ b.textContent='Copy the prompt'; }, 4000);
