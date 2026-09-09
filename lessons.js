@@ -1792,7 +1792,7 @@ LESSONS.sunpower = {
       opts:[{e:'&#128221;',t:'Exactly that — it explains your numbers',ok:1},{e:'&#128683;',t:'Nothing'},{e:'&#10060;',t:'Pretend it stayed sunny'},{e:'&#128465;&#65039;',t:'Throw the results away'}]}
   ],
 
-  movie:{ render:'sunpower', minutes:1, guide:'Tinker' },
+  movie:{ render:'sunpower', minutes:1, guide:'Tinker', url:'film/sunpower.mp4' },
 
   session:{
     minutes:5, word:'',
