@@ -1596,7 +1596,7 @@ LESSONS.seedbot = {
       opts:[{e:'&#128218;',t:'Useful — now you know that change was wrong',ok:1},{e:'&#128546;',t:'A total failure'},{e:'&#128683;',t:'Worth ignoring'},{e:'&#128465;&#65039;',t:'A reason to stop'}]}
   ],
 
-  movie:{ render:'seedbot', minutes:1, guide:'Tinker' },
+  movie:{ render:'seedbot', minutes:1, guide:'Tinker', url:'film/seedbot.mp4' },
 
   session:{
     minutes:5, word:'',
