@@ -415,7 +415,7 @@ LESSONS.myplate = {
       opts:[{e:'&#128069;',t:'You feel thirsty or your mouth is dry',ok:1},{e:'&#128064;',t:'Your eyes change colour'},{e:'&#128066;',t:'Your ears ring'},{e:'&#129504;',t:'You cannot tell'}]}
   ],
 
-  movie:{ render:'myplate', minutes:1, guide:'Chef Sprout' },
+  movie:{ render:'myplate', minutes:1, guide:'Chef Sprout', url:'film/myplate.mp4' },
 
   session:{
     minutes:5, word:'',
