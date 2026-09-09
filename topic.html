@@ -1441,11 +1441,15 @@ paintBuilds();
    download everywhere else. */
 function certToCanvas(){
   var card=document.getElementById('certCard');
-  var w=card.offsetWidth, h=card.offsetHeight;
-  /* Fixed output width, the same as the other eleven lessons. Scaling
-     to the card's on-screen size meant a phone sent a ~700px image,
-     which is why the texted certificate looked soft. */
-  var scale = Math.max(2, 1200 / w);
+  /* Lay the card out at a FIXED width before measuring, then put it
+     back. Reading the on-screen width meant a phone produced a
+     1200x2921 vertical strip — the same certificate was a different
+     shape depending on the device that sent it. Every copy is now
+     landscape, whatever saved it. */
+  var prevW = card.style.width;
+  card.style.width = '700px';
+  var w = card.offsetWidth, h = card.offsetHeight;   /* forces reflow */
+  var scale = 2;
   var c=document.createElement('canvas');
   c.width=w*scale; c.height=h*scale;
   var x=c.getContext('2d'); x.scale(scale,scale);
@@ -1500,6 +1504,7 @@ function certToCanvas(){
   x.fillText(SIGN.title + ' \u00b7 ' + ((window.DHCG&&DHCG.name)||''), 30, h-19);
   x.textAlign='right';
   x.fillText(document.getElementById('certDate').textContent, w-30, h-19);
+  card.style.width = prevW;
   return c;
 }
 function wrapText(x, text, cx, y, maxW, lh){
