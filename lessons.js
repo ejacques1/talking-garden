@@ -1992,7 +1992,7 @@ LESSONS.drying = {
       opts:[{e:'&#128104;&#8205;&#127859;',t:'Ask a grown-up and follow tested instructions exactly',ok:1},{e:'&#128302;',t:'Guess the time'},{e:'&#128241;',t:'Copy a recipe off social media'},{e:'&#128336;',t:'Boil it a bit longer to be safe'}]}
   ],
 
-  movie:{ render:'drying', minutes:1, guide:'Mason' },
+  movie:{ render:'drying', minutes:1, guide:'Mason', url:'film/drying.mp4' },
 
   session:{
     minutes:5, word:'',
