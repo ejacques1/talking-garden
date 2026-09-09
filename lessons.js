@@ -2192,7 +2192,7 @@ LESSONS.seedsaving = {
       opts:[{e:'&#127793;',t:'Plant the garden again without buying seed',ok:1},{e:'&#128722;',t:'Buy more seed'},{e:'&#128164;',t:'Skip the garden'},{e:'&#128683;',t:'Nothing different'}]}
   ],
 
-  movie:{ render:'seedsaving', minutes:1, guide:'Mason' },
+  movie:{ render:'seedsaving', minutes:1, guide:'Mason', url:'film/seedsaving.mp4' },
 
   session:{
     minutes:5, word:'',
