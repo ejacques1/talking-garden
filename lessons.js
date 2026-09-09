@@ -995,7 +995,7 @@ LESSONS.habitat = {
       opts:[{e:'&#128167;',t:'Water they can drink and bathe in',ok:1},{e:'&#128250;',t:'A television'},{e:'&#128266;',t:'Loud music'},{e:'&#128054;',t:'A dog off the lead'}]}
   ],
 
-  movie:{ render:'habitat', minutes:1, guide:'Buzz' },
+  movie:{ render:'habitat', minutes:1, guide:'Buzz', url:'film/habitat.mp4' },
 
   session:{
     minutes:5, word:'',
