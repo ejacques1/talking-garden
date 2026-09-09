@@ -1186,7 +1186,7 @@ LESSONS.compost = {
       opts:[{e:'&#9851;&#65039;',t:'A cycle — things going round again',ok:1},{e:'&#10145;&#65039;',t:'A one-way trip'},{e:'&#128683;',t:'Waste'},{e:'&#128176;',t:'Shopping'}]}
   ],
 
-  movie:{ render:'compost', minutes:1, guide:'Wiggles' },
+  movie:{ render:'compost', minutes:1, guide:'Wiggles', url:'film/compost.mp4' },
 
   session:{
     minutes:5, word:'',
