@@ -620,7 +620,6 @@
   function paintCert(){
     var ORG = global.DHCG || { name:'Dew of Heaven Children\u2019s Garden', signer:{name:'',title:''} };
     var k = child(), name = k ? k.name : 'A DewLab learner';
-    var gained = TGQuiz.gained(SLUG, name) || [];
     var comps  = (L.competencies||[]);
     var before = TGQuiz.result(SLUG,'pre',  name);
     var after  = TGQuiz.result(SLUG,'post', name);
@@ -633,10 +632,14 @@
         '<div class="certname">'+esc(name)+'</div>'+
         '<div class="certfor">finished</div>'+
         '<div class="certline">'+esc(L.title)+'</div>'+
+        /* Every skill she can do now counts the same. Marking which
+           ones she already had ranked her own abilities against each
+           other, and gave the child who arrived knowing more the
+           thinner-looking certificate. The before-and-after comparison
+           still exists — it lives in the admin report, for Kiara. */
         '<ul class="certskills">'+
           comps.map(function(c){
-            var isNew = gained.filter(function(g){ return g.id===c.id; }).length > 0;
-            return '<li class="'+(isNew?'':'kept')+'">'+esc(c.label)+'</li>';
+            return '<li>'+esc(c.label)+'</li>';
           }).join('')+
         '</ul>'+
         /* Signed by the organisation, not by whoever happened to run

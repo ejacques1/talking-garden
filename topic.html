@@ -225,6 +225,9 @@ img{max-width:100%;display:block}
 .cert h4{font-family:var(--serif);font-size:26px;color:#5A4208;margin-bottom:14px}
 .certname{font-family:var(--serif);font-size:34px;font-weight:900;color:var(--ink);line-height:1.1;margin-bottom:6px}
 .cert p{font-size:14.5px;color:#7A5A0C}
+.certskills{list-style:none;margin:16px auto 0;padding:0;max-width:390px;text-align:left;display:grid;gap:7px}
+.certskills li{font-size:13.5px;padding-left:26px;position:relative;color:#3D4F5E}
+.certskills li::before{content:'\2B50';position:absolute;left:2px}
 .certscore{margin-top:14px;display:inline-block;background:rgba(255,255,255,.72);border:1px solid #E4CF97;border-radius:99px;padding:7px 17px;font-size:13.5px;font-weight:600;color:#6B4E08}
 .certsig{display:flex;justify-content:space-between;gap:12px;margin-top:22px;padding-top:14px;border-top:1px solid #E4CF97;font-size:12px;color:#96792A}
 @media print{
@@ -1145,11 +1148,13 @@ function paintScores(){
   if(post){
     var nm=document.getElementById('certName');
     if(nm) nm.textContent = (k && k.name) ? k.name : ((sess&&sess.profile.parentName)||'Garden Scientist');
+    /* Every skill she can do now, each one weighted the same. Which
+       ones she already had before is a question for Kiara's report,
+       not for a child's certificate. */
     var sc=document.getElementById('certScore');
-    var g = TGQuiz.gained(TOPIC, k&&k.name);
-    if(sc) sc.textContent = (g && g.length)
-      ? ('Gained '+g.length+' new '+(g.length===1?'skill':'skills')+': '+g.map(function(c){return c.label.replace(/^Knows |^Can /,'');}).join(' \u00b7 '))
-      : ('Skills demonstrated: '+post);
+    if(sc) sc.innerHTML = '<ul class="certskills">'+
+      TGQuiz.list(TOPIC).map(function(c){
+        return '<li>'+c.label+'</li>'; }).join('')+'</ul>';
     /* No grade band, no standards code. A fourth grader was handed a
        certificate saying Kindergarten, which is the opposite of what
        this is for. The standard belongs in the funder report. */
@@ -1449,9 +1454,18 @@ function certToCanvas(){
   x.fillText('is a', mid, y); y+=32;
   x.font='700 24px Fraunces, Georgia, serif'; x.fillStyle='#5A4208';
   x.fillText('Junior Garden Scientist', mid, y); y+=32;
-  x.font='600 13px Inter, sans-serif'; x.fillStyle='#6B4E08';
-  var sc=document.getElementById('certScore').textContent;
-  if(sc){ wrapText(x, sc, mid, y, w-90, 18); y+=40; }
+  /* The skills, one per line, each with the same star. Reading the
+     rendered <li>s keeps this copy identical to the one on screen. */
+  var lis = document.querySelectorAll('#certScore .certskills li');
+  if(lis.length){
+    y += 14; x.textAlign='left';
+    Array.prototype.forEach.call(lis, function(li){
+      x.font='600 13px Inter, sans-serif'; x.fillStyle='#6B4E08';
+      x.fillText('\u2B50  ' + li.textContent, 46, y);
+      y += 21;
+    });
+    x.textAlign='center'; y += 16;
+  }
   x.font='13px Inter, sans-serif'; x.fillStyle='#7A5A0C';
   x.fillText(document.getElementById('certLine').textContent, mid, y);
 

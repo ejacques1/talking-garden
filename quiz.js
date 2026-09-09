@@ -244,6 +244,9 @@
       if(!per || per.__of == null) return null;
       return per.__correct + '/' + per.__of;
     },
+    /* Every competency the lesson teaches, in order. The certificate
+       lists all of them equally. */
+    list: function(topic){ return (COMPETENCIES[topic]||[]).slice(); },
     gained: function(topic, child){
       var a = read(topic,'pre',child), b = read(topic,'post',child);
       if(!a||!b) return null;
