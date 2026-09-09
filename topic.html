@@ -614,10 +614,20 @@ function paint(){
   var sw=document.getElementById('stageWhen');
   if(sw) sw.textContent = (window.TGSession && TGSession.nextLong(TOPIC)) || 'Live session';
 
+  /* Staff only. This printed the garden word on the page for every
+     family, so nobody had to attend the live session to unlock the
+     lesson — which is the one thing the word exists to require.
+     Kiara and Nia still see it while they are testing. */
   var wh=document.getElementById('wordHint');
   if(wh){
     var nx=TGSession.next(TOPIC)||TGSession.past(TOPIC)[0];
-    wh.innerHTML='Prototype hint: the word is <b>'+((nx&&nx.word)||'sunflower')+'</b>';
+    if(TG.isAdmin && TG.isAdmin() && nx && nx.word){
+      wh.innerHTML='Staff only \u2014 this session\u2019s word is <b>'+nx.word+'</b>';
+    } else {
+      wh.textContent = TGSession.past(TOPIC).length
+        ? 'Every word this lesson has ever used still works, so an older recording is never a dead end.'
+        : '';
+    }
   }
   if(typeof paintVideo==='function' && mode==='movie') paintVideo();
 
