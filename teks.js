@@ -198,13 +198,17 @@ window.TEKS = {
   label: function (key) {
     var a = window.TEKS.activities[key]; if (!a) return '';
     var s = window.TEKS.se[a.se];
-    return s.grade + ' TEKS ' + a.se;
+    /* No grade band in front of a child. A fourth grader reading
+       "Kindergarten" on her own work learns nothing useful from it.
+       The grade is still on the record, and still shown to adults in
+       "Which Texas standards this checks". */
+    return 'TEKS ' + a.se;
   },
 
   topicLine: function (slug) {
     var t = window.TEKS.topics[slug]; if (!t) return '';
     var s = window.TEKS.se[t.primary];
     return { code:t.primary, grade:s.grade, section:s.section, text:s.text,
-             also:t.also.map(function(c){ return c + ' (' + window.TEKS.se[c].grade + ')'; }) };
+             also:t.also.map(function(c){ return c; }) };
   }
 };

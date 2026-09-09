@@ -598,7 +598,7 @@
                '<span>'+esc(a.prompt || '')+'</span>'+
                '<span class="skill">&#127793; '+esc(a.teaches)+'</span>'+
                (a.teks && window.TEKS && TEKS.se[a.teks]
-                 ? '<span class="acode">'+esc(TEKS.se[a.teks].grade)+' TEKS '+esc(a.teks)+'</span>'
+                 ? '<span class="acode">TEKS '+esc(a.teks)+'</span>'
                  : '')+
              '</button>';
     }).join('');

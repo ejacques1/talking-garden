@@ -827,7 +827,7 @@ function paintActs(){
   if(window.TEKS && note && TEKS.topics[TOPIC]){
     var t = TEKS.topicLine(TOPIC);
     note.innerHTML = 'Aligned to <b>Texas Essential Knowledge and Skills</b> — '+
-      '<b>'+t.grade+' TEKS '+t.code+'</b> ('+t.section+'): &ldquo;'+t.text+'&rdquo;'+
+      '<b>TEKS '+t.code+'</b> ('+t.section+'): &ldquo;'+t.text+'&rdquo;'+
       (t.also.length ? '<br><span style="color:var(--faint)">Also touches '+t.also.join(', ')+'</span>' : '');
   }
 }
