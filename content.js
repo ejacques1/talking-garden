@@ -96,8 +96,13 @@
       });
     });
 
+    /* A film is either a file we ship (film/whatever.mp4) or a link to
+       somewhere else. The old rule demanded http, which every shipped
+       lesson fails — so opening any of the twelve in the admin and
+       pressing save was refused before it started. */
     if (L.movie && L.movie.url)
-      need(/^https?:\/\//.test(L.movie.url), 'The film link should start with http.');
+      need(/^https?:\/\//.test(L.movie.url) || /^film\/[\w.-]+\.mp4$/.test(L.movie.url),
+           'The film should be a file in the film folder, like film/compost.mp4, or a link starting with http.');
 
     if (L.session){
       var S = L.session;
