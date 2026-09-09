@@ -502,7 +502,6 @@ img{max-width:100%;display:block}
           <div class="certsign" id="certSign"></div>
           <p id="certLine">Plant Life Cycle</p>
           <div class="certsig">
-            <span><b>Ms. Nia</b><br>Garden Director</span>
             <span id="certDate"></span>
           </div>
         </div>
@@ -1451,9 +1450,13 @@ function certToCanvas(){
 
   x.textAlign='left';
   x.font='700 14px Fraunces, Georgia, serif'; x.fillStyle='#5A4208';
-  x.fillText('Ms. Nia', 30, h-34);
+  /* Signed by the organisation, from org.js — the same signature the
+     on-screen certificate uses. This is the copy families actually
+     save and share, so the two must not disagree. */
+  var SIGN = (window.DHCG && DHCG.signer) || {name:'', title:''};
+  x.fillText(SIGN.name, 30, h-34);
   x.font='11px Inter, sans-serif'; x.fillStyle='#96792A';
-  x.fillText('Garden Director', 30, h-19);
+  x.fillText(SIGN.title + ' \u00b7 ' + ((window.DHCG&&DHCG.name)||''), 30, h-19);
   x.textAlign='right';
   x.fillText(document.getElementById('certDate').textContent, w-30, h-19);
   return c;
