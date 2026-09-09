@@ -1391,7 +1391,7 @@ LESSONS.soillayers = {
       opts:[{e:'&#128168;',t:'Lose soil down the hill',ok:1},{e:'&#127793;',t:'Grow faster'},{e:'&#129704;',t:'Turn to stone'},{e:'&#128683;',t:'Stay exactly the same'}]}
   ],
 
-  movie:{ render:'soillayers', minutes:1, guide:'Wiggles' },
+  movie:{ render:'soillayers', minutes:1, guide:'Wiggles', url:'film/soillayers.mp4' },
 
   session:{
     minutes:5, word:'',
