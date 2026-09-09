@@ -621,7 +621,10 @@ function paint(){
   var wh=document.getElementById('wordHint');
   if(wh){
     var nx=TGSession.next(TOPIC)||TGSession.past(TOPIC)[0];
-    if(TG.isAdmin && TG.isAdmin() && nx && nx.word){
+    /* The sync flag, not isAdmin() — that returns a Promise, which is
+       always truthy, so gating on it showed the word to everyone. Same
+       reason isUnlocked() reads this flag rather than calling it. */
+    if(window.__tg_admin === true && !TG.viewAsFamily() && nx && nx.word){
       wh.innerHTML='Staff only \u2014 this session\u2019s word is <b>'+nx.word+'</b>';
     } else {
       wh.textContent = TGSession.past(TOPIC).length
