@@ -675,14 +675,16 @@
     /* Share used to send a sentence, so a text message showed words
        where a certificate should be. Draw the real thing instead. */
     async function certImage(){
-      var card = el('certCard');
-      /* Measure the card, but never trust a degenerate measurement —
-         a hidden tab reports zero and would produce a one-pixel-wide
-         certificate. */
-      var ratio = (card && card.offsetWidth > 40)
-        ? card.offsetHeight / card.offsetWidth : 0.72;
-      ratio = Math.max(0.55, Math.min(1.4, ratio));
-      var W2 = 1200, H2 = Math.round(1200 * ratio);
+      /* Size the picture to its CONTENT, never to the screen it was
+         saved from. Copying the card's aspect ratio meant a phone
+         produced a 1200x1680 image whose content stopped at 616px —
+         roughly 900px of blank white between the skills and the
+         signature. Every certificate now comes out the same shape
+         whatever device sent it. */
+      var comps = (L.competencies || []);
+      var TOP = 130, HEAD = 96 + 62 + 68 + 76, ROW = 46, FOOT = 260;
+      var W2 = 1500;
+      var H2 = TOP + HEAD + (comps.length * ROW) + FOOT;
       var cv = document.createElement('canvas');
       cv.width = W2; cv.height = H2;
       var g = cv.getContext('2d');
@@ -699,15 +701,15 @@
         g.font = weight+' '+size+'px '+(font||'Montserrat, system-ui, sans-serif');
         g.fillText(text, W2/2, y);
       }
-      var y = 130;
+      var y = TOP;
       line(ORG.name.toUpperCase(), y, 30, '800', blue); y += 96;
       line(name, y, 92, '900', ink); y += 62;
       line('finished', y, 32, '400', '#7A8892', 'Nunito, sans-serif'); y += 68;
       line(L.title, y, 52, '800', ink); y += 76;
 
       g.font = '400 28px Nunito, sans-serif'; g.fillStyle = '#4A5A66'; g.textAlign = 'left';
-      (L.competencies||[]).forEach(function(c){
-        g.fillText('\u2605  ' + c.label, 130, y); y += 46;
+      comps.forEach(function(c){
+        g.fillText('\u2605  ' + c.label, 190, y); y += ROW;
       });
 
       y = H2 - 150;
