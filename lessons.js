@@ -608,7 +608,7 @@ LESSONS.farmtotable = {
       opts:[{e:'&#129379;',t:'Still fine — good for smoothies or baking',ok:1},{e:'&#128465;&#65039;',t:'Always rubbish'},{e:'&#9760;&#65039;',t:'Dangerous'},{e:'&#128027;',t:'Full of insects'}]}
   ],
 
-  movie:{ render:'farmtotable', minutes:1, guide:'Chef Sprout' },
+  movie:{ render:'farmtotable', minutes:1, guide:'Chef Sprout', url:'film/farmtotable.mp4' },
 
   session:{
     minutes:5, word:'',
