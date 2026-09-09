@@ -627,7 +627,10 @@
 
     el('certWrap').innerHTML =
       '<div class="cert" id="certCard">'+
-        (W.img ? '<img class="certseal" src="'+esc(W.img)+'" alt="">' : '')+
+        /* Dewey, DHCG's own mascot, is the seal on every certificate —
+           the same face across all twelve, so the certificate belongs
+           to the garden rather than to whichever guide taught it. */
+        '<img class="certseal" src="img/dewey-excited.png" alt="Dewey the Dew Drop">'+
         '<div class="certkick">Dew of Heaven Children&rsquo;s Garden</div>'+
         '<div class="certname">'+esc(name)+'</div>'+
         '<div class="certfor">finished</div>'+
@@ -682,9 +685,20 @@
          signature. Every certificate now comes out the same shape
          whatever device sent it. */
       var comps = (L.competencies || []);
-      var TOP = 130, HEAD = 96 + 62 + 68 + 76, ROW = 46, FOOT = 260;
+      var SEAL = 132;                       /* Dewey, drawn at the top */
+      var TOP = 130 + SEAL, HEAD = 96 + 62 + 68 + 76, ROW = 46, FOOT = 260;
       var W2 = 1500;
       var H2 = TOP + HEAD + (comps.length * ROW) + FOOT;
+
+      /* Wait for Dewey before drawing — a canvas cannot draw an image
+         that has not loaded. If he fails to load the certificate still
+         goes out, just without the seal. */
+      var seal = await new Promise(function(res){
+        var im = new Image();
+        im.onload  = function(){ res(im); };
+        im.onerror = function(){ res(null); };
+        im.src = 'img/dewey-excited.png';
+      });
       var cv = document.createElement('canvas');
       cv.width = W2; cv.height = H2;
       var g = cv.getContext('2d');
@@ -701,6 +715,8 @@
         g.font = weight+' '+size+'px '+(font||'Montserrat, system-ui, sans-serif');
         g.fillText(text, W2/2, y);
       }
+      if (seal) g.drawImage(seal, (W2 - SEAL)/2, 56, SEAL, SEAL);
+
       var y = TOP;
       line(ORG.name.toUpperCase(), y, 30, '800', blue); y += 96;
       line(name, y, 92, '900', ink); y += 62;

@@ -698,8 +698,9 @@ document.getElementById('resetBtn').addEventListener('click',function(){
   var tb=document.getElementById('tbadge');
   if(tb && W) tb.innerHTML = '<img src="'+W.img+'" alt="'+W.guide+', your guide in Grow">';
 
+  /* Dewey seals every certificate, the same as the other eleven. */
   var cs=document.getElementById('certSeal');
-  if(cs && W) cs.innerHTML = '<img src="'+W.img+'" alt="">';
+  if(cs) cs.innerHTML = '<img src="img/dewey-excited.png" alt="Dewey the Dew Drop">';
 
   /* The chips the other eleven lessons carry, so the header reads the
      same way whichever lesson a family opens. */
@@ -1442,7 +1443,13 @@ function certToCanvas(){
   x.strokeStyle='#D9BE79'; x.lineWidth=3; x.strokeRect(2,2,w-4,h-4);
   x.strokeStyle='#E0C88E'; x.lineWidth=1; x.setLineDash([5,4]); x.strokeRect(12,12,w-24,h-24); x.setLineDash([]);
 
+  /* Dewey is already loaded in the card, so he can be drawn straight
+     from the DOM without making this function async. */
   var mid=w/2, y=64;
+  var sealImg=document.querySelector('#certSeal img');
+  if(sealImg && sealImg.complete && sealImg.naturalWidth){
+    var sw=46; x.drawImage(sealImg, mid-sw/2, 10, sw, sw); y=74;
+  }
   x.textAlign='center';
   x.font='700 11px Inter, sans-serif'; x.fillStyle='#A08543';
   x.fillText("DEW OF HEAVEN CHILDREN'S GARDEN  ·  SPRING, TEXAS", mid, y); y+=30;
