@@ -800,7 +800,7 @@ LESSONS.pollinators = {
       opts:[{e:'&#128064;',t:'Watch it quietly and leave it to work',ok:1},{e:'&#129529;',t:'Spray it'},{e:'&#128584;',t:'Grab it'},{e:'&#128266;',t:'Shout at it'}]}
   ],
 
-  movie:{ render:'pollinators', minutes:1, guide:'Buzz' },
+  movie:{ render:'pollinators', minutes:1, guide:'Buzz', url:'film/pollinators.mp4' },
 
   session:{
     minutes:5, word:'',
