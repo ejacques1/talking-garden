@@ -350,7 +350,7 @@ img{max-width:100%;display:block}
       <div class="snum">1</div>
       <div>
         <div class="sk">Before the live session</div>
-        <h2>Show what you know</h2>
+        <h2>Before we start</h2>
       </div>
     </div>
     <div class="stage-bd">
@@ -371,7 +371,7 @@ img{max-width:100%;display:block}
       <div class="snum">2</div>
       <div>
         <div class="sk" id="stageWhen">Live session</div>
-        <h2>Watch and join us</h2>
+        <h2>Meet us live</h2>
       </div>
     </div>
     <div class="stage-bd">
@@ -408,29 +408,12 @@ img{max-width:100%;display:block}
 
   <!-- STAGE 3 -->
   <section class="stage lock" id="s3">
-    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join the live session and type in the garden word to unlock these.</p></div></div>
+    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>These are the tap-and-play activities. They unlock with the garden word.</p></div></div>
     <div class="stage-hd">
       <div class="snum">3</div>
       <div>
-        <div class="sk">Hands in the soil</div>
-        <h2>Build it at home</h2>
-      </div>
-    </div>
-    <div class="stage-bd">
-      <p>Hands-on builds that carry the same skills off the screen and into the soil. Each has a materials list, step-by-step build mode, and a "why it works" note.</p>
-      <div class="cards" id="buildCards"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STAGE 4 -->
-  <section class="stage lock" id="s4">
-    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>These are the tap-and-play activities. They unlock with the garden word.</p></div></div>
-    <div class="stage-hd">
-      <div class="snum">4</div>
-      <div>
         <div class="sk">Any time you like</div>
-        <h2>Practice &amp; play</h2>
+        <h2>Play &amp; practise</h2>
       </div>
     </div>
     <div class="stage-bd">
@@ -467,6 +450,23 @@ img{max-width:100%;display:block}
           <span><h4>Seed to Sprout</h4><p>Give your seed sun and water, and watch it grow into Sunny.</p></span>
           <span class="tick">&#10003;</span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 4 -->
+  <section class="stage lock" id="s4">
+    <div class="veil"><div class="veil-in"><div class="lk">🔒</div><h4>Opens after the live session</h4><p>Join the live session and type in the garden word to unlock these.</p></div></div>
+    <div class="stage-hd">
+      <div class="snum">4</div>
+      <div>
+        <div class="sk">Hands in the soil</div>
+        <h2>Try it at home</h2>
+      </div>
+    </div>
+    <div class="stage-bd">
+      <p>Hands-on builds that carry the same skills off the screen and into the soil. Each has a materials list, step-by-step build mode, and a "why it works" note.</p>
+      <div class="cards" id="buildCards"></div>
       </div>
     </div>
   </section>
@@ -576,12 +576,15 @@ function setPre(){
 }
 function preWasLate(){ try{ return localStorage.getItem(PREKEY+'_late')==='1'; }catch(e){ return false; } }
 
+/* Same five stage names the other eleven lessons use. Play comes
+   before the build: a child who has not played yet does not know
+   enough to make the thing. */
 var RAIL=[
- {n:1,label:'Before-check',   id:'s1'},
- {n:2,label:'Watch & join',   id:'s2'},
- {n:3,label:'Build at home',  id:'s3'},
- {n:4,label:'Practice & play',id:'s4'},
- {n:5,label:'After-check',    id:'s5'}
+ {n:1,label:'Before',  id:'s1'},
+ {n:2,label:'Live',    id:'s2'},
+ {n:3,label:'Play',    id:'s3'},
+ {n:4,label:'At home', id:'s4'},
+ {n:5,label:'Show it', id:'s5'}
 ];
 
 function paint(){
@@ -1419,7 +1422,11 @@ paintBuilds();
    download everywhere else. */
 function certToCanvas(){
   var card=document.getElementById('certCard');
-  var w=card.offsetWidth, h=card.offsetHeight, scale=2;
+  var w=card.offsetWidth, h=card.offsetHeight;
+  /* Fixed output width, the same as the other eleven lessons. Scaling
+     to the card's on-screen size meant a phone sent a ~700px image,
+     which is why the texted certificate looked soft. */
+  var scale = Math.max(2, 1200 / w);
   var c=document.createElement('canvas');
   c.width=w*scale; c.height=h*scale;
   var x=c.getContext('2d'); x.scale(scale,scale);
