@@ -57,6 +57,14 @@
     return (L.activities||[]).filter(function(a){
       return global.TGProgress && TGProgress.done(actKey(a.id)); }).length;
   }
+  /* Whether this lesson is usable. There were three separate versions
+     of this test and the two on the click handlers did not know about
+     the open-house flag — so with the gates thrown open the cards
+     looked unlocked and did nothing when tapped. */
+  function usable(){
+    return TG.isUnlocked(SLUG) || !!L.open;
+  }
+
   function child(){
     return (global.TG && TG.currentChild) ? TG.currentChild() : null;
   }
@@ -497,7 +505,7 @@
 
     [].forEach.call(el('buildSlot').querySelectorAll('.card'), function(btn){
       btn.onclick = function(){
-        if (!TG.isUnlocked(SLUG)) return;
+        if (!usable()) return;
         openBuild(+btn.dataset.b);
       };
     });
@@ -612,7 +620,7 @@
 
     [].forEach.call(el('actCards').querySelectorAll('.card'), function(btn){
       btn.onclick = function(){
-        if (!TG.isUnlocked(SLUG)) return;
+        if (!usable()) return;
         var a = L.activities.filter(function(x){ return x.id === btn.dataset.a; })[0];
         TGPlay.open(a, async function(id){
           var k = child();
@@ -782,7 +790,7 @@
     /* A lesson thrown open has no session behind it, so there is no
        word for a family to have heard. Asking for one would be a
        locked door with no key cut. */
-    var unlocked = TG.isUnlocked(SLUG) || !!L.open;
+    var unlocked = usable();
     var pre = preDone();
 
     /* stage 1 */
