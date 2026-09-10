@@ -102,6 +102,7 @@
        session, one that has run, or a recording? */
     hasSomething(slug){
       var L = (global.LESSONS||{})[slug];
+      if (L && L.open) return true;          /* thrown open on purpose */
       return S.forTopic(slug).length > 0 || !!(L && L.session && L.session.url);
     },
 

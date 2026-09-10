@@ -50,6 +50,17 @@
     if (!L || typeof L !== 'object') return out;
 
     need(L.slug && /^[a-z0-9]+$/.test(L.slug), 'The slug must be lower-case letters and numbers only.');
+
+    /* The plant lesson predates all of this. Its questions live in
+       quiz.js and its activities are hand-built inside topic.html, so
+       checking it for a question bank would fail a lesson that works
+       perfectly. Check what it does have, and stop. */
+    if (L.legacy){
+      need(L.title, 'A lesson needs a title.');
+      need(L.open === undefined || typeof L.open === 'boolean',
+           'The "open" setting should be a yes or no.');
+      return out;
+    }
     need(L.world && (global.WORLDS||[]).some(function(w){ return w.key === L.world; }),
          'The world must be one of the six.');
     need(L.title && L.title.length > 2, 'A lesson needs a title.');
@@ -100,6 +111,9 @@
        somewhere else. The old rule demanded http, which every shipped
        lesson fails — so opening any of the twelve in the admin and
        pressing save was refused before it started. */
+    need(L.open === undefined || typeof L.open === 'boolean',
+         'The "open" setting should be a yes or no.');
+
     if (L.movie && L.movie.url)
       need(/^https?:\/\//.test(L.movie.url) || /^film\/[\w.-]+\.mp4$/.test(L.movie.url),
            'The film should be a file in the film folder, like film/compost.mp4, or a link starting with http.');

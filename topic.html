@@ -537,6 +537,7 @@ img{max-width:100%;display:block}
 
 <script src="worlds.js"></script>
 <script src="lessons.js"></script>
+<script src="content.js"></script>
 <script src="org.js"></script>
 <script src="sunny.js"></script>
 <script src="session.js"></script>
@@ -592,7 +593,9 @@ var RAIL=[
 ];
 
 function paint(){
-  var unlocked = TG.isUnlocked(TOPIC), pre = preDone();
+  /* Thrown open from the admin panel, same as the other eleven. */
+  var openNow = !!(window.LESSONS && LESSONS[TOPIC] && LESSONS[TOPIC].open);
+  var unlocked = TG.isUnlocked(TOPIC) || openNow, pre = preDone();
 
   document.getElementById('preBtn').style.display = pre?'none':'inline-flex';
   document.getElementById('preDone').style.display = pre?'flex':'none';
@@ -694,6 +697,7 @@ document.getElementById('resetBtn').addEventListener('click',function(){
   if(!s) return;
 
   var kid0 = s.profile.children && s.profile.children[0];
+  if (window.TGContent) await TGContent.load();
   await TGSession.loadAll();
   await TGProgress.load(kid0 && kid0.id);
   var p = s.profile, kids = p.children || [];

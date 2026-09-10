@@ -779,7 +779,11 @@
   var RAIL = ['Before','Live','Play','At home','Show it'];
 
   function paint(){
-    var unlocked = TG.isUnlocked(SLUG), pre = preDone();
+    /* A lesson thrown open has no session behind it, so there is no
+       word for a family to have heard. Asking for one would be a
+       locked door with no key cut. */
+    var unlocked = TG.isUnlocked(SLUG) || !!L.open;
+    var pre = preDone();
 
     /* stage 1 */
     var k = child();
@@ -799,7 +803,11 @@
 
     var wi = el('wordIn'), wb = el('wordBtn');
     wi.disabled = wb.disabled = (!pre || unlocked);
-    if (unlocked){
+    if (L.open && !TG.isUnlocked(SLUG)){
+      el('wordP').textContent = 'No secret word needed for now — everything below is open. Once this lesson\u2019s live session runs, the word comes back.';
+      el('wordMsg').className = 'wordmsg yes';
+      el('wordMsg').textContent = '🔓 Open for now';
+    } else if (unlocked){
       el('wordP').textContent = 'Unlocked. Everything below is open to you.';
       el('wordMsg').className = 'wordmsg yes';
       el('wordMsg').textContent = '✅ The lesson is open.';

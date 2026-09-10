@@ -276,6 +276,16 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="card">
+      <h3>Open everything, for now</h3>
+      <p class="sub">Normally a lesson stays shut until its live session is on the calendar or a recording is loaded &mdash; so families cannot wander into a workshop that has not happened. This throws all twelve open to everyone, with no secret word, which is what you want when somebody is trying the platform out. Turn it off again when real sessions start.</p>
+      <div class="row" style="margin-top:0">
+        <button class="btn btn-primary" id="openAll">Open all twelve now</button>
+        <button class="btn btn-ghost" id="closeAll">Put the gates back</button>
+      </div>
+      <div id="openMsg" style="font-size:13.5px;font-weight:600;margin-top:10px"></div>
+    </div>
+
+    <div class="card">
       <h3>The read-aloud voice</h3>
       <p class="sub">Until a lesson has your own recording, the site reads it with the voice built into whatever device the family is using. This picks the best one available and lets you hear it. <b>It only changes this browser</b> &mdash; you cannot set the voice for families from here.</p>
       <div class="row" style="margin-top:0">
@@ -805,6 +815,46 @@ function wireVoices(){
   };
 }
 
+/* ---------- open house ----------
+   Every lesson at once, so somebody can walk the whole platform
+   without twelve sessions existing first. Written through the same
+   content layer as any other edit, so it is visible, reversible and
+   recorded in the history. */
+async function setAllOpen(open){
+  var msg = document.getElementById('openMsg');
+  var btns = [document.getElementById('openAll'), document.getElementById('closeAll')];
+  btns.forEach(function(b){ b.disabled = true; });
+  msg.style.color = '#4A5A66';
+
+  var list = TOPICS.filter(function(t){ return !!LESSONS[t.slug]; });
+  var done = 0, failed = [];
+  for (var i = 0; i < list.length; i++){
+    msg.textContent = (open ? 'Opening ' : 'Closing ') + (i+1) + ' of ' + list.length + '…';
+    var copy = JSON.parse(JSON.stringify(LESSONS[list[i].slug]));
+    copy.open = !!open;
+    var res = await TGContent.save(copy, true);
+    if (res.ok) done++; else failed.push(list[i].name + ': ' + res.problems[0]);
+  }
+
+  btns.forEach(function(b){ b.disabled = false; });
+  if (failed.length){
+    msg.style.color = '#B8481B';
+    msg.textContent = done + ' saved, ' + failed.length + ' failed — ' + failed[0];
+  } else {
+    msg.style.color = '#4A6E33';
+    msg.textContent = open
+      ? '✅ All ' + done + ' lessons are open to families right now. No secret word needed.'
+      : '✅ Gates back on. A lesson opens again once its session is scheduled or its recording is in.';
+  }
+  drawWrite(); drawCurriculum();
+}
+
+function wireOpenHouse(){
+  var a = document.getElementById('openAll'), b = document.getElementById('closeAll');
+  if (a) a.onclick = function(){ setAllOpen(true); };
+  if (b) b.onclick = function(){ setAllOpen(false); };
+}
+
 /* ---------- tabs ---------- */
 [].forEach.call(document.querySelectorAll('.tab'), function(b){
   b.onclick=function(){
@@ -1082,6 +1132,7 @@ function drawSessions(){
   if (window.TGContent) await TGContent.load();
   wireEditor();
   wireVoices();
+  wireOpenHouse();
   await TGSession.loadAll();
   prefillFromLast();
   drawSessions();

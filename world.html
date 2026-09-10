@@ -177,12 +177,14 @@ function wireViewToggle(){
       else if (unlocked)   { tag='Open';     cls='tag-open'; }
       else if (next)       { tag=TGSession.short(next); cls='tag-live'; }
       else if (last)       { tag='Catch up'; cls='tag-live'; }
+      else if (L.open)     { tag='Open now'; cls='tag-open'; }
       else if (L.session && L.session.url) { tag='Watch now'; cls='tag-live'; }
       else                 { tag='Soon';     cls='tag-soon'; }
 
       var enterable = unlocked || TGSession.hasSomething(L.slug);   /* admins: unlocked is always true */
       var when = next ? 'Live ' + TGSession.short(next)
                : last ? 'Last session ' + TGSession.short(last)
+               : L.open ? 'Open — no session needed for now'
                : (L.session && L.session.url) ? 'Recorded · about ' + (L.session.minutes||5) + ' minutes'
                : 'No session scheduled yet';
 
