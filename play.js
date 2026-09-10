@@ -37,18 +37,36 @@
 
   function finish(msg, emoji){
     var b = el('playBd');
+
+    /* WHICH BUTTON IS BLUE MATTERS.
+       This screen used to make "Play again" the blue one, and a child
+       testing it pressed it over and over because blue reads as "this
+       is the button". He wanted to leave. So the button that moves
+       forward is the loud one now, and repeating is the quiet one.
+
+       Forward also means the NEXT GAME rather than a list of cards to
+       re-read and choose from again. */
+    var done = st.onDone, id = st.act.id, act = st.act;
+    var nxt  = st.next || null;          /* set by the caller, if any */
+
     b.innerHTML = '<div class="win"><div class="m">'+(emoji||'&#127881;')+'</div>'+
       '<h3>'+esc(msg||'You did it!')+'</h3>'+
-      '<p>'+esc(st.act.teaches)+'</p>'+
-      '<button class="btn btn-primary" id="pDone" style="width:auto">Done &rarr;</button></div>';
+      '<p>'+esc(act.teaches)+'</p>'+
+      '<div class="winrow">'+
+        '<button class="btn btn-primary" id="pNext" style="width:auto">'+
+          esc(nxt ? 'Next game' : 'I&rsquo;m done')+' &rarr;</button>'+
+        '<button class="btn btn-ghost" id="pAgain" style="width:auto">Play again</button>'+
+      '</div></div>';
     say(msg||'You did it!');
-    /* Read the callback and the id BEFORE closing — close() clears the
-       state, so reaching for them afterwards found nothing and no
-       activity was ever recorded as finished. */
-    var done = st.onDone, id = st.act.id;
-    el('pDone').onclick = function(){
+
+    el('pNext').onclick = function(){
       global.TGPlay.close();
-      if (done) done(id);
+      if (done) done(id, nxt);           /* the page decides what next means */
+    };
+    el('pAgain').onclick = function(){
+      /* Record it as finished first — they earned it — then restart. */
+      if (done) done(id, null, true);
+      global.TGPlay.open(act, done, nxt);
     };
   }
 
@@ -247,8 +265,8 @@
 
   global.TGPlay = {
     custom: {},
-    open: function(act, onDone){
-      st = { act:act, onDone:onDone };
+    open: function(act, onDone, next){
+      st = { act:act, onDone:onDone, next:next || null };
       el('playTitle').textContent = act.title;
       el('ovl').classList.add('on');
       document.body.style.overflow = 'hidden';

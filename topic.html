@@ -208,6 +208,7 @@ img{max-width:100%;display:block}
 .pbar i{display:block;height:100%;background:var(--sage);border-radius:99px;transition:width .3s ease}
 .win{text-align:center;padding:14px 0}
 .win .m{font-size:52px;margin-bottom:10px}
+.winrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
 .win h3{font-size:23px;margin-bottom:6px}
 .win p{font-size:15px;color:var(--muted);margin-bottom:18px}
 .mcard{cursor:pointer}
@@ -402,7 +403,7 @@ img{max-width:100%;display:block}
         <p>Type it in to open up everything else in this topic. It stays open forever after that.</p>
         <div class="wordrow">
           <input id="wordIn" placeholder="Type the garden word…" autocomplete="off">
-          <button class="btn btn-sun" id="wordBtn">Unlock the topic</button>
+          <button class="btn btn-sun" id="wordBtn">Unlock the lesson</button>
         </div>
         <div class="wordmsg" id="wordMsg"></div>
         <p style="font-size:12.5px;color:#9A8250;margin-top:12px" id="wordHint"></p>
@@ -847,14 +848,41 @@ function closeAct(){ ovl.classList.remove('on'); document.body.style.overflow=''
 document.getElementById('playX').onclick=closeAct;
 ovl.onclick=function(e){ if(e.target===ovl) closeAct(); };
 
+/* Which game comes next: the next one they have not finished, so
+   "Next game" never lands on something they just did. */
+var ACT_ORDER = ['seq','parts','eat','need','worm','seed'];
+function nextAct(afterId){
+  var at = ACT_ORDER.indexOf(afterId);
+  for (var n=1; n<=ACT_ORDER.length; n++){
+    var k = ACT_ORDER[(at+n) % ACT_ORDER.length];
+    if (k !== afterId && !isActDone(k)) return k;
+  }
+  return null;
+}
+
 function win(msg){
+  markAct(cur);
+  /* WHICH BUTTON IS BLUE MATTERS.
+     "Play again" used to be the blue one, and a child testing this
+     pressed it over and over because blue reads as "this is the
+     button". He wanted to leave. Forward is loud now; repeating is
+     quiet. And forward means the next game, not a page of cards to
+     re-read and choose from. */
+  var nxt = nextAct(cur);
   playBd.innerHTML='<div class="win">'+(window.Sunny?Sunny.html('cheer',96):'<div class="m">🌟</div>')+'<h3>You did it!</h3>'+
     '<p>'+msg+'</p>'+
-    '<button class="btn btn-primary" id="againBtn" style="width:auto">Play again</button> '+
-    '<button class="btn btn-ghost" id="doneBtn" style="width:auto">Back to the topic</button></div>';
-  markAct(cur);
+    '<div class="winrow">'+
+      '<button class="btn btn-primary" id="doneBtn" style="width:auto">'+
+        (nxt ? 'Next game' : 'I&rsquo;m done')+' &rarr;</button>'+
+      '<button class="btn btn-ghost" id="againBtn" style="width:auto">Play again</button>'+
+    '</div></div>';
   document.getElementById('againBtn').onclick=function(){ st={}; render(); };
-  document.getElementById('doneBtn').onclick=closeAct;
+  document.getElementById('doneBtn').onclick=function(){
+    if (nxt){ cur = nxt; st = {}; document.getElementById('playTitle').textContent = ACTS[nxt].title; render(); return; }
+    closeAct();
+    var s5 = document.getElementById('s5');
+    if (s5) s5.scrollIntoView({behavior:'smooth', block:'start'});
+  };
 }
 
 function render(){
@@ -1413,7 +1441,7 @@ function paintBuild(){
     body.innerHTML='<div class="win"><div class="m">&#127881;</div><h3>You built it!</h3>'+
       '<div class="blist" style="text-align:left"><b>Why it works</b><p style="font-size:14.5px;margin-top:6px">'+p.science+'</p></div>'+
       '<p style="font-size:13px;color:var(--muted);margin:12px 0 16px">You practised: '+p.learn+'</p>'+
-      '<button class="btn btn-primary" id="bDone" style="width:auto">Back to the topic</button></div>';
+      '<button class="btn btn-primary" id="bDone" style="width:auto">I&rsquo;m done &rarr;</button></div>';
     document.getElementById('bDone').onclick=function(){
       TGQuiz.close();
       document.getElementById('s4').scrollIntoView({behavior:'smooth',block:'start'});

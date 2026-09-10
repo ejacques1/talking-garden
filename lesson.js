@@ -621,14 +621,39 @@
     [].forEach.call(el('actCards').querySelectorAll('.card'), function(btn){
       btn.onclick = function(){
         if (!usable()) return;
-        var a = L.activities.filter(function(x){ return x.id === btn.dataset.a; })[0];
-        TGPlay.open(a, async function(id){
-          var k = child();
-          await TGProgress.mark(k && k.id, SLUG, actKey(id));
-          paint();
-        });
+        openActivity(btn.dataset.a);
       };
     });
+  }
+
+  /* Which game comes after this one: the next they have not finished,
+     wrapping round to the start, so "Next game" never lands on
+     something they just did. */
+  function nextActivity(afterId){
+    var list = L.activities || [];
+    var at = list.findIndex(function(a){ return a.id === afterId; });
+    for (var n = 1; n <= list.length; n++){
+      var a = list[(at + n) % list.length];
+      if (a.id === afterId) continue;
+      if (!TGProgress.done(actKey(a.id))) return a;
+    }
+    return null;                       /* all done — offer the after-check */
+  }
+
+  function openActivity(id){
+    var a = (L.activities||[]).filter(function(x){ return x.id === id; })[0];
+    if (!a) return;
+    TGPlay.open(a, async function(finishedId, goTo, stayOpen){
+      var k = child();
+      await TGProgress.mark(k && k.id, SLUG, actKey(finishedId));
+      if (stayOpen) return;            /* Play again — do not repaint under them */
+      paint();
+      if (goTo) { openActivity(goTo.id); return; }
+      /* Nothing left to play. Point them at the thing that is next. */
+      var s5 = el('s5');
+      if (s5 && playedCount() >= NEED_PLAY && built())
+        s5.scrollIntoView({ behavior:'smooth', block:'start' });
+    }, nextActivity(id));
   }
 
   /* ---------------- the certificate ---------------- */
