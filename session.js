@@ -36,8 +36,8 @@
   function saveLocalSessions(rows){
     try { localStorage.setItem('tg_sessions', JSON.stringify(rows)); } catch (e) {}
   }
-  function localProgress(){
-    try { return JSON.parse(localStorage.getItem('tg_progress')) || []; }
+  function localProgress(childId){
+    try { return JSON.parse(localStorage.getItem('tg_progress_'+(childId||'me'))) || []; }
     catch (e) { return []; }
   }
 
@@ -199,24 +199,40 @@
   };
 
   /* ================= activity progress ================= */
+  /* Progress belongs to a child, not to a family. The cache is keyed
+     by child so switching between siblings does not show one child
+     the other's finished work — which is exactly what it did before,
+     because there was a single cache and a single local key. */
+  var cacheFor = null;
+
   var P = {
     async load(childId, force){
-      if (cacheProgress && !force) return cacheProgress;
-      if (demo() || !childId){ cacheProgress = localProgress(); return cacheProgress; }
+      var id = childId || 'me';
+      if (cacheProgress && cacheFor === id && !force) return cacheProgress;
+      cacheFor = id;
+      if (demo() || !childId){ cacheProgress = localProgress(id); return cacheProgress; }
       try{
         var c = await sb();
         var r = await c.from('progress').select('activity_key').eq('child_id', childId);
         cacheProgress = (r.data||[]).map(function(x){ return x.activity_key; });
-      }catch(e){ cacheProgress = localProgress(); }
+      }catch(e){ cacheProgress = localProgress(id); }
       return cacheProgress;
     },
+
+    /* Which child the cache currently holds, so a page can tell when
+       it is looking at the wrong one. */
+    loadedFor(){ return cacheFor; },
+
     done(key){ return (cacheProgress||[]).indexOf(key) > -1; },
+
     async mark(childId, topicSlug, key){
+      var id = childId || 'me';
+      if (cacheFor !== id){ cacheProgress = localProgress(id); cacheFor = id; }
       if (!cacheProgress) cacheProgress = [];
       if (cacheProgress.indexOf(key) < 0) cacheProgress.push(key);
       /* Always keep a local copy so a dropped connection never loses a
          child's work mid-activity. */
-      try{ localStorage.setItem('tg_progress', JSON.stringify(cacheProgress)); }catch(e){}
+      try{ localStorage.setItem('tg_progress_'+id, JSON.stringify(cacheProgress)); }catch(e){}
       if (demo() || !childId) return true;
       try{
         var c = await sb();

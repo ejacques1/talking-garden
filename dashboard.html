@@ -300,8 +300,8 @@ function wireViewToggle(){
 }
 
 function drawTopics(){
-  var kids = (TG.session()||{}).profile;
-  var kidName = kids && kids.children && kids.children[0] && kids.children[0].name;
+  var cur = TG.currentChild();
+  var kidName = cur && cur.name;
 
   document.getElementById('topics').innerHTML = TOPICS.map(function(t){
     var unlocked = worldUnlocked(t);
@@ -366,20 +366,37 @@ function drawBadges(got){
   document.getElementById('avatar').textContent = (first[0]||'🌻').toUpperCase();
   document.getElementById('helloTitle').textContent = 'Hello, '+first+'!';
   document.getElementById('helloSub').textContent = kids.length===1
-    ? 'Here\'s what\'s waiting for '+kids[0].name+' this week.'
+    ? 'Here\'s what\'s waiting for '+((TG.currentChild()||kids[0]).name)+' this week.'
     : 'Here\'s what\'s growing for your '+kids.length+' gardeners this week.';
 
-  document.getElementById('kidchips').innerHTML = kids.map(function(k,i){
-    return '<button class="kidchip'+(i===0?' on':'')+'" data-i="'+i+'" data-name="'+esc(k.name)+'">'+
-      '<span class="a">'+esc((k.name[0]||'?').toUpperCase())+'</span>'+esc(k.name)+' · '+esc(k.grade||'')+'</button>';
-  }).join('');
-  document.getElementById('kidchips').onclick=function(e){
-    var c=e.target.closest('.kidchip'); if(!c) return;
-    [].forEach.call(document.querySelectorAll('.kidchip'),function(x){x.className='kidchip'});
-    c.className='kidchip on';
-    document.getElementById('badgeTitle').textContent = c.dataset.name+"'s badges";
+  /* These chips used to change a heading and nothing else, so a family
+     with three children saw the eldest's progress whichever chip was
+     lit. They now switch who the whole page is about. */
+  function drawKidChips(){
+    var cur = TG.currentChild();
+    document.getElementById('kidchips').innerHTML = kids.map(function(k){
+      var id = String(k.id || k.name);
+      var on = cur && String(cur.id || cur.name) === id;
+      return '<button class="kidchip'+(on?' on':'')+'" data-id="'+esc(id)+'" data-name="'+esc(k.name)+'">'+
+        '<span class="a">'+esc((k.name[0]||'?').toUpperCase())+'</span>'+esc(k.name)+' · '+esc(k.grade||'')+'</button>';
+    }).join('');
+    if (cur) document.getElementById('badgeTitle').textContent = cur.name+"'s badges";
+  }
+  drawKidChips();
+
+  document.getElementById('kidchips').onclick = async function(e){
+    var c = e.target.closest('.kidchip'); if(!c) return;
+    TG.setCurrentChild(c.dataset.id);
+    var k = TG.currentChild();
+    /* Reload that child's finished activities before repainting, or
+       the tiles keep showing the sibling's percentages. */
+    await TGProgress.load(k && k.id, true);
+    drawKidChips();
+    drawTopics();
+    drawBadges(LESSONS.list().filter(function(L){ return TG.isUnlocked(L.slug); }).length + 1);
+    document.getElementById('helloSub').textContent =
+      "Here's what's waiting for "+k.name+" this week.";
   };
-  if(kids.length) document.getElementById('badgeTitle').textContent = kids[0].name+"'s badges";
 
   var hs=document.getElementById('helloDewey');
   if(hs && window.Dewey) hs.innerHTML=Dewey.html('excited',96,{enter:true});
@@ -395,6 +412,8 @@ function drawBadges(got){
   }
 
   if (window.TGContent) await TGContent.load();
+  var startKid = TG.currentChild();
+  if (window.TGProgress) await TGProgress.load(startKid && startKid.id);
   await TGSession.loadAll();
   drawNext();
   drawTopics();

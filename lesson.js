@@ -30,8 +30,14 @@
   var W = (global.WORLDS || []).filter(function(w){ return w.key === L.world; })[0] || {};
 
   var NEED_PLAY = Math.min(2, (L.activities || []).length);
-  var PRE_KEY   = 'dl_pre_'  + SLUG;
-  var BUILD_KEY = 'dl_built_'+ SLUG;
+  /* Every key below carries the child. Before this they did not, so a
+     family with three children had one shared before-check, one shared
+     build and one shared set of activities — the eldest did the work
+     and the younger two saw it as already done. */
+  function kidKey(){ return (global.TG && TG.childKey) ? TG.childKey() : 'me'; }
+  function PRE_KEY(){   return 'dl_pre_'   + SLUG + '_' + kidKey(); }
+  function BUILD_KEY(){ return 'dl_built_' + SLUG + '_' + kidKey(); }
+  function actKey(id){  return SLUG + ':' + id + ':' + kidKey(); }
 
   function el(id){ return document.getElementById(id); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
@@ -39,21 +45,20 @@
   function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
-  function preDone(){ return get(PRE_KEY) === '1'; }
+  function preDone(){ return get(PRE_KEY()) === '1'; }
   function built(){
-    if (get(BUILD_KEY) === '1') return true;
+    if (get(BUILD_KEY()) === '1') return true;
     /* Any one of the builds is enough — the point is hands in the
        soil, not a particular jar. */
     return buildList().some(function(_, i){
-      return global.TGProgress && TGProgress.done(SLUG+':build'+i); });
+      return global.TGProgress && TGProgress.done(actKey('build'+i)); });
   }
   function playedCount(){
     return (L.activities||[]).filter(function(a){
-      return global.TGProgress && TGProgress.done(SLUG+':'+a.id); }).length;
+      return global.TGProgress && TGProgress.done(actKey(a.id)); }).length;
   }
   function child(){
-    var s = TG.session(), k = (s && s.profile && s.profile.children) || [];
-    return k[0] || null;
+    return (global.TG && TG.currentChild) ? TG.currentChild() : null;
   }
 
   /* ---------------- shading the page in the world's color --------- */
@@ -479,7 +484,7 @@
        the plant lesson has always done and what this was missing. */
     el('buildSlot').innerHTML =
       '<div class="cards">'+ list.map(function(b, i){
-        var done = global.TGProgress && TGProgress.done(SLUG+':build'+i);
+        var done = global.TGProgress && TGProgress.done(actKey('build'+i));
         return '<button class="card'+(done?' done':'')+'" data-b="'+i+'">'+
           '<span class="ce">'+(b.emoji || '&#128736;&#65039;')+'</span>'+
           '<b>'+esc(b.title)+'</b>'+
@@ -562,8 +567,8 @@
     } else {
       (async function(){
         var k = child();
-        await TGProgress.mark(k && k.id, SLUG, SLUG+':build'+p.__i);
-        set(BUILD_KEY,'1');
+        await TGProgress.mark(k && k.id, SLUG, actKey('build'+p.__i));
+        set(BUILD_KEY(),'1');
         paint();
       })();
       body.innerHTML =
@@ -589,7 +594,7 @@
   /* ---------------- stage 4: the activities ---------------- */
   function paintActivities(){
     el('actCards').innerHTML = (L.activities||[]).map(function(a){
-      var done = global.TGProgress && TGProgress.done(SLUG+':'+a.id);
+      var done = global.TGProgress && TGProgress.done(actKey(a.id));
       var art  = a.emoji ? a.emoji
                : a.type==='order' ? '&#128207;' : a.type==='sort' ? '&#129388;'
                : a.type==='match' ? '&#128279;' : a.type==='custom' ? '&#10024;'
@@ -611,7 +616,7 @@
         var a = L.activities.filter(function(x){ return x.id === btn.dataset.a; })[0];
         TGPlay.open(a, async function(id){
           var k = child();
-          await TGProgress.mark(k && k.id, SLUG, SLUG+':'+id);
+          await TGProgress.mark(k && k.id, SLUG, actKey(id));
           paint();
         });
       };
@@ -944,11 +949,42 @@
     paintBrand();
 
     var kids = (s.profile && s.profile.children) || [];
-    el('whoName').textContent = (s.profile && (s.profile.parentName || s.profile.parent_name)) || kids[0] && kids[0].name || 'You';
-    el('av').textContent = ((kids[0] && kids[0].name) || 'D').charAt(0).toUpperCase();
+    /* With more than one child, the nav has to say WHOSE lesson this
+       is and let you change it. Without that, a parent with three
+       children has no way to tell which one they are recording work
+       against — which is how the eldest ended up owning all of it. */
+    function paintWho(){
+      var k = child();
+      el('whoName').textContent = (k && k.name) ||
+        (s.profile && (s.profile.parentName || s.profile.parent_name)) || 'You';
+      el('av').textContent = ((k && k.name) || 'D').charAt(0).toUpperCase();
+    }
+    paintWho();
+
+    if (kids.length > 1){
+      var sel = el('kidSel');
+      sel.style.display = '';
+      el('whoWrap').style.display = 'none';
+      sel.innerHTML = kids.map(function(k){
+        var id = String(k.id || k.name);
+        return '<option value="'+esc(id)+'">'+esc(k.name)+(k.grade?' · '+esc(k.grade):'')+'</option>';
+      }).join('');
+      var cur = child();
+      if (cur) sel.value = String(cur.id || cur.name);
+      sel.onchange = async function(){
+        TG.setCurrentChild(sel.value);
+        /* Reload that child's activity list before anything repaints,
+           or the page shows the previous sibling's ticks. */
+        var k = child();
+        await TGProgress.load(k && k.id, true);
+        paintWho();
+        stopReading();
+        paint();
+      };
+    }
 
     await TGSession.loadAll();
-    await TGProgress.load(kids[0] && kids[0].id);
+    await TGProgress.load(child() && child().id);
 
     el('outBtn').onclick = async function(){ await TG.signOut(); location.href='login.html'; };
     el('playX').onclick  = function(){ TGPlay.close(); TGQuiz.close(); };
@@ -962,16 +998,16 @@
     el('wordIn').addEventListener('keydown', function(e){ if (e.key === 'Enter') tryWord(); });
 
     el('preBtn').onclick = function(){
-      TGQuiz.open(SLUG, 'pre', kids, function(){ set(PRE_KEY,'1'); paint(); });
+      TGQuiz.open(SLUG, 'pre', [child()].filter(Boolean), function(){ set(PRE_KEY(),'1'); paint(); });
     };
     el('postBtn').onclick = function(){
       if (el('postBtn').disabled) return;
-      TGQuiz.open(SLUG, 'post', kids, function(){ paint(); });
+      TGQuiz.open(SLUG, 'post', [child()].filter(Boolean), function(){ paint(); });
     };
     el('resetBtn').onclick = function(){
       if (!confirm('Clear this lesson’s progress on this device?')) return;
       try{
-        [PRE_KEY, BUILD_KEY].forEach(function(k){ localStorage.removeItem(k); });
+        [PRE_KEY(), BUILD_KEY()].forEach(function(k){ localStorage.removeItem(k); });
         Object.keys(localStorage).forEach(function(k){
           if (k.indexOf('tg_comp_'+SLUG+'_') === 0) localStorage.removeItem(k);
         });

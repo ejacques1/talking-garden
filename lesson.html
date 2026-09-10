@@ -33,6 +33,8 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
 .crumb{display:inline-flex;gap:7px;font-size:14px;font-weight:700;color:var(--wd);text-decoration:none;margin-bottom:14px;position:relative;z-index:2}
 .crumb:hover{opacity:.75}
+.kidsel{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--ink);background:var(--beige);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;max-width:170px}
 .out{background:none;border:none;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
 .out:hover{color:var(--red)}
 .who{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--body)}
@@ -448,7 +450,8 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
       <img class="brand-mark" src="img/dewey-happy.png" alt="">
       <span class="brand-txt">DewLab<span>Dew of Heaven Children&rsquo;s Garden</span></span>
     </a>
-    <span class="who"><span class="av" id="av">&#127803;</span><span id="whoName">—</span></span>
+    <span class="who" id="whoWrap"><span class="av" id="av">&#127803;</span><span id="whoName">—</span></span>
+    <select class="kidsel" id="kidSel" style="display:none"></select>
     <button class="out" id="outBtn">Log out</button>
   </div>
 </nav>

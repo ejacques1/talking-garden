@@ -215,6 +215,50 @@
       return !!(s && s.profile && s.profile.unlocked.indexOf(topic) > -1);
     },
 
+    /* ---------------- which child is this for ----------------
+       A family account can have several children, and everything a
+       child does — the before-check, the builds, the activities, the
+       certificate — belongs to ONE of them. Before this, every page
+       simply took children[0], so a family with three children saw
+       the eldest's progress on all three.
+
+       The choice lives in this browser rather than on the account,
+       because it is "who is sitting here now", not a setting. */
+    KID_KEY: 'dl_kid',
+
+    children(){
+      var s = TG.session();
+      return (s && s.profile && s.profile.children) || [];
+    },
+
+    currentChild(){
+      var kids = TG.children();
+      if (!kids.length) return null;
+      var want = null;
+      try { want = localStorage.getItem(TG.KID_KEY); } catch(e){}
+      if (want){
+        var hit = kids.filter(function(k){
+          return String(k.id) === want || k.name === want; })[0];
+        if (hit) return hit;
+      }
+      return kids[0];
+    },
+
+    setCurrentChild(k){
+      try {
+        if (k == null) localStorage.removeItem(TG.KID_KEY);
+        else localStorage.setItem(TG.KID_KEY, String(k.id || k.name || k));
+      } catch(e){}
+      return TG.currentChild();
+    },
+
+    /* A stable handle for storage keys. Falls back to the name when a
+       child has no id yet, which happens in demo mode. */
+    childKey(){
+      var k = TG.currentChild();
+      return k ? String(k.id || k.name).replace(/[^A-Za-z0-9_-]/g,'') : 'me';
+    },
+
     /* Is this account an admin? Demo mode grants it so the panel can be
        walked through before the Supabase role is set up. */
     async isAdmin() {
