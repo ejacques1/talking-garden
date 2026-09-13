@@ -88,7 +88,9 @@ img{max-width:100%;display:block}
 .tbadge{width:112px;display:grid;place-items:center;flex:none}
 .tbadge img{width:100%;height:auto}
 .tchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
-.tchip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;color:var(--body)}
+/* facts, not buttons */
+.tchip{display:inline-flex;align-items:center;gap:5px;background:none;border:none;border-radius:0;padding:0;cursor:default;font-size:13.5px;font-weight:700;color:var(--body)}
+.tchip:not(:last-child)::after{content:'\00B7';margin-left:12px;color:var(--faint);font-weight:700}
 .thead h1{font-size:clamp(29px,4.4vw,42px);font-weight:900;margin-bottom:8px}
 .thead p{font-size:17px;color:#456141;max-width:36em}
 @media(max-width:600px){.thead-in{flex-direction:column;align-items:flex-start;gap:16px}.tbadge{width:82px}}
@@ -115,8 +117,9 @@ img{max-width:100%;display:block}
 .stage-bd{padding:18px 28px 28px 86px}
 @media(max-width:620px){.stage-bd{padding:18px 22px 26px}.stage-hd{padding:22px 22px 0}}
 .stage-bd>p{margin-bottom:18px}
-.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.mini{font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--paper2);border:1px solid var(--line);color:var(--muted)}
+.pillrow{display:flex;gap:4px 12px;flex-wrap:wrap;margin-bottom:16px}
+.mini{display:inline-flex;align-items:center;gap:5px;background:none;border:none;border-radius:0;padding:0;cursor:default;font-size:13.5px;font-weight:600;color:var(--muted)}
+.mini:not(:last-child)::after{content:'\00B7';margin-left:12px;color:var(--faint);font-weight:700}
 .statusline{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--sage);margin-top:14px}
 
 /* locked veil */
@@ -270,7 +273,7 @@ img{max-width:100%;display:block}
 .crow .cl{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35}
 .crow .cl em{display:block;font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}
 
-.bmeta{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+.bmeta{display:flex;gap:4px 12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
 .blist{background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
 .blist b{font-family:var(--serif);font-size:15px;color:var(--ink);display:block;margin-bottom:7px}
 .blist ul{margin:0;padding-left:18px;font-size:14px;line-height:1.75}
