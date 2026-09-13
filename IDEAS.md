@@ -47,7 +47,7 @@ Open question: automatic by grade, or a toggle the child can press?
 
 ---
 
-## 3. Greyed-out pills look like buttons and are not
+## 3. Greyed-out pills look like buttons and are not — DONE 2026-09-13
 
 **Who said it:** Erin, watching a child.
 
@@ -61,7 +61,7 @@ do something.
 
 ---
 
-## 4. Collapse the stages, open them one at a time
+## 4. Collapse the stages, open them one at a time — DONE 2026-09-13
 
 **Who said it:** a parent.
 

@@ -76,6 +76,7 @@ img{max-width:100%;display:block}
 .brand-mark{width:38px;height:auto;flex:none}
 .brand-txt{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);line-height:1.15}
 .brand-txt span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.kidsel{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--ink);background:var(--paper2);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;max-width:170px}
 .who{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--body)}
 .avatar{width:32px;height:32px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-size:15px}
 @media(max-width:520px){.who span{display:none}}
@@ -115,6 +116,25 @@ img{max-width:100%;display:block}
 .stage-hd .sk{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--terra);margin-bottom:7px}
 .stage.lock .stage-hd .sk{color:var(--faint)}
 .stage-bd{padding:18px 28px 28px 86px}
+
+/* ---- one stage at a time ----
+   A parent said everything was on screen at once, so her child saw the
+   video before the before-check and did not know where to start. Only
+   the stage they are on is open; finished ones fold to a line they can
+   tap to open again; ones still ahead show what opens them. */
+.stage.st-done .stage-bd,.stage.st-ahead .stage-bd{display:none !important}
+.stage.st-done .stage-hd,.stage.st-ahead .stage-hd{padding-bottom:20px}
+.stage.st-done .sk,.stage.st-ahead .sk{display:none}
+.stage.st-done h2,.stage.st-ahead h2{font-size:18px}
+.stage.st-done{cursor:pointer;background:var(--done-l);border-color:#CBDDC6;box-shadow:none}
+.stage.st-done .snum{background:var(--done)}
+.stage.st-ahead{background:transparent;box-shadow:none;border-style:dashed}
+.stage.st-ahead h2{color:var(--muted)}
+.stage.st-ahead .snum{background:var(--line-d)}
+.stage.st-done .readcard,.stage.st-ahead .readcard{display:none}
+.stnote{font-size:13.5px;font-weight:700;color:var(--muted);margin-top:4px}
+.stage.st-done .stnote{color:var(--done-d)}
+.stage.st-open .stnote{display:none}
 @media(max-width:620px){.stage-bd{padding:18px 22px 26px}.stage-hd{padding:22px 22px 0}}
 .stage-bd>p{margin-bottom:18px}
 .pillrow{display:flex;gap:4px 12px;flex-wrap:wrap;margin-bottom:16px}
@@ -409,6 +429,7 @@ img{max-width:100%;display:block}
           <button class="btn btn-sun" id="wordBtn">Unlock the lesson</button>
         </div>
         <div class="wordmsg" id="wordMsg"></div>
+        <button class="btn btn-primary" id="watchedBtn" style="display:none;margin-top:12px">I watched it &rarr; next</button>
         <p style="font-size:12.5px;color:#9A8250;margin-top:12px" id="wordHint"></p>
       </div>
     </div>
@@ -558,7 +579,14 @@ var TOPIC=(new URLSearchParams(location.search).get('t')||'plant');
    topic would show plant content under another name, so bounce instead. */
 var BUILT=['plant'];
 if(BUILT.indexOf(TOPIC)<0){ location.replace('dashboard.html?soon='+encodeURIComponent(TOPIC)); }
-var PREKEY='tg_pre_'+TOPIC;
+/* Every key carries the child. This page was missed when the other
+   eleven were fixed, so a family with three children still shared one
+   before-check and one set of games on the plant lesson — the very
+   lesson their children started on. */
+function kidK(){ return (window.TG && TG.childKey) ? TG.childKey() : 'me'; }
+function curKid(){ return (window.TG && TG.currentChild) ? TG.currentChild() : null; }
+var PREKEY_BASE='tg_pre_'+TOPIC;
+function PREKEY(){ return PREKEY_BASE+'_'+kidK(); }
 /* The after-check only means something once a child has actually done
    the learning. Finishing an activity IS the score here — every one of
    them teaches the answer and will not complete until it is right — so
@@ -569,20 +597,26 @@ function seeYou(){
   var d = window.TGSession && TGSession.nextLong(TOPIC);
   return d ? ('See you on '+d+'!') : 'See you at the next garden session!';
 }
-function preDone(){ try{ return localStorage.getItem(PREKEY)==='1'; }catch(e){ return false; } }
+function preDone(){
+  try{ if (localStorage.getItem(PREKEY())==='1') return true; }catch(e){}
+  /* A before-check this child already took still counts. The result
+     itself was always saved under the child's name, so it is theirs. */
+  var k = curKid();
+  return !!(window.TGQuiz && k && TGQuiz.result(TOPIC,'pre',k.name));
+}
 function setPre(){
   try{
-    localStorage.setItem(PREKEY,'1');
-    localStorage.setItem(PREKEY+'_at', new Date().toISOString());
+    localStorage.setItem(PREKEY(),'1');
+    localStorage.setItem(PREKEY()+'_at', new Date().toISOString());
     /* A baseline taken after the session has already happened is not a
        baseline. Record that so the ED can exclude it from reporting
        rather than quietly under-reporting her own results. */
     var cfg={}; try{ cfg=JSON.parse(localStorage.getItem('tg_session_'+TOPIC))||{}; }catch(e){}
     var late = cfg.when ? (new Date() > new Date(cfg.when)) : false;
-    localStorage.setItem(PREKEY+'_late', late ? '1' : '0');
+    localStorage.setItem(PREKEY()+'_late', late ? '1' : '0');
   }catch(e){}
 }
-function preWasLate(){ try{ return localStorage.getItem(PREKEY+'_late')==='1'; }catch(e){ return false; } }
+function preWasLate(){ try{ return localStorage.getItem(PREKEY()+'_late')==='1'; }catch(e){ return false; } }
 
 /* Same five stage names the other eleven lessons use. Play comes
    before the build: a child who has not played yet does not know
@@ -603,7 +637,7 @@ function paint(){
   document.getElementById('preBtn').style.display = pre?'none':'inline-flex';
   document.getElementById('preDone').style.display = pre?'flex':'none';
   if(pre && window.TGQuiz){
-    var s0=TG.session(), k0=(s0&&s0.profile.children&&s0.profile.children[0]);
+    var k0=curKid();
     var r0=TGQuiz.result(TOPIC,'pre', k0&&k0.name);
     document.getElementById('preDone').textContent = r0
       ? '\u2713 Finished \u2014 '+r0+' skills to start with. '+seeYou()
@@ -614,9 +648,6 @@ function paint(){
     }
   }
 
-  ['s3','s4','s5'].forEach(function(id){
-    document.getElementById(id).classList.toggle('lock', !unlocked);
-  });
 
   var sw=document.getElementById('stageWhen');
   if(sw) sw.textContent = (window.TGSession && TGSession.nextLong(TOPIC)) || 'Live session';
@@ -648,17 +679,85 @@ function paint(){
     wb.style.opacity = pre ? '' : '.5';
   }
 
-  var done = unlocked ? 4 : (pre?1:0);
-  var now  = unlocked ? 5 : (pre?2:1);
+  paintWatched();
+  var cur  = paintStages();
+  var done = cur - 1;
+  var now  = cur;
   document.getElementById('rail').innerHTML = RAIL.map(function(r){
     var cls = r.n<=done ? 'done' : (r.n===now ? 'now' : '');
     return '<a class="rpill '+cls+'" href="#'+r.id+'"><i>'+(r.n<=done?'\u2713':r.n)+'</i>'+r.label+'</a>';
   }).join('');
 }
 
+/* ---------------- one stage at a time ---------------- */
+function watchKey(){ return 'dl_watched_'+TOPIC+'_'+kidK(); }
+function watched(){
+  var w=false; try{ w = localStorage.getItem(watchKey())==='1'; }catch(e){}
+  return TG.isUnlocked(TOPIC) || w;
+}
+function stageDone(n){
+  var k = curKid();
+  if (n===1) return preDone();
+  if (n===2) return preDone() && watched();
+  if (n===3) return activitiesDone() >= NEED_ACTIVITIES;
+  if (n===4) return buildsDone() >= NEED_BUILDS;
+  return !!(window.TGQuiz && TGQuiz.result(TOPIC,'post',k&&k.name));
+}
+function currentStage(){ for (var n=1;n<=5;n++) if(!stageDone(n)) return n; return 6; }
+var STAGE_AHEAD = {
+  2:'Opens after the before-check',
+  3:'Opens after the video',
+  4:'Opens after you play '+NEED_ACTIVITIES+' games',
+  5:'Opens after you make something at home'
+};
+var stageOpened = {}, stageLast = null;
+function staffAllOpen(){ return window.__tg_admin === true && !TG.viewAsFamily(); }
+
+function paintStages(){
+  var cur = currentStage();
+  for (var n=1;n<=5;n++){
+    var sec = document.getElementById('s'+n); if(!sec) continue;
+    var st = staffAllOpen() ? 'open'
+           : (cur===6 && n===5) ? 'open'
+           : n < cur ? (stageOpened[n] ? 'open' : 'done')
+           : n === cur ? 'open' : 'ahead';
+    sec.classList.remove('lock');
+    sec.classList.toggle('st-done',  st==='done');
+    sec.classList.toggle('st-ahead', st==='ahead');
+    sec.classList.toggle('st-open',  st==='open');
+    var hd = sec.querySelector('.stage-hd > div:last-child') || sec.querySelector('.stage-hd');
+    var note = sec.querySelector('.stnote');
+    if (!note){ note = document.createElement('div'); note.className='stnote'; hd.appendChild(note); }
+    note.innerHTML = st==='done' ? '&#10003; Done &middot; tap to open again'
+                   : st==='ahead' ? '&#128274; '+STAGE_AHEAD[n] : '';
+    sec.onclick = (function(num, state){
+      return function(e){
+        if (state!=='done' || e.target.closest('button,a,input')) return;
+        stageOpened[num] = true; paintStages();
+      };
+    })(n, st);
+  }
+  if (stageLast !== null && cur > stageLast && cur <= 5 && !staffAllOpen()){
+    var nx = document.getElementById('s'+cur);
+    if (nx) setTimeout(function(){ nx.scrollIntoView({behavior:'smooth',block:'start'}); }, 350);
+  }
+  stageLast = cur;
+  return cur;
+}
+
+function paintWatched(){
+  var btn = document.getElementById('watchedBtn'); if(!btn) return;
+  var openNow = !!(window.LESSONS && LESSONS[TOPIC] && LESSONS[TOPIC].open);
+  btn.style.display = (openNow && !TG.isUnlocked(TOPIC) && preDone() && !watched()) ? '' : 'none';
+  btn.onclick = function(){
+    try{ localStorage.setItem(watchKey(),'1'); }catch(e){}
+    paint();
+  };
+}
+
 document.getElementById('preBtn').addEventListener('click',function(){
   var sess=TG.session(), kids=(sess&&sess.profile.children)||[];
-  TGQuiz.open(TOPIC,'pre',kids,function(){
+  TGQuiz.open(TOPIC,'pre',[curKid()].filter(Boolean),function(){
     setPre(); paint();
     document.getElementById('s2').scrollIntoView({behavior:'smooth',block:'start'});
   });
@@ -689,7 +788,7 @@ document.getElementById('wordBtn').addEventListener('click',tryWord);
 document.getElementById('wordIn').addEventListener('keydown',function(e){ if(e.key==='Enter') tryWord(); });
 
 document.getElementById('resetBtn').addEventListener('click',function(){
-  try{ localStorage.removeItem(PREKEY); }catch(e){}
+  try{ localStorage.removeItem(PREKEY()); }catch(e){}
   document.getElementById('wordIn').value='';
   document.getElementById('wordMsg').className='wordmsg';
   paint(); window.scrollTo({top:0,behavior:'smooth'});
@@ -699,16 +798,42 @@ document.getElementById('resetBtn').addEventListener('click',function(){
   var s = await TG.requireAuth();
   if(!s) return;
 
-  var kid0 = s.profile.children && s.profile.children[0];
+  /* Settle whether this is staff before anything draws. The other
+     eleven lessons already did; this page never asked, so staff saw
+     the plant lesson locked like a family and could not check it. */
+  await TG.isAdmin();
   if (window.TGContent) await TGContent.load();
   await TGSession.loadAll();
-  await TGProgress.load(kid0 && kid0.id);
+  await TGProgress.load(curKid() && curKid().id);
   var p = s.profile, kids = p.children || [];
-  var who = kids.length ? kids[0].name + (kids[0].grade ? ', '+kids[0].grade+' grade' : '') : (p.parentName||p.email);
-  document.getElementById('whoName').textContent = who;
-  document.getElementById('avatar').textContent = kids.length ? (kids[0].name[0]||'?').toUpperCase() : '\ud83c\udf3b';
-  document.getElementById('certLine').textContent =
-    (kids.length ? kids[0].name+' \u00b7 ' : '') + 'Plant Life Cycle \u00b7 completed August 2026';
+  function paintWho(){
+    var k = curKid();
+    document.getElementById('whoName').textContent = k
+      ? k.name + (k.grade ? ', '+k.grade+' grade' : '') : (p.parentName||p.email);
+    document.getElementById('avatar').textContent = k ? (k.name[0]||'?').toUpperCase() : '\ud83c\udf3b';
+    document.getElementById('certLine').textContent =
+      (k ? k.name+' \u00b7 ' : '') + 'Plant Life Cycle';
+  }
+  paintWho();
+  if (kids.length > 1){
+    var sel = document.createElement('select');
+    sel.className = 'kidsel';
+    sel.innerHTML = kids.map(function(k){
+      var id = String(k.id || k.name);
+      return '<option value="'+id+'">'+k.name+(k.grade?' \u00b7 '+k.grade:'')+'</option>';
+    }).join('');
+    var ck = curKid(); if (ck) sel.value = String(ck.id || ck.name);
+    var whoEl = document.querySelector('.who');
+    whoEl.style.display = 'none';
+    whoEl.parentNode.insertBefore(sel, whoEl);
+    sel.onchange = async function(){
+      TG.setCurrentChild(sel.value);
+      await TGProgress.load(curKid() && curKid().id, true);
+      paintWho(); paintActs(); if (typeof paintBuilds==='function') paintBuilds();
+      if (typeof paintScores==='function') paintScores();
+      stageLast = null; paint();
+    };
+  }
   document.getElementById('outBtn').onclick = async function(){ await TG.signOut(); location.href='index.html'; };
   paint();
   /* Root guides Grow, on every other lesson in the world, so he leads
@@ -809,13 +934,20 @@ function speakPrompt(key, text, choices){
 function speakNews(text){ if(window.TGAudio && text) TGAudio.say(text); }
 var cur=null, st={};
 
-function doneKey(k){ return TOPIC+'_'+k; }
-function isActDone(k){ return window.TGProgress ? TGProgress.done(doneKey(k)) : false; }
+function doneKey(k){ return TOPIC+'_'+k+'_'+kidK(); }
+function isActDone(k){
+  if (!window.TGProgress) return false;
+  /* Games finished before progress was split by child were saved as
+     plant_seq. On the live site those rows already belong to one child,
+     so they still count for that child and nobody else. */
+  return TGProgress.done(doneKey(k)) || TGProgress.done(TOPIC+'_'+k);
+}
 function markAct(k){
-  var sess=TG.session(), kid=(sess&&sess.profile.children&&sess.profile.children[0]);
+  var kid=curKid();
   if(window.TGProgress) TGProgress.mark(kid&&kid.id, TOPIC, doneKey(k));
   paintActs();
   if(typeof paintScores==='function') paintScores();
+  paint();
 }
 function paintActs(){
   [].forEach.call(document.querySelectorAll('#actCards .mcard'), function(c){
@@ -1149,7 +1281,7 @@ function afterUnlocked(){
 }
 
 function paintScores(){
-  var sess=TG.session(), k=(sess&&sess.profile.children&&sess.profile.children[0]);
+  var k=curKid();
   var pre=TGQuiz.result(TOPIC,'pre',k&&k.name), post=TGQuiz.result(TOPIC,'post',k&&k.name);
   var b=document.getElementById('rBefore'), a=document.getElementById('rAfter');
   if(b) b.textContent = pre  || '\u2014';
@@ -1210,7 +1342,7 @@ function paintScores(){
 var postBtn=document.getElementById('postBtn');
 if(postBtn) postBtn.addEventListener('click',function(){
   var sess=TG.session(), kids=(sess&&sess.profile.children)||[];
-  TGQuiz.open(TOPIC,'post',kids,function(){ paintScores(); });
+  TGQuiz.open(TOPIC,'post',[curKid()].filter(Boolean),function(){ paintScores(); paint(); });
 });
 paintScores();
 

@@ -66,6 +66,29 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .stage{background:#fff;border:1px solid var(--line);border-radius:var(--rl);padding:26px 28px;margin:20px 0;box-shadow:var(--shadow);position:relative}
 .stage.lock{opacity:.55}
 .stage.lock::after{content:'\1F512';position:absolute;top:20px;right:24px;font-size:19px;opacity:.5}
+
+/* ---- one stage at a time ----
+   A parent watching her child said everything was on screen at once,
+   so he saw the video before doing the before-check and did not know
+   where to start. Now only the stage they are on is open. Finished
+   stages fold to one line they can tap to open again; stages still
+   ahead show just their title and what opens them. */
+.stage.st-done,.stage.st-ahead{padding-top:18px;padding-bottom:18px}
+.stage.st-done > :not(.sn):not(.stnote),
+.stage.st-ahead > :not(.sn):not(.stnote){display:none !important}
+.stage.st-done .readcard,.stage.st-ahead .readcard{display:none}
+.stage.st-done .sk,.stage.st-ahead .sk{display:none}
+.stage.st-done h2,.stage.st-ahead h2{font-size:17px}
+.stage.st-done{cursor:pointer;background:var(--green-l);border-color:#CBDDC6;box-shadow:none}
+.stage.st-done .sn i{background:var(--green)}
+.stage.st-done:hover{border-color:var(--green)}
+.stage.st-ahead{background:transparent;box-shadow:none;border-style:dashed}
+.stage.st-ahead h2{color:var(--muted)}
+.stage.st-ahead .sn i{background:var(--line-d)}
+.stnote{margin:4px 0 0 39px;font-size:13.5px;font-weight:700;color:var(--muted)}
+.stage.st-done .stnote{color:var(--green-d)}
+.stage.st-open .stnote{display:none}
+@media(max-width:600px){.stnote{margin-left:0}}
 .sn{display:flex;align-items:flex-start;gap:12px;margin-bottom:5px}
 .sn .sk{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
 .sn i{width:27px;height:27px;border-radius:50%;background:var(--w);color:#fff;display:grid;place-items:center;font-size:13px;font-style:normal;font-weight:800;font-family:var(--display);flex:none}
@@ -511,6 +534,7 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
         <button class="btn btn-sun" id="wordBtn">Unlock the lesson</button>
       </div>
       <div class="wordmsg" id="wordMsg"></div>
+      <button class="btn btn-primary" id="watchedBtn" style="display:none;margin-top:12px">I watched it &rarr; next</button>
       <p style="font-size:12.5px;color:#9A8250;margin-top:10px" id="wordHint"></p>
     </div>
   </section>

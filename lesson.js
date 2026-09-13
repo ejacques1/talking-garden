@@ -38,6 +38,7 @@
   function PRE_KEY(){   return 'dl_pre_'   + SLUG + '_' + kidKey(); }
   function BUILD_KEY(){ return 'dl_built_' + SLUG + '_' + kidKey(); }
   function actKey(id){  return SLUG + ':' + id + ':' + kidKey(); }
+  function WATCH_KEY(){ return 'dl_watched_' + SLUG + '_' + kidKey(); }
 
   function el(id){ return document.getElementById(id); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
@@ -45,7 +46,13 @@
   function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
-  function preDone(){ return get(PRE_KEY()) === '1'; }
+  function preDone(){
+    if (get(PRE_KEY()) === '1') return true;
+    /* A before-check this child already took still counts — the result
+       was always saved under the child's own name. */
+    var k = child();
+    return !!(k && TGQuiz.result(SLUG, 'pre', k.name));
+  }
   function built(){
     if (get(BUILD_KEY()) === '1') return true;
     /* Any one of the builds is enough — the point is hands in the
@@ -828,7 +835,9 @@
     var wi = el('wordIn'), wb = el('wordBtn');
     wi.disabled = wb.disabled = (!pre || unlocked);
     if (L.open && !TG.isUnlocked(SLUG)){
-      el('wordP').textContent = 'No secret word needed for now — everything below is open. Once this lesson\u2019s live session runs, the word comes back.';
+      el('wordP').textContent = watched()
+        ? 'No secret word needed for now.'
+        : 'No secret word needed for now. Watch the video, then tap the button below to keep going.';
       el('wordMsg').className = 'wordmsg yes';
       el('wordMsg').textContent = '🔓 Open for now';
     } else if (unlocked){
@@ -842,10 +851,6 @@
       ? 'Every word this lesson has ever used still works, so an older recording is never a dead end.'
       : 'No session scheduled yet. The word appears once one is.';
 
-    /* stages 3–5 */
-    ['s3','s4','s5'].forEach(function(id){
-      el(id).classList.toggle('lock', !unlocked);
-    });
 
     var played = playedCount();
     var ready  = unlocked && played >= NEED_PLAY && built();
@@ -899,15 +904,16 @@
     if (post){ el('postBtn').style.display='none'; el('certWrap').style.display='block'; paintCert(); }
 
     /* rail */
-    var now = post ? 5
-            : !pre ? 0 : (!unlocked ? 1 : (!built() ? 2 : (played < NEED_PLAY ? 3 : 4)));
+    var now = currentStage() - 1;
     el('rail').innerHTML = RAIL.map(function(t,i){
       var cls = i < now ? 'was' : (i === now ? 'now' : '');
       return '<button class="rstep '+cls+'" data-s="'+(i+1)+'"><i>'+(i<now?'&#10003;':(i+1))+'</i>'+esc(t)+'</button>';
     }).join('');
     [].forEach.call(el('rail').querySelectorAll('.rstep'), function(b){
       b.onclick = function(){
-        var t = el('s'+b.dataset.s);
+        var n = +b.dataset.s, t = el('s'+n);
+        /* A finished stage opens again when you jump to it. */
+        if (n < currentStage()) { reopened[n] = true; paintStages(); }
         if (t) window.scrollTo({ top: t.offsetTop - 96, behavior:'smooth' });
       };
     });
@@ -917,6 +923,107 @@
     paintActivities();
 
     paintRead();
+    paintWatched();
+    paintStages();
+  }
+
+  /* ---------------- one stage at a time ---------------- */
+  /* Stage 2 is done once the lesson is unlocked by the secret word, or
+     — while everything is open for testing and there is no word — once
+     the child presses "I watched it". The site cannot tell whether a
+     YouTube video was actually watched, so it takes their word for it. */
+  function watched(){
+    return TG.isUnlocked(SLUG) || get(WATCH_KEY()) === '1';
+  }
+
+  function stageDone(n){
+    var k = child();
+    if (n === 1) return preDone();
+    if (n === 2) return preDone() && watched();
+    if (n === 3) return playedCount() >= NEED_PLAY;
+    if (n === 4) return built();
+    return !!TGQuiz.result(SLUG, 'post', k && k.name);
+  }
+
+  /* The first stage not yet done. 6 means everything is finished. */
+  function currentStage(){
+    for (var n = 1; n <= 5; n++) if (!stageDone(n)) return n;
+    return 6;
+  }
+
+  var AHEAD = {
+    2: 'Opens after the before-check',
+    3: 'Opens after the video',
+    4: 'Opens after you play ' + NEED_PLAY + ' games',
+    5: 'Opens after you make something at home'
+  };
+  var reopened = {};          /* finished stages a child tapped open again */
+  var lastStage = null;
+
+  /* Staff see every stage open, so they can check any of it. The family
+     view shows exactly what a child gets. */
+  function staffAllOpen(){
+    return global.__tg_admin === true && !TG.viewAsFamily();
+  }
+
+  function paintStages(){
+    var cur = currentStage();
+    for (var n = 1; n <= 5; n++){
+      var sec = el('s'+n); if (!sec) continue;
+      var state;
+      if (staffAllOpen())          state = 'open';
+      else if (cur === 6 && n === 5) state = 'open';     /* keep the certificate showing */
+      else if (n < cur)            state = reopened[n] ? 'open' : 'done';
+      else if (n === cur)          state = 'open';
+      else                         state = 'ahead';
+
+      sec.classList.remove('lock');
+      sec.classList.toggle('st-done',  state === 'done');
+      sec.classList.toggle('st-ahead', state === 'ahead');
+      sec.classList.toggle('st-open',  state === 'open');
+
+      var note = sec.querySelector('.stnote');
+      if (!note){
+        note = document.createElement('div');
+        note.className = 'stnote';
+        sec.querySelector('.sn').insertAdjacentElement('afterend', note);
+      }
+      note.innerHTML = state === 'done'  ? '&#10003; Done &middot; tap to open again'
+                     : state === 'ahead' ? '&#128274; ' + AHEAD[n]
+                     : '';
+
+      sec.onclick = (function(num, st){
+        return function(e){
+          if (st !== 'done' || e.target.closest('button,a,input')) return;
+          reopened[num] = true;
+          paintStages();
+        };
+      })(n, state);
+    }
+
+    /* When a stage finishes, take them to the one that just opened —
+       that is the "uncollapses the next section" the parent asked for.
+       Not on first load, and not when a game is covering the page. */
+    if (lastStage !== null && cur > lastStage && cur <= 5 && !staffAllOpen()){
+      var nextSec = el('s'+cur);
+      if (nextSec) setTimeout(function(){
+        nextSec.scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 350);
+    }
+    lastStage = cur;
+  }
+
+  /* While everything is open for testing there is no word to type, so
+     a button stands in for it. With the gates on, the word does the job
+     and this stays hidden. */
+  function paintWatched(){
+    var btn = el('watchedBtn'); if (!btn) return;
+    var show = !!L.open && !TG.isUnlocked(SLUG) && preDone() && !watched();
+    btn.style.display = show ? '' : 'none';
+    btn.onclick = function(){
+      set(WATCH_KEY(), '1');
+      paint();
+    };
   }
 
   /* ---------------- word entry ---------------- */
