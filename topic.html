@@ -426,7 +426,6 @@ img{max-width:100%;display:block}
     </div>
     <div class="stage-bd">
       <p>Quick, tappy, and endlessly repeatable. Play them as many times as you want — every one you finish earns a badge.</p>
-      <p class="teksnote" id="teksNote"></p>
       <div class="cards" id="actCards">
         <a class="mcard" data-act="seq">
           <span class="e e-green">🌱</span>
@@ -821,23 +820,12 @@ function markAct(k){
 function paintActs(){
   [].forEach.call(document.querySelectorAll('#actCards .mcard'), function(c){
     c.classList.toggle('done', isActDone(c.dataset.act));
-    if(window.TEKS && !c.querySelector('.telabel')){
-      var a=TEKS.activities[c.dataset.act];
-      if(a){
-        var l=document.createElement('span');
-        l.className='telabel';
-        l.textContent=TEKS.label(c.dataset.act)+' — '+a.skill;
-        c.querySelector('span:nth-child(2)').appendChild(l);
-      }
-    }
+    /* No standards on anything a family sees. A code like K.13(C)
+       means nothing to a child, and a fourth grader reading a
+       Kindergarten code reads it as "this is for babies". The
+       alignment lives in the admin panel and the curriculum document,
+       where the people who need it look. */
   });
-  var note = document.getElementById('teksNote');
-  if(window.TEKS && note && TEKS.topics[TOPIC]){
-    var t = TEKS.topicLine(TOPIC);
-    note.innerHTML = 'Aligned to <b>Texas Essential Knowledge and Skills</b> — '+
-      '<b>TEKS '+t.code+'</b> ('+t.section+'): &ldquo;'+t.text+'&rdquo;'+
-      (t.also.length ? '<br><span style="color:var(--faint)">Also touches '+t.also.join(', ')+'</span>' : '');
-  }
 }
 
 function openAct(k){
@@ -1399,8 +1387,7 @@ function paintBuilds(){
     var done=isActDone('build_'+b.id);
     return '<a class="mcard'+(done?' done':'')+'" data-build="'+b.id+'">'+
       '<span class="e e-green">'+p.emoji+'</span>'+
-      '<span><h4>'+p.title+'</h4><p>'+p.blurb+'</p>'+
-      '<span class="telabel">'+b.teks+' &middot; '+b.why+'</span></span>'+
+      '<span><h4>'+p.title+'</h4><p>'+p.blurb+'</p></span>'+
       '<span class="tick">&#10003;</span></a>';
   }).join('');
 }

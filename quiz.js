@@ -174,7 +174,7 @@
           var icon  = state==='gained' ? '&#11088;' : (state==='kept' ? '&#9989;' : '&#8226;');
           var note  = state==='gained' ? 'New!' : (state==='kept' ? 'Already knew it' : 'Keep practicing');
           return '<div class="crow '+state+'"><span class="ci">'+icon+'</span>'+
-                 '<span class="cl">'+c.label+'<em>'+(c.teks?c.teks+' &middot; ':'')+note+'</em></span></div>';
+                 '<span class="cl">'+c.label+'<em>'+note+'</em></span></div>';
         }).join('');
         var gained = COMPETENCIES[st.topic].filter(function(c){ return per[c.id] && !before[c.id]; }).length;
         body.innerHTML = '<div class="win"><div class="m">&#127775;</div>'+

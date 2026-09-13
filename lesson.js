@@ -110,7 +110,6 @@
        page, where the people who need it look. */
     chips.push('Lesson ' + L.n + ' of ' + (global.LESSONS.forWorld(L.world).length));
     if (L.competencies) chips.push(L.competencies.length + ' skills');
-    if (L.standards && L.standards.length) chips.push('TEKS aligned');
     el('lChips').innerHTML = chips.map(function(c){ return '<span class="chip">'+esc(c)+'</span>'; }).join('');
   }
 
@@ -497,8 +496,6 @@
           '<span class="ce">'+(b.emoji || '&#128736;&#65039;')+'</span>'+
           '<b>'+esc(b.title)+'</b>'+
           '<span>'+esc(b.blurb)+'</span>'+
-          (b.teks && window.TEKS && TEKS.se[b.teks]
-            ? '<span class="skill">&#127793; '+esc(b.teks)+' &middot; '+esc(b.teksNote||'')+'</span>' : '')+
         '</button>';
       }).join('') +'</div>'+
       (L.safety ? '<div class="safety"><b>Safety.</b> '+esc(L.safety)+'</div>' : '');
@@ -583,9 +580,6 @@
         '<div class="win"><div class="m">&#127881;</div><h3>You built it!</h3>'+
         '<div class="blist" style="text-align:left"><b>Why it works</b>'+
           '<p style="font-size:14.5px;margin-top:6px">'+esc(p.why)+'</p></div>'+
-        (p.teks && window.TEKS && TEKS.se[p.teks]
-          ? '<p style="font-size:13px;color:var(--muted);margin:12px 0 16px">You practised: '+
-            esc(TEKS.se[p.teks].text)+'</p>' : '')+
         '<button class="btn btn-primary" id="bDone" style="width:auto">Back to the lesson</button></div>';
       el('bDone').onclick = function(){
         TGPlay.close();
@@ -612,9 +606,6 @@
                '<b>'+esc(a.title)+'</b>'+
                '<span>'+esc(a.prompt || '')+'</span>'+
                '<span class="skill">&#127793; '+esc(a.teaches)+'</span>'+
-               (a.teks && window.TEKS && TEKS.se[a.teks]
-                 ? '<span class="acode">TEKS '+esc(a.teks)+'</span>'
-                 : '')+
              '</button>';
     }).join('');
 
@@ -868,15 +859,8 @@
           (NEED_PLAY - played > 0 && !built() ? ', and ' : '') +
           (!built() ? 'one thing made at home' : '') + '.';
 
-    var sl = el('stdList');
-    if (sl && window.TEKS){
-      sl.innerHTML = (L.competencies||[]).map(function(c){
-        var se = TEKS.se[c.teks]; if (!se) return '';
-        return '<div class="stdrow"><b>'+esc(c.teks)+'</b>'+
-               '<span>'+esc(c.label)+'<em>'+esc(se.subject||'Science')+' &middot; '+esc(se.grade)+
-               ' &middot; '+esc(se.section)+'</em></span></div>';
-      }).join('');
-    }
+    /* Standards are not shown to families — see the note on the plant
+       lesson. They are in admin → Curriculum and the curriculum page. */
 
     /* What to do next, on the stage they are standing on. They finished
        two games and had no idea whether that was enough. */
