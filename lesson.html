@@ -236,11 +236,17 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .play-bd{padding:22px 20px 26px}
 .q{font-family:var(--display);font-weight:800;font-size:19px;color:var(--ink);margin-bottom:5px;line-height:1.25}
 .qs{font-size:13px;color:var(--muted);margin-bottom:15px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-@media(max-width:460px){.grid2{grid-template-columns:1fr}}
-.opt{background:#fff;border:2px solid var(--line);border-radius:14px;padding:13px 15px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:.12s}
+/* ---- picture first ----
+   The youngest children cannot read the labels. Watching them, they
+   tap the picture, so the picture is the tile and the word is a small
+   caption under it. Big for everyone: an older child loses nothing and
+   a five-year-old gains the whole game. */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+/* Two across even on a phone: picture tiles are compact, and one
+   column pushed half the choices off the screen. */
+.opt{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px 10px 14px;font-family:var(--sans);font-size:14.5px;font-weight:700;line-height:1.25;color:var(--ink);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:120px;transition:.12s}
 .opt:hover{border-color:var(--w)}
-.opt .e{font-size:22px;flex:none}
+.opt .e{font-size:54px;line-height:1;flex:none}
 .opt.right{border-color:var(--green);background:var(--green-l)}
 .opt.wrong{border-color:var(--red);background:var(--red-l)}
 .opt.picked{border-color:var(--w);background:var(--wl)}
@@ -280,7 +286,7 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .pickf:hover{border-color:var(--w)}
 .pickf.on{border-color:var(--w);background:var(--wl)}
 .pickf.seen{border-color:var(--green)}
-.pickf .e{font-size:24px}
+.pickf .e{font-size:38px;line-height:1}
 .journey{background:var(--beige);border-radius:14px;padding:15px;margin-bottom:12px}
 .stop{display:flex;align-items:center;gap:12px;background:#fff;border-radius:11px;padding:10px 14px;font-size:14.5px;font-weight:600}
 .stop .se{font-size:22px}
@@ -418,9 +424,9 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .outcome span{font-size:14px;color:var(--body)}
 
 /* activity engine */
-.tray{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.tile{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:8px;transition:.12s}
-.tile .e{font-size:20px}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:9px;margin-bottom:14px}
+.tile{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 8px 12px;font-family:var(--sans);font-size:13.5px;font-weight:700;line-height:1.25;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:7px;min-height:106px;transition:.12s}
+.tile .e{font-size:46px;line-height:1}
 .tile:hover{border-color:var(--w)}
 .tile.sel{border-color:var(--w);background:var(--wl)}
 .tile.ok{border-color:var(--green);background:var(--green-l);cursor:default}
@@ -430,14 +436,18 @@ p{margin:0}a{color:inherit}img{max-width:100%;display:block}
 .slot{background:#fff;border:2px dashed var(--line-d);border-radius:12px;min-width:52px;min-height:32px;display:grid;place-items:center;font-size:12px;color:var(--faint);padding:6px 10px;font-weight:700}
 .slot.full{border-style:solid;border-color:var(--green);background:var(--green-l);color:var(--green-d);font-size:14px}
 .bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px}
-.bin{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center;font-family:var(--sans);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;transition:.12s}
+.bin{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px 10px;min-height:112px;text-align:center;font-family:var(--sans);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;transition:.12s}
 .bin:hover{border-color:var(--w);background:var(--wl)}
-.bin .e{font-size:24px;display:block;margin-bottom:5px}
+.bin .e{font-size:46px;line-height:1;display:block;margin-bottom:8px}
 .bin small{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-top:4px}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .col{display:flex;flex-direction:column;gap:7px}
+/* Matching pairs sit in two narrow columns, so they stay side by side
+   with a big picture on the left rather than stacking tall. */
+.col .tile{flex-direction:row;justify-content:flex-start;text-align:left;min-height:64px;padding:10px 12px;font-size:14px}
+.col .tile .e{font-size:36px}
 .col h5{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
-.big{font-size:40px;text-align:center;margin-bottom:6px}
+.big{font-size:88px;line-height:1.05;text-align:center;margin-bottom:6px}
 
 /* One read-aloud button per card, not one per sentence. Thirty-three
    speaker icons on a page read as clutter and stopped anyone noticing

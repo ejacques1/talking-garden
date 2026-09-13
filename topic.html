@@ -204,26 +204,31 @@ img{max-width:100%;display:block}
 /* ---------- activity player ---------- */
 .ovl{position:fixed;inset:0;background:rgba(31,35,32,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
 .ovl.on{display:flex}
-.play{width:100%;max-width:440px;background:#fff;border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.3);overflow:hidden}
+.play{width:100%;max-width:520px;background:#fff;border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.3);overflow:hidden}
 .play-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);background:var(--paper2)}
 .play-hd b{font-family:var(--serif);font-size:16px;color:var(--ink);flex:1}
 .play-x{background:none;border:none;font-size:24px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
 .play-bd{padding:22px 20px 24px;min-height:330px}
 .q{font-family:var(--serif);font-size:21px;color:var(--ink);text-align:center;margin-bottom:5px}
 .qs{font-size:14px;color:var(--muted);text-align:center;margin-bottom:18px}
+/* ---- picture first ----
+   The youngest children cannot read the labels. Watching them, they
+   tap the picture, so the picture is the tile and the word is a small
+   caption under it. Big for everyone: an older child loses nothing and
+   a five-year-old gains the whole game. */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.opt{border:3px solid var(--line);border-radius:16px;padding:15px 10px;text-align:center;background:var(--paper2);cursor:pointer;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);transition:.14s}
+.opt{border:3px solid var(--line);border-radius:16px;padding:16px 10px 14px;min-height:120px;line-height:1.25;text-align:center;background:var(--paper2);cursor:pointer;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);transition:.14s}
 .opt:hover{border-color:var(--sage);transform:translateY(-2px)}
-.opt .e{display:block;font-size:32px;margin-bottom:5px}
+.opt .e{display:block;font-size:54px;line-height:1;margin-bottom:8px}
 .opt.right{border-color:var(--sage);background:var(--sage-l)}
 .opt.wrong{border-color:var(--terra);background:var(--terra-l)}
 .opt.used{opacity:.35;pointer-events:none}
 .say{margin-top:16px;background:var(--sun-l);border-radius:15px;padding:14px 16px;font-size:14.5px;color:#3D4F5E;text-align:center;min-height:52px;display:flex;align-items:center;justify-content:center}
 .seqrow{display:flex;gap:7px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
-.slot{width:52px;height:52px;border-radius:14px;border:2px dashed var(--line-d);display:grid;place-items:center;font-size:24px;background:var(--paper2)}
+.slot{width:66px;height:66px;border-radius:16px;border:2px dashed var(--line-d);display:grid;place-items:center;font-size:38px;background:var(--paper2)}
 .slot.filled{border-style:solid;border-color:var(--sage);background:var(--sage-l)}
 .buckets{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
-.bucket{border-radius:16px;padding:13px;text-align:center;font-size:14px;font-weight:700;cursor:pointer;border:3px solid transparent;transition:.14s}
+.bucket{border-radius:16px;padding:18px 13px;text-align:center;font-size:15px;font-weight:700;cursor:pointer;border:3px solid transparent;transition:.14s}
 .b-yes{background:var(--sage-l);color:var(--sage-d)}
 .b-no{background:var(--terra-l);color:#8E3D1F}
 .bucket:hover{transform:translateY(-2px)}

@@ -30,7 +30,7 @@ Forms that would break the sameness:
 
 ---
 
-## 2. Bigger pictures for the youngest children
+## 2. Bigger pictures for the youngest children — DONE 2026-09-13 (bigger tiles for everyone)
 
 **Who said it:** the client.
 
@@ -75,3 +75,19 @@ one uncollapses the next.
 Worth thinking about alongside this: the rail at the top already shows
 the five stages and where they are — this would make the page match
 what the rail is already saying.
+
+---
+
+## 5. Dewey gives the directions, not the robot voice
+
+**Who said it:** Erin.
+
+The read-aloud voice sounds bad. Instead, a short animated Dewey clip
+(made in HeyGen) for each part of a lesson, saying how to use it —
+"Tap the picture you think is right," "Now watch the video," and so on.
+
+Same words in every lesson, so each clip is made once and reused
+everywhere. Kids who can't read still know what to do next.
+
+To do first: write the fixed script — one line per stage and per game
+type — then Erin records them.
