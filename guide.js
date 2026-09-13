@@ -3,15 +3,16 @@
    ------------------------------------------------------------------
    Two jobs, both for children who cannot read the page yet.
 
-   1. ON THE LESSON PAGE Dewey waits in the bottom-right corner. When a
-      stage opens he pops up and says what to do, in a short HeyGen clip
-      (film/dewey/). Tap him any time to hear it again. The very first
-      time a child meets him, a "Meet Dewey!" card plays his intro first.
-
-      Clips play once per child, per lesson, per stage on their own —
-      after that they only play when tapped, so a returning child is
-      not nagged. Browsers will not start sound without a tap, so if
-      the clip cannot start by itself a big play button waits instead.
+   1. ON THE LESSON PAGE Dewey waits in the bottom-right corner, and
+      pops up to say what to do in a short HeyGen clip (film/dewey/):
+        - the first time a child opens a lesson: his "Meet Dewey!"
+          intro, then the line for the stage they are on
+        - every time they come back to a lesson: the line for the
+          stage they are on, so they know where they left off
+        - whenever a stage opens: that stage's line
+      Tap him any time to hear it again. Browsers will not always start
+      sound without a tap, so if a clip cannot start by itself a big
+      play button waits instead.
 
    2. INSIDE A GAME the hint strip at the bottom (.say) gets a small
       Dewey whose face follows what just happened:
@@ -111,9 +112,9 @@
   var cur = null;          /* stage Dewey is on */
   var corner, video, cardEl, backEl, queue = [];
 
-  function introKey(){ return 'dl_dewey_intro_' + ctx.kid; }
-  function heardKey(n){ return 'dl_dewey_' + ctx.lesson + '_' + ctx.kid + '_' + n; }
-  function heard(n){ set(n === 0 ? introKey() : heardKey(n), '1'); }
+  /* The intro is once per child PER LESSON (Erin, 2026-09-13) */
+  function introKey(){ return 'dl_dewey_intro_' + ctx.lesson + '_' + ctx.kid; }
+  function metDewey(){ set(introKey(), '1'); }
 
   function mountCorner(){
     if (corner) return;
@@ -163,7 +164,7 @@
       '<video playsinline preload="auto" src="'+BASE+c.file+'"></video>'+
       '<button class="dg-go" type="button" aria-label="Play Dewey">&#9654;</button>';
     var v = video = box.querySelector('video');
-    v.onplaying = function(){ heard(n); };   /* counts once it actually plays */
+    v.onplaying = function(){ if (n === 0) metDewey(); };   /* counts once it actually plays */
     var go = box.querySelector('.dg-go');
     var start = function(){
       hush();
@@ -182,7 +183,7 @@
       /* Done talking: shrink back to the corner so the card is not
          covering the very thing he just told them to tap. */
       var mine = cardEl;
-      setTimeout(function(){ if (cardEl === mine && v.paused) { if (backEl) heard(0); closeAll(); } }, 1600);
+      setTimeout(function(){ if (cardEl === mine && v.paused) { if (backEl) metDewey(); closeAll(); } }, 1600);
     };
     if (auto) start(); else go.style.display = '';
   }
@@ -210,7 +211,7 @@
     cardEl.className = 'dgc';
     cardEl.innerHTML = cardHTML(n !== 6);
     document.body.appendChild(cardEl);
-    cardEl.querySelector('.go').onclick = function(){ heard(n); closeAll(); };
+    cardEl.querySelector('.go').onclick = closeAll;
 
     if (n === 6){
       cardEl.querySelector('.dg-vid').innerHTML = '<img src="'+IMG+'dewey-thankful.png" alt="">';
@@ -240,38 +241,40 @@
     row.insertAdjacentHTML('afterend', '<button type="button" class="dg-skip">Not now</button>');
     cardEl.querySelector('.go').textContent = 'Let’s go!';
     /* either button means they have met him; do not show this again */
-    var done = function(){ heard(0); closeAll(); };
+    var done = function(){ metDewey(); closeAll(); };
     cardEl.querySelector('.go').onclick = done;
     cardEl.querySelector('.dg-skip').onclick = done;
 
     if (n >= 1 && n <= 5) queue = [n];
-    playClip(0, false);         /* a first visit has had no tap yet */
+    playClip(0, true);          /* falls back to the play button if blocked */
   }
 
-  var pendingAuto = false;   /* the stage just moved on after a tap */
+  var wantGreet = false;     /* something to say once nothing is covering the page */
 
   function stage(n, opts){
     opts = opts || {};
-    var kidChanged = opts.kid !== ctx.kid || opts.lesson !== ctx.lesson;
-    if (cur !== null && n > cur && !kidChanged) pendingAuto = true;
+    var fresh = cur === null || opts.kid !== ctx.kid || opts.lesson !== ctx.lesson;
+    var moved = !fresh && n > cur;
     ctx.lesson = opts.lesson || ''; ctx.kid = opts.kid || ''; ctx.quiet = !!opts.quiet;
 
     mountCorner();
-    if (kidChanged) closeAll();
+    if (fresh) closeAll();
     cur = n;
     setFace();
+    if (fresh || moved) wantGreet = true;   /* repaints alone stay quiet */
     greet();
   }
 
-  /* Pop up on his own only when there is something new to say. */
+  /* Pop up when the lesson opens, and when a stage opens. */
   function greet(){
-    if (cur === null || ctx.quiet || cur === 6 || cardEl) return;
+    if (!wantGreet || cur === null || backEl) return;   /* never over the intro */
+    if (ctx.quiet || cur === 6) { wantGreet = false; return; }
     var ovl = document.getElementById('ovl');
     if (ovl && ovl.classList.contains('on')) return;   /* a game is up; wait */
 
-    var auto = pendingAuto; pendingAuto = false;
-    if (!get(introKey())) { openIntro(cur); return; }
-    if (!get(heardKey(cur))) openCard(cur, auto);
+    wantGreet = false;
+    if (!get(introKey())) openIntro(cur);
+    else openCard(cur, true);
   }
 
   /* ================= Dewey in a game's hint strip ================= */
