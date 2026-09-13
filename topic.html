@@ -1397,17 +1397,10 @@ function paintVideo(){
       slot.innerHTML = '<video src="'+film+'" controls playsinline '+
                        'style="width:100%;height:100%;display:block;background:#000"></video>';
       title.textContent = 'The Plant Life Cycle \u2014 ' + g + ' explains';
-      when.innerHTML = 'Watch it as often as you like' +
-        (window.TGMovie ? ' &middot; <a href="#" id="flipVersion" style="color:var(--sage-d);font-weight:700">see the simple version</a>' : '');
+      /* No switch to the simple drawn version any more: the real film
+         always shows, the same as the other eleven. */
+      when.textContent = 'Watch it as often as you like';
       if(tabBtn) tabBtn.textContent = g + ' explains';
-      var fv = document.getElementById('flipVersion');
-      if (fv) fv.onclick = function(e){
-        e.preventDefault();
-        TGMovie.mount(slot);
-        when.innerHTML = 'The simple version, drawn in code &middot; <a href="#" id="flipBack" style="color:var(--sage-d);font-weight:700">see the film</a>';
-        var fb = document.getElementById('flipBack');
-        if (fb) fb.onclick = function(e2){ e2.preventDefault(); paintVideo(); };
-      };
       return;
     }
 
