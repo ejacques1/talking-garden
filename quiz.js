@@ -195,22 +195,22 @@
       '<div class="qs">Question '+(st.i+1)+' of '+Q.length+'</div>'+
       '<div class="grid2">'+ q.opts.map(function(o,i){
         return '<button class="opt" data-i="'+i+'"><span class="e">'+o.e+'</span>'+o.t+'</button>'; }).join('') +'</div>'+
-      '<div class="say" id="qSay">'+(st.phase==='pre'?'Just pick the one you think is right.':'Give it your best go!')+'</div>'+
+      '<div class="say" id="qSay" data-mood="wait">'+(st.phase==='pre'?'Just pick the one you think is right.':'Give it your best go!')+'</div>'+
       '<div class="pbar"><i style="width:'+(st.i/Q.length*100)+'%"></i></div>';
 
     [].forEach.call(body.querySelectorAll('.opt'), function(b){
       b.onclick=function(){
         var picked=q.opts[+b.dataset.i], right=!!picked.ok;
         st.right[st.i]=right;
-        if(st.phase==='pre'){ b.classList.add('right'); el('qSay').textContent='Got it — next one!'; if(global.TGAudio) TGAudio.say('Got it! Next one.'); }
+        if(st.phase==='pre'){ b.classList.add('right'); el('qSay').setAttribute('data-mood','ok'); el('qSay').textContent='Got it — next one!'; if(global.TGAudio) TGAudio.say('Got it! Next one.'); }
         else{
           b.classList.add(right?'right':'wrong');
           if(!right){
             [].forEach.call(body.querySelectorAll('.opt'),function(x){ if(q.opts[+x.dataset.i].ok) x.classList.add('right'); });
             var corr='The answer is '+q.opts.filter(function(o){return o.ok})[0].t+'.';
-            el('qSay').textContent=corr;
+            el('qSay').setAttribute('data-mood','hm'); el('qSay').textContent=corr;
             if(global.TGAudio) TGAudio.say(corr);
-          } else { el('qSay').textContent='That’s right!'; if(global.TGAudio) TGAudio.say('That is right!'); }
+          } else { el('qSay').setAttribute('data-mood','ok'); el('qSay').textContent='That’s right!'; if(global.TGAudio) TGAudio.say('That is right!'); }
         }
         [].forEach.call(body.querySelectorAll('.opt'),function(x){ x.style.pointerEvents='none'; });
         setTimeout(function(){ st.i++; render(); }, st.phase==='pre'?450:1100);

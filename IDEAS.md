@@ -78,7 +78,7 @@ what the rail is already saying.
 
 ---
 
-## 5. Dewey gives the directions, not the robot voice
+## 5. Dewey gives the directions, not the robot voice — CLIPS + GAME FACES BUILT 2026-09-13 (robot voice still on until Dewey's voice is cloned)
 
 **Who said it:** Erin.
 

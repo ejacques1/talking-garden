@@ -994,6 +994,9 @@
       }, 350);
     }
     lastStage = cur;
+
+    /* Dewey says what to do when a stage opens (guide.js) */
+    if (global.TGGuide) TGGuide.stage(cur, { lesson:SLUG, kid:TG.childKey(), quiet:staffAllOpen() });
   }
 
   /* While everything is open for testing there is no word to type, so

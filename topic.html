@@ -573,6 +573,7 @@ img{max-width:100%;display:block}
 <script src="lipsync.js"></script>
 <script src="movie.js"></script>
 <script src="audio.js"></script>
+<script src="guide.js"></script>
 <script src="projects.js"></script>
 <script src="teks.js"></script>
 <script src="quiz.js"></script>
@@ -747,6 +748,8 @@ function paintStages(){
     if (nx) setTimeout(function(){ nx.scrollIntoView({behavior:'smooth',block:'start'}); }, 350);
   }
   stageLast = cur;
+  /* Dewey says what to do when a stage opens (guide.js) */
+  if (window.TGGuide) TGGuide.stage(cur, { lesson:TOPIC, kid:TG.childKey(), quiet:staffAllOpen() });
   return cur;
 }
 

@@ -22,6 +22,18 @@
 
   function el(id){ return document.getElementById(id); }
   function say(t){ if (global.TGAudio && t) TGAudio.say(t); }
+
+  /* The hint strip. mood picks Dewey's face beside it (guide.js):
+     'ok' wink for a right answer, 'hm' thinking for not yet, 'wait'
+     happy while they choose. */
+  function tell(html, mood){
+    var s = el('pSay'); if (!s) return;
+    s.setAttribute('data-mood', mood || 'wait');
+    s.innerHTML = html;
+  }
+  function strip(text, mood){
+    return '<div class="say" id="pSay" data-mood="'+(mood||'wait')+'">'+text+'</div>';
+  }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
@@ -91,7 +103,8 @@
             '<button class="tile" data-n="'+n+'"><span class="e">'+i.e+'</span>'+esc(i.t)+'</button>';
         }).join('')+
       '</div>'+
-      '<div class="say" id="pSay">'+(done?'':'Tap what comes next.')+'</div>'+
+      strip(done ? '' : st.placed.length ? 'Yes! What comes next?' : 'Tap what comes next.',
+            st.placed.length ? 'ok' : 'wait')+
       '<div class="pbar"><i style="width:'+(st.placed.length/a.items.length*100)+'%"></i></div>';
 
     [].forEach.call(el('playBd').querySelectorAll('.tile'), function(b){
@@ -107,7 +120,7 @@
         } else {
           b.classList.add('no');
           var hint = 'Not yet — something else comes first.';
-          el('pSay').textContent = hint; say(hint);
+          tell(hint, 'hm'); say(hint);
           setTimeout(function(){ b.classList.remove('no'); }, 400);
         }
       };
@@ -130,7 +143,7 @@
           return '<button class="bin" data-b="'+bn.id+'"><span class="e">'+bn.e+'</span>'+esc(bn.label)+'</button>';
         }).join('')+
       '</div>'+
-      '<div class="say" id="pSay"></div>'+
+      strip(st.at ? 'Yes! Where does this one go?' : 'Where does it go? Tap one.', st.at ? 'ok' : 'wait')+
       '<div class="pbar"><i style="width:'+(st.at/a.items.length*100)+'%"></i></div>';
 
     say(item.t);
@@ -149,7 +162,7 @@
           var msg = st.wrong >= 2 && right
             ? esc(item.t)+' goes in '+esc(right.label)+'.'
             : 'Not that one — have another go.';
-          el('pSay').innerHTML = msg; say(plain(msg));
+          tell(msg, 'hm'); say(plain(msg));
           setTimeout(function(){ b.classList.remove('no'); }, 400);
         }
       };
@@ -184,7 +197,9 @@
           }).join('')+
         '</div>'+
       '</div>'+
-      '<div class="say" id="pSay">'+(st.sel?'Now tap what it goes with.':'Tap one on the left first.')+'</div>'+
+      (st.sel ? strip('Now tap what it goes with.')
+              : st.made.length ? strip('Yes, a match! Tap another one on the left.', 'ok')
+              : strip('Tap one on the left first.'))+
       '<div class="pbar"><i style="width:'+(st.made.length/a.pairs.length*100)+'%"></i></div>';
 
     [].forEach.call(el('playBd').querySelectorAll('[data-l]'), function(b){
@@ -193,7 +208,7 @@
     [].forEach.call(el('playBd').querySelectorAll('[data-r]'), function(b){
       b.onclick = function(){
         var pick = st.right[+b.dataset.r];
-        if (!st.sel){ el('pSay').textContent = 'Tap one on the left first.'; return; }
+        if (!st.sel){ tell('Tap one on the left first.'); return; }
         if (pick === st.sel){
           st.made.push(pick); st.sel = null;
           if (st.made.length === a.pairs.length){ finish('Every one matched!','&#11088;'); return; }
@@ -201,7 +216,7 @@
         } else {
           b.classList.add('no');
           var msg = 'Not a match — try another.';
-          el('pSay').textContent = msg; say(msg);
+          tell(msg, 'hm'); say(msg);
           setTimeout(function(){ b.classList.remove('no'); }, 400);
         }
       };
@@ -223,7 +238,7 @@
           return '<button class="opt" data-i="'+i+'"><span class="e">'+o.e+'</span>'+esc(o.t)+'</button>';
         }).join('')+
       '</div>'+
-      '<div class="say" id="pSay">What do you think?</div>'+
+      strip('What do you think?')+
       '<div class="pbar"><i style="width:'+(st.i/a.questions.length*100)+'%"></i></div>';
 
     if (global.TGAudio) TGAudio.readQuestion(q.q, q.opts.map(function(o){ return o.t; }));
@@ -233,7 +248,7 @@
         var o = q.opts[+b.dataset.i];
         if (o.ok){
           b.classList.add('right');
-          el('pSay').textContent = q.why; say(q.why);
+          tell(esc(q.why), 'ok'); say(q.why);
           [].forEach.call(el('playBd').querySelectorAll('.opt'), function(x){ x.style.pointerEvents='none'; });
           setTimeout(function(){ st.i++; st.miss=0; renderPick(); }, 2400);
         } else {
@@ -248,11 +263,11 @@
               if (q.opts[+x.dataset.i].ok) x.classList.add('right');
               x.style.pointerEvents='none';
             });
-            el('pSay').textContent = q.why; say(q.why);
+            tell(esc(q.why), 'hm'); say(q.why);
             setTimeout(function(){ st.i++; st.miss=0; renderPick(); }, 2800);
           } else {
             var msg = 'Not that one. Have another go.';
-            el('pSay').textContent = msg; say(msg);
+            tell(msg, 'hm'); say(msg);
           }
         }
       };
