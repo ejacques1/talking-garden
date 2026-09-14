@@ -1064,6 +1064,18 @@
       if (edited && edited !== L && !edited.legacy) L = edited;
     }
 
+    /* New game styles on trial in some lessons (play.js TRY_NEW):
+       a catch game slots in right after the sort game it is made from. */
+    if (global.TGPlay && TGPlay.extras){
+      TGPlay.extras(L).forEach(function(x){
+        var list = (L.activities || []).slice();
+        if (list.some(function(a){ return a.id === x.id; })) return;
+        var at = list.findIndex(function(a){ return a.id === x.after; });
+        list.splice(at < 0 ? list.length : at + 1, 0, x);
+        L.activities = list;
+      });
+    }
+
     paintBrand();
 
     var kids = (s.profile && s.profile.children) || [];

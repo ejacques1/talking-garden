@@ -6,7 +6,7 @@ list.
 
 ---
 
-## 1. The activities feel repetitive — drag and puzzle instead of only tapping
+## 1. The activities feel repetitive — drag and puzzle instead of only tapping — TRIAL ON COMPOST 2026-09-14 (drag + catch; add slugs to TRY_NEW in play.js to spread)
 
 **Who said it:** the client, watching a child play.
 
