@@ -65,8 +65,10 @@
   '.dg-vid{position:relative;background:#fff;aspect-ratio:1/1;max-height:34vh;margin:0 auto;display:block}'+
   '@media (max-width:480px){.dgc .dg-card{width:260px}.dg-cap{font-size:14.5px}}'+
   '.dg-vid video,.dg-vid img{width:100%;height:100%;object-fit:contain;display:block}'+
-  '.dg-go{position:absolute;inset:0;margin:auto;width:84px;height:84px;border-radius:50%;border:0;'+
-    'background:var(--blue,#0071BC);color:#fff;font-size:34px;box-shadow:0 6px 16px rgba(0,0,0,.3);cursor:pointer;padding-left:6px}'+
+  '.dg-go{position:absolute;right:10px;bottom:10px;width:64px;height:64px;border-radius:50%;border:3px solid #fff;'+
+    'background:var(--blue,#0071BC);color:#fff;font-size:28px;box-shadow:0 6px 16px rgba(0,0,0,.3);cursor:pointer;'+
+    'animation:dgPulse 1.6s ease-in-out infinite}'+
+  '@keyframes dgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}'+
   '.dg-cap{padding:10px 16px 2px;font-size:15.5px;line-height:1.4;font-weight:600;color:var(--ink,#16283A)}'+
   '.dg-bar{height:6px;background:#eee;margin:10px 16px 0;border-radius:3px;overflow:hidden}'+
   '.dg-bar i{display:block;height:100%;width:0;background:var(--blue,#0071BC)}'+
@@ -112,8 +114,10 @@
   var cur = null;          /* stage Dewey is on */
   var corner, video, cardEl, backEl, queue = [];
 
-  /* The intro is once per child PER LESSON (Erin, 2026-09-13) */
-  function introKey(){ return 'dl_dewey_intro_' + ctx.lesson + '_' + ctx.kid; }
+  /* The intro is once per child PER LESSON (Erin, 2026-09-13).
+     "2": the first version marked it heard even when the sound never
+     started, so everyone gets it again. */
+  function introKey(){ return 'dl_dewey_intro2_' + ctx.lesson + '_' + ctx.kid; }
   function metDewey(){ set(introKey(), '1'); }
 
   function mountCorner(){
@@ -152,40 +156,77 @@
     video = null;
   }
 
-  /* Plays clip n inside the open card. Returns nothing; if the browser
-     refuses to start sound, the big play button stays up instead. */
+  /* Plays clip n inside the open card.
+
+     Browsers usually refuse to start sound on their own. When that
+     happens Dewey still moves, silently, and the one big button on the
+     card becomes "Hear Dewey". A child tapping the blue button always
+     hears him — there is no way to close the card thinking you pressed
+     play, which is what happened in testing. */
   function playClip(n, auto){
     var c = CLIPS[n]; if (!c || !cardEl) return;
-    var box = cardEl.querySelector('.dg-vid');
-    var cap = cardEl.querySelector('.dg-cap');
-    var bar = cardEl.querySelector('.dg-bar i');
+    var box  = cardEl.querySelector('.dg-vid');
+    var cap  = cardEl.querySelector('.dg-cap');
+    var bar  = cardEl.querySelector('.dg-bar i');
+    var main = cardEl.querySelector('.go');
+    var again = cardEl.querySelector('.again');
     cap.textContent = c.text;
+    if (bar) bar.style.width = '0%';
     box.innerHTML =
       '<video playsinline preload="auto" src="'+BASE+c.file+'"></video>'+
-      '<button class="dg-go" type="button" aria-label="Play Dewey">&#9654;</button>';
+      '<button class="dg-go" type="button" aria-label="Hear Dewey">&#128266;</button>';
     var v = video = box.querySelector('video');
-    v.onplaying = function(){ if (n === 0) metDewey(); };   /* counts once it actually plays */
     var go = box.querySelector('.dg-go');
-    var start = function(){
-      hush();
-      var p = v.play();
+
+    function needTap(){
+      go.style.display = '';
+      main.innerHTML = '&#128266; Hear Dewey';
+      main.onclick = withSound;
+      if (again) again.style.visibility = 'hidden';
+    }
+    function talking(){
       go.style.display = 'none';
-      if (p && p.catch) p.catch(function(){ go.style.display = ''; });
-    };
-    go.onclick = start;
-    v.onclick = function(){ if (v.paused) start(); };
+      if (!cardEl) return;
+      main.textContent = cardEl.getAttribute('data-done') || 'Got it';
+      main.onclick = cardEl.onDone || closeAll;
+      if (again) again.style.visibility = '';
+    }
+    function withSound(){
+      hush();
+      v.loop = false; v.muted = false;
+      try { v.currentTime = 0; } catch(e){}
+      var p = v.play();
+      talking();
+      if (p && p.catch) p.catch(function(){ needTap(); });
+    }
+    function silently(){
+      v.muted = true; v.loop = true;
+      var p = v.play();
+      if (p && p.catch) p.catch(function(){});
+      needTap();
+    }
+
+    go.onclick = withSound;
+    v.onclick = function(){ if (v.muted || v.paused) withSound(); };
     v.ontimeupdate = function(){
-      if (bar && v.duration) bar.style.width = (v.currentTime / v.duration * 100) + '%';
+      if (bar && v.duration && !v.muted) bar.style.width = (v.currentTime / v.duration * 100) + '%';
     };
     v.onended = function(){
+      if (v.muted) return;
       if (bar) bar.style.width = '100%';
+      if (n === 0) metDewey();                 /* heard all the way through */
       if (queue.length) { playClip(queue.shift(), true); return; }
       /* Done talking: shrink back to the corner so the card is not
          covering the very thing he just told them to tap. */
       var mine = cardEl;
-      setTimeout(function(){ if (cardEl === mine && v.paused) { if (backEl) metDewey(); closeAll(); } }, 1600);
+      setTimeout(function(){ if (cardEl === mine && v.paused) closeAll(); }, 1600);
     };
-    if (auto) start(); else go.style.display = '';
+
+    if (!auto) { silently(); return; }
+    hush();
+    var p = v.play();
+    talking();
+    if (p && p.catch) p.catch(function(){ if (cardEl && video === v) silently(); });
   }
 
   function cardHTML(withAgain){
@@ -223,7 +264,7 @@
     playClip(n, auto);
   }
 
-  /* First time ever for this child: Meet Dewey, then this stage's line. */
+  /* First time in a lesson: Meet Dewey, then this stage's line. */
   function openIntro(n){
     closeAll();
     mountCorner();
@@ -237,16 +278,16 @@
     cardEl.className = 'dg-mid';
     cardEl.innerHTML = '<div class="dg-hello"><span>Meet Dewey!</span></div>' + cardHTML(false);
     document.body.appendChild(cardEl);
+    cardEl.setAttribute('data-done', 'Let’s go!');
     var row = cardEl.querySelector('.dg-row');
     row.insertAdjacentHTML('afterend', '<button type="button" class="dg-skip">Not now</button>');
-    cardEl.querySelector('.go').textContent = 'Let’s go!';
-    /* either button means they have met him; do not show this again */
-    var done = function(){ metDewey(); closeAll(); };
-    cardEl.querySelector('.go').onclick = done;
-    cardEl.querySelector('.dg-skip').onclick = done;
+    /* "Let's go" only appears once he is talking, so pressing it means
+       they heard him. "Not now" leaves the intro for next time. */
+    cardEl.onDone = function(){ metDewey(); closeAll(); };
+    cardEl.querySelector('.dg-skip').onclick = closeAll;
 
     if (n >= 1 && n <= 5) queue = [n];
-    playClip(0, true);          /* falls back to the play button if blocked */
+    playClip(0, true);
   }
 
   var wantGreet = false;     /* something to say once nothing is covering the page */

@@ -905,7 +905,8 @@
     paintBuild();
     paintActivities();
 
-    paintRead();
+    /* No "Read to me" buttons: Dewey tells them what each stage is
+       (guide.js). paintRead() is kept for now, unused. */
     paintWatched();
     paintStages();
   }
