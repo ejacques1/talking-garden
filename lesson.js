@@ -896,7 +896,7 @@
       b.onclick = function(){
         var n = +b.dataset.s, t = el('s'+n);
         /* A finished stage opens again when you jump to it. */
-        if (n < currentStage()) { reopened[n] = true; paintStages(); }
+        if (n < currentStage() || staffAllOpen()) { reopened[n] = true; paintStages(); }
         if (t) window.scrollTo({ top: t.offsetTop - 96, behavior:'smooth' });
       };
     });
@@ -944,8 +944,8 @@
   var reopened = {};          /* finished stages a child tapped open again */
   var lastStage = null;
 
-  /* Staff see every stage open, so they can check any of it. The family
-     view shows exactly what a child gets. */
+  /* Staff get the same one-stage-at-a-time page a child gets (Erin,
+     2026-09-14), but can tap any stage open to check it. */
   function staffAllOpen(){
     return global.__tg_admin === true && !TG.viewAsFamily();
   }
@@ -955,11 +955,10 @@
     for (var n = 1; n <= 5; n++){
       var sec = el('s'+n); if (!sec) continue;
       var state;
-      if (staffAllOpen())          state = 'open';
-      else if (cur === 6 && n === 5) state = 'open';     /* keep the certificate showing */
+      if (cur === 6 && n === 5)    state = 'open';     /* keep the certificate showing */
       else if (n < cur)            state = reopened[n] ? 'open' : 'done';
       else if (n === cur)          state = 'open';
-      else                         state = 'ahead';
+      else                         state = reopened[n] && staffAllOpen() ? 'open' : 'ahead';
 
       sec.classList.remove('lock');
       sec.classList.toggle('st-done',  state === 'done');
@@ -973,12 +972,14 @@
         sec.querySelector('.sn').insertAdjacentElement('afterend', note);
       }
       note.innerHTML = state === 'done'  ? '&#10003; Done &middot; tap to open again'
-                     : state === 'ahead' ? '&#128274; ' + AHEAD[n]
+                     : state === 'ahead' ? (staffAllOpen() ? '&#128275; Staff: tap to open'
+                                                          : '&#128274; ' + AHEAD[n])
                      : '';
 
       sec.onclick = (function(num, st){
         return function(e){
-          if (st !== 'done' || e.target.closest('button,a,input')) return;
+          if (e.target.closest('button,a,input')) return;
+          if (st !== 'done' && !(st === 'ahead' && staffAllOpen())) return;
           reopened[num] = true;
           paintStages();
         };
@@ -988,7 +989,7 @@
     /* When a stage finishes, take them to the one that just opened —
        that is the "uncollapses the next section" the parent asked for.
        Not on first load, and not when a game is covering the page. */
-    if (lastStage !== null && cur > lastStage && cur <= 5 && !staffAllOpen()){
+    if (lastStage !== null && cur > lastStage && cur <= 5){
       var nextSec = el('s'+cur);
       if (nextSec) setTimeout(function(){
         nextSec.scrollIntoView({ behavior:'smooth', block:'start' });
@@ -997,7 +998,7 @@
     lastStage = cur;
 
     /* Dewey says what to do when a stage opens (guide.js) */
-    if (global.TGGuide) TGGuide.stage(cur, { lesson:SLUG, kid:TG.childKey(), quiet:staffAllOpen() });
+    if (global.TGGuide) TGGuide.stage(cur, { lesson:SLUG, kid:TG.childKey() });
   }
 
   /* While everything is open for testing there is no word to type, so

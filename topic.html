@@ -723,10 +723,11 @@ function paintStages(){
   var cur = currentStage();
   for (var n=1;n<=5;n++){
     var sec = document.getElementById('s'+n); if(!sec) continue;
-    var st = staffAllOpen() ? 'open'
-           : (cur===6 && n===5) ? 'open'
+    /* staff get the same fold as a child, and can tap any stage open */
+    var st = (cur===6 && n===5) ? 'open'
            : n < cur ? (stageOpened[n] ? 'open' : 'done')
-           : n === cur ? 'open' : 'ahead';
+           : n === cur ? 'open'
+           : (stageOpened[n] && staffAllOpen()) ? 'open' : 'ahead';
     sec.classList.remove('lock');
     sec.classList.toggle('st-done',  st==='done');
     sec.classList.toggle('st-ahead', st==='ahead');
@@ -735,21 +736,22 @@ function paintStages(){
     var note = sec.querySelector('.stnote');
     if (!note){ note = document.createElement('div'); note.className='stnote'; hd.appendChild(note); }
     note.innerHTML = st==='done' ? '&#10003; Done &middot; tap to open again'
-                   : st==='ahead' ? '&#128274; '+STAGE_AHEAD[n] : '';
+                   : st==='ahead' ? (staffAllOpen() ? '&#128275; Staff: tap to open' : '&#128274; '+STAGE_AHEAD[n]) : '';
     sec.onclick = (function(num, state){
       return function(e){
-        if (state!=='done' || e.target.closest('button,a,input')) return;
+        if (e.target.closest('button,a,input')) return;
+        if (state!=='done' && !(state==='ahead' && staffAllOpen())) return;
         stageOpened[num] = true; paintStages();
       };
     })(n, st);
   }
-  if (stageLast !== null && cur > stageLast && cur <= 5 && !staffAllOpen()){
+  if (stageLast !== null && cur > stageLast && cur <= 5){
     var nx = document.getElementById('s'+cur);
     if (nx) setTimeout(function(){ nx.scrollIntoView({behavior:'smooth',block:'start'}); }, 350);
   }
   stageLast = cur;
   /* Dewey says what to do when a stage opens (guide.js) */
-  if (window.TGGuide) TGGuide.stage(cur, { lesson:TOPIC, kid:TG.childKey(), quiet:staffAllOpen() });
+  if (window.TGGuide) TGGuide.stage(cur, { lesson:TOPIC, kid:TG.childKey() });
   return cur;
 }
 
