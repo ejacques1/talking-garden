@@ -224,6 +224,10 @@
       if (isVideoFile(L.movie.url)){
         slot.innerHTML = '<video src="'+esc(L.movie.url)+'" controls playsinline '+
                          'style="width:100%;height:100%;display:block;background:#000"></video>';
+        /* Watching to the end finishes the video stage by itself. */
+        slot.querySelector('video').addEventListener('ended', function(){
+          if (preDone() && !watched()){ set(WATCH_KEY(), '1'); paint(); }
+        });
         el('sessWhen').textContent = 'Watch it as often as you like';
         return;
       }
@@ -916,8 +920,12 @@
      — while everything is open for testing and there is no word — once
      the child presses "I watched it". The site cannot tell whether a
      YouTube video was actually watched, so it takes their word for it. */
+  /* Staff count as "unlocked" everywhere, which made stage 2 finish
+     the moment the before-check did — so the video stage was skipped.
+     For the stages, only a real secret word counts. */
+  function hasWord(){ return TG.isUnlocked(SLUG) && !staffAllOpen(); }
   function watched(){
-    return TG.isUnlocked(SLUG) || get(WATCH_KEY()) === '1';
+    return hasWord() || get(WATCH_KEY()) === '1';
   }
 
   function stageDone(n){
@@ -1006,7 +1014,7 @@
      and this stays hidden. */
   function paintWatched(){
     var btn = el('watchedBtn'); if (!btn) return;
-    var show = !!L.open && !TG.isUnlocked(SLUG) && preDone() && !watched();
+    var show = (!!L.open || staffAllOpen()) && !hasWord() && preDone() && !watched();
     btn.style.display = show ? '' : 'none';
     btn.onclick = function(){
       set(WATCH_KEY(), '1');

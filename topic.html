@@ -699,7 +699,8 @@ function paint(){
 function watchKey(){ return 'dl_watched_'+TOPIC+'_'+kidK(); }
 function watched(){
   var w=false; try{ w = localStorage.getItem(watchKey())==='1'; }catch(e){}
-  return TG.isUnlocked(TOPIC) || w;
+  /* staff count as unlocked everywhere; only a real word finishes stage 2 */
+  return (TG.isUnlocked(TOPIC) && !staffAllOpen()) || w;
 }
 function stageDone(n){
   var k = curKid();
@@ -758,7 +759,8 @@ function paintStages(){
 function paintWatched(){
   var btn = document.getElementById('watchedBtn'); if(!btn) return;
   var openNow = !!(window.LESSONS && LESSONS[TOPIC] && LESSONS[TOPIC].open);
-  btn.style.display = (openNow && !TG.isUnlocked(TOPIC) && preDone() && !watched()) ? '' : 'none';
+  var hasWord = TG.isUnlocked(TOPIC) && !staffAllOpen();
+  btn.style.display = ((openNow || staffAllOpen()) && !hasWord && preDone() && !watched()) ? '' : 'none';
   btn.onclick = function(){
     try{ localStorage.setItem(watchKey(),'1'); }catch(e){}
     paint();
@@ -1406,6 +1408,10 @@ function paintVideo(){
       var g = (L.movie.guide) || 'Root';
       slot.innerHTML = '<video src="'+film+'" controls playsinline '+
                        'style="width:100%;height:100%;display:block;background:#000"></video>';
+      /* Watching to the end finishes the video stage by itself. */
+      slot.querySelector('video').addEventListener('ended', function(){
+        if (preDone() && !watched()){ try{ localStorage.setItem(watchKey(),'1'); }catch(e){} paint(); }
+      });
       title.textContent = 'The Plant Life Cycle \u2014 ' + g + ' explains';
       /* No switch to the simple drawn version any more: the real film
          always shows, the same as the other eleven. */
