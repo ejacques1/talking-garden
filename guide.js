@@ -139,6 +139,8 @@
     corner.querySelector('img').src = IMG + 'dewey-' + (cur === 6 ? 'thankful' : 'happy') + '.png';
   }
 
+  var spare = null;   /* a video a tap already started, handed to the next card */
+
   function closeAll(){
     queue = [];
     if (video){ try { video.pause(); } catch(e){} }
@@ -169,10 +171,11 @@
        brand-new one — so the line after the intro would go silent. */
     var v = box.querySelector('video');
     if (!v){
-      box.innerHTML =
-        '<video playsinline preload="auto"></video>'+
-        '<button class="dg-go" type="button" aria-label="Hear Dewey">&#128266;</button>';
-      v = box.querySelector('video');
+      box.innerHTML = '<button class="dg-go" type="button" aria-label="Hear Dewey">&#128266;</button>';
+      v = spare || document.createElement('video');
+      spare = null;
+      v.setAttribute('playsinline', ''); v.preload = 'auto';
+      box.insertBefore(v, box.firstChild);
     }
     v.src = BASE + c.file;
     video = v;
@@ -215,6 +218,7 @@
       if (v.muted) return;
       if (bar) bar.style.width = '100%';
       if (queue.length) { playClip(queue.shift(), true); return; }
+      if (cardEl && cardEl.onEnded) { cardEl.onEnded(); return; }
       /* Done talking: shrink back to the corner so the card is not
          covering the very thing he just told them to tap. */
       var mine = cardEl;
@@ -280,11 +284,23 @@
     cardEl.setAttribute('data-done', 'Let’s go!');
     var row = cardEl.querySelector('.dg-row');
     row.insertAdjacentHTML('afterend', '<button type="button" class="dg-skip">Not now</button>');
-    /* "Let's go" only appears once he is talking. */
-    cardEl.onDone = closeAll;
+    /* The intro is on its own in the middle. When it finishes (or they
+       press "Let's go", which only appears once he is talking) Dewey
+       moves to the corner and says the line for their stage there,
+       next to the button he is telling them to press. (Erin, 2026-09-14) */
+    var mine = cardEl;
+    function toCorner(){
+      if (cardEl !== mine) return;
+      spare = video;                        /* keep the tap-started player */
+      if (spare && spare.parentNode) spare.parentNode.removeChild(spare);
+      video = null;
+      closeAll();
+      if (n >= 1 && n <= 5) openCard(n, true);
+    }
+    cardEl.onDone = toCorner;
+    cardEl.onEnded = function(){ setTimeout(toCorner, 700); };
     cardEl.querySelector('.dg-skip').onclick = closeAll;
 
-    if (n >= 1 && n <= 5) queue = [n];
     playClip(0, true);
   }
 
