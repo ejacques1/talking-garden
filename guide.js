@@ -128,7 +128,13 @@
     var ovl = document.getElementById('ovl');
     if (ovl && global.MutationObserver){
       new MutationObserver(function(){
-        if (ovl.classList.contains('on')) closeAll();
+        if (ovl.classList.contains('on')){
+          /* A game opened while Dewey was talking (finishing a game opens
+             the next one straight away, right as a new stage opens).
+             Say it again once the game closes, instead of losing it. */
+          if (cardEl && !wantGreet && cur !== 6) wantGreet = backEl ? 'intro' : 'line';
+          closeAll();
+        }
         else greet();              /* a stage may have opened while the game was up */
       }).observe(ovl, { attributes:true, attributeFilter:['class'] });
     }
@@ -320,7 +326,8 @@
     setFace();
     if (fresh) wantGreet = 'intro';
     else if (moved) wantGreet = 'line';     /* repaints alone stay quiet */
-    greet();
+    /* a beat later, so a game that opens straight after is already up */
+    setTimeout(greet, 400);
   }
 
   /* EVERY time a lesson is opened, Dewey plays his intro from the
