@@ -483,6 +483,20 @@
     return out;
   }
 
+  /* HOW TO PLAY, said out loud the moment a game opens (Erin, 2026-09-14:
+     kids opened a game and did not know what to do). Robot voice for
+     now; one Dewey clip per game type could replace these later. */
+  function howTo(a){
+    if (a.type === 'sort')  return trying() ? 'Drag each picture into the box where it belongs.'
+                                            : 'Tap the box where each picture belongs.';
+    if (a.type === 'order') return trying() ? 'Drag the pictures up in the order they happen. Start with what happens first.'
+                                            : 'Tap the pictures in the order they happen. Start with what happens first.';
+    if (a.type === 'match') return 'Tap a picture on the left. Then tap the one on the right that goes with it.';
+    if (a.type === 'catch') return 'Tap the things that go in the box as they fall. Let the others fall.';
+    if (a.type === 'custom') return plain(a.prompt) || 'Tap to play.';
+    return 'Tap the answer you think is right.';
+  }
+
   /* Passed to custom renderers so they do not each reinvent speech,
      shuffling or escaping. */
   var helpers = { say: say, esc: esc, shuffle: shuffle, plain: plain };
@@ -491,6 +505,7 @@
     custom: {},
     open: function(act, onDone, next){
       st = { act:act, onDone:onDone, next:next || null };
+      if (global.TGAudio && TGAudio.lead) TGAudio.lead(howTo(act));
       el('playTitle').textContent = act.title;
       el('ovl').classList.add('on');
       document.body.style.overflow = 'hidden';

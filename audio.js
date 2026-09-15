@@ -115,7 +115,14 @@
     setTimeout(refreshVoice, 1600);
   }
 
-  function stop(){ if (supported) try { speechSynthesis.cancel(); } catch(e){} }
+  function stop(){ leading = false; if (supported) try { speechSynthesis.cancel(); } catch(e){} }
+
+  /* A LEAD is said first and not cut off: while it plays, anything else
+     asked for waits in line behind it instead of cancelling it. Used for
+     "how to play" when a game opens, so the first picture's name does
+     not talk over the instructions. */
+  var leading = false, leadTimer = null;
+  function clear(){ if (!leading) stop(); }
 
   /* iOS will not speak until synthesis has run inside a real tap. */
   function prime(){
@@ -162,7 +169,17 @@
     enabled: enabled,
     setEnabled: setEnabled,
     stop: stop,
-    say: function(t, o){ stop(); return say(t, o); },
+    say: function(t, o){ clear(); return say(t, o); },
+
+    lead: function(text){
+      stop();
+      var u = say(text);
+      if (!u) return;
+      leading = true;
+      var end = function(){ leading = false; clearTimeout(leadTimer); };
+      u.onend = end; u.onerror = end;
+      leadTimer = setTimeout(end, 1500 + String(text).length * 75);
+    },
 
     /* Say something, then run cb when the voice actually finishes.
        Falls back to a timer when speech is muted or unsupported, so
@@ -171,7 +188,7 @@
       var done = false;
       var finish = function(){ if (!done){ done = true; cb && cb(); } };
       if (!supported || !enabled()){ setTimeout(finish, fallbackMs || 900); return; }
-      stop();
+      clear();
       var u = say(text);
       if (!u){ setTimeout(finish, fallbackMs || 900); return; }
       u.onend = finish;
@@ -183,7 +200,7 @@
     /* Read a question, then its choices, as one flowing prompt. */
     readQuestion: function(question, choices){
       if (!supported || !enabled()) return;
-      stop();
+      clear();
       say(question);
       if (choices && choices.length){
         var joined = choices.map(function(c, i){

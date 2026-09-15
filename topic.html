@@ -972,8 +972,18 @@ function paintActs(){
   });
 }
 
+/* How to play, said out loud the moment a game opens. */
+var HOW_TO = {
+  seq:   'Tap the pictures in order, from seed to seed again. Start with what comes first.',
+  parts: 'Tap each part of the plant to hear what it does.',
+  eat:   'Tap the part of the plant this food comes from.',
+  need:  'Tap yes if a plant needs it to grow, or no if it does not.',
+  worm:  'Tap feed the worms if they would eat it, or no thanks if they would not.',
+  seed:  'Tap sun and water to help your seed grow.'
+};
 function openAct(k){
   cur=k; st={}; spokeKey=null;
+  if (window.TGAudio && TGAudio.lead && HOW_TO[k]) TGAudio.lead(HOW_TO[k]);
   playTitle.textContent = ACTS[k].title;
   ovl.classList.add('on');
   document.body.style.overflow='hidden';
